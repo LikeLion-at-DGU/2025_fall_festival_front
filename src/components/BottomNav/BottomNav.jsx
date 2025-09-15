@@ -11,8 +11,7 @@ const BottomNav = () => {
   `;
 
   return (
-    <nav className="w-full bg-white shadow-[0_-2px_5px_rgba(0,0,0,0.1)]">
-      <div className="flex justify-around h-16">
+<nav className="fixed bottom-0 w-full bg-white shadow-[0_-2px_5px_rgba(0,0,0,0.1)]">      <div className="flex justify-around h-16">
         {/* 지도로 가는 링크 */}
         <Link to="/map" className={linkClassName}>
           <span>🗺️</span>

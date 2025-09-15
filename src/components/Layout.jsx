@@ -6,7 +6,7 @@ import BottomNav from './BottomNav/BottomNav';
 
 const Layout = ({ children }) => {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-w-[375px] min-h-[812px] w-screen h-screen">
       {/* 화면 상단에 고정되는 헤더 */}
       {/* <Header /> */}
       <header className="w-full bg-gray-100 p-4 text-center font-bold shadow-md">
