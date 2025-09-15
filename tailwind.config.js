@@ -13,6 +13,9 @@ export default {
         orange:'#e65b4d',
         gray:'#F4F4F5',
         black:'#2A2A2E',
+        white: '#FFFFFF',
+        lightgray: '#E4E4E7',
+
       },
    
     },
