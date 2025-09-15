@@ -5,7 +5,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}", 
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+      sans: ['SUIT Variable', 'sans-serif'], // Tailwind 기본 sans 폰트 덮어쓰기
+      },
+      colors:{
+        orange:'#e65b4d',
+        gray:'#F4F4F5',
+        black:'#2A2A2E',
+      },
+   
+    },
   },
   plugins: [],
 }

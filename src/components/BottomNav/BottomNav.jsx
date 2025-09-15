@@ -1,50 +1,75 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+
+import map from "../../assets/images/icons/nav-icons/map.svg";
+import timetable from "../../assets/images/icons/nav-icons/calendar.svg";
+import home from "../../assets/images/icons/nav-icons/home.svg";
+import document from "../../assets/images/icons/nav-icons/document.svg";
+import game from "../../assets/images/icons/nav-icons/game.svg";
+
+import mapActive from "../../assets/images/icons/nav-icons/map-active.svg";
+import timetableActive from "../../assets/images/icons/nav-icons/calendar-active.svg";
+import homeActive from "../../assets/images/icons/nav-icons/home-active.svg";
+import documentActive from "../../assets/images/icons/nav-icons/document-active.svg";
+import gameActive from "../../assets/images/icons/nav-icons/game-active.svg";
 
 const BottomNav = () => {
-  // 공통으로 사용할 클래스를 변수로 분리합니다.
-  // 백틱(`)을 사용하면 여러 줄로 나눠 쓸 수 있어 가독성이 좋아집니다.
-  const linkClassName = `
+  const location = useLocation(); // 현재 URL 확인
+
+  const navItems = [
+    { name: "지도", path: "/map", icon: map, activeIcon: mapActive },
+    {
+      name: "일정",
+      path: "/timetable",
+      icon: timetable,
+      activeIcon: timetableActive,
+    },
+    { name: "홈", path: "/", icon: home, activeIcon: homeActive },
+    {
+      name: "게시판",
+      path: "/board",
+      icon: document,
+      activeIcon: documentActive,
+    },
+    { name: "게임", path: "/event", icon: game, activeIcon: gameActive }, // 게시판 이미지 그대로 사용
+  ];
+
+  const linkClassName = (active) => `
     flex flex-col items-center justify-center
-    text-gray-500 hover:text-blue-500
-    w-full
+    w-[31px] h-[55px]  px-[5px]
+    whitespace-nowrap
+    font-normal 
+    text-[12px]
+     ${
+       active
+         ? "text-orange font-semibold border-t-[1.5px] border-orange"
+         : "text-black"
+     }
   `;
 
   return (
-<nav className="fixed bottom-0 w-full bg-white shadow-[0_-2px_5px_rgba(0,0,0,0.1)]">      <div className="flex justify-around h-16">
-        {/* 지도로 가는 링크 */}
-        <Link to="/map" className={linkClassName}>
-          <span>🗺️</span>
-          <span className="text-xs">지도</span>
-        </Link>
-
-        {/* 타임테이블로 가는 링크 */}
-        <Link to="/timetable" className={linkClassName}>
-          <span>🗓️</span>
-          <span className="text-xs">일정</span>
-        </Link>
-
-        {/* 홈으로 가는 링크 */}
-        <Link to="/" className={linkClassName}>
-          <span>🏠</span>
-          <span className="text-xs">홈</span>
-        </Link>
-
-        {/* 게시판으로 가는 링크 */}
-        <Link to="/board" className={linkClassName}>
-          <span>📝</span>
-          <span className="text-xs">게시판</span>
-        </Link>
-
-        {/* 이벤트로 가는 링크 (새로 추가) */}
-        <Link to="/event" className={linkClassName}>
-          <span>🎉</span>
-          <span className="text-xs">이벤트</span>
-        </Link>
+    <nav className="fixed bottom-0 w-full bg-white">
+      <div className="flex items-center justify-around h-[62px]">
+        {navItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Link
+              to={item.path}
+              key={item.name}
+              className={linkClassName(isActive)}
+            >
+              <img
+                src={isActive ? item.activeIcon : item.icon} // 활성 아이콘 적용
+                alt={item.name}
+                className="h-[24px] w-[24px]"
+              />
+              <span>{item.name}</span>
+            </Link>
+          );
+        })}
       </div>
     </nav>
   );
 };
 
 export default BottomNav;
-
