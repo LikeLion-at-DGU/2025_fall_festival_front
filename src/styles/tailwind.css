@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 @font-face {
-    font-family: 'SUIT Variable';
+    font-family: 'SUITE';
     src: url('https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.woff2') format('woff2');
     font-weight: 100 900; /* 100~900까지 가능 */
     font-style: normal;

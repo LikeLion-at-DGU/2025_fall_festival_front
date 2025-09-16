@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-      sans: ['SUIT Variable', 'sans-serif'], // Tailwind 기본 sans 폰트 덮어쓰기
+      sans: ['SUITE', 'sans-serif'], // Tailwind 기본 sans 폰트 덮어쓰기
       },
       colors:{
         orange:'#e65b4d',

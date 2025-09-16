@@ -12,7 +12,7 @@ const Layout = ({ children }) => {
       {/* 화면 상단에 고정되는 헤더 */}
       <Header />
       {/* 페이지의 실제 내용과 푸터가 이 안에서 스크롤됩니다. */}
-      <main className="flex-grow overflow-y-auto pt-[54px]">
+      <main className="flex-grow overflow-y-auto pt-[54px] pb-[62px]">
         {/* 1. 페이지의 실제 내용 (Home, Board 등) */}
         {children}
 
