@@ -1,16 +1,34 @@
-import React from 'react';
+import React from "react";
+import { useLocation } from "react-router-dom";
 
-import Header from './Header/Header';
-import BottomNav from './BottomNav/BottomNav';
+import Header from "./Header/Header";
+import AdminHeader from "./Header/AdminHeader";
+import BottomNav from "./BottomNav/BottomNav";
 // import Footer from './Footer/Footer';
 
 const Layout = ({ children }) => {
+  const location = useLocation();
+  const adminPaths = [
+    "/admin",
+    "/adminlogin",
+    "/adminlist",
+    "/adminevent",
+    "/adminnormal",
+    "/adminlost",
+  ];
+  const isAdminPage = adminPaths.includes(location.pathname);
+  const HeaderComponent = adminPaths.includes(location.pathname)
+    ? AdminHeader
+    : Header;
+
   return (
-    <div className="flex flex-col 
+    <div
+      className="flex flex-col 
     min-w-[375px] min-h-[812px] w-screen h-screen
-    bg-gray">
-      {/* 화면 상단에 고정되는 헤더 */}
-      <Header />
+    bg-gray"
+    >
+      {/* 조건부 Header */}
+      <HeaderComponent />
       {/* 페이지의 실제 내용과 푸터가 이 안에서 스크롤됩니다. */}
       <main className="flex-grow overflow-y-auto pt-[54px] pb-[62px]">
         {/* 1. 페이지의 실제 내용 (Home, Board 등) */}
@@ -23,12 +41,10 @@ const Layout = ({ children }) => {
         </footer>
       </main>
 
-      {/* 화면 하단에 고정되는 하단 네비게이션 바 */}
-      <BottomNav />
-   
+      {/* 관리자 페이지가 아니면 BottomNav 보여주기 */}
+      {!isAdminPage && <BottomNav />}
     </div>
   );
 };
 
 export default Layout;
-
