@@ -23,34 +23,50 @@ const Footer = () => {
       {/* 텍스트 영역 */}
       <div className="flex flex-col items-center w-[156px] gap-2 mt-4">
         {/* 검정 */}
-        <span className={`${fontClass} font-normal text-[var(--Neutral-600,#2A2A2E)]`}>
+        <span
+          className={`${fontClass} font-normal text-[var(--Neutral-600,#2A2A2E)]`}
+        >
           동국대학교 멋쟁이사자처럼
           <br />
           @LIKELION DGU. All rights Reserved
         </span>
 
         {/* 회색 */}
-        <span className={`${fontClass} font-light text-[var(--Neutral-300,#A1A1AA)]`}>
+        <span
+          className={`${fontClass} font-light text-[var(--Neutral-300,#A1A1AA)]`}
+        >
           @Data supported by 축제기획단
         </span>
 
         {/* 로고 + 텍스트 */}
         <div className="flex justify-center items-center gap-6 mt-2">
           {/* likelion */}
-          <div className="flex flex-col justify-center items-center gap-1">
-            <img src={likelion} alt="LIKELION" />
-            <span className={`${fontClass} font-normal text-[var(--Neutral-300,#A1A1AA)]`}>
-              DEVELOPERS
-            </span>
-          </div>
+          <Link to="/developers">
+            <div className="flex flex-col justify-center items-center gap-1">
+              <img src={likelion} alt="LIKELION" />
+              <span
+                className={`${fontClass} font-normal text-[var(--Neutral-300,#A1A1AA)]`}
+              >
+                DEVELOPERS
+              </span>
+            </div>
+          </Link>
 
           {/* instagram */}
-          <div className="flex flex-col justify-center items-center gap-1">
-            <img src={instagram} alt="Instagram" />
-            <span className={`${fontClass} font-normal text-[var(--Neutral-300,#A1A1AA)]`}>
-              INSTAGRAM
-            </span>
-          </div>
+          <a
+            href="https://www.instagram.com/likelion_dongguk/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="flex flex-col justify-center items-center gap-1">
+              <img src={instagram} alt="Instagram" />
+              <span
+                className={`${fontClass} font-normal text-[var(--Neutral-300,#A1A1AA)]`}
+              >
+                INSTAGRAM
+              </span>
+            </div>
+          </a>
         </div>
       </div>
     </footer>
