@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import Header from "./Header/Header";
 import AdminHeader from "./Header/AdminHeader";
 import BottomNav from "./BottomNav/BottomNav";
-// import Footer from './Footer/Footer';
+import Footer from './Footer/Footer';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -35,10 +35,8 @@ const Layout = ({ children }) => {
         {children}
 
         {/* 2. 페이지 내용 맨 끝에 위치하는 정보성 푸터 */}
-        {/* <Footer /> */}
-        <footer className="w-full bg-gray-800 text-white p-6 text-center text-sm mt-12">
-          여기는 저작권, 정보 등을 표시하는 푸터(Footer) 영역입니다.
-        </footer>
+        {location.pathname === "/" && <Footer />}
+       
       </main>
 
       {/* 관리자 페이지가 아니면 BottomNav 보여주기 */}
