@@ -26,11 +26,22 @@ function AdminLogin() {
       const data = await adminLogin({ code });
 
       // 로그인 성공 시 응답 데이터에서 UID, role 꺼내서 localStorage에 저장합니다.
-      localStorage.setItem("uid", data.uid);   // 🚨 token → uid 변경 여부 백이랑 논의 후 확정 예정
+      localStorage.setItem("uid", data.uid);   // ⛔ token → uid 변경 여부 백이랑 논의 후 확정 예정
       localStorage.setItem("role", data.role);
       
       alert("로그인 성공");
-      navigate("/adminlist");
+
+      // role에 따라서 라우팅 분기 (⛔ 백 확정 후 변수명 수정 필요)
+      if (data.role === "총학") {
+        navigate("/adminlist");
+      } else if (data.role === "동아리" || data.role === "학과") {
+        navigate("/admin"); // ⛔ 라우팅 수정 후 navigate 수정 예정
+      } else {
+        // 혹시 모를 예외 처리
+        console.warn("Unknown role:", data.role);
+        navigate("/");
+      }
+
     } catch (err) {
       alert(err.response?.data?.error || "로그인 실패");
     }
@@ -55,8 +66,8 @@ function AdminLogin() {
         />
         <Submitbtn text="로그인" type="submit" />
       </form>
-      {/*로그인 실패 시 토스트 메시지 */}
-      <ToastMessage text="관리자 코드를 확인해주세요"/>
+      {/*로그인 실패 시 토스트 메시지 
+      <ToastMessage text="관리자 코드를 확인해주세요"/>*/}
     </div>
   );
 }
