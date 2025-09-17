@@ -1,5 +1,5 @@
 import React from "react";
-import ToiletIcon from "../../assets/images/icons/map-icons/toilet.png";
+import ToiletIcon from "../../assets/images/icons/map-icons/Toilet.png";
 
 const ToiletCard = ({ name, location, status, className = "" }) => {
   return (
