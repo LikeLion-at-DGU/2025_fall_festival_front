@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import BoothCard from "../BoothCard/BoothCard";
+import BoothCard from "../MapComponents/BoothCard";
 
 const Event = () => {
   const navigate = useNavigate();
