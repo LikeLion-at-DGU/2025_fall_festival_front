@@ -8,7 +8,8 @@ const Header = () => {
   return (
     <header
       className="flex items-center justify-between 
-    fixed top-0 w-full 
+    fixed top-0 
+    w-full max-w-[430px]
     bg-white 
     h-[54px] px-[5px]"
     >
