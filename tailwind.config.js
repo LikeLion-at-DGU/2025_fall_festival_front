@@ -41,9 +41,14 @@ export default {
         l: "12px", // Radius-L
         m: "8px", // Radius-M
         s: "4px", // Radius-S
+         xl: "20px",
       },
       boxShadow: {
         tag: "0 1px 4px 0 rgba(0, 0, 0, 0.15)", // Shadow/Tag
+       card: "0 3px 5px 0 rgba(0,0,0,0.1)",
+      },
+      backgroundImage: {
+        "developers-card": "linear-gradient(147deg, rgba(251, 209, 205, 0.60) 0%, rgba(239, 112, 99, 0.60) 100%)", // 카드 그라디언트
       },
       animation: {
         marquee: "marquee 10s linear infinite",
