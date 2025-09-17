@@ -143,7 +143,11 @@ export default function Timetable() {
       </div>
 
       {/* 시간 선택 바 */}
-      <div className="flex overflow-x-auto gap-6 mt-3">
+      <div className="flex overflow-x-auto gap-6 mt-3"
+        style={{
+          scrollbarWidth: "none",   // Firefox
+          msOverflowStyle: "none",  // IE/Edge
+        }}>
         {hours.map((time) => (
           <div key={time} className="flex flex-col items-center">
             {/* 시간 텍스트 */}
