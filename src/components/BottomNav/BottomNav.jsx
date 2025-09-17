@@ -48,7 +48,7 @@ const BottomNav = () => {
   `;
 
   return (
-    <nav className="fixed bottom-0 w-full bg-white">
+    <nav className="fixed bottom-0 w-full bg-white z-[60] border-t border-gray-200">
       <div className="flex items-start justify-around h-[62px]">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
