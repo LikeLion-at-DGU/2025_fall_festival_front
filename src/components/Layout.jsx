@@ -33,7 +33,11 @@ const Layout = ({ children }) => {
         {/* 조건부 Header */}
         <HeaderComponent />
         {/* 페이지의 실제 내용과 푸터가 이 안에서 스크롤됩니다. */}
-        <main className="flex-grow overflow-y-auto pt-[54px] pb-[62px]">
+        <main
+          className={`flex-grow pt-[54px] pb-[62px] ${
+            location.pathname === "/map" ? "overflow-hidden" : "overflow-y-auto"
+          }`}
+        >
           {/* 1. 페이지의 실제 내용 (Home, Board 등) */}
           {children}
 
