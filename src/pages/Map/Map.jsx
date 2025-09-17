@@ -1003,23 +1003,28 @@ function Map() {
           ) : selectedFilter === "푸드트럭" && !selectedBooth ? (
             <div className="space-y-4">
               <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-gray-700">
+                <p className="text-sm font-normal text-center leading-[150%] font-suite text-[#8A8A8A]">
                   지도에서 푸드트럭 핀을 클릭해보세요!
                 </p>
               </div>
             </div>
+          ) : selectedFilter === "부스" && !selectedBooth ? (
+            <div className="text-center">
+              <p className="text-sm font-normal text-center leading-[150%] font-suite text-[#8A8A8A]">
+                아직 선택한 부스가 없어요
+              </p>
+            </div>
           ) : selectedBooth ? (
             <div className="space-y-4">
               <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="text-gray-700">아직 선택된 정보가 없어요</p>
+                <p className="text-sm font-normal text-center leading-[150%] font-suite text-[#8A8A8A]">
+                  해당 위치에 {selectedFilter} 정보가 없어요
+                </p>
               </div>
             </div>
           ) : (
             <div className="text-center">
-              <p
-                className="text-sm font-normal text-center leading-[150%] font-suite"
-                style={{ color: "#8A8A8A" }}
-              >
+              <p className="text-sm font-normal text-center leading-[150%] font-suite text-[#8A8A8A]">
                 아직 선택한 부스가 없어요
               </p>
             </div>
