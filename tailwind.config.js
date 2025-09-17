@@ -45,6 +45,15 @@ export default {
       boxShadow: {
         tag: "0 1px 4px 0 rgba(0, 0, 0, 0.15)", // Shadow/Tag
       },
+      animation: {
+        marquee: "marquee 10s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%": { transform: "translateX(100%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
+      },
     },
   },
   plugins: [],
