@@ -2,16 +2,16 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 // 앞으로 만들 모든 페이지들을 여기서 import
-import Map from '../pages/Map/Map';
-import Timetable from '../pages/Timetable/Timetable';
+import Map from "../pages/Map/Map";
+import Timetable from "../pages/Timetable/Timetable";
 import Home from "../pages/Home/Home";
-import Board from '../pages/Board/Board';
-import Event from '../pages/Event/Event';
+import Board from "../pages/Board/Board";
+import Event from "../pages/Event/Event";
 
-import Admin from '../pages/Admin/Admin';
-import AdminList from '../pages/Admin/AdminList';
+import Admin from "../pages/Admin/Admin";
+import AdminList from "../pages/Admin/AdminList";
 import AdminLogin from "../pages/Admin/AdminLogin";
-import EventPost from '../pages/Admin/EventPost';
+import EventPost from "../pages/Admin/EventPost";
 import NormalPost from "../pages/Admin/AdminList";
 import LostPost from "../pages/Admin/LostPost";
 
@@ -25,7 +25,7 @@ const Router = () => {
       <Route path="/timetable" element={<Timetable />} />
       <Route path="/board" element={<Board />} />
       <Route path="/event" element={<Event />} />
-      
+
       <Route path="/admin" element={<Admin />} />
       <Route path="/adminlist" element={<AdminList />} />
       <Route path="/adminlogin" element={<AdminLogin />} />
@@ -33,8 +33,6 @@ const Router = () => {
       <Route path="/adminnormal" element={<NormalPost />} />
       <Route path="/adminlost" element={<LostPost />} />
       <Route path="/developers" element={<Developers />} />
-
-
     </Routes>
   );
 };

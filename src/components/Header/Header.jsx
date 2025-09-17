@@ -8,7 +8,8 @@ const Header = () => {
   return (
     <header
       className="flex items-center justify-between 
-    fixed top-0 w-full 
+    fixed top-0 
+    w-full max-w-[430px]
     bg-white 
     h-[54px] px-[5px]"
     >
@@ -16,7 +17,7 @@ const Header = () => {
       <Link to="/">
         <img src={dirvana} alt="DIRVANA" className="h-full w-auto m-[10px]" />
       </Link>
-      <div  className=" flex items-center gap-[10px]">
+      <div className=" flex items-center gap-[10px]">
         {/* 번역버튼 */}
         <TranslateBtn />
         {/* 오른쪽 로고 */}
