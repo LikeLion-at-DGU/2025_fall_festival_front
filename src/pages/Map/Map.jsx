@@ -1,16 +1,16 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
-import FilterButton from "../../components/FilterButton/FilterButton";
+import FilterButton from "../../components/MapComponents/FilterButton";
 import SearchIcon from "../../assets/images/icons/map-icons/Search.svg";
 import CampusmapIcon from "../../assets/images/icons/map-icons/Campusmap.svg";
 import MapToiletIcon from "../../assets/images/icons/map-icons/MapToilet.svg";
 import MapBeerIcon from "../../assets/images/icons/map-icons/MapBeer.svg";
 import MapConvenienceIcon from "../../assets/images/icons/map-icons/MapConvenience.svg";
 import FoodtruckIcon from "../../assets/images/icons/map-icons/Foodtruck.svg";
-import LocationPin from "../../components/LocationPin/LocationPin";
-import BoothCard from "../../components/BoothCard/BoothCard";
-import ToiletCard from "../../components/ToiletCard/ToiletCard";
-import BeerCard from "../../components/BeerCard/BeerCard";
-import ConvenienceCard from "../../components/ConvenienceCard/ConvenienceCard";
+import LocationPin from "../../components/MapComponents/LocationPin";
+import BoothCard from "../../components/MapComponents/BoothCard";
+import ToiletCard from "../../components/MapComponents/ToiletCard";
+import BeerCard from "../../components/MapComponents/BeerCard";
+import ConvenienceCard from "../../components/MapComponents/ConvenienceCard";
 import BottomNav from "../../components/BottomNav/BottomNav";
 
 function Map() {
@@ -550,15 +550,15 @@ function Map() {
   }, [isDragging, handleDragMove, handleDragEnd]);
 
   return (
-    <div className="h-screen pt-[54px] pb-[62px] overflow-y-auto bg-neutral-100 flex flex-col">
-      <div className="bg-white px-6 pt-5 pb-0.5">
-        <div className="relative mb-4 z-50">
+    <div className="h-screen pt-[1px] pb-[62px] overflow-y-auto bg-neutral-100 flex flex-col">
+      <div className="px-6 pt-5 pb-0.5">
+        <div className="relative mb-4 z-40">
           <input
             type="text"
             placeholder="학과/동아리/부스명을 입력하세요"
             value={searchTerm}
             onChange={(e) => handleSearch(e.target.value)}
-            className="w-full px-4 py-2 pr-10 bg-white rounded-md shadow-tag text-xs font-normal font-suite focus:outline-none focus:border-none focus:ring-0"
+            className="w-full px-4 py-2 pr-10 rounded-md shadow-tag text-xs font-normal font-suite focus:outline-none focus:border-none focus:ring-0"
           />
           <div className="absolute right-3 top-2.5">
             <img src={SearchIcon} alt="검색" className="w-4 h-4 opacity-60" />
@@ -578,9 +578,9 @@ function Map() {
         </div>
       </div>
 
-      <div className="flex-1 bg-white px-6 pt-4 pb-2">
+      <div className="flex-1  px-6 pt-4 pb-2">
         <div
-          className="relative bg-white rounded-lg overflow-hidden"
+          className="relative  rounded-lg overflow-hidden"
           style={{ aspectRatio: "16/11" }}
         >
           <div className="w-full h-full">

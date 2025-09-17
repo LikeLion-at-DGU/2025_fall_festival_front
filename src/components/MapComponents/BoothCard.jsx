@@ -63,7 +63,7 @@ const BoothCard = ({
                 className="w-5 h-5 transition-all duration-200"
               />
             </button>
-            <span className="text-xs text-gray-500 font-suite">
+            <span className="text-xs text-neutral-300 font-suite">
               {likeCount}
             </span>
           </div>

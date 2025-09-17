@@ -1,10 +1,18 @@
 import React from "react";
 import ToiletIcon from "../../assets/images/icons/map-icons/Toilet.png";
 
-const ToiletCard = ({ name, location, status, className = "" }) => {
+const ToiletCard = ({
+  name,
+  location,
+  status,
+  isSelected = false,
+  className = "",
+}) => {
   return (
     <div
-      className={`bg-white rounded-2xl border border-neutral-200 p-3 ${className}`}
+      className={`bg-white rounded-2xl border p-4 ${className} ${
+        isSelected ? "border-primary-400" : "border-neutral-200"
+      }`}
       style={{
         boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
       }}
