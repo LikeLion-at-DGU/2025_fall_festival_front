@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import BoothCard from "../BoothCard/BoothCard";
+import BoothCard from "../MapComponents/BoothCard";
 
 const BoothRank = () => {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ const BoothRank = () => {
   const handleBoothClick = (booth) => {
     navigate(`/booth/${booth.id}`, { state: { booth } });
   };
-  
+
   const rankData = [
     {
       id: 4,
