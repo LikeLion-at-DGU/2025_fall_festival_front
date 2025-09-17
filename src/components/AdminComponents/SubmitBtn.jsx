@@ -1,8 +1,9 @@
 import React from "react";
 
-function SubmitBtn({ text, onClick }) {
+function SubmitBtn({ text, onClick, type = "button" }) {
   return (
     <button
+      type={type}
       onClick={onClick} // 부모에서 전달한 클릭 이벤트 연결
       className={`
         h-14 w-full
