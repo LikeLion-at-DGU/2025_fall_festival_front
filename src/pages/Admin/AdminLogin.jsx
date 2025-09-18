@@ -26,8 +26,15 @@ function AdminLogin() {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
+  const showToast = (setter, message) => {
+    setter(message);
+    setTimeout(() => setter(""), 3000); // 3초 뒤 메시지 초기화
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
+
     try {
       const data = await adminLogin({ admin_code: code });
 
@@ -38,7 +45,7 @@ function AdminLogin() {
       
       alert("로그인 성공"); // ⛔ alert 창 최종 확인 후 제거 예정
 
-      // role에 따라서 라우팅 분기 (⛔ 백 확정 후 변수명 수정 필요)
+      // role에 따라서 라우팅 분기
       if (data.role === "Staff") {
         navigate("/admin/stuco/main");
       } else if (data.role === "Club" || data.role === "Major") {
@@ -50,7 +57,7 @@ function AdminLogin() {
       }
 
     } catch (err) {
-      setErrorMsg(err.response?.data?.error || "로그인 실패");
+      showToast(setErrorMsg, err.response?.data?.error || "로그인 실패");
     }
   };
 

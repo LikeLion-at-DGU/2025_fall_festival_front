@@ -1,17 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-function ToastMessage({ text, duration = 3000, onClose }) {
-  // 3초 후 자동으로 닫기
+function ToastMessage({ text, duration = 2500, onClose }) {
+  const [visible, setVisible] = useState(false);
+
   useEffect(() => {
+
+    // fade-in 시작
+    setVisible(true);
+
+    // duration - 500ms 후 fade-out 시작
     const timer = setTimeout(() => {
-      onClose && onClose();
-    }, duration);
+      setVisible(false);
+      setTimeout(() => {
+        onClose && onClose();
+      }, 500); // fade-out 끝난 후 컴포넌트 제거
+    }, duration - 1000);
 
     return () => clearTimeout(timer);
   }, [duration, onClose]);
 
   return (
-    <div className="fixed top-[283px] left-1/2 transform -translate-x-1/2 z-50 pointer-events-none">
+    <div
+      className={`fixed top-[283px] left-1/2 transform -translate-x-1/2 z-50 pointer-events-none 
+        transition-opacity duration-500 ease-in-out
+        ${visible ? "opacity-100" : "opacity-0"}`}
+    >
       <div
         className="inline-flex justify-center items-center 
                   h-[83px] 
