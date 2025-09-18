@@ -3,8 +3,8 @@ import LocationPin from "./LocationPin";
 import emptyMap from "../../assets/images/icons/map-icons/emptyMap.svg";
 import Campusmap from "../../assets/images/icons/map-icons/Campusmap.svg";
 import MapToiletIcon from "../../assets/images/icons/map-icons/Toilet.png";
-import MapBeerIcon from "../../assets/images/icons/map-icons/beer.png";
-import MapConvenienceIcon from "../../assets/images/icons/map-icons/convenience.png";
+import MapBeerIcon from "../../assets/images/icons/map-icons/Beer.png";
+import MapConvenienceIcon from "../../assets/images/icons/map-icons/Convenience.png";
 import FoodtruckIcon from "../../assets/images/icons/map-icons/Foodtruck.svg";
 
 // 로컬 좌표 정보
