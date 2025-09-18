@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
 
 /* =========================
    환경변수 기반 API 베이스
@@ -41,10 +42,10 @@ function Tag({ label, active, onClick }) {
       type="button"
       onClick={onClick}
       className={[
-        "rounded-full px-4 py-2 text-sm transition-all border",
+        "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px]",
         active
-          ? "bg-black text-white border-black"
-          : "bg-white text-gray-800 border-gray-200 hover:border-gray-400",
+          ? "bg-black text-white font-[SUITE] text-[12px] not-italic font-normal leading-[150%]"
+          : "bg-white text-[#2A2A2E] font-[SUITE] text-[12px] not-italic font-normal leading-[150%]",
       ].join(" ")}
     >
       #{label}
@@ -61,18 +62,19 @@ function SearchBar({ value, onChange, onSubmit }) {
       }}
       className="w-full"
     >
-      <div className="flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+      <div className="flex w-full items-center rounded-[8px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-2">
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="검색어를 입력해주세요"
-          className="w-full outline-none placeholder:text-gray-400"
+          className="flex-1 text-[#A1A1AA] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] outline-none"
         />
-        <button
-          type="submit"
-          className="shrink-0 rounded-full px-3 py-1 text-sm border border-gray-300 hover:border-gray-500"
-        >
-          검색
+        <button type="submit" className="flex items-center justify-center">
+          <img
+            src={SearchIcon}
+            alt="검색"
+            className="w-[13.875px] h-[14.219px] flex-shrink-0"
+          />
         </button>
       </div>
     </form>
@@ -81,29 +83,32 @@ function SearchBar({ value, onChange, onSubmit }) {
 
 function BoardItem({ item }) {
   const { category, title, writer } = item;
+
+  // 카테고리별 태그 스타일
   const pillCls =
     category === "Notice"
-      ? "bg-rose-100 text-rose-700 border-rose-200"
+      ? "bg-[#EF7063] text-white border border-[#EF7063] w-[42px]"
       : category === "Event"
-      ? "bg-orange-50 text-orange-600 border-orange-200"
-      : "bg-gray-50 text-gray-600 border-gray-200";
+      ? "bg-white text-[#EF7063] border border-[#EF7063] w-[42px]"
+      : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
 
   return (
-    <li className="rounded-2xl bg-white px-5 py-4 shadow-sm border border-gray-100">
-      <div className="flex items-center justify-between gap-3">
+    <li className="flex h-[41px] py-[8px] px-[8px] flex-col justify-between items-center self-stretch rounded-[12px] bg-white">
+      <div className="flex items-center justify-between gap-3 w-full">
         <div className="flex items-center gap-3 min-w-0">
           <span
-            className={`shrink-0 rounded-full border px-3 py-1 text-xs ${pillCls}`}
+            className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-[SUITE] font-normal leading-none ${pillCls}`}
           >
             {CATEGORY_MAP[category] ?? category}
           </span>
-          <p className="truncate text-base text-gray-900">{title}</p>
+          <p className="text-[#52525B] font-[SUITE] text-[12px] not-italic font-semibold leading-[150%]">{title}</p>
         </div>
-        <span className="text-sm text-gray-400 shrink-0">- {writer}</span>
+        <span className="text-[#52525B] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">- {writer}</span>
       </div>
     </li>
   );
 }
+
 
 function Pagination({ total, page, pageSize, onChange }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
@@ -119,7 +124,7 @@ function Pagination({ total, page, pageSize, onChange }) {
         type="button"
         onClick={() => onChange(Math.max(1, page - 1))}
         disabled={page === 1}
-        className="rounded-lg border px-3 py-2 text-sm disabled:opacity-40"
+        className="rounded-lg border px-2 py-1 text-sm disabled:opacity-40"
       >
         이전
       </button>
@@ -127,7 +132,7 @@ function Pagination({ total, page, pageSize, onChange }) {
       {start > 1 && (
         <>
           <button
-            className="rounded-lg border px-3 py-2 text-sm"
+            className="rounded-lg border px-2 py-1 text-sm"
             onClick={() => onChange(1)}
           >
             1
@@ -141,7 +146,7 @@ function Pagination({ total, page, pageSize, onChange }) {
           key={p}
           onClick={() => onChange(p)}
           className={
-            "rounded-lg border px-3 py-2 text-sm " +
+            "rounded-lg border px-2 py-1 text-sm " +
             (p === page ? "bg-black text-white border-black" : "")
           }
         >
@@ -153,7 +158,7 @@ function Pagination({ total, page, pageSize, onChange }) {
         <>
           <span className="px-1 text-gray-400">…</span>
           <button
-            className="rounded-lg border px-3 py-2 text-sm"
+            className="rounded-lg border px-2 py-1 text-sm"
             onClick={() => onChange(totalPages)}
           >
             {totalPages}
@@ -165,7 +170,7 @@ function Pagination({ total, page, pageSize, onChange }) {
         type="button"
         onClick={() => onChange(Math.min(totalPages, page + 1))}
         disabled={page === totalPages}
-        className="rounded-lg border px-3 py-2 text-sm disabled:opacity-40"
+        className="rounded-lg border px-2 py-1 text-sm disabled:opacity-40"
       >
         다음
       </button>
@@ -339,9 +344,8 @@ export default function Board() {
       </div>
 
       {/* 리스트 헤더 */}
-      <div className="mt-6 mb-2">
-        <h2 className="text-xl font-semibold">게시물</h2>
-        <p className="mt-1 text-sm text-gray-500">총 {totalCount.toLocaleString()}건</p>
+      <div className="mt-6 mb-5">
+        <h2 className="text-[#2A2A2E] font-[SUITE] text-[16px] not-italic font-normal leading-normal">게시물</h2>
       </div>
 
       {/* 리스트 */}
@@ -353,7 +357,7 @@ export default function Board() {
           <div className="py-16 text-center text-rose-600">{error}</div>
         )}
         {!loading && !error && paged.length === 0 && (
-          <div className="py-16 text-center text-gray-500">게시글이 없습니다.</div>
+          <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">현재 진행 중인 이벤트가 없습니다</div>
         )}
         {!loading && !error && paged.length > 0 && (
           <ul className="flex flex-col gap-3">
