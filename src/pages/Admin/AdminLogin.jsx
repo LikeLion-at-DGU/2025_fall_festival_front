@@ -8,7 +8,7 @@ import likelion from "../../assets/images/icons/logo/likelionblack.svg";
 import collab from "../../assets/images/icons/logo/collab.svg";
 
 import { useNavigate } from "react-router-dom";
-import { adminLogin } from "../../apis/admin";
+import { adminLogin } from "../../apis/admin/admin";
 
 /*----관리자 로그인 구현 플로우----*/
 // CodeInput에 입력하는 값을 state로 연결합니다. (value, onChange)
