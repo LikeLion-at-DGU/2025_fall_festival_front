@@ -2,7 +2,7 @@ import React from "react";
 import LocationPin from "./LocationPin";
 import emptyMap from "../../assets/images/icons/map-icons/emptyMap.svg";
 import Campusmap from "../../assets/images/icons/map-icons/Campusmap.svg";
-import MapToiletIcon from "../../assets/images/icons/map-icons/toilet.png";
+import MapToiletIcon from "../../assets/images/icons/map-icons/Toilet.png";
 import MapBeerIcon from "../../assets/images/icons/map-icons/beer.png";
 import MapConvenienceIcon from "../../assets/images/icons/map-icons/convenience.png";
 import FoodtruckIcon from "../../assets/images/icons/map-icons/Foodtruck.svg";
