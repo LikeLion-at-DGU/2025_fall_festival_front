@@ -21,7 +21,7 @@ const Header = () => {
         {/* 번역버튼 */}
         <TranslateBtn />
         {/* 오른쪽 로고 */}
-        <Link to="/adminlogin">
+        <Link to="/admin/login">
           <img src={likelion} alt="ADMIN" className="h-full w-auto m-[10px]" />
         </Link>
       </div>
