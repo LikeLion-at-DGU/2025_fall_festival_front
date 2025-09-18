@@ -14,7 +14,8 @@ export async function createNormalPost(postData) {
   if (role !== "Staff") {
     throw new Error("일반공지 작성 권한이 없습니다.");
   } 
-  // ⛔ 접근 권한 체크: 메인페이지에서 넘어올 때, post 페이지>>둘 중 하나만 해야하나 고민 중. 수정 예정!
+  
+  // ⛔ 접근 권한 체크: 메인페이지에서 넘어올 때, post 페이지>>둘 중 하나만 해야하나->수정 예정
 
   const payload = {
     uid,
@@ -25,4 +26,26 @@ export async function createNormalPost(postData) {
 
   const res = await instance.post("/board/notices", payload);
   return res.data;
+}
+
+//-------- 긴급공지 patch --------//
+
+export async function patchEmergencyNotice(id, data) {
+  try {
+    const res = await instance.patch(`/board/${id}`, data);
+    return res.data;
+  } catch (err) {
+    throw err.response?.data || { error: "알 수 없는 오류" };
+  }
+}
+
+//-------- 가장 최근 긴급공지 get --------//
+
+export async function getEmergencyNotices() {
+  try {
+    const res = await instance.get("/board?type=emergency");
+    return res.data; // 배열 형태 [{id, title, content, created_at}, ...]
+  } catch (err) {
+    throw err.response?.data || { error: "알 수 없는 오류" };
+  }
 }
