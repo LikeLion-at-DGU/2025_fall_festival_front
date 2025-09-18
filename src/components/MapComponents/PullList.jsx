@@ -4,9 +4,9 @@ import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
 
 function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
-  const minHeight = 369; // 최소 높이 - 369px로 고정
+  const minHeight = 80; // 최소 높이 - 더 낮게
   const maxHeight = Math.min(600, window.innerHeight - 25 - 62); // 최대 높이: 화면 상단에서 25px, BottomNav 62px 여유
-  const defaultHeight = 369; // 기본 높이도 369px
+  const defaultHeight = 250; // 기본 높이를 낮게
 
   const [sheetHeight, setSheetHeight] = useState(defaultHeight);
   const [isDragging, setIsDragging] = useState(false);
@@ -33,9 +33,9 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
   const handleEnd = useCallback(() => {
     setIsDragging(false);
 
-    // 위로 올렸을 때는 고정, 아래로 내렸을 때만 369px로 스냅
-    if (sheetHeight < minHeight + 50) { // 369px + 50px 이하로 내렸을 때만 스냅
-      setSheetHeight(minHeight); // 369px로 스냅
+    // 최소 높이 근처에서만 스냅, 나머지는 고정
+    if (sheetHeight < minHeight + 30) { // 80px + 30px = 110px 이하일 때만 스냅
+      setSheetHeight(minHeight); // 80px - 접힌 상태로 스냅
     }
     // 그 외의 경우는 현재 높이에서 고정 (스냅하지 않음)
   }, [sheetHeight, minHeight]);
