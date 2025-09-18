@@ -5,7 +5,7 @@ import NotBoothCard from "./NotBoothCard";
 
 function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
   const minHeight = 80; // 최소 높이 - 더 낮게
-  const maxHeight = Math.min(600, window.innerHeight - 25 - 62); // 최대 높이: 화면 상단에서 25px, BottomNav 62px 여유
+  const maxHeight = Math.min(450, window.innerHeight - 100 - 62); // 최대 높이를 더 제한
   const defaultHeight = 250; // 기본 높이를 낮게
 
   const [sheetHeight, setSheetHeight] = useState(defaultHeight);
