@@ -18,18 +18,23 @@ const LocationPin = ({ label, x, y, onClick, isSelected = false, className = "" 
       <div className="relative flex flex-col items-center">
         <div
           className={`
-            inline-flex px-2 py-1 rounded-[12px] text-xs font-semibold font-suite
-            shadow-tag whitespace-nowrap transition-all duration-200
+            inline-flex px-2 py-1 text-xs font-semibold font-suite
+            whitespace-nowrap transition-all duration-200
             group-hover:scale-105 group-hover:shadow-lg
-            ${isSelected ? "text-white" : "bg-white text-primary-400 opacity-90 group-hover:opacity-100"}
+            ${isSelected ? "text-white" : "text-[#EF7063]"}
           `}
           style={
             isSelected
               ? {
+                  borderRadius: "12px",
                   background: "linear-gradient(180deg, #E65B4D 61.11%, #D33E2F 111.11%)",
                   boxShadow: "0 1px 4px rgba(0,0,0,0.15)",
                 }
-              : {}
+              : {
+                  borderRadius: "16px",
+                  background: "linear-gradient(180deg, rgba(255, 255, 255, 0.80) 58.33%, #FFF 97.22%)",
+                  boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.15)",
+                }
           }
         >
           {label}
