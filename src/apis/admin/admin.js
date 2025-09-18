@@ -1,4 +1,4 @@
-import instance from "./instance";
+import instance from "../instance";
 
 //--------관리자 코드를 post하여 로그인 함수를 구현합니다.--------//
 
