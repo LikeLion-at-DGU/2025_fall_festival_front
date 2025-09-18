@@ -6,6 +6,7 @@ import Map from "../pages/Map/Map";
 import Timetable from "../pages/Timetable/Timetable";
 import Home from "../pages/Home/Home";
 import Board from "../pages/Board/Board";
+import BoardDetail from "../pages/Board/BoardDetail";
 import Event from "../pages/Event/Event";
 
 import Admin from "../pages/Admin/Admin";
@@ -28,6 +29,7 @@ const Router = () => {
 
       <Route path="/timetable" element={<Timetable />} />
       <Route path="/board" element={<Board />} />
+      <Route path="/board/:boardId" element={<BoardDetail />} />
       <Route path="/event" element={<Event />} />
 
       <Route path="/admin" element={<Admin />} /> {/*미사용예정*/}
