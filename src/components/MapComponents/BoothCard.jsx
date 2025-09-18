@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import HeartIcon from "../../assets/images/icons/map-icons/Heart.svg";
 import UnheartIcon from "../../assets/images/icons/map-icons/Unheart.svg";
 import Badge from "./BoothCardComponents/Badge";
+import useLikes from "../../hooks/MapHooks/useLikes";
 
 const BoothCard = ({
+  boothId,
   title,
   image,
   isNight,
@@ -12,12 +14,16 @@ const BoothCard = ({
   businessDays,
   location,
   isOperating,
-
-  likesCount,
-  isLiked,
+  likesCount: initialLikesCount,
+  isLiked: initialIsLiked,
   isEvent,
   isDorder,
 }) => {
+  const { isLiked, likesCount, toggleLike, loading } = useLikes(
+    boothId,
+    initialIsLiked,
+    initialLikesCount
+  );
   return (
     <div
       className={`bg-white w-full h-[92px] rounded-2xl border p-4 ${
@@ -48,7 +54,11 @@ const BoothCard = ({
         {/* 글자 */}
         <div className="flex-1  relative">
           <div className="absolute top-0 right-0 flex flex-col items-center">
-            <button className="w-6 h-6 flex items-center justify-center mb-1">
+            <button
+              onClick={toggleLike}
+              disabled={loading}
+              className="w-6 h-6 flex items-center justify-center mb-1 hover:scale-110 transition-transform duration-200 disabled:opacity-50"
+            >
               <img
                 src={isLiked ? HeartIcon : UnheartIcon}
                 alt="좋아요"

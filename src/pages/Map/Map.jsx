@@ -36,9 +36,9 @@ console.log("filteredbooths 데이터:", filteredBooths);
 
 
   return (
-    <div className="relative flex flex-col h-full  overflow-y-hidden">
-      {/* 고정 */}
-      <div className="h-[364px] px-[19px] py-[28px]">
+    <div className="relative flex flex-col h-full overflow-hidden">
+      {/* 메인 콘텐츠 */}
+      <div className="flex-1 px-[19px] py-[28px]">
         <div className="flex flex-col gap-[26px]">
           <div className="flex flex-col gap-[20px]">
            <SearchBar searchTerm={searchText} setSearchTerm={setSearchText} />
@@ -56,6 +56,8 @@ console.log("filteredbooths 데이터:", filteredBooths);
           />
         </div>
       </div>
+
+      {/* 바텀시트 */}
       <PullList booths={filteredBooths} selectedFilter={selectedFilter} searchTerm={searchText} selectedPin={selectedPin}/>
     </div>
   );
