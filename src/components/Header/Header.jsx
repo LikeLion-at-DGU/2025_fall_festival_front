@@ -15,7 +15,7 @@ const Header = () => {
     >
       {/* 왼쪽 로고 */}
       <Link to="/">
-        <img src={dirvana} alt="DIRVANA" className="h-full w-auto m-[10px]" />
+        <img src={dirvana} alt="DIRVANA" className="h-full w-64px m-[10px]" />
       </Link>
       <div className=" flex items-center gap-[10px]">
         {/* 번역버튼 */}
