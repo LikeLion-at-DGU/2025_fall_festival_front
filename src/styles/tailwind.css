@@ -11,3 +11,12 @@
   font-style: normal;
   font-display: swap; /* 로딩 전엔 기본 글씨 보여줌 */
 }
+
+/* 스크롤바 숨기기 */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
