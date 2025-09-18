@@ -6,7 +6,7 @@ import NotBoothCard from "./NotBoothCard";
 function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
   const minHeight = 80; // 최소 높이 - 더 낮게
   const maxHeight = Math.min(450, window.innerHeight - 100 - 62); // 최대 높이를 더 제한
-  const defaultHeight = 250; // 기본 높이를 낮게
+  const defaultHeight = 150; // 첫 시작 높이 150px
 
   const [sheetHeight, setSheetHeight] = useState(defaultHeight);
   const [isDragging, setIsDragging] = useState(false);
@@ -120,13 +120,13 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
         transform: isDragging ? 'none' : undefined,
       }}
     >
-      {/* 드래그 핸들 */}
+      {/* 드래그 핸들 - 더 큰 영역 */}
       <div
-        className="w-full py-4 cursor-grab active:cursor-grabbing"
+        className="w-full py-6 cursor-grab active:cursor-grabbing"
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
       >
-        <div className="w-[163px] h-[3px] flex-shrink-0 rounded-[100px] bg-[#A1A1AA] mx-auto"></div>
+        <div className="w-[163px] h-[4px] flex-shrink-0 rounded-[100px] bg-[#A1A1AA] mx-auto"></div>
       </div>
 
       {/* 헤더 */}
