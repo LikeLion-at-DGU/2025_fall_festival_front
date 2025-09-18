@@ -11,10 +11,10 @@ const Layout = ({ children }) => {
   const adminPaths = [
     "/admin",
     "/admin/login",
-    "/admin/stuco/main",
+    "/admin/stuco",
     "/admin/stuco/notice/normal",
     "/admin/stuco/notice/lost",
-    "/admin/booth/main",
+    "/admin/booth",
     "/admin/booth/event",
   ];
   const isAdminPage = adminPaths.includes(location.pathname);
