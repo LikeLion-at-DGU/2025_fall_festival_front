@@ -35,11 +35,19 @@ console.log("booths 데이터:", booths);
 console.log("filteredbooths 데이터:", filteredBooths);
 
 
+  // 컴포넌트 마운트 시 body 스크롤 방지
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
+
   return (
-    <div className="relative flex flex-col h-full overflow-hidden">
+    <div className="relative flex flex-col h-screen overflow-hidden">
       {/* 메인 콘텐츠 */}
-      <div className="flex-1 px-[19px] py-[28px]">
-        <div className="flex flex-col gap-[26px]">
+      <div className="flex-1 px-[19px] py-[28px] overflow-hidden">
+        <div className="flex flex-col gap-[26px] h-full">
           <div className="flex flex-col gap-[20px]">
            <SearchBar searchTerm={searchText} setSearchTerm={setSearchText} />
             <FilterBar
