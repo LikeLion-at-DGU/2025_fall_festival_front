@@ -11,6 +11,7 @@ import Event from "../pages/Event/Event";
 import Admin from "../pages/Admin/Admin";
 import AdminList from "../pages/Admin/AdminList";
 import AdminLogin from "../pages/Admin/AdminLogin";
+import BoothList from "../pages/Admin/BoothList";
 import EventPost from "../pages/Admin/EventPost";
 import NormalPost from "../pages/Admin/AdminList";
 import LostPost from "../pages/Admin/LostPost";
@@ -26,13 +27,18 @@ const Router = () => {
       <Route path="/board" element={<Board />} />
       <Route path="/event" element={<Event />} />
 
-      <Route path="/admin" element={<Admin />} />
-      <Route path="/adminlist" element={<AdminList />} />
-      <Route path="/adminlogin" element={<AdminLogin />} />
-      <Route path="/adminevent" element={<EventPost />} />
-      <Route path="/adminnormal" element={<NormalPost />} />
-      <Route path="/adminlost" element={<LostPost />} />
-      <Route path="/developers" element={<Developers />} />
+      <Route path="/admin" element={<Admin />} /> {/*미사용예정*/}
+      {/*공통로그인*/}
+      <Route path="/admin/login" element={<AdminLogin />} />
+      {/*총학*/}
+      <Route path="/admin/stuco/main" element={<AdminList />} /> {/*메인(게시글)*/}
+      <Route path="/admin/stuco/notice/normal" element={<NormalPost />} /> {/*일반공지 작성*/}
+      <Route path="/admin/stuco/notice/lost" element={<LostPost />} /> {/*분실물 작성*/}
+      {/*부스관리자*/}
+      <Route path="/admin/booth/main" element={<BoothList />} /> {/*메인(게시글)*/}
+      <Route path="/admin/booth/event" element={<EventPost />} /> {/*이벤트 작성*/}
+
+      <Route path="/developers" element={<Developers />} /> 
     </Routes>
   );
 };
