@@ -3,9 +3,9 @@ function NoticeBox({ noticeText = "공지", content, org }) {
     <div
       className="
         flex items-center justify-between 
-        w-[343px] h-[41px] 
+        w-[100%] h-[41px] 
         px-2 py-2
-        rounded-lg 
+        rounded-[15px] 
         border-b border-[#A1A1AA]/50 bg-[#F4F4F5]
       "
     >

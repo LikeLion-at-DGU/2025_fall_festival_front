@@ -47,9 +47,9 @@ function AdminLogin() {
 
       // role에 따라서 라우팅 분기
       if (data.role === "Staff") {
-        navigate("/admin/stuco/main");
+        navigate("/admin/stuco");
       } else if (data.role === "Club" || data.role === "Major") {
-        navigate("/admin/booth/main");
+        navigate("/admin/booth");
       } else {
         // 혹시 모를 예외 처리
         console.warn("Unknown role:", data.role);
