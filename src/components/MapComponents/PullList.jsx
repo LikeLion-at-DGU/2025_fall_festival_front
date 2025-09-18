@@ -1,11 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
 
 function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
   const minHeight = 369; // 최소 높이 - 369px로 고정
-  const maxHeight = Math.min(600, window.innerHeight * 0.9); // 최대 높이
+  const maxHeight = Math.min(600, window.innerHeight - 25 - 62); // 최대 높이: 화면 상단에서 25px, BottomNav 62px 여유
   const defaultHeight = 369; // 기본 높이도 369px
 
   const [sheetHeight, setSheetHeight] = useState(defaultHeight);
@@ -16,21 +16,21 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
   const textClass = "text-[14px] font-normal leading-[150%]";
 
   // 마우스/터치 이벤트 핸들러
-  const handleStart = (clientY) => {
+  const handleStart = useCallback((clientY) => {
     setIsDragging(true);
     setStartY(clientY);
     setStartHeight(sheetHeight);
-  };
+  }, [sheetHeight]);
 
-  const handleMove = (clientY) => {
+  const handleMove = useCallback((clientY) => {
     if (!isDragging) return;
 
     const deltaY = startY - clientY; // 위로 드래그하면 양수
     const newHeight = Math.max(minHeight, Math.min(maxHeight, startHeight + deltaY));
     setSheetHeight(newHeight);
-  };
+  }, [isDragging, startY, startHeight, minHeight, maxHeight]);
 
-  const handleEnd = () => {
+  const handleEnd = useCallback(() => {
     setIsDragging(false);
 
     // 위로 올렸을 때는 고정, 아래로 내렸을 때만 369px로 스냅
@@ -38,35 +38,35 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
       setSheetHeight(minHeight); // 369px로 스냅
     }
     // 그 외의 경우는 현재 높이에서 고정 (스냅하지 않음)
-  };
+  }, [sheetHeight, minHeight]);
 
   // 마우스 이벤트
-  const handleMouseDown = (e) => {
+  const handleMouseDown = useCallback((e) => {
     e.preventDefault();
     handleStart(e.clientY);
-  };
+  }, [handleStart]);
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     handleMove(e.clientY);
-  };
+  }, [handleMove]);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     handleEnd();
-  };
+  }, [handleEnd]);
 
   // 터치 이벤트
-  const handleTouchStart = (e) => {
+  const handleTouchStart = useCallback((e) => {
     handleStart(e.touches[0].clientY);
-  };
+  }, [handleStart]);
 
-  const handleTouchMove = (e) => {
+  const handleTouchMove = useCallback((e) => {
     e.preventDefault();
     handleMove(e.touches[0].clientY);
-  };
+  }, [handleMove]);
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = useCallback(() => {
     handleEnd();
-  };
+  }, [handleEnd]);
 
   // 글로벌 이벤트 리스너
   useEffect(() => {
@@ -83,7 +83,7 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
         document.removeEventListener('touchend', handleTouchEnd);
       };
     }
-  }, [isDragging, startY, startHeight]);
+  }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
  
   // 클라이언트에서 검색 및 핀 선택 필터링
   const searchFilteredBooths = booths.filter((booth) => {
