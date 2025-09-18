@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
-function NormalPost() {
+function AdminMain() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const navigate = useNavigate(); // 페이지 이동 훅
   const bigWrapperClass =
@@ -25,9 +25,9 @@ function NormalPost() {
   return (
     <div className={bigWrapperClass}>
       <div className={wrapperClass}>
-        <AdminTitle text="부스관리자 메인페이지" />
-        <PostInput placeholder="수정할거임" />
-        <Submitbtn text="이벤트 추가하기" />
+        <AdminTitle text="긴급 공지" />
+        <PostInput placeholder="긴급하게 올릴 공지를 입력해주세요" />
+        <Submitbtn text="긴급 공지 수정하기" />
       </div>
       <div className={wrapperClass}>
         <AdminTitle text="게시글 목록" />
@@ -42,4 +42,4 @@ function NormalPost() {
   );
 }
 
-export default NormalPost;
+export default AdminMain;
