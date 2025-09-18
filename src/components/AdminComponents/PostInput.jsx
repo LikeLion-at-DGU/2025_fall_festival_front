@@ -1,9 +1,11 @@
 import React from 'react';
 
-function PostInput({ placeholder, className }) {
+function PostInput({ placeholder, value, onChange, className }) {
   return (
     <textarea
       placeholder={placeholder}
+      value={value}
+      onChange={onChange}
       className={`
         w-full px-6 py-4
         rounded-lg
