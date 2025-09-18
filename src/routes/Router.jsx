@@ -6,6 +6,7 @@ import Map from "../pages/Map/Map";
 import Timetable from "../pages/Timetable/Timetable";
 import Home from "../pages/Home/Home";
 import Board from "../pages/Board/Board";
+import BoardDetail from "../pages/Board/BoardDetail";
 import Event from "../pages/Event/Event";
 
 import Admin from "../pages/Admin/Admin";
@@ -19,6 +20,14 @@ import EventPost from "../pages/Admin/EventPost";
 import Developers from "../pages/Developers/Developers";
 import MapOld from "../pages/Map/MapOld";
 
+import BoothDetail from "../pages/Map/DetailSections/BoothDetail";
+import DrinkDetail from "../pages/Map/DetailSections/DrinkDetail";
+import FoodTruckDetail from "../pages/Map/DetailSections/FoodTruckDetail";
+import ToiletDetail from "../pages/Map/DetailSections/ToiletDetail";
+
+
+
+
 const Router = () => {
   return (
     <Routes>
@@ -28,7 +37,15 @@ const Router = () => {
 
       <Route path="/timetable" element={<Timetable />} />
       <Route path="/board" element={<Board />} />
+      <Route path="/board/:boardId" element={<BoardDetail />} />
       <Route path="/event" element={<Event />} />
+
+      {/* 지도 상세페이지 라우트 추가 */}
+      <Route path="/booth/:id" element={<BoothDetail />} />
+      <Route path="/drink/:id" element={<DrinkDetail />} />
+      <Route path="/foodtruck/:id" element={<FoodTruckDetail />} />
+      <Route path="/toilet/:id" element={<ToiletDetail />} />
+
 
       <Route path="/admin" element={<Admin />} /> {/*미사용예정*/}
       {/*공통로그인*/}

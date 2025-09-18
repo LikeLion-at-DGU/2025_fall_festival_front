@@ -49,6 +49,7 @@ const BottomNav = () => {
 
   return (
     <nav className="fixed bottom-0 
+    z-999
     w-full max-w-[430px]
     bg-white">
 

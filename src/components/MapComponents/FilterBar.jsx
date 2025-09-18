@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import SearchIcon from "../../assets/images/icons/map-icons/Search.svg";
 import FilterButton from "../../components/MapComponents/FilterButton";
 
-function FilterBar({ selectedFilter, setSelectedFilter }) {
+function FilterBar({ selectedFilter, setSelectedFilter, onFilterClick }) {
 
   // 1) 한글 ↔ 영문 매핑
   const filterMap = {
@@ -24,6 +24,11 @@ function FilterBar({ selectedFilter, setSelectedFilter }) {
 
     // 부모 Map.jsx 상태 업데이트
     setSelectedFilter(englishFilter);
+
+    // 추가 콜백 실행 (핀 초기화용)
+    if (onFilterClick) {
+      onFilterClick(englishFilter);
+    }
   };
 
   return (

@@ -14,6 +14,7 @@ export async function createNormalPost(postData) {
   if (role !== "Staff") {
     throw new Error("일반공지 작성 권한이 없습니다.");
   } 
+  
   // ⛔ 접근 권한 체크: 메인페이지에서 넘어올 때, post 페이지>>둘 중 하나만 해야하나->수정 예정
 
   const payload = {
