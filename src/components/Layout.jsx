@@ -38,7 +38,6 @@ const Layout = ({ children }) => {
       <div
         className="flex flex-col 
           min-w-[375px] max-w-[430px]
-          min-h-[812px]
           w-screen h-screen
           bg-gray"
       >

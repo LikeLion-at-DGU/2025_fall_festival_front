@@ -108,7 +108,7 @@ export default function BoardDetail() {
       <BoardDetailHeader />
       <div className="h-[4px] bg-[#F4F4F5]" />
       <main className="">
-        <div className="px-5 min-h-[calc(100vh-54px-62px)] flex flex-col">
+        <div className="px-5 min-h-[calc(100vh)] flex flex-col">
           {loading && (
             <div className="py-16 text-center text-gray-500">불러오는 중…</div>
           )}
@@ -200,12 +200,12 @@ export default function BoardDetail() {
               </div>
 
               {/* --- 다른 게시물: 하단 고정 + 배경 #F4F4F5 --- */}
-              <section className="-mx-5 mt-8 bg-[#F4F4F5] px-5 py-4">
-                <div className="text-lg font-semibold text-gray-800">
+              <section className="-mx-5 mt-8 bg-[#F4F4F5] px-5 py-[32px]">
+                <div className="text-[#2A2A2E] font-[SUITE] text-[20px] not-italic font-normal mb-[16px]">
                   다른 게시물
                 </div>
 
-                <ul className="mt-3 flex flex-col gap-3">
+                <ul className="mt-3 flex flex-col gap-[4px]">
                   {related.slice(0, 3).map((item) => {
                     const pillCls = pillClsByCategory(item.category);
                     return (
