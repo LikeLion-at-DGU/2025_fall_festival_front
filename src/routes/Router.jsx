@@ -17,12 +17,15 @@ import NormalPost from "../pages/Admin/NormalPost";
 import LostPost from "../pages/Admin/LostPost";
 
 import Developers from "../pages/Developers/Developers";
+import MapOld from "../pages/Map/MapOld";
 
 const Router = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/map" element={<Map />} />
+            <Route path="/mapold" element={<MapOld />} />
+
       <Route path="/timetable" element={<Timetable />} />
       <Route path="/board" element={<Board />} />
       <Route path="/event" element={<Event />} />
