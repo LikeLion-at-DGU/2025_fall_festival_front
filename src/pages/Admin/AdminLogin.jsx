@@ -32,10 +32,10 @@ function AdminLogin() {
       alert("로그인 성공");
 
       // role에 따라서 라우팅 분기 (⛔ 백 확정 후 변수명 수정 필요)
-      if (data.role === "총학") {
-        navigate("/adminlist");
-      } else if (data.role === "동아리" || data.role === "학과") {
-        navigate("/admin"); // ⛔ 라우팅 수정 후 navigate 수정 예정
+      if (data.role === "Staff") {
+        navigate("/admin/stuco/main");
+      } else if (data.role === "Club" || data.role === "Major") {
+        navigate("/admin/booth/main");
       } else {
         // 혹시 모를 예외 처리
         console.warn("Unknown role:", data.role);

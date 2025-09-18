@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
-import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
-function BoothList() {
+import NoticeBox from "../../components/AdminComponents/Booth/NoticeBox";
+function BoothMain() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const navigate = useNavigate(); // 페이지 이동 훅
   const bigWrapperClass =
@@ -25,21 +25,12 @@ function BoothList() {
   return (
     <div className={bigWrapperClass}>
       <div className={wrapperClass}>
-        <AdminTitle text="긴급 공지" />
-        <PostInput placeholder="긴급하게 올릴 공지를 입력해주세요" />
-        <Submitbtn text="긴급 공지 수정하기" />
-      </div>
-      <div className={wrapperClass}>
-        <AdminTitle text="게시글 목록" />
-        <div className={smallWrapperClass}>
-          <div>검색 </div>
-          <div>게시글 </div>
-          <div>게시글 </div>
-          <div>게시글 </div>
-        </div>
+        <AdminTitle text="진행한 이벤트 목록" />
+        <NoticeBox />
+        <Submitbtn text="이벤트 추가하기" />
       </div>
     </div>
   );
 }
 
-export default BoothList;
+export default BoothMain;
