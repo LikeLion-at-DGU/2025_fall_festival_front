@@ -22,6 +22,17 @@ const KOR_TO_SERVER = {
 };
 
 /* =========================
+   유틸: AbortError 판단
+   ========================= */
+function isAbortError(err) {
+  return (
+    err?.name === "AbortError" ||
+    (typeof err?.message === "string" &&
+      err.message.toLowerCase().includes("aborted"))
+  );
+}
+
+/* =========================
    재사용 소컴포넌트
    ========================= */
 function Tag({ label, active, onClick }) {
@@ -190,16 +201,17 @@ export default function Board() {
     params.set("limit", String(pageSize));
 
     // 1) GET
-    const getRes = await fetch(`${API_BASE}/board?${params.toString()}`, {
-      method: "GET",
-      signal,
-      // credentials: "include", // 쿠키 필요 시 주석 해제
-      headers: {
-        Accept: "application/json",
-      },
-    });
-
-    if (getRes.ok) return getRes.json();
+    try {
+      const res = await fetch(`${API_BASE}/board?${params.toString()}`, {
+        method: "GET",
+        signal,
+        headers: { Accept: "application/json" },
+      });
+      if (res.ok) return res.json();
+    } catch (e) {
+      if (isAbortError(e)) throw e; // 상위에서 무시하도록 전달
+      // GET 자체가 실패(CORS/네트워크 등) → 아래 POST 폴백 시도
+    }
 
     // 2) POST 폴백 (백엔드가 body만 받는 경우 대비)
     const postRes = await fetch(`${API_BASE}/board`, {
@@ -227,6 +239,7 @@ export default function Board() {
   // 로드 & 의존성 변화시 호출
   useEffect(() => {
     const controller = new AbortController();
+
     (async () => {
       try {
         setLoading(true);
@@ -248,16 +261,24 @@ export default function Board() {
         setRawList(list);
         setServerTotal(total);
       } catch (e) {
-        console.error(e);
-        setError(
-          e?.message || "게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요."
-        );
+        // ✅ StrictMode로 인해 발생한 AbortError는 화면 에러로 노출하지 않음
+        if (isAbortError(e)) {
+          // 콘솔만 참고용으로 남기고 화면 에러는 표시하지 않음
+          console.debug("Fetch aborted (expected in dev StrictMode)");
+        } else {
+          console.error(e);
+          setError(
+            e?.message ||
+              "게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요."
+          );
+        }
       } finally {
         setLoading(false);
       }
     })();
 
     return () => controller.abort();
+    // page 포함: 서버가 페이지 파라미터를 받지 않아도 문제 없음(클라에서 보정)
   }, [activeTag, submittedKeyword, page]);
 
   // 클라 보정(서버 미지원 대비)
@@ -281,7 +302,6 @@ export default function Board() {
     serverTotal > 0 ? Math.max(serverTotal, filtered.length) : filtered.length;
 
   const paged = useMemo(() => {
-    // 서버가 이미 페이지 단위로 내려주면 길이가 작을 수 있음 → 그대로 표출
     if (rawList.length <= pageSize && (serverTotal === 0 || serverTotal <= pageSize)) {
       return filtered;
     }
