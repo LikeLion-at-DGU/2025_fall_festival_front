@@ -12,7 +12,7 @@ const Footer = () => {
     <footer
       className={`flex flex-col items-center justify-between
       w-full max-h-[350px] gap-[32px]
-      px-[36px] py-[25px] pb-[100px] 
+      px-[36px] py-[25px] pb-[32px] 
       bg-[#E4E4E7]`}
     >
       <div className={`flex justify-between h-9 gap-10`}>
@@ -24,7 +24,7 @@ const Footer = () => {
       <div className="flex flex-col items-center w-[156px] gap-2 ">
         {/* 검정 */}
         <span
-          className={`${fontClass} font-normal text-[var(--Neutral-600,#2A2A2E)]`}
+          className={`${fontClass} font-pretendard font-normal text-[var(--Neutral-600,#2A2A2E)]`}
         >
           동국대학교 멋쟁이사자처럼
           <br />
@@ -33,7 +33,7 @@ const Footer = () => {
 
         {/* 회색 */}
         <span
-          className={`${fontClass} font-light text-[var(--Neutral-300,#A1A1AA)]`}
+          className={`${fontClass} font-pretendard font-light text-[var(--Neutral-300,#A1A1AA)]`}
         >
           @Data supported by 축제기획단
         </span>
@@ -45,7 +45,7 @@ const Footer = () => {
             <div className="flex flex-col justify-center items-center gap-1">
               <img src={likelion} alt="LIKELION" />
               <span
-                className={`${fontClass} font-normal text-[var(--Neutral-300,#A1A1AA)]`}
+                className={`${fontClass} font-pretendard font-normal text-[var(--Neutral-300,#A1A1AA)]`}
               >
                 DEVELOPERS
               </span>
@@ -61,7 +61,7 @@ const Footer = () => {
             <div className="flex flex-col justify-center items-center gap-1">
               <img src={instagram} alt="Instagram" />
               <span
-                className={`${fontClass} font-normal text-[var(--Neutral-300,#A1A1AA)]`}
+                className={`${fontClass} font-pretendard font-normal text-[var(--Neutral-300,#A1A1AA)]`}
               >
                 INSTAGRAM
               </span>
