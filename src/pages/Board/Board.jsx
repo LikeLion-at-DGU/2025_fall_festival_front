@@ -118,7 +118,6 @@ function BoardItem({ item }) {
   );
 }
 
-
 function Pagination({ total, page, pageSize, onChange }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const windowSize = 5;
@@ -128,7 +127,7 @@ function Pagination({ total, page, pageSize, onChange }) {
   for (let p = start; p <= end; p++) pages.push(p);
 
   return (
-    <div className="flex items-center justify-center gap-2 py-6">
+    <div className="flex items-center justify-center gap-2 pt-4">
       <button
         type="button"
         onClick={() => onChange(Math.max(1, page - 1))}
@@ -188,7 +187,7 @@ function Pagination({ total, page, pageSize, onChange }) {
 }
 
 /* =========================
-   메인 페이지
+  메인 페이지
    ========================= */
 export default function Board() {
   // UI 상태
@@ -205,6 +204,8 @@ export default function Board() {
   const [serverTotal, setServerTotal] = useState(0);
 
   // 서버 호출 함수 (GET 시도 → 실패 시 POST 폴백)
+  const BOARD_ENDPOINT = `${API_BASE}/board/`;
+
   const requestBoard = async (signal) => {
     const serverCategory = KOR_TO_SERVER[activeTag];
     const params = new URLSearchParams();
@@ -213,22 +214,21 @@ export default function Board() {
     if (submittedKeyword) params.set("q", submittedKeyword);
     params.set("page", String(page));
     params.set("limit", String(pageSize));
-
-    // 1) GET
+  
+    // 2) GET: /board/?page=... 형태로 호출
     try {
-      const res = await fetch(`${API_BASE}/board?${params.toString()}`, {
+      const res = await fetch(`${BOARD_ENDPOINT}?${params.toString()}`, {
         method: "GET",
         signal,
         headers: { Accept: "application/json" },
       });
       if (res.ok) return res.json();
     } catch (e) {
-      if (isAbortError(e)) throw e; // 상위에서 무시하도록 전달
-      // GET 자체가 실패(CORS/네트워크 등) → 아래 POST 폴백 시도
+      if (isAbortError(e)) throw e;
     }
-
-    // 2) POST 폴백 (백엔드가 body만 받는 경우 대비)
-    const postRes = await fetch(`${API_BASE}/board`, {
+  
+    // 3) POST 폴백도 /board/ 로 고정
+    const postRes = await fetch(BOARD_ENDPOINT, {
       method: "POST",
       signal,
       headers: {
@@ -242,7 +242,7 @@ export default function Board() {
         limit: pageSize,
       }),
     });
-
+  
     if (!postRes.ok) {
       const text = await postRes.text().catch(() => "");
       throw new Error(`요청 실패: ${postRes.status} ${text}`);
@@ -275,9 +275,7 @@ export default function Board() {
         setRawList(list);
         setServerTotal(total);
       } catch (e) {
-        // ✅ StrictMode로 인해 발생한 AbortError는 화면 에러로 노출하지 않음
         if (isAbortError(e)) {
-          // 콘솔만 참고용으로 남기고 화면 에러는 표시하지 않음
           console.debug("Fetch aborted (expected in dev StrictMode)");
         } else {
           console.error(e);
@@ -292,10 +290,9 @@ export default function Board() {
     })();
 
     return () => controller.abort();
-    // page 포함: 서버가 페이지 파라미터를 받지 않아도 문제 없음(클라에서 보정)
   }, [activeTag, submittedKeyword, page]);
 
-  // 클라 보정(서버 미지원 대비)
+  // 클라 보정(서버 미지원 대비) + 페이지네이션 기준을 'filtered.length'로만 사용
   const filtered = useMemo(() => {
     const serverCategory = KOR_TO_SERVER[activeTag];
     const kw = (submittedKeyword || "").trim().toLowerCase();
@@ -312,16 +309,22 @@ export default function Board() {
     });
   }, [rawList, activeTag, submittedKeyword]);
 
-  const totalCount =
-    serverTotal > 0 ? Math.max(serverTotal, filtered.length) : filtered.length;
+  // ✅ 현재 뷰의 총 개수/총 페이지는 filtered 기준
+  const totalForUI = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
 
-  const paged = useMemo(() => {
-    if (rawList.length <= pageSize && (serverTotal === 0 || serverTotal <= pageSize)) {
-      return filtered;
+  // ✅ 필터 결과가 바뀌어 현재 page가 초과하면 마지막 페이지로 보정
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(totalPages);
     }
+  }, [totalPages, page]);
+
+  // ✅ 실제 표시 리스트도 항상 filtered에서 slice
+  const paged = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filtered.slice(start, start + pageSize);
-  }, [filtered, rawList.length, page, pageSize, serverTotal]);
+  }, [filtered, page, pageSize]);
 
   // 핸들러
   const submitSearch = () => {
@@ -354,7 +357,9 @@ export default function Board() {
 
       {/* 리스트 헤더 */}
       <div className="mt-6 mb-5">
-        <h2 className="text-[#2A2A2E] font-[SUITE] text-[16px] not-italic font-normal leading-normal">게시물</h2>
+        <h2 className="text-[#2A2A2E] font-[SUITE] text-[16px] not-italic font-normal leading-normal">
+          게시물
+        </h2>
       </div>
 
       {/* 리스트 */}
@@ -366,7 +371,9 @@ export default function Board() {
           <div className="py-16 text-center text-rose-600">{error}</div>
         )}
         {!loading && !error && paged.length === 0 && (
-          <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">현재 진행 중인 이벤트가 없습니다</div>
+          <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">
+            현재 진행 중인 이벤트가 없습니다
+          </div>
         )}
         {!loading && !error && paged.length > 0 && (
           <ul className="flex flex-col gap-[8px]">
@@ -377,10 +384,10 @@ export default function Board() {
         )}
       </div>
 
-      {/* 페이지네이션 */}
-      {!loading && !error && totalCount > 0 && (
+      {/* ✅ 페이지네이션: filtered 기준 / 1페이지면 숨김 / 0건이면 숨김 */}
+      {!loading && !error && totalForUI > 0 && totalPages > 1 && (
         <Pagination
-          total={totalCount}
+          total={totalForUI}
           page={page}
           pageSize={pageSize}
           onChange={setPage}
