@@ -7,8 +7,8 @@ import NearbyBoothSection from "./NearbyBoothSection";
 import useBoothLikes from "../../../hooks/useBoothLikes";
 
 import CheckIcon from "../../../assets/images/icons/map-icons/Check.svg";
-import HeartIcon from "../../../assets/images/icons/map-icons/Heart.svg";
-import UnheartIcon from "../../../assets/images/icons/map-icons/Unheart.svg";
+import HeartIcon from "../../../assets/images/icons/map-icons/Heart.png";
+import UnheartIcon from "../../../assets/images/icons/map-icons/emptyHeart.png";
 import TimeCircleIcon from "../../../assets/images/icons/map-icons/TimeCircle.svg";
 import LocationIcon from "../../../assets/images/icons/map-icons/Location.svg";
 import tail from "../../../assets/images/icons/map-icons/triangle.svg";
@@ -198,7 +198,9 @@ export default function BoothDetail() {
       {/* 운영 코너 */}
       {!booth.is_night && (
         <div className="w-full bg-white shadow rounded-[16px] px-[15px] py-[10px]">
-          <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">운영 코너</h2>
+          <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">
+            운영 코너
+          </h2>
           {booth.corners?.length > 0 ? (
             <ul className="list-disc ml-5 text-sm">
               {booth.corners.map((c, i) => (

@@ -1,6 +1,6 @@
 import React from "react";
-import HeartIcon from "../../assets/images/icons/map-icons/Heart.svg";
-import UnheartIcon from "../../assets/images/icons/map-icons/Unheart.svg";
+import HeartIcon from "../../assets/images/icons/map-icons/Heart.png";
+import UnheartIcon from "../../assets/images/icons/map-icons/emptyHeart.png";
 import Badge from "./BoothCardComponents/Badge";
 import useBoothLikes from "../../hooks/useBoothLikes";
 

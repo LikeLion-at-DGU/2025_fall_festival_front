@@ -2,16 +2,15 @@ import React from "react";
 import LocationPin from "./LocationPin";
 import emptyMap from "../../assets/images/icons/map-icons/emptyMap.svg";
 import Campusmap from "../../assets/images/icons/map-icons/Campusmap.svg";
-import MapToiletBadge from "../../assets/images/icons/map-icons/MapToilet.svg";
-import MapBeerBadge from "../../assets/images/icons/map-icons/MapBeer.svg";
-import MapConvenienceBadge from "../../assets/images/icons/map-icons/MapConvenience.svg";
-import FoodtruckBadge from "../../assets/images/icons/map-icons/MapFoodTruck.svg";
-
+import MapToiletBadge from "../../assets/images/icons/map-icons/MapToilet.png";
+import MapBeerBadge from "../../assets/images/icons/map-icons/MapBeer.png";
+import MapConvenienceBadge from "../../assets/images/icons/map-icons/MapConvenience.png";
+import FoodtruckBadge from "../../assets/images/icons/map-icons/MapFoodTruck.png";
 
 // 로컬 좌표 정보 (API 데이터에 맞게 수정)
 const buildingLocations = [
   { name: "만해/법학관", x: 44.5, y: 32.5 },
-  { name: "신공학관", x: 61.5, y: 27   },
+  { name: "신공학관", x: 61.5, y: 27 },
   { name: "중앙도서관", x: 55, y: 28 },
   { name: "대운동장", x: 32, y: 29 },
   { name: "명진관", x: 45, y: 29 },
@@ -25,9 +24,8 @@ const buildingLocations = [
   { name: "사회과학관", x: 27, y: 39 },
   { name: "학술문화관", x: 50, y: 70 },
   { name: "본관", x: 60, y: 20 },
-  { name: "과학관",  x: 42, y: 26 },
-  { name: "원흥관",  x: 41, y: 26 },
-
+  { name: "과학관", x: 42, y: 26 },
+  { name: "원흥관", x: 41, y: 26 },
 ];
 // 지도 위 아이콘 맵핑
 const iconMap = {
@@ -61,7 +59,7 @@ const MapWithPins = ({
       };
     })
     .filter(Boolean);
-// console.log(selectedFilter);
+  // console.log(selectedFilter);
   // console.log("최종 mappedLocations:", mappedLocations); // 디버깅
 
   // 핀 렌더링
@@ -82,32 +80,27 @@ const MapWithPins = ({
     ));
 
   return (
-      <div
-        className="w-[343px] h-[232px]
+    <div
+      className="w-[343px] h-[232px]
         relative
         flex justify-center items-center
          flex-shrink-0 rounded-[16px]
          border border-[#E4E4E7] bg-gradient-to-b from-[#FFFFFF] via-[#FFFFFF] to-[#FBD1CD]"
-        onClick={() => handlePinClick && handlePinClick(null)} // 지도 클릭 시 핀 초기화
-      >
+      onClick={() => handlePinClick && handlePinClick(null)} // 지도 클릭 시 핀 초기화
+    >
+      <img src={emptyMap} alt="캠퍼스 지도" />
+      {/* 왼쪽 위 로고 (selectedFilter 아이콘) */}
+      {/* 왼쪽 위 로고 (selectedFilter 아이콘) */}
+      {selectedFilter && iconMap[selectedFilter] && (
         <img
-          src={emptyMap}
-          alt="캠퍼스 지도"
+          src={iconMap[selectedFilter]}
+          alt={selectedFilter}
+          className="absolute top-2 left-2 w-8 h-8"
         />
-           {/* 왼쪽 위 로고 (selectedFilter 아이콘) */}
- {/* 왼쪽 위 로고 (selectedFilter 아이콘) */}
-{selectedFilter && iconMap[selectedFilter] && (
-  <img
-    src={iconMap[selectedFilter]}
-    alt={selectedFilter}
-    className="absolute top-2 left-2 w-8 h-8"
-  />
-)}
+      )}
 
-        <div className="absolute inset-0">
-          {renderPins()}
-        </div>
-      </div>
+      <div className="absolute inset-0">{renderPins()}</div>
+    </div>
   );
 };
 

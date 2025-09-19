@@ -8,11 +8,10 @@ import ConvenienceCard from "../../components/MapComponents/ConvenienceCard";
 
 import SearchIcon from "../../assets/images/icons/map-icons/Search.svg";
 import CampusmapIcon from "../../assets/images/icons/map-icons/Campusmap.svg";
-import MapToiletIcon from "../../assets/images/icons/map-icons/MapToilet.svg";
-import MapBeerIcon from "../../assets/images/icons/map-icons/MapBeer.svg";
-import MapConvenienceIcon from "../../assets/images/icons/map-icons/MapConvenience.svg";
+import MapToiletIcon from "../../assets/images/icons/map-icons/MapToilet.png";
+import MapBeerIcon from "../../assets/images/icons/map-icons/MapBeer.png";
+import MapConvenienceIcon from "../../assets/images/icons/map-icons/MapConvenience.png";
 import FoodtruckIcon from "../../assets/images/icons/map-icons/Foodtruck.svg";
-
 
 function Map() {
   const [selectedFilter, setSelectedFilter] = useState("부스");
@@ -698,7 +697,7 @@ function Map() {
                     <img
                       src={MapToiletIcon}
                       alt={toilet.name}
-                      className="w-8 h-8 transition-all duration-200 hover:scale-110"
+                      className="w-6 h-6 transition-all duration-200 hover:scale-110"
                     />
                   </button>
                 </div>
@@ -1032,7 +1031,6 @@ function Map() {
           )}
         </div>
       </div>
-
     </div>
   );
 }
