@@ -14,7 +14,7 @@ const useLikes = (boothId, initialLiked, initialCount = 0) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/booths/${boothId}/like/`,
+        `${import.meta.env.VITE_API_BASE_URL}/booths/${boothId}/likes/`,
         {},
         { headers: { "Content-Type": "application/json" } }
       );
