@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import HeartIcon from "../../assets/images/icons/map-icons/Heart.svg";
 import UnheartIcon from "../../assets/images/icons/map-icons/Unheart.svg";
 import Badge from "./BoothCardComponents/Badge";
-import useLikes from "../../hooks/MapHooks/useLikes";
+import useBoothLikes from "../../hooks/useBoothLikes";
 
 function BoothCard({
   boothId,
@@ -12,18 +12,20 @@ function BoothCard({
   startTime,
   endTime,
   businessDays,
+  time,
   location,
   isOperating,
   likesCount: initialLikesCount,
   isLiked: initialIsLiked,
   isEvent,
   isDorder,
+  badges,
   onClick,
 }) {
-  const { isLiked, likesCount, toggleLike, loading } = useLikes(
+  const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     boothId,
-    initialIsLiked,
-    initialLikesCount
+    initialLikesCount,
+    initialIsLiked
   );
   return (
     <div
@@ -46,7 +48,7 @@ function BoothCard({
             />
           </div>
           {/* Badge 겹치기 */}
-          {isEvent ? (
+          {badges?.isEventActive || isEvent ? (
             <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/2">
               <Badge backgroundColor=" rgba(239, 112, 99, 0.90)" text="Event" />
             </div>
@@ -78,9 +80,10 @@ function BoothCard({
 
           {/* 영업시간 */}
           <p className="text-xs text-neutral-400 mb-0.5 font-suite leading-[150%] font-normal">
-            {businessDays && startTime && endTime
-              ? `${businessDays.weekday} ${startTime}~${endTime}`
-              : "영업시간 준비중입니다"}
+            {time ||
+              (businessDays && startTime && endTime
+                ? `${businessDays.weekday} ${startTime}~${endTime}`
+                : "영업시간 준비중입니다")}
           </p>
           <h3 className="text-xl font-semibold text-black mb-0.5 font-suite leading-[130%] truncate pr-[24px]">
             {title}
@@ -92,7 +95,9 @@ function BoothCard({
               {location}
             </p>
             {/* 디오더 뱃지 */}
-            {isDorder ? <Badge text="D-Order" /> : null}
+            {badges?.isDOrderPartner || isDorder ? (
+              <Badge text="D-Order" />
+            ) : null}
           </div>
         </div>
       </div>
