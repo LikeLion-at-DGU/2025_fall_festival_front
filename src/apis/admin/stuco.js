@@ -22,7 +22,7 @@ export async function createNormalPost(postData) {
     category: "Notice",
     title: postData.title,
     content: postData.content,
-    writer: sessionStorage.getItem("role") === "Staff" ? "총학" : sessionStorage.getItem("name"),
+    //writer: sessionStorage.getItem("role") === "Staff" ? "총학" : sessionStorage.getItem("name"),
   }
 
   const res = await instance.post("/board/notices", payload);
@@ -87,4 +87,14 @@ export async function getUnionLosts() {
 export async function getBoardDetail(board_id) {
   const res = await instance.get(`/board/${board_id}`);
   return res.data;
+}
+
+//-------- 게시글 삭제 --------//
+export async function deleteBoard(board_id) {
+  try {
+    const res = await instance.delete(`/board/${board_id}`);
+    return res.data;
+  } catch (err) {
+    throw err.response?.data || { error: "알 수 없는 오류" };
+  }
 }

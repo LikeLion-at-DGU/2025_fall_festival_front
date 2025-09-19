@@ -5,14 +5,19 @@ function NoticeBox({ id, category, title, writer }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (category === "Notice") {
-      navigate(`/notice/edit/${id}`);   // 일반공지 수정페이지
-    } else if (category === "LostItem") {
-      navigate(`/lost/edit/${id}`);     // 분실물 수정페이지
-    } else {
-      navigate(`/board/${id}`);         // fallback: 일반 상세 조회
-    }
+    navigate(`notice/${id}`);  // ✅ 상세페이지로 이동
   };
+
+ // 수정 페이지 이동 시 참고
+ // const handleClick = () => {
+ //   if (category === "Notice") {
+ //     navigate(`/notice/edit/${id}`);   // 일반공지 수정페이지
+ //   } else if (category === "LostItem") {
+ //     navigate(`/lost/edit/${id}`);     // 분실물 수정페이지
+ //   } else {
+ //     navigate(`/board/${id}`);         // fallback: 일반 상세 조회
+ //   }
+ // };
 
   return (
     <div

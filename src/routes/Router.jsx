@@ -16,6 +16,8 @@ import NormalPost from "../pages/Admin/NormalPost";
 import LostPost from "../pages/Admin/LostPost";
 import BoothMain from "../pages/Admin/BoothMain";
 import EventPost from "../pages/Admin/EventPost";
+import PostDetail from "../pages/Admin/PostDetail";
+
 
 import Developers from "../pages/Developers/Developers";
 import MapOld from "../pages/Map/MapOld";
@@ -56,7 +58,7 @@ const Router = () => {
       <Route path="/admin/stuco/notice/lost" element={<LostPost />} /> {/*분실물 작성*/}
       {/*<Route path="/admin/stuco/notice/normal" element={<NormalPost mode="create" />} /> {/*일반공지 작성*/}
       {/*<Route path="/admin/stuco/notice/lost" element={<LostPost mode="create" />} /> {/*분실물 작성*/}
-      <Route path="/board/:id" element={<BoardDetail />} /> {/*공지 상세*/}
+      <Route path="/admin/stuco/notice/:boardId" element={<PostDetail />} /> {/*공지 상세*/}
       <Route path="/admin/stuco/notice/edit/:id" element={<NormalPost mode="edit" />} /> {/*일반공지 수정*/}
       <Route path="/admin/stuco/lost/edit/:id" element={<LostPost mode="edit" />} /> {/*분실물 수정*/}
       
