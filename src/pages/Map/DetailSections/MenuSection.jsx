@@ -25,7 +25,7 @@ export default function MenuSection({ menus }) {
                         {/* 카드 본체 */}
                         <div className="bg-white shadow-md rounded-2xl p-3 flex flex-col items-start mb-2">
                             {/* 이미지 박스 */}
-                            <div className="relative w-full h-24 flex items-center justify-center bg-gray-200 rounded-xl">
+                            <div className="relative [107px] h-[107px] flex items-center justify-center bg-gray-200 rounded-[16px]">
                                 {m.image_url && (
                                     <img
                                         src={m.image_url}
