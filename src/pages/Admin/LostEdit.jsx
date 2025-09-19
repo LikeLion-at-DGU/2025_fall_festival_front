@@ -1,3 +1,4 @@
+// 폐기 예정
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getBoardDetail, updateNotice, deleteNotice } from "../../apis/board";

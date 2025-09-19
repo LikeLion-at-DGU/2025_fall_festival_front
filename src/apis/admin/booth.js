@@ -17,13 +17,13 @@ export async function createEvent(eventData) {
   // ⛔ 접근 권한 체크: 메인페이지에서 넘어올 때, post 페이지>>둘 중 하나만 해야하나 고민 중. 수정 예정!
 
   const payload = {
-    code: uid,
+    uid,
     title: eventData.title,
     detail: eventData.detail,
     start_time: eventData.start_time,
     end_time: eventData.end_time,
   };
 
-  const res = await instance.post("/board/events/", payload);
+  const res = await instance.post("/board/events", payload);
   return res.data;
 }
