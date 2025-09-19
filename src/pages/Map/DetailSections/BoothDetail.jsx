@@ -4,11 +4,9 @@ import axios from "axios";
 
 import MenuSection from "./MenuSection";
 import NearbyBoothSection from "./NearbyBoothSection";
-import useBoothLikes from "../../../hooks/useBoothLikes";
 
 import CheckIcon from "../../../assets/images/icons/map-icons/Check.svg";
 import HeartIcon from "../../../assets/images/icons/map-icons/Heart.svg";
-import UnheartIcon from "../../../assets/images/icons/map-icons/Unheart.svg";
 import TimeCircleIcon from "../../../assets/images/icons/map-icons/TimeCircle.svg";
 import LocationIcon from "../../../assets/images/icons/map-icons/Location.svg";
 import tail from "../../../assets/images/icons/map-icons/triangle.svg"
@@ -21,28 +19,27 @@ const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
 
 // 스케줄 그룹핑 함수 (같은 시간대면 요일 묶기)
 function groupSchedules(schedules) {
-  if (!schedules) return [];
+    if (!schedules) return [];
 
-  const groups = {};
-  schedules.forEach((s) => {
-    const date = new Date(s.day);
-    const dayName = weekdays[date.getDay()];
-    const timeRange = `${fmtTime(s.start_time)} ~ ${fmtTime(s.end_time)}`;
+    const groups = {};
+    schedules.forEach((s) => {
+        const date = new Date(s.day);
+        const dayName = weekdays[date.getDay()];
+        const timeRange = `${fmtTime(s.start_time)} ~ ${fmtTime(s.end_time)}`;
 
-    if (!groups[timeRange]) {
-      groups[timeRange] = [];
-    }
-    groups[timeRange].push(dayName);
-  });
+        if (!groups[timeRange]) {
+            groups[timeRange] = [];
+        }
+        groups[timeRange].push(dayName);
+    });
 
-  return Object.entries(groups).map(([time, days]) => ({
-    days,
-    time,
-  }));
+    return Object.entries(groups).map(([time, days]) => ({
+        days,
+        time,
+    }));
 }
 
 export default function BoothDetail() {
-
     const { id } = useParams();
     const [booth, setBooth] = useState(null);
 
@@ -72,18 +69,8 @@ export default function BoothDetail() {
                         }}
                     />
                 )}
-
             </div>
 
-            {/* 야간 부스 & 디오더 가능 표시 */}
-            {booth.is_night && booth.is_dorder && (
-              <div className="flex items-center gap-1 mt-2">
-                <img src={CheckIcon} alt="check" className="w-4 h-4" />
-                <span className="text-red-500 text-sm font-medium">
-                  디오더 사용 가능 주점
-                </span>
-              </div>
-            )}
 
 
             {/* 카드 */}
@@ -202,13 +189,6 @@ export default function BoothDetail() {
 
             {/* 메뉴 */}
             <MenuSection menus={booth.menus} />
-
-          
         </div>
-      )}
-
-      {/* 메뉴 */}
-      <MenuSection menus={booth.menus} />
-    </div>
-  );
+    );
 }
