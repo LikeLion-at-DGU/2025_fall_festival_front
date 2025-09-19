@@ -67,7 +67,7 @@ function AdminMain() {
       navigate("/admin/login");
       return;
     }
-    if (role !== "Staff") {
+    if (role !== "Staff" && role !== "Stuco") {
       alert("공지 수정 권한이 없습니다.");
       return;
     }
@@ -95,7 +95,7 @@ function AdminMain() {
       navigate("/admin/login");
       return;
     }
-    if (role !== "Staff") {
+    if (role !== "Staff" && role !== "Stuco") {
       alert("분실물 추가 권한이 없습니다.");
       return;
     }
@@ -112,7 +112,7 @@ function AdminMain() {
       navigate("/admin/login");
       return;
     }
-    if (role !== "Staff") {
+    if (role !== "Staff" && role !== "Stuco") {
       alert("공지 추가 권한이 없습니다.");
       return;
     }
