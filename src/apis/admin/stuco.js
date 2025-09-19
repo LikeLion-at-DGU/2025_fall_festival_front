@@ -11,7 +11,7 @@ export async function createNormalPost(postData) {
   if (!uid) {
     throw new Error("로그인이 필요합니다."); // ⛔ toastMsg 변경 예정
   }
-  if (role !== "Staff") {
+  if (role !== "Staff" && role !== "Stuco") {
     throw new Error("일반공지 작성 권한이 없습니다.");
   } 
   
@@ -84,10 +84,39 @@ export async function getUnionLosts() {
 
 //-------- 공지글 상세페이지 get --------//
 
-export async function getBoardDetail(board_id) {
-  const res = await instance.get(`/board/${board_id}`);
+export async function getBoardDetail(boardId) {
+  console.log("📡 getBoardDetail 호출됨:", boardId);
+  const res = await instance.get(`/board/${boardId}`);
+  console.log("📡 서버 응답:", res.data);
   return res.data;
 }
+
+// -------- 일반공지 수정 -------- //
+export async function updateNormalPost(boardId, postData) {
+  const uid = sessionStorage.getItem("uid");
+
+  const payload = {
+    uid,
+    category: "Notice",
+    title: postData.title,
+    content: postData.content,
+  };
+
+  const res = await instance.patch(`/board/notices/${boardId}`, payload);
+  return res.data;
+}
+
+// -------- 분실물 수정 -------- //
+export async function updateLostPost(boardId, formData) {
+  const uid = sessionStorage.getItem("uid");
+  formData.append("uid", uid);
+
+  const res = await instance.patch(`/board/losts/${boardId}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data;
+}
+
 
 //-------- 게시글 삭제 --------//
 export async function deleteBoard(board_id) {

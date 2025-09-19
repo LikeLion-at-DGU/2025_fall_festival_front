@@ -10,36 +10,36 @@ import useFilteredBooths from "../../hooks/MapHooks/useFilteredBooths";
 import useUserLocation from "../../hooks/MapHooks/useUserLocation";
 import usePinSelection from "../../hooks/MapHooks/usePinSelection";
 import useSearch from "../../hooks/MapHooks/useSearch";
-
+import MapContainer from "../../components/MapComponents/MapContainer";
 function Map() {
   const [selectedFilter, setSelectedFilter] = useState("Booth");
   const { location: userLocation, getCurrentLocation } = useUserLocation();
   const { booths, loading, error } = useBooths(selectedFilter, userLocation);
   const filteredBooths = useFilteredBooths(booths, selectedFilter);
-  const { selectedPin, handlePinClick, handleFilterClick } = usePinSelection(selectedFilter);
+  const { selectedPin, handlePinClick, handleFilterClick } =
+    usePinSelection(selectedFilter);
   const { searchText, setSearchText } = useSearch();
 
   // 컴포넌트 마운트 시 위치 정보 요청
   useEffect(() => {
     getCurrentLocation();
   }, []);
-  
- // 선택 필터 콘솔 확인
+
+  // 선택 필터 콘솔 확인
   console.log("현재 선택된 필터:", selectedFilter);
   useEffect(() => {
-  console.log("Map.jsx에서 selectedFilter 변경 확인:", selectedFilter);
-}, [selectedFilter]);
+    console.log("Map.jsx에서 selectedFilter 변경 확인:", selectedFilter);
+  }, [selectedFilter]);
 
-// 콘솔 확인
-console.log("booths 데이터:", booths);
-console.log("filteredbooths 데이터:", filteredBooths);
-
+  // 콘솔 확인
+  console.log("booths 데이터:", booths);
+  console.log("filteredbooths 데이터:", filteredBooths);
 
   // 컴포넌트 마운트 시 body 스크롤 방지
   useEffect(() => {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = "auto";
     };
   }, []);
 
@@ -49,24 +49,28 @@ console.log("filteredbooths 데이터:", filteredBooths);
       <div className="flex-1 px-[19px] py-[28px] overflow-hidden">
         <div className="flex flex-col gap-[26px] h-full">
           <div className="flex flex-col gap-[20px]">
-           <SearchBar searchTerm={searchText} setSearchTerm={setSearchText} />
+            <SearchBar searchTerm={searchText} setSearchTerm={setSearchText} />
             <FilterBar
               selectedFilter={selectedFilter}
               setSelectedFilter={setSelectedFilter}
               onFilterClick={handleFilterClick}
             />
           </div>
-          <MapWithPins
+          <MapContainer
             apiData={filteredBooths}
             selectedFilter={selectedFilter}
-            selectedPin={selectedPin}
-            handlePinClick={handlePinClick}
+            onSelectBooth={(boothName) => setSearchText(boothName)} // ✅ 부스 이름을 검색어로 설정
           />
         </div>
       </div>
 
       {/* 바텀시트 */}
-      <PullList booths={filteredBooths} selectedFilter={selectedFilter} searchTerm={searchText} selectedPin={selectedPin}/>
+      <PullList
+        booths={filteredBooths}
+        selectedFilter={selectedFilter}
+        searchTerm={searchText}
+        selectedPin={selectedPin}
+      />
     </div>
   );
 }

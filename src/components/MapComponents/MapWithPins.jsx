@@ -75,7 +75,7 @@ const MapWithPins = ({
 
   return (
       <div
-        className="w-full h-[232px]
+        className="w-[343px] h-[232px]
         flex justify-center items-center
          flex-shrink-0 rounded-[16px]
          border border-[#E4E4E7] bg-gradient-to-b from-[#FFFFFF] via-[#FFFFFF] to-[#FBD1CD]"
