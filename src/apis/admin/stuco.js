@@ -71,13 +71,15 @@ export async function getEmergencyNotices() {
 // 일반공지 조회
 export async function getUnionNotices() {
   const res = await instance.get("/board/notices");
-  return res.data.board.filter((item) => item.writer === "총학");
+  const name = sessionStorage.getItem("name");  // 로그인 시 저장한 이름
+  return res.data.results.filter((item) => item.writer === name);
 }
 
 // 분실물 조회
 export async function getUnionLosts() {
   const res = await instance.get("/board/losts");
-  return res.data.board.filter((item) => item.writer === "총학");
+  const name = sessionStorage.getItem("name");
+  return res.data.results.filter((item) => item.writer === name);
 }
 
 //-------- 공지글 상세페이지 get --------//
@@ -86,4 +88,3 @@ export async function getBoardDetail(board_id) {
   const res = await instance.get(`/board/${board_id}`);
   return res.data;
 }
-
