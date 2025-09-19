@@ -16,9 +16,10 @@ import { adminLogin } from "../../apis/admin/admin";
 // adminLogin API 호출 후 uid/role/name을 저장하고, 이후 게시글목록 페이지로 이동합니다.
 
 /*----관리자 임의 생성 코드----*/
-// 총학: abc123
-// 동아리: abc456
-// 학과: abc789
+// 총학: stuco
+// 축기단: staff
+// 동아리: club
+// 학과: major
 
 function AdminLogin() {
   
