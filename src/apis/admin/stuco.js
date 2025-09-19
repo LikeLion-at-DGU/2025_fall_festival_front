@@ -22,6 +22,7 @@ export async function createNormalPost(postData) {
     category: "Notice",
     title: postData.title,
     content: postData.content,
+    writer: sessionStorage.getItem("role") === "Staff" ? "총학" : sessionStorage.getItem("name"),
   }
 
   const res = await instance.post("/board/notices", payload);
@@ -63,4 +64,18 @@ export async function getEmergencyNotices() {
   } catch (err) {
     throw err.response?.data || { error: "알 수 없는 오류" };
   }
+}
+
+//-------- 본인이 작성한 공지글 get --------//
+
+// 일반공지 조회
+export async function getUnionNotices() {
+  const res = await instance.get("/board/notices");
+  return res.data.board.filter((item) => item.writer === "총학");
+}
+
+// 분실물 조회
+export async function getUnionLosts() {
+  const res = await instance.get("/board/losts");
+  return res.data.board.filter((item) => item.writer === "총학");
 }
