@@ -51,7 +51,7 @@ const BoothCard = ({
           )}
         </div>
 
-        <div className="flex-1 relative">
+        <div className="flex-1 relative min-w-0">
           <div className="absolute top-0 right-0 flex flex-col items-center">
             <button
               onClick={handleHeartClick}
@@ -72,7 +72,7 @@ const BoothCard = ({
             {time}
           </p>
 
-          <h3 className="text-xl font-semibold text-black mb-0.5 font-suite leading-[130%]">
+          <h3 className="text-xl font-semibold text-black mb-0.5 font-suite leading-[130%] truncate pr-[24px]">
             {title}
           </h3>
 
