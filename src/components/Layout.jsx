@@ -22,11 +22,21 @@ const Layout = ({ children }) => {
     "/admin/booth/event",
   ];
 
-  const adminDynamicRegex = /^\/admin\/stuco\/notice\/[^/]+$/; 
+  // 2) 동적 경로 정규식 추가
+  // 상세 조회 (/admin/stuco/notice/:id)
+  const adminDetailRegex = /^\/admin\/stuco\/notice\/\d+$/;
 
-  const isAdminPage = 
-  adminPaths.includes(location.pathname) ||
-  adminDynamicRegex.test(location.pathname);
+  // 수정 페이지 (/admin/stuco/notice/edit/:id)
+  const adminEditRegex = /^\/admin\/stuco\/notice\/edit\/\d+$/;
+
+  // 분실물 수정 페이지 (/admin/stuco/lost/edit/:id)
+  const adminLostEditRegex = /^\/admin\/stuco\/lost\/edit\/\d+$/;
+
+  const isAdminPage =
+    adminPaths.includes(location.pathname) ||
+    adminDetailRegex.test(location.pathname) ||
+    adminEditRegex.test(location.pathname) ||
+    adminLostEditRegex.test(location.pathname);
 
   // 2) 게시판 상세 경로 판별: /board/:boardId
   //   - 숫자만이 아니라 슬러그도 허용하려면 ([^/]+) 유지
