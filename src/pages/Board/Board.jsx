@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
+import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
 
 /* =========================
    환경변수 기반 API 베이스
@@ -22,6 +24,17 @@ const KOR_TO_SERVER = {
 };
 
 /* =========================
+   유틸: AbortError 판단
+   ========================= */
+function isAbortError(err) {
+  return (
+    err?.name === "AbortError" ||
+    (typeof err?.message === "string" &&
+      err.message.toLowerCase().includes("aborted"))
+  );
+}
+
+/* =========================
    재사용 소컴포넌트
    ========================= */
 function Tag({ label, active, onClick }) {
@@ -30,10 +43,10 @@ function Tag({ label, active, onClick }) {
       type="button"
       onClick={onClick}
       className={[
-        "rounded-full px-4 py-2 text-sm transition-all border",
+        "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px]",
         active
-          ? "bg-black text-white border-black"
-          : "bg-white text-gray-800 border-gray-200 hover:border-gray-400",
+          ? "bg-black text-white font-[SUITE] text-[12px] not-italic font-normal leading-[150%]"
+          : "bg-white text-[#2A2A2E] font-[SUITE] text-[12px] not-italic font-normal leading-[150%]",
       ].join(" ")}
     >
       #{label}
@@ -50,18 +63,19 @@ function SearchBar({ value, onChange, onSubmit }) {
       }}
       className="w-full"
     >
-      <div className="flex items-center gap-2 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+      <div className="flex w-full items-center rounded-[8px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-2">
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="검색어를 입력해주세요"
-          className="w-full outline-none placeholder:text-gray-400"
+          className="flex-1 text-[#A1A1AA] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] outline-none"
         />
-        <button
-          type="submit"
-          className="shrink-0 rounded-full px-3 py-1 text-sm border border-gray-300 hover:border-gray-500"
-        >
-          검색
+        <button type="submit" className="flex items-center justify-center">
+          <img
+            src={SearchIcon}
+            alt="검색"
+            className="w-[13.875px] h-[14.219px] flex-shrink-0"
+          />
         </button>
       </div>
     </form>
@@ -70,26 +84,36 @@ function SearchBar({ value, onChange, onSubmit }) {
 
 function BoardItem({ item }) {
   const { category, title, writer } = item;
+
+  // 카테고리별 태그 스타일
   const pillCls =
     category === "Notice"
-      ? "bg-rose-100 text-rose-700 border-rose-200"
+      ? "bg-[#EF7063] text-white border border-[#EF7063] w-[42px]"
       : category === "Event"
-      ? "bg-orange-50 text-orange-600 border-orange-200"
-      : "bg-gray-50 text-gray-600 border-gray-200";
+      ? "bg-white text-[#EF7063] border border-[#EF7063] w-[42px]"
+      : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
 
   return (
-    <li className="rounded-2xl bg-white px-5 py-4 shadow-sm border border-gray-100">
-      <div className="flex items-center justify-between gap-3">
+    <li className="rounded-[12px] bg-white">
+      {/* 게시물 클릭 → 상세 페이지 이동 */}
+      <Link
+        to={`/board/${item.id}`}
+        className="flex h-[41px] py-[8px] px-[8px] items-center justify-between gap-3 w-full"
+      >
         <div className="flex items-center gap-3 min-w-0">
           <span
-            className={`shrink-0 rounded-full border px-3 py-1 text-xs ${pillCls}`}
+            className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-[SUITE] font-normal leading-none ${pillCls}`}
           >
             {CATEGORY_MAP[category] ?? category}
           </span>
-          <p className="truncate text-base text-gray-900">{title}</p>
+          <p className="truncate text-[#52525B] font-[SUITE] text-[12px] not-italic font-semibold leading-[150%]">
+            {title}
+          </p>
         </div>
-        <span className="text-sm text-gray-400 shrink-0">- {writer}</span>
-      </div>
+        <span className="text-[#52525B] font-[SUITE] text-[10px] not-italic font-normal leading-[150%] shrink-0">
+          - {writer}
+        </span>
+      </Link>
     </li>
   );
 }
@@ -103,12 +127,12 @@ function Pagination({ total, page, pageSize, onChange }) {
   for (let p = start; p <= end; p++) pages.push(p);
 
   return (
-    <div className="flex items-center justify-center gap-2 py-6">
+    <div className="flex items-center justify-center gap-2 pt-4">
       <button
         type="button"
         onClick={() => onChange(Math.max(1, page - 1))}
         disabled={page === 1}
-        className="rounded-lg border px-3 py-2 text-sm disabled:opacity-40"
+        className="rounded-lg border px-2 py-1 text-sm disabled:opacity-40"
       >
         이전
       </button>
@@ -116,7 +140,7 @@ function Pagination({ total, page, pageSize, onChange }) {
       {start > 1 && (
         <>
           <button
-            className="rounded-lg border px-3 py-2 text-sm"
+            className="rounded-lg border px-2 py-1 text-sm"
             onClick={() => onChange(1)}
           >
             1
@@ -130,7 +154,7 @@ function Pagination({ total, page, pageSize, onChange }) {
           key={p}
           onClick={() => onChange(p)}
           className={
-            "rounded-lg border px-3 py-2 text-sm " +
+            "rounded-lg border px-2 py-1 text-sm " +
             (p === page ? "bg-black text-white border-black" : "")
           }
         >
@@ -142,7 +166,7 @@ function Pagination({ total, page, pageSize, onChange }) {
         <>
           <span className="px-1 text-gray-400">…</span>
           <button
-            className="rounded-lg border px-3 py-2 text-sm"
+            className="rounded-lg border px-2 py-1 text-sm"
             onClick={() => onChange(totalPages)}
           >
             {totalPages}
@@ -154,7 +178,7 @@ function Pagination({ total, page, pageSize, onChange }) {
         type="button"
         onClick={() => onChange(Math.min(totalPages, page + 1))}
         disabled={page === totalPages}
-        className="rounded-lg border px-3 py-2 text-sm disabled:opacity-40"
+        className="rounded-lg border px-2 py-1 text-sm disabled:opacity-40"
       >
         다음
       </button>
@@ -163,7 +187,7 @@ function Pagination({ total, page, pageSize, onChange }) {
 }
 
 /* =========================
-   메인 페이지
+  메인 페이지
    ========================= */
 export default function Board() {
   // UI 상태
@@ -180,6 +204,8 @@ export default function Board() {
   const [serverTotal, setServerTotal] = useState(0);
 
   // 서버 호출 함수 (GET 시도 → 실패 시 POST 폴백)
+  const BOARD_ENDPOINT = `${API_BASE}/board/`;
+
   const requestBoard = async (signal) => {
     const serverCategory = KOR_TO_SERVER[activeTag];
     const params = new URLSearchParams();
@@ -188,21 +214,21 @@ export default function Board() {
     if (submittedKeyword) params.set("q", submittedKeyword);
     params.set("page", String(page));
     params.set("limit", String(pageSize));
-
-    // 1) GET
-    const getRes = await fetch(`${API_BASE}/board?${params.toString()}`, {
-      method: "GET",
-      signal,
-      // credentials: "include", // 쿠키 필요 시 주석 해제
-      headers: {
-        Accept: "application/json",
-      },
-    });
-
-    if (getRes.ok) return getRes.json();
-
-    // 2) POST 폴백 (백엔드가 body만 받는 경우 대비)
-    const postRes = await fetch(`${API_BASE}/board`, {
+  
+    // 2) GET: /board/?page=... 형태로 호출
+    try {
+      const res = await fetch(`${BOARD_ENDPOINT}?${params.toString()}`, {
+        method: "GET",
+        signal,
+        headers: { Accept: "application/json" },
+      });
+      if (res.ok) return res.json();
+    } catch (e) {
+      if (isAbortError(e)) throw e;
+    }
+  
+    // 3) POST 폴백도 /board/ 로 고정
+    const postRes = await fetch(BOARD_ENDPOINT, {
       method: "POST",
       signal,
       headers: {
@@ -216,7 +242,7 @@ export default function Board() {
         limit: pageSize,
       }),
     });
-
+  
     if (!postRes.ok) {
       const text = await postRes.text().catch(() => "");
       throw new Error(`요청 실패: ${postRes.status} ${text}`);
@@ -227,6 +253,7 @@ export default function Board() {
   // 로드 & 의존성 변화시 호출
   useEffect(() => {
     const controller = new AbortController();
+
     (async () => {
       try {
         setLoading(true);
@@ -248,10 +275,15 @@ export default function Board() {
         setRawList(list);
         setServerTotal(total);
       } catch (e) {
-        console.error(e);
-        setError(
-          e?.message || "게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요."
-        );
+        if (isAbortError(e)) {
+          console.debug("Fetch aborted (expected in dev StrictMode)");
+        } else {
+          console.error(e);
+          setError(
+            e?.message ||
+              "게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요."
+          );
+        }
       } finally {
         setLoading(false);
       }
@@ -260,7 +292,7 @@ export default function Board() {
     return () => controller.abort();
   }, [activeTag, submittedKeyword, page]);
 
-  // 클라 보정(서버 미지원 대비)
+  // 클라 보정(서버 미지원 대비) + 페이지네이션 기준을 'filtered.length'로만 사용
   const filtered = useMemo(() => {
     const serverCategory = KOR_TO_SERVER[activeTag];
     const kw = (submittedKeyword || "").trim().toLowerCase();
@@ -277,17 +309,22 @@ export default function Board() {
     });
   }, [rawList, activeTag, submittedKeyword]);
 
-  const totalCount =
-    serverTotal > 0 ? Math.max(serverTotal, filtered.length) : filtered.length;
+  // ✅ 현재 뷰의 총 개수/총 페이지는 filtered 기준
+  const totalForUI = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
 
-  const paged = useMemo(() => {
-    // 서버가 이미 페이지 단위로 내려주면 길이가 작을 수 있음 → 그대로 표출
-    if (rawList.length <= pageSize && (serverTotal === 0 || serverTotal <= pageSize)) {
-      return filtered;
+  // ✅ 필터 결과가 바뀌어 현재 page가 초과하면 마지막 페이지로 보정
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(totalPages);
     }
+  }, [totalPages, page]);
+
+  // ✅ 실제 표시 리스트도 항상 filtered에서 slice
+  const paged = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filtered.slice(start, start + pageSize);
-  }, [filtered, rawList.length, page, pageSize, serverTotal]);
+  }, [filtered, page, pageSize]);
 
   // 핸들러
   const submitSearch = () => {
@@ -300,7 +337,7 @@ export default function Board() {
   };
 
   return (
-    <div className="mx-auto max-w-screen-sm px-4 pb-24">
+    <div className="mx-auto max-w-screen-sm px-4 pb-4">
       {/* 검색 */}
       <div className="pt-4">
         <SearchBar value={keyword} onChange={setKeyword} onSubmit={submitSearch} />
@@ -319,9 +356,10 @@ export default function Board() {
       </div>
 
       {/* 리스트 헤더 */}
-      <div className="mt-6 mb-2">
-        <h2 className="text-xl font-semibold">게시물</h2>
-        <p className="mt-1 text-sm text-gray-500">총 {totalCount.toLocaleString()}건</p>
+      <div className="mt-6 mb-5">
+        <h2 className="text-[#2A2A2E] font-[SUITE] text-[16px] not-italic font-normal leading-normal">
+          게시물
+        </h2>
       </div>
 
       {/* 리스트 */}
@@ -333,10 +371,12 @@ export default function Board() {
           <div className="py-16 text-center text-rose-600">{error}</div>
         )}
         {!loading && !error && paged.length === 0 && (
-          <div className="py-16 text-center text-gray-500">게시글이 없습니다.</div>
+          <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">
+            현재 진행 중인 이벤트가 없습니다
+          </div>
         )}
         {!loading && !error && paged.length > 0 && (
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-col gap-[8px]">
             {paged.map((item) => (
               <BoardItem key={item.id} item={item} />
             ))}
@@ -344,10 +384,10 @@ export default function Board() {
         )}
       </div>
 
-      {/* 페이지네이션 */}
-      {!loading && !error && totalCount > 0 && (
+      {/* ✅ 페이지네이션: filtered 기준 / 1페이지면 숨김 / 0건이면 숨김 */}
+      {!loading && !error && totalForUI > 0 && totalPages > 1 && (
         <Pagination
-          total={totalCount}
+          total={totalForUI}
           page={page}
           pageSize={pageSize}
           onChange={setPage}

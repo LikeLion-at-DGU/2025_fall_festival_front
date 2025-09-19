@@ -3,49 +3,70 @@ import { useLocation } from "react-router-dom";
 
 import Header from "./Header/Header";
 import AdminHeader from "./Header/AdminHeader";
+import BoardDetailHeader from "./Header/BoardDetailHeader"; // ⬅️ 추가
+import MapDetailHeader from "./Header/MapDetailHeader";
 import BottomNav from "./BottomNav/BottomNav";
 import Footer from "./Footer/Footer";
 
 const Layout = ({ children }) => {
   const location = useLocation();
+
+  // 1) 관리자 경로 판별 (정확히 일치)
   const adminPaths = [
     "/admin",
-    "/adminlogin",
-    "/adminlist",
-    "/adminevent",
-    "/adminnormal",
-    "/adminlost",
+    "/admin/login",
+    "/admin/stuco",
+    "/admin/stuco/notice/normal",
+    "/admin/stuco/notice/lost",
+    "/admin/booth",
+    "/admin/booth/event",
   ];
   const isAdminPage = adminPaths.includes(location.pathname);
-  const HeaderComponent = adminPaths.includes(location.pathname)
-    ? AdminHeader
-    : Header;
 
+  // 2) 게시판 상세 경로 판별: /board/:boardId
+  //   - 숫자만이 아니라 슬러그도 허용하려면 ([^/]+) 유지
+  const isBoardDetail = /^\/board\/[^/]+$/.test(location.pathname);
+
+  // 부스/푸드트럭 상세 경로 판별
+  const isMapDetail =
+    /^\/booth\/[^/]+$/.test(location.pathname) ||
+    /^\/toilet\/[^/]+$/.test(location.pathname) ||
+    /^\/drinnk\/[^/]+$/.test(location.pathname) ||
+    /^\/foodtruck\/[^/]+$/.test(location.pathname);
+
+  // 3) 헤더 선택 로직: 관리자 > 게시판상세 > 기본
+  const HeaderComponent = isAdminPage
+    ? AdminHeader
+    : isBoardDetail
+    ? BoardDetailHeader
+    : isMapDetail
+    ? MapDetailHeader
+    : Header;
   return (
     <div className="flex justify-center">
       <div
         className="flex flex-col 
-    min-w-[375px] max-w-[430px]
-    min-h-[812px]
-    w-screen h-screen
-    bg-gray"
+          min-w-[375px] max-w-[430px]
+          w-screen h-screen
+          bg-gray"
       >
-        {/* 조건부 Header */}
+        {/* 조건부 Header (관리자/상세/기본) */}
         <HeaderComponent />
+
         {/* 페이지의 실제 내용과 푸터가 이 안에서 스크롤됩니다. */}
         <main
           className={`flex-grow pt-[54px] pb-[62px] ${
             location.pathname === "/map" ? "overflow-hidden" : "overflow-y-auto"
           }`}
         >
-          {/* 1. 페이지의 실제 내용 (Home, Board 등) */}
+          {/* 1. 페이지의 실제 내용 */}
           {children}
 
-          {/* 2. 페이지 내용 맨 끝에 위치하는 정보성 푸터 */}
+          {/* 2. 홈에서만 정보성 푸터 */}
           {location.pathname === "/" && <Footer />}
         </main>
 
-        {/* 관리자 페이지가 아니면 BottomNav 보여주기 */}
+        {/* 관리자 페이지가 아니면 BottomNav 표시 */}
         {!isAdminPage && <BottomNav />}
       </div>
     </div>
