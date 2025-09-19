@@ -6,7 +6,7 @@ export const developersData = [
     roles: ["Team Lead", "Back-End"],
     roleDisplay: "축제사이트 총괄 / 백엔드",
     major: "컴퓨터공학전공",
-    image: "/src/assets/images/profile/kwonsuhyeon.png",
+    image: "/images/profile/kwonsuhyeon.png",
   },
   {
     id: 2,
@@ -14,7 +14,7 @@ export const developersData = [
     roles: ["Team Lead", "PM/DS"],
     roleDisplay: "기획·디자인 총괄",
     major: "경영학과",
-    image: "/src/assets/images/profile/parkseongjun.png",
+    image: "/images/profile/parkseongjun.png",
   },
   {
     id: 3,
@@ -22,7 +22,7 @@ export const developersData = [
     roles: ["Team Lead", "Front-End"],
     roleDisplay: "프론트엔드 총괄",
     major: "컴퓨터AI전공",
-    image: "/src/assets/images/profile/choiseonwoo.png",
+    image: "/images/profile/choiseonwoo.png",
   },
   {
     id: 4,
@@ -30,7 +30,7 @@ export const developersData = [
     roles: ["Team Lead", "Back-End"],
     roleDisplay: "백엔드 총괄",
     major: "정보통신공학전공",
-    image: "/src/assets/images/profile/kwakdoyoon.png",
+    image: "/images/profile/kwakdoyoon.png",
   },
   {
     id: 5,
@@ -38,7 +38,7 @@ export const developersData = [
     roles: ["Team Lead", "Corporate Affairs"],
     roleDisplay: "대외협력 총괄",
     major: "경영학과",
-    image: "/src/assets/images/profile/kimhongyeon.png",
+    image: "/images/profile/kimhongyeon.png",
   },
   {
     id: 6,
@@ -46,7 +46,7 @@ export const developersData = [
     roles: ["Back-End", "Corporate Affairs"],
     roleDisplay: "백엔드 / 대외협력",
     major: "컴퓨터공학전공",
-    image: "/src/assets/images/profile/jominjeong.png",
+    image: "/images/profile/jominjeong.png",
   },
   {
     id: 7,
@@ -54,7 +54,7 @@ export const developersData = [
     roles: ["PM/DS", "Corporate Affairs"],
     roleDisplay: "기획 / 대외협력",
     major: "광고홍보학전공",
-    image: "/src/assets/images/profile/jangsunwoo.png",
+    image: "/images/profile/jangsunwoo.png",
   },
   {
     id: 8,
@@ -62,7 +62,7 @@ export const developersData = [
     roles: ["Back-End", "Corporate Affairs"],
     roleDisplay: "백엔드 / 대외협력",
     major: "글로벌무역학과",
-    image: "/src/assets/images/profile/ohsein.png",
+    image: "/images/profile/ohsein.png",
   },
   {
     id: 9,
@@ -70,7 +70,7 @@ export const developersData = [
     roles: ["Back-End", "Corporate Affairs"],
     roleDisplay: "백엔드 / 대외협력",
     major: "멀티미디어SW공학전공",
-    image: "/src/assets/images/profile/hayeonhee.png",
+    image: "/images/profile/hayeonhee.png",
   },
   {
     id: 10,
@@ -78,7 +78,7 @@ export const developersData = [
     roles: ["PM/DS"],
     roleDisplay: "디자인",
     major: "미디터커뮤니케이션학과",
-    image: "/src/assets/images/profile/parkjinhee.png",
+    image: "/images/profile/parkjinhee.png",
   },
   {
     id: 11,
@@ -86,7 +86,7 @@ export const developersData = [
     roles: ["Front-End", "Corporate Affairs"],
     roleDisplay: "프론트엔드 / 대외협력",
     major: "경영정보학과",
-    image: "/src/assets/images/profile/baekjiyeon.png",
+    image: "/images/profile/baekjiyeon.png",
   },
   {
     id: 12,
@@ -94,7 +94,7 @@ export const developersData = [
     roles: ["Front-End", "Corporate Affairs"],
     roleDisplay: "프론트엔드 / 대외협력",
     major: "정보통신공학전공",
-    image: "/src/assets/images/profile/parkwon.png",
+    image: "/images/profile/parkwon.png",
   },
   {
     id: 13,
@@ -102,7 +102,7 @@ export const developersData = [
     roles: ["PM/DS", "Corporate Affairs"],
     roleDisplay: "기획 / 대외협력",
     major: "미디터커뮤니케이션학과",
-    image: "/src/assets/images/profile/parksumin.png",
+    image: "/images/profile/parksumin.png",
   },
   {
     id: 14,
@@ -110,7 +110,7 @@ export const developersData = [
     roles: ["PM/DS"],
     roleDisplay: "디자인",
     major: "산업시스템공학과",
-    image: "/src/assets/images/profile/shinyumin.png",
+    image: "/images/profile/shinyumin.png",
   },
   {
     id: 15,
@@ -118,7 +118,7 @@ export const developersData = [
     roles: ["Back-End"],
     roleDisplay: "백엔드",
     major: "산업시스템공학과",
-    image: "/src/assets/images/profile/kimyumi.png",
+    image: "/images/profile/kimyumi.png",
   },
   {
     id: 16,
@@ -126,7 +126,7 @@ export const developersData = [
     roles: ["Front-End"],
     roleDisplay: "프론트엔드",
     major: "경영학과",
-    image: "/src/assets/images/profile/leeboyeon.png",
+    image: "/images/profile/leeboyeon.png",
   },
   {
     id: 17,
@@ -134,7 +134,7 @@ export const developersData = [
     roles: ["Front-End"],
     roleDisplay: "프론트엔드",
     major: "AI 융합학부",
-    image: "/src/assets/images/profile/leehyeonwook.png",
+    image: "/images/profile/leehyeonwook.png",
   },
   {
     id: 18,
@@ -142,7 +142,7 @@ export const developersData = [
     roles: ["Corporate Affairs"],
     roleDisplay: "대외협력",
     major: "정보통신공학전공",
-    image: "/src/assets/images/profile/leeyeonwoo.png",
+    image: "/images/profile/leeyeonwoo.png",
   },
   {
     id: 19,
@@ -150,7 +150,7 @@ export const developersData = [
     roles: ["Corporate Affairs"],
     roleDisplay: "대외협력",
     major: "교육학과",
-    image: "/src/assets/images/profile/namsoi.png",
+    image: "/images/profile/namsoi.png",
   },
   {
     id: 20,
@@ -158,7 +158,7 @@ export const developersData = [
     roles: ["Front-End"],
     roleDisplay: "프론트엔드 개발자",
     major: "컴퓨터공학전공",
-    image: "/src/assets/images/profile/parkjunhong.png",
+    image: "/images/profile/parkjunhong.png",
   },
   {
     id: 21,
@@ -166,7 +166,7 @@ export const developersData = [
     roles: ["Front-End"],
     roleDisplay: "프론트엔드",
     major: "통계학과",
-    image: "/src/assets/images/profile/parkseoyeon.png",
+    image: "/images/profile/parkseoyeon.png",
   },
   {
     id: 22,
@@ -174,7 +174,7 @@ export const developersData = [
     roles: ["Corporate Affairs"],
     roleDisplay: "대외협력",
     major: "정보통신공학전공",
-    image: "/src/assets/images/profile/parksuyeon.png",
+    image: "/images/profile/parksuyeon.png",
   },
   {
     id: 23,
@@ -182,7 +182,7 @@ export const developersData = [
     roles: ["PM/DS", "Corporate Affairs"],
     roleDisplay: "디자인 / 대외협력",
     major: "정보통신공학전공",
-    image: "/src/assets/images/profile/sonyoungchae.png",
+    image: "/images/profile/sonyoungchae.png",
   },
   {
     id: 24,
@@ -190,7 +190,7 @@ export const developersData = [
     roles: ["Back-End"],
     roleDisplay: "백엔드",
     major: "정보통신공학전공",
-    image: "/src/assets/images/profile/yoonheewon.png",
+    image: "/images/profile/yoonheewon.png",
   },
 ];
 
