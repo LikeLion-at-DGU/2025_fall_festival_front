@@ -47,7 +47,14 @@ function NormalPost() {
           onChange={(e) => setContent(e.target.value)}
         />
       </div>
-      <Submitbtn text={editingData ? "수정하기" : "등록하기"} onClick={handleSubmit} />
+      <Submitbtn
+        text={editingData ? "수정하기" : "등록하기"}
+        onClick={handleSubmit}
+        disabled={
+          !title.trim() || !content.trim() // 하나라도 비어 있으면 비활성화
+        }
+      />
+
     </div>
   );
 }
