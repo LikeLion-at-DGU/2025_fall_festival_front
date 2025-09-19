@@ -4,6 +4,7 @@ import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
 import PhotoUpload from "../../components/AdminComponents/Admin/PhotoUpload";
+import ToastMessage from "../../components/AdminComponents/ToastMessage";
 import { createLostPost, updateLostPost } from "../../apis/admin/stuco";
 
 function LostPost() {
@@ -15,6 +16,7 @@ function LostPost() {
   const [content, setContent] = useState(editingData?.content || "");
   const [locationText, setLocationText] = useState(editingData?.location || "");
   const [image, setImage] = useState(null);
+  const [toastMsg, setToastMsg] = useState("");
 
   // 제출 로직: 공지 작성 후 admin 메인으로 이동
   const handleSubmit = async () => {
@@ -30,17 +32,45 @@ function LostPost() {
 
       if (editingData) {
         const res = await updateLostPost(editingData.id, formData);
-        alert(res.message || "분실물 수정 성공");
+        setToastMsg(res.message || "분실물 수정 성공");
         console.log("수정할 데이터:", { title, content, locationText, image });
       } else {
         // 신규 작성
         const res = await createLostPost(formData);
-        alert(res.message);
+        setToastMsg(res.message);
       }
+      setTimeout(() => navigate("/admin/stuco"), 2500);
       navigate("/admin/stuco");
     } catch (err) {
-      alert(err.error || "등록 실패");
-    }
+        console.error("에러 전체:", err);
+
+        let msg = "세션이 만료되었습니다. 다시 로그인해주세요";
+
+        if (err.response) {
+          if (typeof err.response.data === "string") {
+            // 서버가 그냥 문자열을 내려줌
+            msg = err.response.data;
+          } else if (err.response.data?.message) {
+            // JSON 안에 message 키가 있음
+            msg = err.response.data.message;
+          } else if (err.response.data?.error) {
+            msg = err.response.data.error;
+          }
+        }
+
+        setToastMsg(msg);
+       if (
+    msg.includes("세션") || 
+    msg.includes("UID") || 
+    msg.includes("로그인") ||
+    err.response?.status === 401 // Unauthorized
+  ) {
+    setTimeout(() => {
+      navigate("/admin/login");
+    }, 2000); // 토스트 2초 보여주고 이동
+  }
+}
+
   };
 
   return (
@@ -70,7 +100,21 @@ function LostPost() {
           onChange={(e) => setLocationText(e.target.value)}
         />
       </div>
-      <Submitbtn text={editingData ? "수정하기" : "등록하기"} onClick={handleSubmit} />
+      <Submitbtn
+        text={editingData ? "수정하기" : "등록하기"}
+        onClick={handleSubmit}
+        disabled={
+          !title.trim() ||
+          !content.trim() ||
+          !locationText.trim()
+          // image는 선택사항이면 체크 안 함
+        }
+      />
+
+      {toastMsg && (
+        <ToastMessage text={toastMsg} onClose={() => setToastMsg("")} />
+      )}
+
     </div>
   );
 }
