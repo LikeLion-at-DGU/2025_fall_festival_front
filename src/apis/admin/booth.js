@@ -2,7 +2,7 @@ import instance from "../instance";
 
 // [부스관리자] 페이지 기능
 
-//--------이벤트 게시글을 post합니다.--------//
+//-------- 이벤트 게시글 post --------//
 
 export async function createEvent(eventData) {
   const uid = sessionStorage.getItem("uid");
@@ -25,5 +25,12 @@ export async function createEvent(eventData) {
   };
 
   const res = await instance.post("/board/events", payload);
+  return res.data;
+}
+
+//-------- 부스 이벤트 목록 조회 --------//
+
+export async function getBoothEvents() {
+  const res = await instance.get("/board/events");
   return res.data;
 }

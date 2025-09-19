@@ -61,7 +61,7 @@ function EventPost() {
             value={startHour}
             onChange={(e) => setStartHour(e.target.value)}
           />
-          <AdminTitle text="시간" />
+          <AdminTitle text="시" />
         </div>
         <div className={timeWrapper}>
           <PostInput
@@ -81,7 +81,7 @@ function EventPost() {
             value={endHour}
             onChange={(e) => setEndHour(e.target.value)}
           />
-          <AdminTitle text="시간" />
+          <AdminTitle text="시" />
         </div>
         <div className={timeWrapper}>
           <PostInput

@@ -9,7 +9,7 @@ function NoticeBox({ noticeText = "공지", content, org }) {
         border-b border-[#A1A1AA]/50 bg-[#F4F4F5]
       "
     >
-      {/* 왼쪽: 공지 태그 + 텍스트 */}
+      {/* 왼쪽: 태그 + 텍스트 */}
       <div className="flex items-center gap-[10px]">
         <span
           className="
@@ -23,11 +23,11 @@ function NoticeBox({ noticeText = "공지", content, org }) {
         >
           {noticeText}
         </span>
-        <p className="text-sm text-black">임시{content}</p>
+        <p className="text-sm text-black">{content}</p>
       </div>
 
       {/* 오른쪽: 기관명 */}
-      <span className="text-sm text-gray-500">- 총학{org}</span>
+      <span className="text-sm text-gray-500">- {org}</span>
     </div>
   );
 }
