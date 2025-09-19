@@ -87,7 +87,7 @@ export default function BoothDetail() {
                             <h1 className="text-lg font-bold">{booth.name}</h1>
                         </div>
 
-                        {/* 야간 부스 & 디오더 가능 표시 */}
+                        {/* 야간 부스 & 디오더 가능 표시. */}
                         {booth.is_night && booth.is_dorder && (
                             <div className="flex items-center gap-1 mt-2">
                                 <img src={CheckIcon} alt="check" className="w-4 h-4" />
