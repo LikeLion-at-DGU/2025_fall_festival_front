@@ -13,61 +13,50 @@ import homeActive from "../../assets/images/icons/nav-icons/home-active.svg";
 import documentActive from "../../assets/images/icons/nav-icons/document-active.svg";
 import gameActive from "../../assets/images/icons/nav-icons/game-active.svg";
 
+import { useTranslation } from "react-i18next";
+
 const BottomNav = () => {
+  const { t } = useTranslation();
   const location = useLocation(); // 현재 URL 확인
 
+  // name → i18n key 로 교체
   const navItems = [
-    { name: "지도", path: "/map", icon: map, activeIcon: mapActive },
-    {
-      name: "일정",
-      path: "/timetable",
-      icon: timetable,
-      activeIcon: timetableActive,
-    },
-    { name: "홈", path: "/", icon: home, activeIcon: homeActive },
-    {
-      name: "게시판",
-      path: "/board",
-      icon: document,
-      activeIcon: documentActive,
-    },
-    { name: "게임", path: "/event", icon: game, activeIcon: gameActive }, // 게시판 이미지 그대로 사용
+    { key: "nav.map", path: "/map", icon: map, activeIcon: mapActive },
+    { key: "nav.timetable", path: "/timetable", icon: timetable, activeIcon: timetableActive },
+    { key: "nav.home", path: "/", icon: home, activeIcon: homeActive },
+    { key: "nav.board", path: "/board", icon: document, activeIcon: documentActive },
+    { key: "nav.game", path: "/event", icon: game, activeIcon: gameActive }
   ];
 
   const linkClassName = (active) => `
     flex flex-col items-center justify-center
-    w-[55px] h-[55px]  px-[5px]
+    w-[55px] h-[55px] px-[5px]
     whitespace-nowrap
-    font-normal 
-    text-[12px]
-     ${
-       active
-         ? "text-orange font-semibold border-t-[1.5px] border-orange"
-         : "text-black"
-     }
+    font-normal text-[12px]
+    ${
+      active
+        ? "text-orange font-semibold border-t-[1.5px] border-orange"
+        : "text-black"
+    }
   `;
 
   return (
-    <nav className="fixed bottom-0 
-    z-999
-    w-full max-w-[430px]
-    bg-white">
-
+    <nav className="fixed bottom-0 z-999 w-full max-w-[430px] bg-white">
       <div className="flex items-start justify-around h-[62px]">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
             <Link
               to={item.path}
-              key={item.name}
+              key={item.key}
               className={linkClassName(isActive)}
             >
               <img
-                src={isActive ? item.activeIcon : item.icon} // 활성 아이콘 적용
-                alt={item.name}
+                src={isActive ? item.activeIcon : item.icon}
+                alt={t(item.key)} // ✅ 번역 적용
                 className="h-[24px] w-[24px]"
               />
-              <span>{item.name}</span>
+              <span>{t(item.key)}</span> {/* ✅ 번역 적용 */}
             </Link>
           );
         })}
