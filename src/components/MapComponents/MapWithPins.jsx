@@ -5,7 +5,7 @@ import Campusmap from "../../assets/images/icons/map-icons/Campusmap.svg";
 import MapToiletBadge from "../../assets/images/icons/map-icons/MapToilet.svg";
 import MapBeerBadge from "../../assets/images/icons/map-icons/MapBeer.svg";
 import MapConvenienceBadge from "../../assets/images/icons/map-icons/MapConvenience.svg";
-import FoodtruckBadge from "../../assets/images/icons/map-icons/MapFoodtruck.svg";
+import FoodtruckBadge from "../../assets/images/icons/map-icons/MapFoodTruck.svg";
 
 
 // 로컬 좌표 정보 (API 데이터에 맞게 수정)
