@@ -4,7 +4,7 @@ import UnheartIcon from "../../assets/images/icons/map-icons/Unheart.svg";
 import Badge from "./BoothCardComponents/Badge";
 import useLikes from "../../hooks/MapHooks/useLikes";
 
-const BoothCard = ({
+function BoothCard({
   boothId,
   title,
   image,
@@ -18,8 +18,8 @@ const BoothCard = ({
   isLiked: initialIsLiked,
   isEvent,
   isDorder,
-  onClick
-}) => {
+  onClick,
+}) {
   const { isLiked, likesCount, toggleLike, loading } = useLikes(
     boothId,
     initialIsLiked,
@@ -34,7 +34,6 @@ const BoothCard = ({
         boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
       }}
       onClick={onClick}
-      
     >
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
@@ -47,20 +46,26 @@ const BoothCard = ({
             />
           </div>
           {/* Badge 겹치기 */}
-          {isEvent ?
+          {isEvent ? (
             <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/2">
               <Badge backgroundColor=" rgba(239, 112, 99, 0.90)" text="Event" />
-            </div>:null
-          }
+            </div>
+          ) : null}
         </div>
-        
+
         {/* 글자 */}
         <div className="flex-1  relative">
           <div className="absolute top-0 right-0 flex flex-col items-center">
             <button
-              onClick={toggleLike}
+              onClick={(e) => {
+                e.stopPropagation(); // 카드 onClick으로 전파 차단
+                e.preventDefault(); // (카드가 <Link>로 감싸졌다면 이동 차단)
+                if (!loading) toggleLike();
+              }}
               disabled={loading}
               className="w-6 h-6 flex items-center justify-center mb-1 hover:scale-110 transition-transform duration-200 disabled:opacity-50"
+              aria-pressed={isLiked}
+              aria-label={isLiked ? "좋아요 취소" : "좋아요"}
             >
               <img
                 src={isLiked ? HeartIcon : UnheartIcon}
@@ -97,6 +102,6 @@ const BoothCard = ({
       </div>
     </div>
   );
-};
+}
 
 export default BoothCard;

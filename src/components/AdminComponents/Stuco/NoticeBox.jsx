@@ -1,8 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-function NoticeBox({ tag = "공지", text, writer }) {
+function NoticeBox({ id, category, title, writer }) {
+  const navigate = useNavigate();
+
   return (
     <div
+      onClick={() => navigate(`/board/${id}`)}
       className="
         flex items-center justify-between 
         w-full h-[48px] 
@@ -17,13 +21,13 @@ function NoticeBox({ tag = "공지", text, writer }) {
           className="
             px-2 py-1 text-sm font-medium
             text-white bg-[#EF7063] 
-            rounded-md
+            rounded-md w-10 h-6
           "
         >
-          {tag}
+          {category === "Notice" ? "공지" : category === "LostItem" ? "분실물" : category}
         </span>
         <p className="text-sm text-gray-800 truncate max-w-[180px]">
-          {text}
+          {title}
         </p>
       </div>
 

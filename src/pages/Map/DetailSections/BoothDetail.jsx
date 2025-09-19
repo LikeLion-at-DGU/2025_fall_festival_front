@@ -57,17 +57,20 @@ export default function BoothDetail() {
     return (
         <div className="pt-6 pb-8">
             {/* 상단 이미지 */}
-            <div className="w-[343px] h-[232px] mx-auto bg-gray-200 flex items-center justify-center text-gray-500">
-                {booth.image_url ? (
+            <div className="w-[343px] h-[232px] mx-auto bg-gray-500 flex items-center justify-center">
+                {booth.image_url && (
                     <img
                         src={booth.image_url}
                         alt={booth.name}
                         className="w-[343px] h-[232px] object-cover"
+                        onError={(e) => {
+                            e.currentTarget.style.display = "none"; // 로딩 실패 → 안보이게
+                        }}
                     />
-                ) : (
-                    "부스 사진"
                 )}
             </div>
+
+
 
             {/* 카드 */}
             <div className="bg-white shadow-md rounded-[16px] px-4 py-3 mx-4 mt-3 relative z-10">

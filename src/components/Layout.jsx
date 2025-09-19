@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import Header from "./Header/Header";
 import AdminHeader from "./Header/AdminHeader";
 import BoardDetailHeader from "./Header/BoardDetailHeader"; // ⬅️ 추가
+import MapDetailHeader from "./Header/MapDetailHeader";
 import BottomNav from "./BottomNav/BottomNav";
 import Footer from "./Footer/Footer";
 
@@ -26,13 +27,21 @@ const Layout = ({ children }) => {
   //   - 숫자만이 아니라 슬러그도 허용하려면 ([^/]+) 유지
   const isBoardDetail = /^\/board\/[^/]+$/.test(location.pathname);
 
+  // 부스/푸드트럭 상세 경로 판별
+  const isMapDetail =
+    /^\/booth\/[^/]+$/.test(location.pathname) ||
+    /^\/toilet\/[^/]+$/.test(location.pathname) ||
+    /^\/drinnk\/[^/]+$/.test(location.pathname) ||
+    /^\/foodtruck\/[^/]+$/.test(location.pathname);
+
   // 3) 헤더 선택 로직: 관리자 > 게시판상세 > 기본
   const HeaderComponent = isAdminPage
     ? AdminHeader
     : isBoardDetail
     ? BoardDetailHeader
+    : isMapDetail
+    ? MapDetailHeader
     : Header;
-
   return (
     <div className="flex justify-center">
       <div
