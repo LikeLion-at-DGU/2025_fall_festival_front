@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
 
 /* =========================
@@ -93,18 +94,26 @@ function BoardItem({ item }) {
       : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
 
   return (
-    <li className="flex h-[41px] py-[8px] px-[8px] flex-col justify-between items-center self-stretch rounded-[12px] bg-white">
-      <div className="flex items-center justify-between gap-3 w-full">
+    <li className="rounded-[12px] bg-white">
+      {/* 게시물 클릭 → 상세 페이지 이동 */}
+      <Link
+        to={`/board/${item.id}`}
+        className="flex h-[41px] py-[8px] px-[8px] items-center justify-between gap-3 w-full"
+      >
         <div className="flex items-center gap-3 min-w-0">
           <span
             className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-[SUITE] font-normal leading-none ${pillCls}`}
           >
             {CATEGORY_MAP[category] ?? category}
           </span>
-          <p className="text-[#52525B] font-[SUITE] text-[12px] not-italic font-semibold leading-[150%]">{title}</p>
+          <p className="truncate text-[#52525B] font-[SUITE] text-[12px] not-italic font-semibold leading-[150%]">
+            {title}
+          </p>
         </div>
-        <span className="text-[#52525B] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">- {writer}</span>
-      </div>
+        <span className="text-[#52525B] font-[SUITE] text-[10px] not-italic font-normal leading-[150%] shrink-0">
+          - {writer}
+        </span>
+      </Link>
     </li>
   );
 }
@@ -325,7 +334,7 @@ export default function Board() {
   };
 
   return (
-    <div className="mx-auto max-w-screen-sm px-4 pb-24">
+    <div className="mx-auto max-w-screen-sm px-4 pb-4">
       {/* 검색 */}
       <div className="pt-4">
         <SearchBar value={keyword} onChange={setKeyword} onSubmit={submitSearch} />
@@ -360,7 +369,7 @@ export default function Board() {
           <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">현재 진행 중인 이벤트가 없습니다</div>
         )}
         {!loading && !error && paged.length > 0 && (
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-col gap-[8px]">
             {paged.map((item) => (
               <BoardItem key={item.id} item={item} />
             ))}

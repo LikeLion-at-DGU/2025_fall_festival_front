@@ -1,5 +1,7 @@
 import instance from "../instance";
 
+// [부스관리자] 페이지 기능
+
 //--------이벤트 게시글을 post합니다.--------//
 
 export async function createEvent(eventData) {

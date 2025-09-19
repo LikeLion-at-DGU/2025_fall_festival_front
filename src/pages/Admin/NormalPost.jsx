@@ -2,16 +2,27 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
+import { createNormalPost } from "../../apis/admin/stuco";
 
 function NormalPost() {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const navigate = useNavigate(); // 페이지 이동 훅
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const navigate = useNavigate();
 
-  // 제출 로직: 홈으로 이동
-  const handleSubmit = () => {
-    // 필요한 제출 처리(서버 요청 등) 수행
-    setIsPopupOpen(false); // 팝업 닫기
-    navigate("/"); // 홈으로 이동
+  // 제출 로직: 공지 작성 후 총학 메인으로 이동
+  const handleSubmit = async () => {
+    try {
+      const payload = {
+        title,
+        content,
+      };
+
+      const res = await createNormalPost(payload);
+      alert(res.message || "공지 작성 성공"); 
+      navigate("/admin/stuco");
+    } catch (err) {
+      alert(err.response?.data?.error || err.message || "공지 작성 실패");
+    }
   };
 
   return (
@@ -21,17 +32,26 @@ function NormalPost() {
     px-4 py-8 
     mx-auto "
     >
-      {/* 이벤트 생성 */}
+      {/* 공지 입력 */}
       <div
         className="flex flex-col items-center 
     w-full h-full 
     mx-auto gap-4 "
       >
-        <PostInput placeholder="공지 제목을 입력하세요" />
-        <PostInput className="h-[370px]" placeholder="공지 내용을 입력하세요" />
+        <PostInput
+          placeholder="공지 제목을 입력하세요"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <PostInput
+          className="h-[370px]"
+          placeholder="공지 내용을 입력하세요"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
       </div>
 
-      <Submitbtn text="확인" />
+      <Submitbtn text="확인" onClick={handleSubmit} />
     </div>
   );
 }

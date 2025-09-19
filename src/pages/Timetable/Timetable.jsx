@@ -125,7 +125,7 @@ export default function Timetable() {
   );
 
   return (
-    <div className="font-sans flex flex-col gap-4 p-6 pt-20">
+    <div className="font-sans flex flex-col gap-4 p-6 pt-3">
       {/* 날짜 탭 */}
       <div className="flex justify-between">
         {days.map((d) => (
@@ -143,7 +143,7 @@ export default function Timetable() {
       </div>
 
       {/* 시간 선택 바 */}
-      <div className="flex overflow-x-auto gap-6 mt-3"
+      <div className="flex overflow-x-auto gap-3 mt-3"
         style={{
           scrollbarWidth: "none",   // Firefox
           msOverflowStyle: "none",  // IE/Edge
@@ -152,7 +152,7 @@ export default function Timetable() {
           <div key={time} className="flex flex-col items-center">
             {/* 시간 텍스트 */}
             <span
-              className={`px-2 pb-0.5 pt-1 rounded-full text-sm font-medium ${selectedHour === time
+              className={`font-sans px-2 pb-0.5 pt-1 rounded-full text-[16px] font-medium ${selectedHour === time
                 ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
                 : "text-[#71717A]"
                 }`}
@@ -163,10 +163,10 @@ export default function Timetable() {
             {/* 동그라미 체크박스 */}
             <button onClick={() => setSelectedHour(time)} className="mt-2">
               {selectedHour === time ? (
-                // ✅ 선택된 동그라미 → Ellipse.svg 사용
+                // 선택된 동그라미 → Ellipse.svg 사용
                 <img src={EllipseIcon} alt="selected" className="w-[30px] h-[30px]" />
               ) : (
-                // ⭕ 선택 안된 동그라미 → 기존 svg 그대로
+                // 선택 안된 동그라미 → 기존 svg 그대로
                 <svg xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 27 26" fill="none">
                   <g filter="url(#filter0_d_597_1823)">
                     <circle cx="13.5" cy="12" r="9" fill="white" />

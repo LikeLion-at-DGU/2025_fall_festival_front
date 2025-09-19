@@ -10,7 +10,7 @@ function SearchBar({searchTerm, setSearchTerm  }) {
                value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
                className="w-full
-               text-[#A1A1AA] font-sans text-[12px] font-normal leading-[18px]
+               text-[#000] font-sans text-[12px] font-normal leading-[18px]
                focus:outline-none"
              />
              <div className="absolute right-3 top-2.5">

@@ -53,7 +53,7 @@ function EventPost() {
       />
 
       {/* 이벤트 시간 */}
-      <AdminTitle text="이벤트 시간" />
+      <AdminTitle text="이벤트 시작 시간" />
       <div className="flex flex-row justify-start items-start gap-2 w-full">
         <div className={timeWrapper}>
           <PostInput
@@ -73,7 +73,7 @@ function EventPost() {
         </div>
       </div>
 
-      {/* // ⛔ 시작-종료 시간 사용 여부 확인 필요
+      <AdminTitle text="이벤트 종료 시간" />
       <div className="flex flex-row justify-start items-start gap-2 w-full">
         <div className={timeWrapper}>
           <PostInput
@@ -91,7 +91,7 @@ function EventPost() {
           />
           <AdminTitle text="분" />
         </div>
-      </div>*/}
+      </div>
 
       {/* 버튼 클릭 시 팝업 열림 */}
       <Submitbtn text="확인" onClick={() => setIsPopupOpen(true)} />
