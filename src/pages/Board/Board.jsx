@@ -1,3 +1,4 @@
+// src/pages/Board/Board.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
@@ -29,8 +30,7 @@ const KOR_TO_SERVER = {
 function isAbortError(err) {
   return (
     err?.name === "AbortError" ||
-    (typeof err?.message === "string" &&
-      err.message.toLowerCase().includes("aborted"))
+    (typeof err?.message === "string" && err.message.toLowerCase().includes("aborted"))
   );
 }
 
@@ -82,8 +82,13 @@ function SearchBar({ value, onChange, onSubmit }) {
   );
 }
 
+/* =========================
+   리스트 아이템
+   ========================= */
 function BoardItem({ item }) {
-  const { category, title, writer } = item;
+  const { category, title } = item;
+  // 이벤트는 writer가 없을 수 있음 → booth_name 사용
+  const displayWriter = item.writer || item.booth_name || "";
 
   // 카테고리별 태그 스타일
   const pillCls =
@@ -95,7 +100,6 @@ function BoardItem({ item }) {
 
   return (
     <li className="rounded-[12px] bg-white">
-      {/* 게시물 클릭 → 상세 페이지 이동 */}
       <Link
         to={`/board/${item.id}`}
         className="flex h-[41px] py-[8px] px-[8px] items-center justify-between gap-3 w-full"
@@ -106,18 +110,25 @@ function BoardItem({ item }) {
           >
             {CATEGORY_MAP[category] ?? category}
           </span>
+        </div>
+        <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
           <p className="truncate text-[#52525B] font-[SUITE] text-[12px] not-italic font-semibold leading-[150%]">
             {title}
           </p>
+          {displayWriter && (
+            <span className="text-[#52525B] font-[SUITE] text-[10px] not-italic font-normal leading-[150%] shrink-0">
+              - {displayWriter}
+            </span>
+          )}
         </div>
-        <span className="text-[#52525B] font-[SUITE] text-[10px] not-italic font-normal leading-[150%] shrink-0">
-          - {writer}
-        </span>
       </Link>
     </li>
   );
 }
 
+/* =========================
+   페이지네이션
+   ========================= */
 function Pagination({ total, page, pageSize, onChange }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const windowSize = 5;
@@ -187,7 +198,7 @@ function Pagination({ total, page, pageSize, onChange }) {
 }
 
 /* =========================
-  메인 페이지
+   메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
    ========================= */
 export default function Board() {
   // UI 상태
@@ -197,60 +208,16 @@ export default function Board() {
   const [page, setPage] = useState(1);
   const pageSize = 20;
 
-  // 데이터 상태
+  // 데이터 상태 (서버에서 전체를 한 번에 받아온다)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [rawList, setRawList] = useState([]);
-  const [serverTotal, setServerTotal] = useState(0);
+  const [allItems, setAllItems] = useState([]);       // ✅ 전체 목록
+  const [totalFromServer, setTotalFromServer] = useState(0); // 참고용 (total_count)
 
-  // 서버 호출 함수 (GET 시도 → 실패 시 POST 폴백)
-  const BOARD_ENDPOINT = `${API_BASE}/board/`;
+  const BOARD_ENDPOINT_NO_SLASH = `${API_BASE}/board`;
+  const BOARD_ENDPOINT_WITH_SLASH = `${API_BASE}/board/`;
 
-  const requestBoard = async (signal) => {
-    const serverCategory = KOR_TO_SERVER[activeTag];
-    const params = new URLSearchParams();
-    if (serverCategory && serverCategory !== "ALL")
-      params.set("category", serverCategory);
-    if (submittedKeyword) params.set("q", submittedKeyword);
-    params.set("page", String(page));
-    params.set("limit", String(pageSize));
-  
-    // 2) GET: /board/?page=... 형태로 호출
-    try {
-      const res = await fetch(`${BOARD_ENDPOINT}?${params.toString()}`, {
-        method: "GET",
-        signal,
-        headers: { Accept: "application/json" },
-      });
-      if (res.ok) return res.json();
-    } catch (e) {
-      if (isAbortError(e)) throw e;
-    }
-  
-    // 3) POST 폴백도 /board/ 로 고정
-    const postRes = await fetch(BOARD_ENDPOINT, {
-      method: "POST",
-      signal,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        category: serverCategory === "ALL" ? undefined : serverCategory,
-        q: submittedKeyword || undefined,
-        page,
-        limit: pageSize,
-      }),
-    });
-  
-    if (!postRes.ok) {
-      const text = await postRes.text().catch(() => "");
-      throw new Error(`요청 실패: ${postRes.status} ${text}`);
-    }
-    return postRes.json();
-  };
-
-  // 로드 & 의존성 변화시 호출
+  // 서버에서 전체 목록 1회 로드
   useEffect(() => {
     const controller = new AbortController();
 
@@ -260,29 +227,44 @@ export default function Board() {
         setError("");
 
         if (!API_BASE) {
-          throw new Error(
-            "API 베이스 주소가 설정되지 않았습니다. .env의 VITE_API_BASE_URL을 확인하세요."
-          );
+          throw new Error("API 베이스 주소가 설정되지 않았습니다. .env의 VITE_API_BASE_URL을 확인하세요.");
         }
 
-        const data = await requestBoard(controller.signal);
+        // 1차 시도: /board
+        let res = await fetch(BOARD_ENDPOINT_NO_SLASH, {
+          method: "GET",
+          signal: controller.signal,
+          headers: { Accept: "application/json" },
+        });
 
-        // 방어적 파싱
-        const list = Array.isArray(data?.board) ? data.board : [];
-        const total =
-          typeof data?.total_count === "number" ? data.total_count : list.length;
+        // 실패 시 2차: /board/
+        if (!res.ok) {
+          res = await fetch(BOARD_ENDPOINT_WITH_SLASH, {
+            method: "GET",
+            signal: controller.signal,
+            headers: { Accept: "application/json" },
+          });
+        }
 
-        setRawList(list);
-        setServerTotal(total);
+        if (!res.ok) {
+          const text = await res.text().catch(() => "");
+          throw new Error(`요청 실패: ${res.status} ${text}`);
+        }
+
+        const data = await res.json();
+
+        // ✅ 백엔드 새 스키마 반영
+        const list = Array.isArray(data?.result) ? data.result : [];
+        const total = typeof data?.total_count === "number" ? data.total_count : list.length;
+
+        setAllItems(list);
+        setTotalFromServer(total);
       } catch (e) {
         if (isAbortError(e)) {
           console.debug("Fetch aborted (expected in dev StrictMode)");
         } else {
           console.error(e);
-          setError(
-            e?.message ||
-              "게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요."
-          );
+          setError(e?.message || "게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
         }
       } finally {
         setLoading(false);
@@ -290,51 +272,51 @@ export default function Board() {
     })();
 
     return () => controller.abort();
-  }, [activeTag, submittedKeyword, page]);
+  }, []);
 
-  // 클라 보정(서버 미지원 대비) + 페이지네이션 기준을 'filtered.length'로만 사용
+  // 태그/검색 로직 (프론트에서 처리)
+  const serverCategory = KOR_TO_SERVER[activeTag];
+  const kw = (submittedKeyword || "").trim().toLowerCase();
+
   const filtered = useMemo(() => {
-    const serverCategory = KOR_TO_SERVER[activeTag];
-    const kw = (submittedKeyword || "").trim().toLowerCase();
-    return rawList.filter((item) => {
+    return allItems.filter((item) => {
       const okCat =
         serverCategory === "ALL" ||
         !serverCategory ||
         item.category === serverCategory;
-      const okKw =
-        !kw ||
-        item.title?.toLowerCase().includes(kw) ||
-        item.writer?.toLowerCase().includes(kw);
+
+      const t = item.title?.toLowerCase() || "";
+      const w = item.writer?.toLowerCase() || "";
+      const b = item.booth_name?.toLowerCase() || ""; // 이벤트 대응
+      const d = item.detail?.toLowerCase() || "";     // 이벤트 대응
+      const okKw = !kw || t.includes(kw) || w.includes(kw) || b.includes(kw) || d.includes(kw);
+
       return okCat && okKw;
     });
-  }, [rawList, activeTag, submittedKeyword]);
+  }, [allItems, serverCategory, kw]);
 
-  // ✅ 현재 뷰의 총 개수/총 페이지는 filtered 기준
-  const totalForUI = filtered.length;
-  const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
-
-  // ✅ 필터 결과가 바뀌어 현재 page가 초과하면 마지막 페이지로 보정
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [totalPages, page]);
-
-  // ✅ 실제 표시 리스트도 항상 filtered에서 slice
-  const paged = useMemo(() => {
-    const start = (page - 1) * pageSize;
-    return filtered.slice(start, start + pageSize);
-  }, [filtered, page, pageSize]);
-
-  // 핸들러
+  // 검색/태그 변경 시 1페이지로
   const submitSearch = () => {
     setPage(1);
-    setSubmittedKeyword(keyword);
+    setSubmittedKeyword(keyword.trim());
   };
   const clickTag = (korLabel) => {
     setActiveTag(korLabel);
     setPage(1);
   };
+
+  // 페이지네이션 계산 및 슬라이스
+  const totalForUI = filtered.length;
+  const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
+  const paged = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, page, pageSize]);
+
+  // 현재 page가 총 페이지를 넘어가면 보정
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [totalPages, page]);
 
   return (
     <div className="mx-auto max-w-screen-sm px-4 pb-4">
@@ -364,15 +346,11 @@ export default function Board() {
 
       {/* 리스트 */}
       <div className="min-h-[320px]">
-        {loading && (
-          <div className="py-16 text-center text-gray-500">불러오는 중…</div>
-        )}
-        {!loading && error && (
-          <div className="py-16 text-center text-rose-600">{error}</div>
-        )}
+        {loading && <div className="py-16 text-center text-gray-500">불러오는 중…</div>}
+        {!loading && error && <div className="py-16 text-center text-rose-600">{error}</div>}
         {!loading && !error && paged.length === 0 && (
           <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">
-            현재 진행 중인 이벤트가 없습니다
+            현재 게시물이 없습니다
           </div>
         )}
         {!loading && !error && paged.length > 0 && (
@@ -384,7 +362,7 @@ export default function Board() {
         )}
       </div>
 
-      {/* ✅ 페이지네이션: filtered 기준 / 1페이지면 숨김 / 0건이면 숨김 */}
+      {/* 페이지네이션: 프론트 계산 기준 */}
       {!loading && !error && totalForUI > 0 && totalPages > 1 && (
         <Pagination
           total={totalForUI}
