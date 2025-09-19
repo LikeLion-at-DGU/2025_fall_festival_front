@@ -204,7 +204,7 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
                     isOperating={booth.isOperating}
                     isDorder={booth.is_dorder}
                     isEvent={booth.is_event}
-                    likesCount={booth.likes_cnt} //좋아요 개수
+                    likesCount={booth.like_cnt} //좋아요 개수
                     isLiked={booth.is_liked} //좋아요 눌렀는지
                     className="w-full"
                     onClick={() =>
