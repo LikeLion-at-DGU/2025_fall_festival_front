@@ -58,7 +58,7 @@ export default function BoothDetail() {
     return (
         <div className="flex flex-col w-[343px] mx-auto items-center pt-6 pb-8 space-y-4">
             {/* 상단 이미지 */}
-            <div className="w-full h-[232px] rounded-[16px] mx-auto bg-[#676767] flex items-center justify-center">
+            <div className="w-full h-[232px] rounded-[16px] mx-auto bg-[#A1A1AA] flex items-center justify-center">
                 {booth.image_url && (
                     <img
                         src={booth.image_url}
