@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
-import PhotoUpload from "../../components/AdminComponents/Stuco/PhotoUpload";
+import PhotoUpload from "../../components/AdminComponents/Admin/PhotoUpload";
 import { createLostPost } from "../../apis/admin/stuco";
 
 function LostPost() {

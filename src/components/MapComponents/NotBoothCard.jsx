@@ -4,12 +4,7 @@ import MapBeerIcon from "../../assets/images/icons/map-icons/Beer.png";
 import MapConvenienceIcon from "../../assets/images/icons/map-icons/Convenience.png";
 import Badge from "./BoothCardComponents/Badge";
 
-const NotBoothCard = ({
-  title,
-  distance_m,
-  category,
-  onClick
-}) => {
+const NotBoothCard = ({ title, distance_m, category, onClick }) => {
   // 카테고리별 이미지 선택
   const getImageByCategory = (category) => {
     switch (category) {
@@ -25,14 +20,14 @@ const NotBoothCard = ({
   };
 
   return (
-<div
-  className={`bg-white w-full h-[92px] rounded-2xl border border-neutral-200 p-4 
+    <div
+      className={`bg-white w-full h-[92px] rounded-2xl border border-neutral-200 p-4 
     ${category === "Toilet" ? "cursor-pointer" : ""}`}
-  style={{
-    boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
-  }}
-  onClick={onClick}
->
+      style={{
+        boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
+      }}
+      onClick={onClick}
+    >
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
         <div className="relative w-16 h-16 flex-shrink-0">
@@ -46,9 +41,17 @@ const NotBoothCard = ({
         </div>
 
         {/* 글자 */}
-        <div className={`flex-1 ${category === "Toilet" ? "flex items-center" : ""}`}>
+        <div
+          className={`flex-1 min-w-0 ${
+            category === "Toilet" ? "flex items-center" : ""
+          }`}
+        >
           {/* 제목 */}
-          <h3 className={`text-xl font-semibold text-black font-suite leading-[130%] ${category === "Toilet" ? "" : "mb-2"}`}>
+          <h3
+            className={`text-xl font-semibold text-black font-suite leading-[130%] truncate pr-16 ${
+              category === "Toilet" ? "" : "mb-2"
+            }`}
+          >
             {title}
           </h3>
 
