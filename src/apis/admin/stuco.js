@@ -11,7 +11,7 @@ export async function createNormalPost(postData) {
   if (!uid) {
     throw new Error("로그인이 필요합니다."); // ⛔ toastMsg 변경 예정
   }
-  if (role !== "Staff") {
+  if (role !== "Staff" && role !== "Stuco") {
     throw new Error("일반공지 작성 권한이 없습니다.");
   } 
   
