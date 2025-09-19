@@ -79,3 +79,11 @@ export async function getUnionLosts() {
   const res = await instance.get("/board/losts");
   return res.data.board.filter((item) => item.writer === "총학");
 }
+
+//-------- 공지글 상세페이지 get --------//
+
+export async function getBoardDetail(board_id) {
+  const res = await instance.get(`/board/${board_id}`);
+  return res.data;
+}
+
