@@ -251,8 +251,7 @@ export default function BoardDetail() {
                     <>
                       {boothLabel && (
                         <p>
-                          <span className="text-gray-400">부스 정보 : </span>
-                          <span className="text-gray-600">{boothLabel}</span>
+                          <span className="text-gray-400">부스 위치 : {boothCardProps.location}</span>
                         </p>
                       )}
                       {eventTime && (
