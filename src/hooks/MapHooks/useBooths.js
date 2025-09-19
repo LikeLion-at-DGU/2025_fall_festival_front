@@ -19,8 +19,9 @@ function useBooths(selectedFilter, userLocation = null) {
 
     if (userLocation && (selectedFilter === "Store" || selectedFilter === "Drink")) {
       // 사용자 위치가 있고 편의점/주류 카테고리일 때만 nearby API 사용
+      const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
       axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/booths/nearby/`,
+        `${baseURL}/booths/nearby/`,
         {
           user_location: userLocation,
           date: date,
@@ -36,7 +37,9 @@ function useBooths(selectedFilter, userLocation = null) {
           setBooths(Array.isArray(results) ? results : []);
         })
         .catch((err) => {
+          console.error("API 호출 실패:", err);
           setError(err);
+          setBooths([]); // 실패 시 빈 배열로 설정
         })
         .finally(() => {
           setLoading(false);
@@ -46,15 +49,18 @@ function useBooths(selectedFilter, userLocation = null) {
       const params = new URLSearchParams();
       params.append('category', selectedFilter);
 
+      const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
       axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/booths/?${params.toString()}`,
+        `${baseURL}/booths/?${params.toString()}`,
         { headers: { "Content-Type": "application/json" } }
       )
         .then((res) => {
           setBooths(res.data.results);
         })
         .catch((err) => {
+          console.error("API 호출 실패:", err);
           setError(err);
+          setBooths([]); // 실패 시 빈 배열로 설정
         })
         .finally(() => {
           setLoading(false);
