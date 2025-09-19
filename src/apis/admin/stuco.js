@@ -2,7 +2,7 @@ import instance from "../instance";
 
 // [총학] 페이지 기능
 
-//--------일반공지 게시글을 post합니다.--------//
+//-------- 일반공지 게시글을 post합니다. --------//
 
 export async function createNormalPost(postData) {
   const uid = sessionStorage.getItem("uid");
@@ -26,6 +26,21 @@ export async function createNormalPost(postData) {
 
   const res = await instance.post("/board/notices", payload);
   return res.data;
+}
+
+//-------- 분실물 게시글을 post합니다. --------//
+
+export async function createLostPost(formData) {
+  try {
+    const res = await instance.post("/board/losts", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // 파일 업로드 시 필요
+      },
+    });
+    return res.data;
+  } catch (err) {
+    throw err.response?.data || err;
+  }
 }
 
 //-------- 긴급공지 patch --------//

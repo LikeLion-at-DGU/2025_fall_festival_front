@@ -14,7 +14,7 @@ function AdminMain() {
 
   const navigate = useNavigate();
 
-  // 더미
+  // ⛔ 더미
   const [notices, setNotices] = useState([
   { id: 1, text: "중요 공지입니다 !!!!!", writer: "총학" },
   { id: 2, text: "분실물 공지 안내", writer: "총학" },
