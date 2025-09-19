@@ -106,7 +106,7 @@ export default function BoardDetail() {
     <div className="mx-auto w-full max-w-[430px] bg-white">
       {/* 상단 고정 헤더 */}
       <BoardDetailHeader />
-      <div className="h-[4px] bg-[#F4F4F5]" />
+      
       <main className="">
         <div className="px-5 min-h-[calc(100vh)] flex flex-col">
           {loading && (
@@ -223,7 +223,7 @@ export default function BoardDetail() {
                             >
                               {CATEGORY_MAP[item.category] ?? item.category}
                             </span>
-                            <p className="truncate text-[15px] text-[#52525B] font-[SUITE] font-semibold">
+                            <p className="truncate text-[#52525B] font-[SUITE] text-[12px] not-italic font-semibold leading-[150%]">
                               {item.title}
                             </p>
                           </div>
