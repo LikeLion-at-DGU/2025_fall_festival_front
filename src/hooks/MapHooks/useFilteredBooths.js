@@ -3,6 +3,11 @@ function useFilteredBooths(booths, selectedFilter) {
   const [filteredBooths, setFilteredBooths] = useState([]);
 
   useEffect(() => {
+    if (!booths || !Array.isArray(booths)) {
+      setFilteredBooths([]);
+      return;
+    }
+
     const filtered = booths.filter((item) => {
       if (selectedFilter === "Booth") return item.category === "Booth";
       if (selectedFilter === "Toilet") return item.category === "Toilet";

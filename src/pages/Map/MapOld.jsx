@@ -697,7 +697,7 @@ function Map() {
                     <img
                       src={MapToiletIcon}
                       alt={toilet.name}
-                      className="w-8 h-8 transition-all duration-200 hover:scale-110"
+                      className="w-6 h-6 transition-all duration-200 hover:scale-110"
                     />
                   </button>
                 </div>
