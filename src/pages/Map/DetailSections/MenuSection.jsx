@@ -7,7 +7,7 @@ export default function MenuSection({ menus }) {
     const sortedMenus = [...menus].sort((a, b) => (b.is_best ? 1 : 0) - (a.is_best ? 1 : 0));
 
     return (
-        <div className="mx-4 mt-4">
+        <div className="w-full mx-4 mt-4">
             <h2 className="font-semibold mb-2 text-[#EF7063] text-xl">판매 메뉴</h2>
 
             {/* 가로 스크롤: 위로 튀는 뱃지 안 잘리게 pt 추가 + 스크롤바 숨김 */}

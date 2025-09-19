@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
-import PhotoUpload from "../../components/AdminComponents/Stuco/PhotoUpload";
+import PhotoUpload from "../../components/AdminComponents/Admin/PhotoUpload";
 import { createLostPost } from "../../apis/admin/stuco";
 
 function LostPost() {
@@ -13,10 +13,10 @@ function LostPost() {
   const [image, setImage] = useState(null); // 파일 업로드
   const navigate = useNavigate();
 
-  // 제출 로직: 공지 작성 후 총학 메인으로 이동
+  // 제출 로직: 공지 작성 후 admin 메인으로 이동
   const handleSubmit = async () => {
     try {
-      const uid = sessionStorage.getItem("uid"); // 로그인한 총학 uid
+      const uid = sessionStorage.getItem("uid"); // 로그인한 admin uid
       const formData = new FormData();
       formData.append("uid", uid);
       formData.append("category", "LostItem");
