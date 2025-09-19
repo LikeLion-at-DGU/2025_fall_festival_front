@@ -14,7 +14,8 @@ export const TranslationProvider = ({ children }) => {
       const data = await translateBatch(items, i18n.language);
       const newMap = {};
       data.items.forEach((item) => {
-        newMap[item.entity_id + "-" + item.field] = item.translated_text ?? item.source_text;
+        newMap[item.entity_id + "-" + item.field] =
+          item.translated_text ?? item.source_text;
       });
       setTranslations((prev) => ({ ...prev, ...newMap }));
     } catch (e) {
