@@ -6,9 +6,11 @@ import NotBoothCard from "./NotBoothCard";
 import { useTranslations } from "../../context/TranslationContext";
 
 function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
-  const minHeight = 80;
-  const maxHeight = Math.min(450, window.innerHeight - 100 - 62);
-  const defaultHeight = 150;
+  const minHeight = 310;
+  const maxHeight = Math.min(620, window.innerHeight - 100 - 62);
+  const defaultHeight = 310;
+
+  const snapPoints = [minHeight, maxHeight];
 
   const [sheetHeight, setSheetHeight] = useState(defaultHeight);
   const [isDragging, setIsDragging] = useState(false);
@@ -31,14 +33,14 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
         entity_type: "booth",
         entity_id: booth.booth_id,
         field: "BoothName",
-        source_text: booth.name
+        source_text: booth.name,
       },
       {
         entity_type: "location",
         entity_id: booth.location?.id ?? booth.booth_id,
         field: "LocationName",
-        source_text: booth.location?.name ?? ""
-      }
+        source_text: booth.location?.name ?? "",
+      },
     ]);
 
     requestTranslations(items);
@@ -47,50 +49,78 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
   // ----------------------------
   // 드래그 핸들러 (원래 코드 유지)
   // ----------------------------
-  const handleStart = useCallback((clientY) => {
-    setIsDragging(true);
-    setStartY(clientY);
-    setStartHeight(sheetHeight);
-  }, [sheetHeight]);
+  const handleStart = useCallback(
+    (clientY) => {
+      setIsDragging(true);
+      setStartY(clientY);
+      setStartHeight(sheetHeight);
+    },
+    [sheetHeight]
+  );
 
-  const handleMove = useCallback((clientY) => {
-    if (!isDragging) return;
-    const deltaY = startY - clientY;
-    const newHeight = Math.max(
-      minHeight,
-      Math.min(maxHeight, startHeight + deltaY)
-    );
-    setSheetHeight(newHeight);
-  }, [isDragging, startY, startHeight, minHeight, maxHeight]);
+  const handleMove = useCallback(
+    (clientY) => {
+      if (!isDragging) return;
+      const deltaY = startY - clientY;
+      const newHeight = Math.max(
+        minHeight,
+        Math.min(maxHeight, startHeight + deltaY)
+      );
+      setSheetHeight(newHeight);
+    },
+    [isDragging, startY, startHeight, minHeight, maxHeight]
+  );
 
   const handleEnd = useCallback(() => {
     setIsDragging(false);
-    if (sheetHeight < minHeight + 30) {
-      setSheetHeight(minHeight);
-    }
-  }, [sheetHeight, minHeight]);
 
-  const handleMouseDown = useCallback((e) => {
-    e.preventDefault();
-    handleStart(e.clientY);
-  }, [handleStart]);
+    let closestSnap = snapPoints[0];
+    let minDistance = Math.abs(sheetHeight - snapPoints[0]);
 
-  const handleMouseMove = useCallback((e) => {
-    handleMove(e.clientY);
-  }, [handleMove]);
+    snapPoints.forEach((snapPoint) => {
+      const distance = Math.abs(sheetHeight - snapPoint);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestSnap = snapPoint;
+      }
+    });
+
+    setSheetHeight(closestSnap);
+  }, [sheetHeight, snapPoints]);
+
+  const handleMouseDown = useCallback(
+    (e) => {
+      e.preventDefault();
+      handleStart(e.clientY);
+    },
+    [handleStart]
+  );
+
+  const handleMouseMove = useCallback(
+    (e) => {
+      handleMove(e.clientY);
+    },
+    [handleMove]
+  );
 
   const handleMouseUp = useCallback(() => {
     handleEnd();
   }, [handleEnd]);
 
-  const handleTouchStart = useCallback((e) => {
-    handleStart(e.touches[0].clientY);
-  }, [handleStart]);
+  const handleTouchStart = useCallback(
+    (e) => {
+      handleStart(e.touches[0].clientY);
+    },
+    [handleStart]
+  );
 
-  const handleTouchMove = useCallback((e) => {
-    e.preventDefault();
-    handleMove(e.touches[0].clientY);
-  }, [handleMove]);
+  const handleTouchMove = useCallback(
+    (e) => {
+      e.preventDefault();
+      handleMove(e.touches[0].clientY);
+    },
+    [handleMove]
+  );
 
   const handleTouchEnd = useCallback(() => {
     handleEnd();
@@ -101,7 +131,9 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
     if (isDragging) {
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
-      document.addEventListener("touchmove", handleTouchMove, { passive: false });
+      document.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
       document.addEventListener("touchend", handleTouchEnd);
 
       return () => {
@@ -111,7 +143,13 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
         document.removeEventListener("touchend", handleTouchEnd);
       };
     }
-  }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
+  }, [
+    isDragging,
+    handleMouseMove,
+    handleMouseUp,
+    handleTouchMove,
+    handleTouchEnd,
+  ]);
 
   // ----------------------------
   // 검색 및 필터링
@@ -120,15 +158,15 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
     const boothName = translations[booth.booth_id + "-BoothName"] ?? booth.name;
     const locationName =
       translations[(booth.location?.id ?? booth.booth_id) + "-LocationName"] ??
-      booth.location?.name ?? "";
+      booth.location?.name ??
+      "";
 
     const matchesSearch =
       searchTerm === "" ||
       boothName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       locationName.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesPin =
-      selectedPin === null || locationName === selectedPin;
+    const matchesPin = selectedPin === null || locationName === selectedPin;
 
     return matchesSearch && matchesPin;
   });
@@ -137,8 +175,12 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
     if (!searchTerm) return 0;
     const aName = translations[a.booth_id + "-BoothName"] ?? a.name;
     const bName = translations[b.booth_id + "-BoothName"] ?? b.name;
-    const aMatch = aName.toLowerCase().includes(searchTerm.toLowerCase()) ? 0 : 1;
-    const bMatch = bName.toLowerCase().includes(searchTerm.toLowerCase()) ? 0 : 1;
+    const aMatch = aName.toLowerCase().includes(searchTerm.toLowerCase())
+      ? 0
+      : 1;
+    const bMatch = bName.toLowerCase().includes(searchTerm.toLowerCase())
+      ? 0
+      : 1;
     return aMatch - bMatch;
   });
 
@@ -192,22 +234,27 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
           ) : (
             <div className="w-full flex flex-col gap-2">
               {sortedBooths.map((booth) => {
-                const boothName = translations[booth.booth_id + "-BoothName"] ?? booth.name;
+                const boothName =
+                  translations[booth.booth_id + "-BoothName"] ?? booth.name;
                 const locationName =
-                  translations[(booth.location?.id ?? booth.booth_id) + "-LocationName"] ??
-                  booth.location?.name ?? "";
+                  translations[
+                    (booth.location?.id ?? booth.booth_id) + "-LocationName"
+                  ] ??
+                  booth.location?.name ??
+                  "";
 
-                return booth.category === "Booth" || booth.category === "FoodTruck" ? (
+                return booth.category === "Booth" ||
+                  booth.category === "FoodTruck" ? (
                   <BoothCard
                     key={booth.booth_id}
                     boothId={booth.booth_id}
-                    title={boothName}          // ✅ 번역된 이름
+                    title={boothName} // ✅ 번역된 이름
                     image={booth.image_url}
                     isNight={booth.is_night}
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days?.[0]?.weekday}
-                    location={locationName}   // ✅ 번역된 위치
+                    location={locationName} // ✅ 번역된 위치
                     isOperating={booth.isOperating}
                     isDorder={booth.is_dorder}
                     isEvent={booth.is_event}
@@ -225,12 +272,14 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
                 ) : (
                   <NotBoothCard
                     key={booth.booth_id}
-                    title={boothName}          // ✅ 번역된 이름
+                    title={boothName} // ✅ 번역된 이름
                     distance_m={booth.distance_m}
                     category={booth.category}
                     onClick={() => {
-                      if (booth.category === "Drink") navigate(`/drink/${booth.booth_id}`);
-                      else if (booth.category === "Toilet") navigate(`/toilet/${booth.booth_id}`);
+                      if (booth.category === "Drink")
+                        navigate(`/drink/${booth.booth_id}`);
+                      else if (booth.category === "Toilet")
+                        navigate(`/toilet/${booth.booth_id}`);
                     }}
                   />
                 );
