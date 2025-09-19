@@ -1,7 +1,9 @@
+// src/pages/Board/BoardDetail.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import BoardDetailHeader from "../../components/Header/BoardDetailHeader";
 import BoothCard from "../../components/MapComponents/BoothCard";
+import { formatTimeWithDay } from "../../utils/dateUtils";
 
 // .env 설정
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
@@ -60,14 +62,15 @@ function fmtDateTime(iso) {
 
 export default function BoardDetail() {
   const { boardId } = useParams();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [post, setPost] = useState(null);
   const [related, setRelated] = useState([]);
 
-  // 🔸 부스 정보 상태 (이벤트 + booth_id 일 때만 로드)
-  const [booth, setBooth] = useState(null);
+  // 부스 정보 상태 (이벤트 + booth_id 일 때만 로드)
+  const [boothRaw, setBoothRaw] = useState(null);
   const [boothLoading, setBoothLoading] = useState(false);
   const [boothError, setBoothError] = useState("");
 
@@ -77,8 +80,9 @@ export default function BoardDetail() {
     (async () => {
       setLoading(true);
       setError("");
-      setBooth(null);
+      setBoothRaw(null);
       setBoothError("");
+
       try {
         if (!API_BASE) throw new Error("API BASE 설정이 없습니다.");
 
@@ -105,14 +109,16 @@ export default function BoardDetail() {
           setRelated([]);
         }
 
-        // 🔸 이벤트 + booth_id 가 있으면 부스 상세 로드
+        // 이벤트 + booth_id 가 있으면 부스 상세 로드
         if (data?.category === "Event" && data?.booth_id) {
+          setBoothLoading(true);
           await fetchBoothById({
             apiBase: API_BASE,
             boothId: data.booth_id,
             signal: controller.signal,
-            onSuccess: setBooth,
-            onError: (msg) => setBoothError(msg || "부스 정보를 불러오지 못했습니다."),
+            onSuccess: (booth) => setBoothRaw(booth),
+            onError: (msg) =>
+              setBoothError(msg || "부스 정보를 불러오지 못했습니다."),
           });
         }
       } catch (e) {
@@ -121,6 +127,7 @@ export default function BoardDetail() {
           setError(e?.message || "게시글을 불러오지 못했습니다.");
         }
       } finally {
+        setBoothLoading(false);
         setLoading(false);
       }
     })();
@@ -157,6 +164,45 @@ export default function BoardDetail() {
   const boothLabel =
     post?.booth_location ||
     (post?.booth_name ? `부스명: ${post.booth_name}` : "");
+
+  // BoothCard가 기대하는 형태로 변환
+  const boothCardProps = useMemo(() => {
+    if (!boothRaw) return null;
+
+    // boothRaw 예시 스키마:
+    // {
+    //   booth_id, name, location:{name}, business_days, start_time, end_time,
+    //   like_cnt, is_event, is_dorder, ...
+    // }
+    const id = boothRaw.booth_id ?? boothRaw.id;
+    const title = boothRaw.name ?? "";
+    const locationName = boothRaw.location?.name ?? "";
+    const timeText = formatTimeWithDay(
+      boothRaw.business_days,
+      boothRaw.start_time,
+      boothRaw.end_time
+    );
+    const likes = boothRaw.like_cnt ?? 0;
+    const badges = {
+      isEventActive: !!boothRaw.is_event,
+      isDOrderPartner: !!boothRaw.is_dorder,
+    };
+
+    return {
+      boothId: id,
+      title,
+      location: locationName,
+      time: timeText,
+      isOperating: true, // 상세 페이지에서는 운영중 여부 표시를 단순화
+      likesCount: likes,
+      badges,
+    };
+  }, [boothRaw]);
+
+  const handleClickBoothCard = () => {
+    if (!boothCardProps?.boothId) return;
+    navigate(`/booth/${boothCardProps.boothId}`);
+  };
 
   return (
     <div className="mx-auto w-full max-w-[430px] bg-white">
@@ -246,16 +292,33 @@ export default function BoardDetail() {
                     />
                   ))}
 
-                {/* 🔸 부스 카드 (이벤트 + booth_id 있을 때, 부스 정보 fetch 성공 시) */}
+                {/* 부스 카드 (이벤트 + booth_id 있을 때, 정상 데이터면 표시) */}
                 {isEvent && post?.booth_id && (
                   <div className="mt-6">
                     {boothLoading && (
-                      <div className="text-sm text-gray-500">부스 정보를 불러오는 중…</div>
+                      <div className="text-sm text-gray-500">
+                        부스 정보를 불러오는 중…
+                      </div>
                     )}
                     {boothError && (
                       <div className="text-sm text-rose-600">{boothError}</div>
                     )}
-                    {booth && <BoothCard booth={booth} />}
+                    {boothCardProps && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={handleClickBoothCard}
+                      >
+                        <BoothCard
+                          boothId={boothCardProps.boothId}
+                          title={boothCardProps.title}
+                          location={boothCardProps.location}
+                          time={boothCardProps.time}
+                          isOperating={boothCardProps.isOperating}
+                          likesCount={boothCardProps.likesCount}
+                          badges={boothCardProps.badges}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -314,14 +377,7 @@ export default function BoardDetail() {
 }
 
 /* =========================
-   부스 상세 조회 (여러 경로 순차 시도)
-   - /booth/{id}
-   - /booth/{id}/
-   - /booths/{id}
-   - /booths/{id}/
-   - /map/booth/{id}
-   - /map/booth/{id}/
-   필요 경로만 남겨도 됨.
+   부스 상세 조회 (API는 /booths/:id/ 사용)
    ========================= */
 async function fetchBoothById({
   apiBase,
@@ -330,17 +386,14 @@ async function fetchBoothById({
   onSuccess,
   onError,
 }) {
+  // 실제 운영 API 우선 → 그 외는 폴백
   const candidates = [
-    `${apiBase}/booth/${boothId}`,
-    `${apiBase}/booth/${boothId}/`,
-    `${apiBase}/booths/${boothId}`,
-    `${apiBase}/booths/${boothId}/`,
-    `${apiBase}/map/booth/${boothId}`,
-    `${apiBase}/map/booth/${boothId}/`,
+    `${apiBase}/booths/${boothId}/`,          // ✅ 주요 엔드포인트
+    `${apiBase}/booths/detail/${boothId}/`,   // fallback
+    `${apiBase}/booths/${boothId}`,           // fallback (슬래시 없음)
   ];
 
   try {
-    // 간단 로딩 표시를 위해 setTimeout 등은 생략
     for (const url of candidates) {
       try {
         const res = await fetch(url, {
@@ -355,7 +408,7 @@ async function fetchBoothById({
         }
       } catch (e) {
         if (isAbortError(e)) throw e;
-        // 하나 실패해도 다음 후보 시도
+        // 실패해도 다음 후보 시도
       }
     }
     onError?.("부스 상세 엔드포인트를 찾지 못했습니다.");
