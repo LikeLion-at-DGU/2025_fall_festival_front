@@ -1,20 +1,35 @@
 import React from "react";
-function PersonCard({ imgsrc, track, name, info }) {
-  const cardClass =
-    "w-[136px] h-[169px] rounded-xl border border-primary-300 bg-developers-card shadow-card flex flex-col justify-center gap-[3px]";
-  const smallTextClass = "text-center text-[8px] font-medium leading-[150%]";
-  const textClass = "text-center text-[13px] font-semibold leading-[150%] ";
-  const groupClass = "flex justify-center items-center gap-1";
+import profileBack from "../../assets/images/banners/profile-backgroud.png";
 
+function PersonCard({ name, role, major, image }) {
   return (
-    <div className={`${cardClass}`}>
-        <img src={imgsrc}/>
-      <div className="flex flex-col justify-center gap-[3px]">
-        <p className={`${groupClass}`}>
-          <span className={`${smallTextClass} text-[#52525B]`}>{track}</span>
-          <span className={`${textClass} text-[#2A2A2E]`}>{name}</span>
-        </p>
-        <span className={`${textClass} text-[#526749]`}>{info}</span>
+    <div
+      className="relative w-full h-full overflow-hidden rounded-[25px]"
+      style={{
+        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.15)",
+      }}
+    >
+      {/* 정보 영역 */}
+      <div className="absolute top-[38px] left-[13px]">
+        <h3 className="text-xl font-bold mb-[5px] text-[#2A2A2E]">
+          {name.split(" ")[0]}
+          <br />
+          {name.split(" ").slice(1).join(" ")}
+        </h3>
+        <p className="text-[8px] font-normal mb-[3px] text-[#52525B]">{role}</p>
+        <p className="text-[9px] font-semibold text-[#52525B]">{major}</p>
+      </div>
+
+      {/* 배경 이미지 */}
+      <img
+        src={profileBack}
+        alt="프로필 배경"
+        className="w-full h-full object-cover"
+      />
+
+      {/* 프로필 이미지 */}
+      <div className="absolute bottom-[3px] right-[2px] w-[91px] h-[106px]">
+        <img src={image} alt={name} className="w-full h-full object-cover" />
       </div>
     </div>
   );
