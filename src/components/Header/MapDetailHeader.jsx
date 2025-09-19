@@ -1,8 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import backBtn from "../../assets/images/icons/header-icons/left.svg";
+
 const MapDetailHeader = () => {
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate(-1);
+  };
+
   return (
     <header
       className="flex items-center justify-between 
@@ -11,10 +18,12 @@ const MapDetailHeader = () => {
     bg-white 
     h-[54px] px-[5px]"
     >
-      {/* 지도로 돌아가기 */}
-      <Link to="/map">
+      <button
+        onClick={handleBackClick}
+        className="hover:opacity-70 transition-opacity"
+      >
         <img src={backBtn} alt="back" className="h-full w-auto m-[10px]" />
-      </Link>
+      </button>
     </header>
   );
 };

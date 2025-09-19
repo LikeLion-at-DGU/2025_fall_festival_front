@@ -51,7 +51,7 @@ export default {
         "developers-card": "linear-gradient(147deg, rgba(251, 209, 205, 0.60) 0%, rgba(239, 112, 99, 0.60) 100%)", // 카드 그라디언트
       },
       animation: {
-        marquee: "marquee 10s linear infinite",
+        marquee: "marquee 7s linear infinite",
       },
       keyframes: {
         marquee: {
