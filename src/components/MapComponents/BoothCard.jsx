@@ -82,7 +82,7 @@ function BoothCard({
           <p className="text-xs text-neutral-400 mb-0.5 font-suite leading-[150%] font-normal">
             {time ||
               (businessDays && startTime && endTime
-                ? `${businessDays.weekday} ${startTime}~${endTime}`
+                ? `${businessDays} ${startTime}~${endTime}`
                 : "영업시간 준비중입니다")}
           </p>
           <h3 className="text-xl font-semibold text-black mb-0.5 font-suite leading-[130%] truncate pr-[24px]">
