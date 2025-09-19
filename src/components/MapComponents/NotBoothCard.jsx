@@ -8,6 +8,7 @@ const NotBoothCard = ({
   title,
   distance_m,
   category,
+  onClick
 }) => {
   // 카테고리별 이미지 선택
   const getImageByCategory = (category) => {
@@ -24,12 +25,14 @@ const NotBoothCard = ({
   };
 
   return (
-    <div
-      className="bg-white w-full h-[92px] rounded-2xl border border-neutral-200 p-4"
-      style={{
-        boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
-      }}
-    >
+<div
+  className={`bg-white w-full h-[92px] rounded-2xl border border-neutral-200 p-4 
+    ${category === "Toilet" ? "cursor-pointer" : ""}`}
+  style={{
+    boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
+  }}
+  onClick={onClick}
+>
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
         <div className="relative w-16 h-16 flex-shrink-0">

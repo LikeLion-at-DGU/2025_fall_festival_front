@@ -18,6 +18,7 @@ const BoothCard = ({
   isLiked: initialIsLiked,
   isEvent,
   isDorder,
+  onClick
 }) => {
   const { isLiked, likesCount, toggleLike, loading } = useLikes(
     boothId,
@@ -26,12 +27,14 @@ const BoothCard = ({
   );
   return (
     <div
-      className={`bg-white w-full h-[92px] rounded-2xl border p-4 ${
+      className={`cursor-pointer bg-white w-full h-[92px] rounded-2xl border p-4 ${
         isOperating ? "border-primary-400" : "border-neutral-200"
       } `}
       style={{
         boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
       }}
+      onClick={onClick}
+      
     >
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
