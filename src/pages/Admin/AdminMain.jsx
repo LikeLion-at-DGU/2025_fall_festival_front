@@ -151,7 +151,8 @@ function AdminMain() {
           {filteredNotices.length > 0 ? (
             filteredNotices.map((n) => (
               <NoticeBox 
-                key={n.id} 
+                key={n.id}
+                id={n.id}
                 category={n.category}
                 title={n.title}
                 writer={n.writer} 

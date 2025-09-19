@@ -21,7 +21,12 @@ const Layout = ({ children }) => {
     "/admin/booth",
     "/admin/booth/event",
   ];
-  const isAdminPage = adminPaths.includes(location.pathname);
+
+  const adminDynamicRegex = /^\/admin\/stuco\/notice\/[^/]+$/; 
+
+  const isAdminPage = 
+  adminPaths.includes(location.pathname) ||
+  adminDynamicRegex.test(location.pathname);
 
   // 2) 게시판 상세 경로 판별: /board/:boardId
   //   - 숫자만이 아니라 슬러그도 허용하려면 ([^/]+) 유지
