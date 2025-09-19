@@ -46,7 +46,7 @@ function AdminLogin() {
       alert("로그인 성공"); // ⛔ alert 창 최종 확인 후 제거 예정
 
       // role에 따라서 라우팅 분기
-      if (data.role === "Staff") {
+      if (data.role === "Staff" || data.role === "Stuco") {
         navigate("/admin/stuco");
       } else if (data.role === "Club" || data.role === "Major") {
         navigate("/admin/booth");
