@@ -1,8 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-function NoticeBox({ category, title, writer }) {
+function NoticeBox({ id, category, title, writer }) {
+  const navigate = useNavigate();
+
   return (
     <div
+      onClick={() => navigate(`/board/${id}`)}
       className="
         flex items-center justify-between 
         w-full h-[48px] 
