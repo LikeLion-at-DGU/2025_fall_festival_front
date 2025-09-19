@@ -65,9 +65,7 @@ function LostPost() {
     msg.includes("로그인") ||
     err.response?.status === 401 // Unauthorized
   ) {
-    setTimeout(() => {
-      navigate("/admin/login");
-    }, 2000); // 토스트 2초 보여주고 이동
+
   }
 }
 
