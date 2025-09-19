@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
@@ -7,7 +7,7 @@ import AdminTitle from "../../components/AdminComponents/AdminTitle";
 import NoticeBox from "../../components/AdminComponents/Stuco/NoticeBox";
 import NoticeSearch from "../../components/AdminComponents/Stuco/NoticeSearch";
 
-import { patchEmergencyNotice } from "../../apis/admin/stuco";
+import { patchEmergencyNotice, getUnionNotices, getUnionLosts } from "../../apis/admin/stuco";
 
 
 function AdminMain() {
@@ -16,10 +16,10 @@ function AdminMain() {
 
   // ⛔ 더미
   const [notices, setNotices] = useState([
-  { id: 1, text: "중요 공지입니다 !!!!!", writer: "총학" },
-  { id: 2, text: "분실물 공지 안내", writer: "총학" },
-  { id: 3, text: "축제 일정 변경", writer: "총학" },
-  { id: 4, text: "일반 공지입니다", writer: "총학" },
+  { id: 1, title: "중요 공지입니다 !!!!!", writer: "총학" },
+  { id: 2, title: "분실물 공지 안내", writer: "총학" },
+  { id: 3, title: "축제 일정 변경", writer: "총학" },
+  { id: 4, title: "일반 공지입니다", writer: "총학" },
 ]);
 
   const [notice, setNotice] = useState("");
@@ -30,16 +30,34 @@ function AdminMain() {
   const wrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-4";
   const middleWrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-3";
   const smallWrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-1";
-
   const bottomWrapperClass = "flex flex-col w-full";
+
+  // 게시글 불러오기
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const [notices, losts] = await Promise.all([
+          getUnionNotices(),
+          getUnionLosts(),
+        ]);
+        setNotices([...notices, ...losts]); // 합치기
+        
+      } catch (err) {
+        console.error("게시글 불러오기 실패:", err);
+        console.log("res", res.data)
+        
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   // 검색 기능
   const handleSearch = (keyword) => {
   setSearchTerm(keyword);
 };
-  const filteredNotices = notices.filter((notice) =>
-  notice.text.includes(searchTerm)
-
+  const filteredNotices = notices.filter((n) =>
+  n.title.includes(searchTerm)
 );
 
   // 제출 로직: 긴급 공지 수정 field의 수정 사항 반영
@@ -106,6 +124,7 @@ function AdminMain() {
 
   return (
     <div className={bigWrapperClass}>
+      {/* 긴급공지 */}
       <div className={wrapperClass}>
         <AdminTitle text="긴급 공지" />
 
@@ -124,16 +143,22 @@ function AdminMain() {
           disabled={!isEdited || !notice.trim()}
           className="mt-0"
         />
-
       </div>
+      
+      {/* 게시글 목록 */}
       <div className={wrapperClass}>
         <AdminTitle text="게시글 목록" />
         <div className={smallWrapperClass}>
           <NoticeSearch onSearch={handleSearch} />
 
           {filteredNotices.length > 0 ? (
-            filteredNotices.map((notice) => (
-              <NoticeBox key={notice.id} text={notice.text} writer={notice.writer} />
+            filteredNotices.map((n) => (
+              <NoticeBox 
+                key={n.id} 
+                category={n.category}
+                title={n.title}
+                writer={n.writer} 
+              />
             ))
           ) : (
             <p className="text-sm text-gray-400 mt-2">검색 결과가 없습니다.</p>

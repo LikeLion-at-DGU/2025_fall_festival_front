@@ -1,6 +1,6 @@
 import React from "react";
 
-function NoticeBox({ tag = "공지", text, writer }) {
+function NoticeBox({ category, title, writer }) {
   return (
     <div
       className="
@@ -17,13 +17,13 @@ function NoticeBox({ tag = "공지", text, writer }) {
           className="
             px-2 py-1 text-sm font-medium
             text-white bg-[#EF7063] 
-            rounded-md
+            rounded-md w-10 h-6
           "
         >
-          {tag}
+          {category === "Notice" ? "공지" : category === "LostItem" ? "분실물" : category}
         </span>
         <p className="text-sm text-gray-800 truncate max-w-[180px]">
-          {text}
+          {title}
         </p>
       </div>
 
