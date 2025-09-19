@@ -44,7 +44,7 @@ export default function NearbyBoothSection({ boothId }) {
                         className="relative bg-white shadow-md rounded-2xl p-3 flex-shrink-0 w-32 flex flex-col items-start mb-2"
                     >
                         {/* 이미지 */}
-                        <div className="relative w-full h-24 flex items-center justify-center bg-gray-200 rounded-xl">
+                        <div className="relative w-[107px] h-[107px] flex items-center justify-center bg-gray-200 rounded-[16px]">
                             {b.image_url ? (
                                 <img
                                     src={b.image_url}
