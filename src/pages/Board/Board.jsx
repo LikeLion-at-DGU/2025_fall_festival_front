@@ -62,7 +62,7 @@ function SearchBar({ value, onChange }) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="검색어를 입력해주세요"
-          className="flex-1 text-[#A1A1AA] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] outline-none"
+          className="flex-1 text-black placeholder:text-[#A1A1AA] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] outline-none"
         />
         <div className="flex items-center justify-center">
           <img
