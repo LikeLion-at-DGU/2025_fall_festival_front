@@ -2,7 +2,7 @@ import React from "react";
 import { mapConfigs } from "../../config/mapConfigs";
 import backbtn from "../../assets/images/icons/header-icons/left.svg";
 
-const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
+const DetailMap = ({ buildingName, selectedPin, onClose, onSelectBooth }) => {
   const config = mapConfigs[buildingName];
 
   if (!config) {
@@ -31,7 +31,7 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
           onClick={(e) => {
             e.stopPropagation();
             if (onSelectBooth) {
-              onSelectBooth(btn.label); // ✅ 부모로 전달
+              onSelectBooth(btn.label); //  부모로 전달
             }
           }}
         >

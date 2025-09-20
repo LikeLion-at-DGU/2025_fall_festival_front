@@ -57,10 +57,12 @@ function Map() {
             />
           </div>
           <MapContainer
-            apiData={filteredBooths}
-            selectedFilter={selectedFilter}
-            onSelectBooth={(boothName) => setSearchText(boothName)} // ✅ 부스 이름을 검색어로 설정
-          />
+  apiData={filteredBooths}
+  selectedFilter={selectedFilter}
+  onSelectBooth={(boothName) => setSearchText(boothName)}
+  selectedPin={selectedPin}         
+  handlePinClick={handlePinClick}  
+/>
         </div>
       </div>
 

@@ -160,6 +160,8 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
       translations[(booth.location?.id ?? booth.booth_id) + "-LocationName"] ??
       booth.location?.name ??
       "";
+console.log("부스네임",boothName)
+console.log("위치",locationName)
 
     const matchesSearch =
       searchTerm === "" ||
@@ -167,6 +169,8 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
       locationName.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesPin = selectedPin === null || locationName === selectedPin;
+console.log("매치핀",matchesPin)
+console.log("고른핀",selectedPin)
 
     return matchesSearch && matchesPin;
   });
