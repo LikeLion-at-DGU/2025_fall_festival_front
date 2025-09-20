@@ -9,6 +9,11 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
     return null;
   }
 
+  // const now = new Date();
+  const now = new Date("2024-09-24T16:00:00"); // 낮 테스트
+  const today = now.toISOString().split("T")[0];
+  const currentTime = now.getHours() < 17 ? "day" : "night"; // ✅ 오후 5시 기준 낮/밤
+
   return (
     <div className="relative w-full h-full rounded-[16px] border border-[#E4E4E7]">
       {/* 상세지도 이미지 */}
@@ -22,11 +27,14 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
         .filter((btn) => {
           if (!btn.showIf) return true;
 
-          const { startDate, endDate, startTime, endTime } = btn.showIf;
-          const now = new Date();
+          // 날짜 조건
+          if (btn.showIf.date && btn.showIf.date !== today) return false;
 
-          // 오늘 날짜 (YYYY-MM-DD)
-          const today = now.toISOString().split("T")[0];
+          // 낮/밤 조건
+          if (btn.showIf.time && btn.showIf.time !== currentTime) return false;
+
+          // 기존 startDate ~ endDate, startTime ~ endTime 조건도 유지
+          const { startDate, endDate, startTime, endTime } = btn.showIf;
 
           if (startDate && today < startDate) return false;
           if (endDate && today > endDate) return false;
@@ -58,7 +66,7 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
             }}
             onClick={(e) => {
               e.stopPropagation();
-              onSelectBooth?.(btn.label); // ✅ 클릭 이벤트 모두 발생
+              onSelectBooth?.(btn.label);
             }}
           >
             {btn.label}
@@ -74,7 +82,7 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
             onClose();
           }}
         >
-          <img src={backbtn} alt="뒤로가기" width={24} height={24}/>
+          <img src={backbtn} alt="뒤로가기" width={24} height={24} />
         </button>
         <div className="rounded-[10px] h-[18px] text-[#fff] bg-[rgba(42,42,46,0.60)] text-[12px] font-semibold leading-[18px] flex px-[6px] items-center">
           {buildingName}
