@@ -4,8 +4,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["SUITE", "sans-serif"], // Tailwind 기본 sans 폰트 덮어쓰기
-        suite: ["SUITE", "sans-serif"],
+        sans: ["SUITE Variable", "SUITE", "Pretendard", "sans-serif"], // Tailwind 기본 sans 폰트 덮어쓰기
+        suite: ["SUITE Variable", "SUITE", "Pretendard", "sans-serif"],
         pretendard: ["Pretendard", "sans-serif"],
       },
       colors: {
