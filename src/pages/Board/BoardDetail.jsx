@@ -1,7 +1,9 @@
+// src/pages/Board/BoardDetail.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import BoardDetailHeader from "../../components/Header/BoardDetailHeader";
 import BoothCard from "../../components/MapComponents/BoothCard";
+import { formatTimeWithDay } from "../../utils/dateUtils";
 
 // .env 설정
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
@@ -40,13 +42,37 @@ const isAbortError = (e) =>
   e?.name === "AbortError" ||
   (typeof e?.message === "string" && e.message.toLowerCase().includes("abort"));
 
+// 간단한 날짜/시간 포맷터
+function fmtDateTime(iso) {
+  if (!iso) return "";
+  try {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return iso;
+    const pad = (n) => String(n).padStart(2, "0");
+    const yyyy = d.getFullYear();
+    const mm = pad(d.getMonth() + 1);
+    const dd = pad(d.getDate());
+    const hh = pad(d.getHours());
+    const mi = pad(d.getMinutes());
+    return `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
+  } catch {
+    return iso;
+  }
+}
+
 export default function BoardDetail() {
   const { boardId } = useParams();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [post, setPost] = useState(null);
   const [related, setRelated] = useState([]);
+
+  // 부스 정보 상태 (이벤트 + booth_id 일 때만 로드)
+  const [boothRaw, setBoothRaw] = useState(null);
+  const [boothLoading, setBoothLoading] = useState(false);
+  const [boothError, setBoothError] = useState("");
 
   useEffect(() => {
     const controller = new AbortController();
@@ -54,6 +80,9 @@ export default function BoardDetail() {
     (async () => {
       setLoading(true);
       setError("");
+      setBoothRaw(null);
+      setBoothError("");
+
       try {
         if (!API_BASE) throw new Error("API BASE 설정이 없습니다.");
 
@@ -79,12 +108,26 @@ export default function BoardDetail() {
         } else {
           setRelated([]);
         }
+
+        // 이벤트 + booth_id 가 있으면 부스 상세 로드
+        if (data?.category === "Event" && data?.booth_id) {
+          setBoothLoading(true);
+          await fetchBoothById({
+            apiBase: API_BASE,
+            boothId: data.booth_id,
+            signal: controller.signal,
+            onSuccess: (booth) => setBoothRaw(booth),
+            onError: (msg) =>
+              setBoothError(msg || "부스 정보를 불러오지 못했습니다."),
+          });
+        }
       } catch (e) {
         if (!isAbortError(e)) {
           console.error(e);
           setError(e?.message || "게시글을 불러오지 못했습니다.");
         }
       } finally {
+        setBoothLoading(false);
         setLoading(false);
       }
     })();
@@ -96,17 +139,76 @@ export default function BoardDetail() {
   const isLost = post?.category === "LostItem";
   const isEvent = post?.category === "Event";
 
+  // 이벤트 스키마 대비: content가 없으면 detail 사용
+  const contentText = post?.content ?? post?.detail ?? "";
+
   // 본문 텍스트 파싱
   const paragraphs = useMemo(() => {
-    if (!post?.content) return [];
-    return String(post.content).split(/\n+/);
-  }, [post]);
+    if (!contentText) return [];
+    return String(contentText).split(/\n+/);
+  }, [contentText]);
+
+  // 이벤트/공지/분실물 작성자 보정: writer 없으면 booth_name 사용
+  const displayWriter = post?.writer || post?.booth_name || "";
+
+  // 이벤트 시간 보정: start_time ~ end_time (또는 기존 event_time)
+  const eventTime =
+    post?.event_time ||
+    (post?.start_time && post?.end_time
+      ? `${fmtDateTime(post.start_time)} ~ ${fmtDateTime(post.end_time)}`
+      : post?.start_time
+      ? fmtDateTime(post.start_time)
+      : "");
+
+  // 이벤트 부스 정보 보정: booth_location이 없다면 booth_name을 부스명으로 표시
+  const boothLabel =
+    post?.booth_location ||
+    (post?.booth_name ? `부스명: ${post.booth_name}` : "");
+
+  // BoothCard가 기대하는 형태로 변환
+  const boothCardProps = useMemo(() => {
+    if (!boothRaw) return null;
+
+    // boothRaw 예시 스키마:
+    // {
+    //   booth_id, name, location:{name}, business_days, start_time, end_time,
+    //   like_cnt, is_event, is_dorder, ...
+    // }
+    const id = boothRaw.booth_id ?? boothRaw.id;
+    const title = boothRaw.name ?? "";
+    const locationName = boothRaw.location?.name ?? "";
+    const timeText = formatTimeWithDay(
+      boothRaw.business_days,
+      boothRaw.start_time,
+      boothRaw.end_time
+    );
+    const likes = boothRaw.like_cnt ?? 0;
+    const badges = {
+      isEventActive: !!boothRaw.is_event,
+      isDOrderPartner: !!boothRaw.is_dorder,
+    };
+
+    return {
+      boothId: id,
+      title,
+      location: locationName,
+      time: timeText,
+      isOperating: true, // 상세 페이지에서는 운영중 여부 표시를 단순화
+      likesCount: likes,
+      badges,
+    };
+  }, [boothRaw]);
+
+  const handleClickBoothCard = () => {
+    if (!boothCardProps?.boothId) return;
+    navigate(`/booth/${boothCardProps.boothId}`);
+  };
 
   return (
     <div className="mx-auto w-full max-w-[430px] bg-white">
       {/* 상단 고정 헤더 */}
       <BoardDetailHeader />
-      
+
       <main className="">
         <div className="px-5 min-h-[calc(100vh)] flex flex-col">
           {loading && (
@@ -131,32 +233,34 @@ export default function BoardDetail() {
 
                 {/* 작성자/위치/시간 */}
                 <div className="text-[#71717A] font-[SUITE] text-[14px] not-italic font-normal leading-[150%] mt-[4px]">
-                  {post?.writer && (
+                  {displayWriter && (
                     <p>
                       <span className="text-gray-400">작성자 : </span>
-                      <span className="text-gray-600">{post.writer}</span>
+                      <span className="text-gray-600">{displayWriter}</span>
                     </p>
                   )}
+
                   {isLost && post?.location && (
                     <p>
                       <span className="text-gray-400">발견 위치 : </span>
                       <span className="text-gray-600">{post.location}</span>
                     </p>
                   )}
-                  {isEvent && (post?.booth_location || post?.event_time) && (
+
+                  {isEvent && (boothLabel || eventTime) && (
                     <>
-                      {post?.booth_location && (
+                      {boothLabel && (
                         <p>
                           <span className="text-gray-400">부스 위치 : </span>
                           <span className="text-gray-600">
-                            {post.booth_location}
+                            {boothCardProps?.location ?? boothLabel}
                           </span>
                         </p>
                       )}
-                      {post?.event_time && (
+                      {eventTime && (
                         <p>
                           <span className="text-gray-400">이벤트 시간 : </span>
-                          <span className="text-gray-600">{post.event_time}</span>
+                          <span className="text-gray-600">{eventTime}</span>
                         </p>
                       )}
                     </>
@@ -172,7 +276,7 @@ export default function BoardDetail() {
                   </section>
                 )}
 
-                {/* 본문 이미지 */}
+                {/* 본문 이미지 (옵션) */}
                 {post?.image && (
                   <img
                     src={post.image}
@@ -180,7 +284,6 @@ export default function BoardDetail() {
                     className="mt-5 w-full rounded-2xl object-cover shadow"
                   />
                 )}
-
                 {Array.isArray(post?.images) &&
                   post.images.map((src, i) => (
                     <img
@@ -191,10 +294,33 @@ export default function BoardDetail() {
                     />
                   ))}
 
-                {/* 부스 카드 */}
-                {post?.booth && (
+                {/* 부스 카드 (이벤트 + booth_id 있을 때, 정상 데이터면 표시) */}
+                {isEvent && post?.booth_id && (
                   <div className="mt-6">
-                    <BoothCard booth={post.booth} />
+                    {boothLoading && (
+                      <div className="text-sm text-gray-500">
+                        부스 정보를 불러오는 중…
+                      </div>
+                    )}
+                    {boothError && (
+                      <div className="text-sm text-rose-600">{boothError}</div>
+                    )}
+                    {boothCardProps && (
+                      <div
+                        className="cursor-pointer"
+                        onClick={handleClickBoothCard}
+                      >
+                        <BoothCard
+                          boothId={boothCardProps.boothId}
+                          title={boothCardProps.title}
+                          location={boothCardProps.location}
+                          time={boothCardProps.time}
+                          isOperating={boothCardProps.isOperating}
+                          likesCount={boothCardProps.likesCount}
+                          badges={boothCardProps.badges}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -208,6 +334,7 @@ export default function BoardDetail() {
                 <ul className="mt-3 flex flex-col gap-[4px]">
                   {related.slice(0, 3).map((item) => {
                     const pillCls = pillClsByCategory(item.category);
+                    const writerOrBooth = item.writer || item.booth_name || "";
                     return (
                       <li
                         key={item.id}
@@ -227,9 +354,11 @@ export default function BoardDetail() {
                               {item.title}
                             </p>
                           </div>
-                          <span className="shrink-0 text-[#52525B] font-[SUITE] text-[10px]">
-                            - {item.writer}
-                          </span>
+                          {writerOrBooth && (
+                            <span className="shrink-0 text-[#52525B] font-[SUITE] text-[10px]">
+                              - {writerOrBooth}
+                            </span>
+                          )}
                         </Link>
                       </li>
                     );
@@ -247,4 +376,48 @@ export default function BoardDetail() {
       </main>
     </div>
   );
+}
+
+/* =========================
+   부스 상세 조회 (API는 /booths/:id/ 사용)
+   ========================= */
+async function fetchBoothById({
+  apiBase,
+  boothId,
+  signal,
+  onSuccess,
+  onError,
+}) {
+  // 실제 운영 API 우선 → 그 외는 폴백
+  const candidates = [
+    `${apiBase}/booths/${boothId}/`,          // ✅ 주요 엔드포인트
+    `${apiBase}/booths/detail/${boothId}/`,   // fallback
+    `${apiBase}/booths/${boothId}`,           // fallback (슬래시 없음)
+  ];
+
+  try {
+    for (const url of candidates) {
+      try {
+        const res = await fetch(url, {
+          method: "GET",
+          signal,
+          headers: { Accept: "application/json" },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          onSuccess?.(data);
+          return;
+        }
+      } catch (e) {
+        if (isAbortError(e)) throw e;
+        // 실패해도 다음 후보 시도
+      }
+    }
+    onError?.("부스 상세 엔드포인트를 찾지 못했습니다.");
+  } catch (e) {
+    if (!isAbortError(e)) {
+      console.error(e);
+      onError?.("부스 정보를 불러오는 중 오류가 발생했습니다.");
+    }
+  }
 }

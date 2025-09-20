@@ -7,10 +7,11 @@ import NearbyBoothSection from "./NearbyBoothSection";
 import useBoothLikes from "../../../hooks/useBoothLikes";
 
 import CheckIcon from "../../../assets/images/icons/map-icons/Check.svg";
-import HeartIcon from "../../../assets/images/icons/map-icons/Heart.svg";
-import UnheartIcon from "../../../assets/images/icons/map-icons/Unheart.svg";
+import HeartIcon from "../../../assets/images/icons/map-icons/Heart.png";
+import UnheartIcon from "../../../assets/images/icons/map-icons/emptyHeart.png";
 import TimeCircleIcon from "../../../assets/images/icons/map-icons/TimeCircle.svg";
 import LocationIcon from "../../../assets/images/icons/map-icons/Location.svg";
+import tail from "../../../assets/images/icons/map-icons/triangle.svg";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const fmtTime = (t) => (typeof t === "string" ? t.slice(0, 5) : t);
@@ -45,7 +46,7 @@ export default function BoothDetail() {
   const [booth, setBooth] = useState(null);
   const [initialLikesCount, setInitialLikesCount] = useState(0);
 
-  // 좋아요 훅 사용
+  // 좋아요 훅
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     id,
     initialLikesCount
@@ -67,14 +68,14 @@ export default function BoothDetail() {
   if (!booth) return <div className="p-6">로딩 중...</div>;
 
   return (
-    <div className="pt-6 pb-8">
+    <div className="flex flex-col w-[343px] mx-auto items-center pt-6 pb-8 space-y-4">
       {/* 상단 이미지 */}
-      <div className="w-[343px] h-[232px] mx-auto bg-gray-500 flex items-center justify-center">
+      <div className="w-full h-[232px] rounded-[16px] bg-[#A1A1AA] flex items-center justify-center">
         {booth.image_url && (
           <img
             src={booth.image_url}
             alt={booth.name}
-            className="w-[343px] h-[232px] object-cover"
+            className="w-[343px] h-[232px] object-cover rounded-[16px]"
             onError={(e) => {
               e.currentTarget.style.display = "none"; // 로딩 실패 → 안보이게
             }}
@@ -83,7 +84,13 @@ export default function BoothDetail() {
       </div>
 
       {/* 카드 */}
-      <div className="bg-white shadow-md rounded-[16px] px-4 py-3 mx-4 mt-3 relative z-10">
+      <div className="relative w-full bg-white shadow-md rounded-[16px] px-4 py-3 z-10">
+        {/* tail 이미지 */}
+        <img
+          src={tail}
+          className="absolute -top-6 left-10 -translate-x-1/2"
+          alt="tail"
+        />
         <div className="flex justify-between items-start">
           {/* 왼쪽 영역 */}
           <div className="flex-1">
@@ -105,7 +112,7 @@ export default function BoothDetail() {
               </div>
             )}
 
-            {/* 운영 시간 (요일 그룹핑) */}
+            {/* 운영 시간 */}
             {groupSchedules(booth.schedules).map((g, i) => (
               <div
                 key={i}
@@ -148,7 +155,7 @@ export default function BoothDetail() {
       </div>
 
       {/* 소개 */}
-      <div className="bg-white shadow rounded-[16px] px-[15px] py-[10px] mx-4 mt-4">
+      <div className="w-full bg-white shadow rounded-[16px] px-[15px] py-[10px]">
         <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">부스 소개</h2>
         <p className="text-sm text-gray-700">
           {booth.booth_description || "소개글이 없습니다."}
@@ -157,10 +164,9 @@ export default function BoothDetail() {
 
       {/* 디오더 상태 */}
       {booth.is_dorder && (
-        <div className="bg-white shadow rounded-[13px] p-3 mx-4 mt-3 text-sm text-gray-700">
+        <div className="w-full bg-white shadow rounded-[13px] p-3 text-sm text-gray-700">
           {booth.booth_can_usage === "True" ? (
             <div className="flex items-center gap-2">
-              {/* 빨간 원 */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="10"
@@ -174,7 +180,6 @@ export default function BoothDetail() {
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              {/* 회색 원 */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="10"
@@ -192,7 +197,7 @@ export default function BoothDetail() {
 
       {/* 운영 코너 */}
       {!booth.is_night && (
-        <div className="bg-white shadow rounded-[16px] px-[15px] py-[10px] mx-4 mt-4">
+        <div className="w-full bg-white shadow rounded-[16px] px-[15px] py-[10px]">
           <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">
             운영 코너
           </h2>

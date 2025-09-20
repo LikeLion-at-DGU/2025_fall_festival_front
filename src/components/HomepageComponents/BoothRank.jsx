@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BoothCard from "../MapComponents/BoothCard";
+import Skeleton from "../Skeleton/Skeleton";
 import { getBoothRanking } from "../../apis/mainpage";
 import { formatTimeWithDay } from "../../utils/dateUtils";
 
@@ -76,11 +77,26 @@ const BoothRank = ({ onDataChange }) => {
       </div>
       <div className="space-y-4">
         {loading ? (
-          <div className="mb-[74px]">
-            <p className="text-[12px] font-normal leading-[150%] font-suite text-black">
-              부스 랭킹을 불러오는 중...
-            </p>
-          </div>
+          <>
+            {[1, 2, 3].map((index) => (
+              <div
+                key={index}
+                className="bg-white w-full h-[92px] rounded-2xl border border-gray-200 p-4"
+                style={{
+                  boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
+                }}
+              >
+                <div className="flex gap-4">
+                  <Skeleton width={64} height={64} className="rounded-lg" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton width={96} height={12} />
+                    <Skeleton width={160} height={20} />
+                    <Skeleton width={80} height={16} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </>
         ) : error ? (
           <div className="mb-[74px]">
             <p className="text-[12px] font-normal leading-[150%] font-suite text-black">

@@ -12,6 +12,7 @@ const Stage = () => {
   const navigate = useNavigate();
   const [currentArtistIndex, setCurrentArtistIndex] = useState(0);
   const [isShowTime, setIsShowTime] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   /* 9월 25일 연예인 */
   const artists25th = [
@@ -30,7 +31,7 @@ const Stage = () => {
   /* 현재 날짜에 맞는 연예인들 선택 */
   const getCurrentArtists = () => {
     const today = new Date();
-    const month = today.getMonth() + 1; 
+    const month = today.getMonth() + 1;
     const date = today.getDate();
 
     if (month === 9 && date === 25) {
@@ -39,7 +40,7 @@ const Stage = () => {
       return artists26th;
     }
 
-    return artists25th; 
+    return artists25th;
   };
 
   const currentArtists = getCurrentArtists();
@@ -49,11 +50,11 @@ const Stage = () => {
     const checkTime = () => {
       const now = new Date();
       const hour = now.getHours();
-      setIsShowTime(hour >= 20); 
+      setIsShowTime(hour >= 20);
     };
 
     checkTime();
-    const interval = setInterval(checkTime, 60000); 
+    const interval = setInterval(checkTime, 60000);
 
     return () => clearInterval(interval);
   }, []);
@@ -62,8 +63,13 @@ const Stage = () => {
     if (!isShowTime || currentArtists.length <= 1) return;
 
     const interval = setInterval(() => {
-      setCurrentArtistIndex((prev) => (prev + 1) % currentArtists.length);
-    }, 3000); 
+      setIsTransitioning(true);
+
+      setTimeout(() => {
+        setCurrentArtistIndex((prev) => (prev + 1) % currentArtists.length);
+        setIsTransitioning(false);
+      }, 250);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [isShowTime, currentArtists.length]);
@@ -88,7 +94,9 @@ const Stage = () => {
             <img
               src={currentArtists[currentArtistIndex].image}
               alt={currentArtists[currentArtistIndex].name}
-              className="w-full h-[156px] rounded-[12px] object-cover"
+              className={`w-full h-[156px] rounded-[12px] object-cover transition-opacity duration-300 ease-in-out ${
+                isTransitioning ? "opacity-0" : "opacity-100"
+              }`}
             />
             <div
               className="absolute inset-0 rounded-[12px]"
@@ -97,7 +105,11 @@ const Stage = () => {
                   "linear-gradient(179.37deg, rgba(0, 0, 0, 0) 36.37%, rgba(0, 0, 0, 0.77) 99.45%)",
               }}
             />
-            <p className="absolute bottom-4 right-4 text-2xl font-semibold font-suite text-white">
+            <p
+              className={`absolute bottom-4 right-4 text-2xl font-semibold font-suite text-white transition-opacity duration-300 ease-in-out ${
+                isTransitioning ? "opacity-0" : "opacity-100"
+              }`}
+            >
               {currentArtists[currentArtistIndex].name}
             </p>
           </>
@@ -116,7 +128,7 @@ const Stage = () => {
                 공연 준비중이에요!
               </p>
               <p className="text-xl font-medium text-[#2A2A2E]">
-              coming Soon...
+                coming Soon...
               </p>
             </div>
           </div>
