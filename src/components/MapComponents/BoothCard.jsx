@@ -28,12 +28,6 @@ function BoothCard({
     initialIsLiked
   );
 
-  // 현재 시각 기준으로 night 판별
-  const now = new Date();
-  const shouldShowNight = now.getHours() >= 17; // 5시 이후면 true
-  // 조건 분기
-  if (shouldShowNight && !isNight) return null; // 5시 이후인데 낮 부스면 숨김
-  if (!shouldShowNight && isNight) return null; // 5시 이전인데 밤 부스면 숨김
 
   return (
     <div
