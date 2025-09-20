@@ -123,11 +123,39 @@ function BoardItem({ item }) {
    ========================= */
 function Pagination({ total, page, pageSize, onChange }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const windowSize = 5;
-  const start = Math.max(1, page - Math.floor(windowSize / 2));
-  const end = Math.min(totalPages, start + windowSize - 1);
-  const pages = [];
-  for (let p = start; p <= end; p++) pages.push(p);
+
+  // 표시할 페이지 번호(버튼) 목록을 만든다. (최대 5개)
+  const buildPages = () => {
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    // 총 페이지가 6 이상인 경우
+    if (page <= 3) {
+      // 예: 1 2 3 4 ... N
+      return [1, 2, 3, 4, totalPages];
+    }
+
+    if (page >= totalPages - 2) {
+      // 예: 1 ... N-3 N-2 N-1 N
+      return [1, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+
+    // 가운데 근처
+    // 예: 1 ... p-1 p p+1 ... N  (버튼은 1, p-1, p, p+1, N)
+    return [1, page - 1, page, page + 1, totalPages];
+  };
+
+  const pages = buildPages();
+
+  // 인접하지 않는 구간 사이에만 '…'를 표시
+  const withGaps = [];
+  for (let i = 0; i < pages.length; i++) {
+    const prev = pages[i - 1];
+    const cur = pages[i];
+    if (i > 0 && cur - prev > 1) withGaps.push("gap-" + i); // gap marker
+    withGaps.push(cur);
+  }
 
   return (
     <div className="flex items-center justify-center gap-2 pt-4">
@@ -140,41 +168,24 @@ function Pagination({ total, page, pageSize, onChange }) {
         이전
       </button>
 
-      {start > 1 && (
-        <>
+      {withGaps.map((item) =>
+        typeof item === "string" ? (
+          // gap 표시 (실제 숨겨진 페이지가 있을 때만 보임)
+          <span key={item} className="px-1 text-gray-400">
+            …
+          </span>
+        ) : (
           <button
-            className="rounded-lg border px-2 py-1 text-sm"
-            onClick={() => onChange(1)}
+            key={item}
+            onClick={() => onChange(item)}
+            className={
+              "rounded-lg border px-2 py-1 text-sm " +
+              (item === page ? "bg-black text-white border-black" : "")
+            }
           >
-            1
+            {item}
           </button>
-          <span className="px-1 text-gray-400">…</span>
-        </>
-      )}
-
-      {pages.map((p) => (
-        <button
-          key={p}
-          onClick={() => onChange(p)}
-          className={
-            "rounded-lg border px-2 py-1 text-sm " +
-            (p === page ? "bg-black text-white border-black" : "")
-          }
-        >
-          {p}
-        </button>
-      ))}
-
-      {end < totalPages && (
-        <>
-          <span className="px-1 text-gray-400">…</span>
-          <button
-            className="rounded-lg border px-2 py-1 text-sm"
-            onClick={() => onChange(totalPages)}
-          >
-            {totalPages}
-          </button>
-        </>
+        )
       )}
 
       <button
@@ -188,6 +199,7 @@ function Pagination({ total, page, pageSize, onChange }) {
     </div>
   );
 }
+
 
 /* =========================
    메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
