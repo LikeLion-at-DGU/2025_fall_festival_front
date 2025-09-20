@@ -137,7 +137,7 @@ export default function BoothDetail() {
             <button
               onClick={toggleLike}
               disabled={loading}
-              className="w-6 h-6 flex items-center justify-center mb-1 hover:scale-110 transition-transform duration-200 disabled:opacity-50"
+              className="w-[25px] h-[24px] flex items-center justify-center hover:scale-110 transition-transform duration-200 disabled:opacity-50"
               aria-pressed={isLiked}
               aria-label={isLiked ? "좋아요 취소" : "좋아요"}
             >
@@ -147,7 +147,7 @@ export default function BoothDetail() {
                 className="w-5 h-5 transition-all duration-200"
               />
             </button>
-            <span className="text-gray-700 text-sm font-semibold">
+            <span className="text-[#52525B] text-sm font-semibold">
               {likesCount}
             </span>
           </div>
@@ -215,6 +215,14 @@ export default function BoothDetail() {
 
       {/* 메뉴 */}
       <MenuSection menus={booth.menus} />
+
+      {/* 디오더 안내문구 */}
+      {booth.is_dorder && (
+        <p className="mt-[16px] text-[15px] text-[#71717A] text-left w-full">
+          디오더 측에서 제공하는 공식 데이터입니다
+        </p>
+      )}
+
     </div>
   );
 }

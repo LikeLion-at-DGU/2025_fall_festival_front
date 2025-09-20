@@ -23,12 +23,18 @@ function EventPost() {
   // 제출 로직: 이벤트 등록 후 부스관리자 메인으로 이동합니다.
   const handleSubmit = async () => {
     try {
+      const uid = sessionStorage.getItem("uid");
+      if (!uid) {
+      setToastMsg("세션이 만료되었습니다. 다시 로그인해주세요.");
+      setTimeout(() => navigate("/admin/login"), 2000);
+      return;
+    }
       const start_time = `2025-09-20T${startHour}:${startMinute}:00`;
       const end_time = `2025-09-20T${endHour}:${endMinute}:00`;
 
-      await createEvent({ title, detail, start_time, end_time });
+      await createEvent({ uid, title, detail, start_time, end_time });
 
-      setToastMsg("이벤트가 등록되었습니다 ✅");
+      setToastMsg("이벤트가 등록되었습니다");
       setIsPopupOpen(false);
       setTimeout(() => navigate("/admin/booth"), 2500);
     } catch (err) {

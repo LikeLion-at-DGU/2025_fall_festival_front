@@ -19,7 +19,7 @@ function GameCountdown({ onCountdownEnd }) {
   }, [countdown, onCountdownEnd]);
 
   return (
-    <div className="w-96 h-[812px] relative bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden flex items-center justify-center">
+    <div className="w-full max-w-[430px] mx-auto h-screen relative bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden flex items-center justify-center">
       <div className="text-[200px] font-black text-white animate-pulse">
         {countdown}
       </div>

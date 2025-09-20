@@ -35,7 +35,7 @@ function NoticeBox({ id, category, title, writer }) {
       <div className="flex items-center gap-2">
         <span
           className="
-            px-2 py-1 text-sm font-medium
+            px-0.1 py-1 text-sm font-medium
             text-white bg-[#EF7063] 
             rounded-md w-10 h-6 flex items-center justify-center
           "

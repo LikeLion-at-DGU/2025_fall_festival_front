@@ -15,7 +15,7 @@ function NoticeBox({ noticeText = "공지", content, org }) {
           className="
             inline-flex items-center justify-center 
             w-[40px] h-[25px] 
-            px-[5px] py-[4px]
+            px-[1px] py-[4px]
             rounded-[20px] 
             bg-[#FFA6A6] 
             text-white text-sm font-medium

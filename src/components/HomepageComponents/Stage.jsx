@@ -69,7 +69,7 @@ const Stage = () => {
         setCurrentArtistIndex((prev) => (prev + 1) % currentArtists.length);
         setIsTransitioning(false);
       }, 250);
-    }, 3000);
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [isShowTime, currentArtists.length]);
