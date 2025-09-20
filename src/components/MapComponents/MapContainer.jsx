@@ -7,7 +7,7 @@ import { mapConfigs } from "../../config/mapConfigs";
 const MapContainer = ({ apiData, selectedFilter, onSelectBooth, selectedPin, handlePinClick }) => {
   return (
     <div className="w-full mx-auto relative">
-      {selectedPin ? (
+      {selectedFilter === "Booth" && selectedPin ? (
         <DetailMap
           buildingName={selectedPin}
           onClose={() => handlePinClick(null)}   // 뒤로가기 → 핀 해제
