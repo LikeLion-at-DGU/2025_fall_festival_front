@@ -45,8 +45,9 @@ function AdminMain() {
     "flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6";
   const wrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-4";
   const noticeWrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-0";
-  const smallWrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-2.5";
+  const postWrapperClass = "flex flex-col items-center w-full h-[43vh] mx-auto gap-2.5 overflow-y-scroll";
   const bottomWrapperClass = "flex flex-col w-full";
+  
 
   // ✅ 게시글 및 긴급공지 불러오기
   useEffect(() => {
@@ -177,9 +178,11 @@ function AdminMain() {
       {/* 게시글 목록 */}
       <div className={wrapperClass}>
         <AdminTitle text="게시글 목록" />
-        <div className={smallWrapperClass}>
-          <NoticeSearch onSearch={handleSearch} />
+        <NoticeSearch onSearch={handleSearch} />
+        <div className={postWrapperClass}>
+          
 
+          
           {filteredNotices.length > 0 ? (
             filteredNotices.map((n) => (
               <NoticeBox
