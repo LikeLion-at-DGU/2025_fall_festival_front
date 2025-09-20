@@ -13,7 +13,7 @@ export const mapConfigs = {
   "만해/법학관": {
     img: DetailMapManhae,
     buttons: [
-      { label: "부스1", x: 50, y: 30 },
+      { label: "테스트부스1", x: 50, y: 30 },
       { label: "입구", x: 20, y: 80 },
     ],
   },

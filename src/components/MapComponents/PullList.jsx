@@ -5,7 +5,7 @@ import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
 import { useTranslations } from "../../context/TranslationContext";
 
-function PullList({ booths, selectedFilter, searchTerm, selectedPin }) {
+function PullList({ booths, selectedFilter, searchTerm, selectedPin, selectedBooth }) {
   const minHeight = 310;
   const maxHeight = Math.min(620, window.innerHeight - 100 - 62);
   const defaultHeight = 310;
@@ -237,57 +237,45 @@ console.log("고른핀",selectedPin)
             </div>
           ) : (
             <div className="w-full flex flex-col gap-2">
-              {sortedBooths.map((booth) => {
-                const boothName =
-                  translations[booth.booth_id + "-BoothName"] ?? booth.name;
-                const locationName =
-                  translations[
-                    (booth.location?.id ?? booth.booth_id) + "-LocationName"
-                  ] ??
-                  booth.location?.name ??
-                  "";
+{sortedBooths.map((booth) => {
+  const boothName = translations[booth.booth_id + "-BoothName"] ?? booth.name;
+  const locationName =
+    translations[(booth.location?.id ?? booth.booth_id) + "-LocationName"] ??
+    booth.location?.name ?? "";
 
-                return booth.category === "Booth" ||
-                  booth.category === "FoodTruck" ? (
-                  <BoothCard
-                    key={booth.booth_id}
-                    boothId={booth.booth_id}
-                    title={boothName} // ✅ 번역된 이름
-                    image={booth.image_url}
-                    isNight={booth.is_night}
-                    startTime={booth.start_time}
-                    endTime={booth.end_time}
-                    businessDays={booth.business_days?.[0]?.weekday}
-                    location={locationName} // ✅ 번역된 위치
-                    isOperating={booth.isOperating}
-                    isDorder={booth.is_dorder}
-                    isEvent={booth.is_event}
-                    likesCount={booth.like_cnt} //좋아요 개수
-                    isLiked={booth.is_liked} //좋아요 눌렀는지
-                    className="w-full"
-                    onClick={() =>
-                      navigate(
-                        booth.category === "FoodTruck"
-                          ? `/foodtruck/${booth.booth_id}`
-                          : `/booth/${booth.booth_id}`
-                      )
-                    }
-                  />
-                ) : (
-                  <NotBoothCard
-                    key={booth.booth_id}
-                    title={boothName} // ✅ 번역된 이름
-                    distance_m={booth.distance_m}
-                    category={booth.category}
-                    onClick={() => {
-                      if (booth.category === "Drink")
-                        navigate(`/drink/${booth.booth_id}`);
-                      else if (booth.category === "Toilet")
-                        navigate(`/toilet/${booth.booth_id}`);
-                    }}
-                  />
-                );
-              })}
+  return booth.category === "Booth" || booth.category === "FoodTruck" ? (
+    <BoothCard
+      key={booth.booth_id}
+      boothId={booth.booth_id}
+      title={boothName}
+      image={booth.image_url}
+      location={locationName}
+      // ✅ 선택된 핀과 같은 카드 강조
+       isSelected={selectedBooth === boothName}
+      className="w-full"
+      onClick={() =>
+        navigate(
+          booth.category === "FoodTruck"
+            ? `/foodtruck/${booth.booth_id}`
+            : `/booth/${booth.booth_id}`
+        )
+      }
+    />
+  ) : (
+    <NotBoothCard
+      key={booth.booth_id}
+      title={boothName}
+      distance_m={booth.distance_m}
+      category={booth.category}
+      isSelected={selectedPin === locationName}   // ✅ 동일하게 강조
+      onClick={() => {
+        if (booth.category === "Drink") navigate(`/drink/${booth.booth_id}`);
+        else if (booth.category === "Toilet") navigate(`/toilet/${booth.booth_id}`);
+      }}
+    />
+  );
+})}
+
             </div>
           )}
         </div>
