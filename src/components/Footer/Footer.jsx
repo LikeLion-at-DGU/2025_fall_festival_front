@@ -12,7 +12,7 @@ const Footer = () => {
     <footer
       className={`flex flex-col items-center justify-between
       w-full max-h-[350px] gap-[32px]
-      px-[36px] py-[25px] pb-[100px] 
+      px-[36px] py-[50px] 
       bg-[#E4E4E7]`}
     >
       <div className={`flex justify-between h-9 gap-10`}>
