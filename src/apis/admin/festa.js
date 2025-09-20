@@ -41,7 +41,7 @@ export async function createLostPost(formData) {
 export async function patchEmergencyNotice(id, data) {
   try {
     const res = await instance.patch(`/board/${id}`, data);
-    return res.data;
+    return res.data; // ✅ 반드시 res.data 반환
   } catch (err) {
     throw err.response?.data || { error: "알 수 없는 오류" };
   }
@@ -51,7 +51,7 @@ export async function patchEmergencyNotice(id, data) {
 export async function getEmergencyNotices() {
   try {
     const res = await instance.get("/board?type=emergency");
-    return res.data;
+    return res.data; // ✅ 반드시 res.data 반환
   } catch (err) {
     throw err.response?.data || { error: "알 수 없는 오류" };
   }
