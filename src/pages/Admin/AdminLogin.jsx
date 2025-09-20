@@ -71,7 +71,8 @@ function AdminLogin() {
       }
 
     } catch (err) {
-      showToast(setErrorMsg, err.response?.data?.error || "로그인 실패");
+      //showToast(setErrorMsg, err.response?.data?.error || "로그인 실패");
+      showToast(setErrorMsg, "관리자 코드를 확인해주세요");
     }
   };
 

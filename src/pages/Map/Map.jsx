@@ -19,6 +19,7 @@ function Map() {
   const { selectedPin, handlePinClick, handleFilterClick } =
     usePinSelection(selectedFilter);
   const { searchText, setSearchText } = useSearch();
+  const [selectedBooth, setSelectedBooth] = useState(null);
 
   // 컴포넌트 마운트 시 위치 정보 요청
   useEffect(() => {
@@ -57,22 +58,24 @@ function Map() {
             />
           </div>
           <MapContainer
-  apiData={filteredBooths}
-  selectedFilter={selectedFilter}
-  onSelectBooth={(boothName) => setSearchText(boothName)}
-  selectedPin={selectedPin}         
-  handlePinClick={handlePinClick}  
-/>
+            apiData={filteredBooths}
+            selectedFilter={selectedFilter}
+            onSelectBooth={setSelectedBooth} // ✅ 추가
+            selectedPin={selectedPin}
+            handlePinClick={handlePinClick}
+          />
         </div>
       </div>
 
       {/* 바텀시트 */}
-      <PullList
-        booths={filteredBooths}
-        selectedFilter={selectedFilter}
-        searchTerm={searchText}
-        selectedPin={selectedPin}
-      />
+  <PullList
+  booths={filteredBooths}
+  selectedFilter={selectedFilter}
+  searchTerm={searchText}
+  selectedPin={selectedPin}
+  selectedBooth={selectedBooth}   // ✅ 추가
+/>
+
     </div>
   );
 }
