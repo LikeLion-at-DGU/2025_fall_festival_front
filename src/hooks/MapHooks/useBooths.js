@@ -26,15 +26,15 @@ function useBooths(selectedFilter, userLocation = null) {
             // 🔹 백엔드에서 types로 필터
             types: [selectedFilter],
             // 🔹 사용자 위치 전달 (distance_m 계산용)
-            location: {
-              lat: userLocation.x,
-              lng: userLocation.y,
+            user_location: {
+              x: userLocation.x,
+              y: userLocation.y,
             },
             // 🔹 필요하다면 야간 여부도 같이 전달
             isNight: isNight,
             // 🔹 갯수 제한 (필요 없으면 제거 가능)
             limit: 50,
-            ordering: "-id",
+            ordering: "distance",
           },
           {
             headers: { "Content-Type": "application/json" },
