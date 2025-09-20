@@ -10,7 +10,7 @@ function SubmitBtn({ text, onClick, type = "button", disabled = false, className
         h-14 w-full
         mt-3
         px-6 py-4
-        rounded-[15px]
+        rounded-[13px]
         text-sm
         font-suite
         flex items-center justify-center
