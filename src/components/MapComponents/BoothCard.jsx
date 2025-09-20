@@ -21,6 +21,7 @@ function BoothCard({
   isDorder,
   badges,
   onClick,
+  isSelected,
 }) {
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     boothId,
@@ -28,14 +29,19 @@ function BoothCard({
     initialIsLiked
   );
 
-
   return (
     <div
-      className={`cursor-pointer bg-white w-full h-[92px] rounded-2xl border p-4 ${
-        isOperating ? "border-primary-400" : "border-neutral-200"
-      } `}
+      className={`cursor-pointer w-full h-[92px] p-4 transition shadow-sm
+        ${
+          isSelected
+            ? "bg-red-50 shadow-md" 
+            : "bg-white" 
+        }
+      `}
       style={{
-        boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
+        borderRadius: "16px",
+        border: "1px solid #E4E4E7",
+        backgroundColor: "#FFF",
       }}
       onClick={onClick}
     >

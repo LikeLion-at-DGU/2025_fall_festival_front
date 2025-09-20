@@ -7,6 +7,8 @@ import festivalBanner4 from "../../assets/images/banners/festival-banner4.png";
 
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
   const navigate = useNavigate();
 
   const banners = [
@@ -58,8 +60,39 @@ const Banner = () => {
     setCurrentSlide(index);
   };
 
+  /* 터치 이벤트 핸들러 */
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      setCurrentSlide((prev) => (prev + 1) % banners.length);
+    }
+
+    if (isRightSwipe) {
+      setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+    }
+  };
+
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div
+      className="relative w-full h-full overflow-hidden"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <div
         className="flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -81,13 +114,13 @@ const Banner = () => {
                 onClick={() => {
                   switch (banner.id) {
                     case 2:
-                      navigate("/board?category=event");
+                      navigate("/board", { state: { category: "Event" } });
                       break;
-                    case 3: 
+                    case 3:
                       navigate("/event");
                       break;
-                    case 4: 
-                      navigate("/board?category=lost");
+                    case 4:
+                      navigate("/board", { state: { category: "LostItem" } });
                       break;
                     default:
                       console.log(`${banner.buttonText} 버튼 클릭됨`);

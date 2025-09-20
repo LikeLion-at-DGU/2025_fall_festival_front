@@ -6,7 +6,7 @@ const Notification = ({ notice, loading, error }) => {
   const navigate = useNavigate();
 
   const handleNotificationClick = () => {
-    navigate("/board?category=notice");
+    navigate("/board", { state: { category: "Notice" } });
   };
 
   /* 로딩 중이거나 에러가 있거나 긴급공지가 없을 때 */
