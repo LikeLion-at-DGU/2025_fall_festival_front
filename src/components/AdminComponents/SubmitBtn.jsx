@@ -8,10 +8,11 @@ function SubmitBtn({ text, onClick, type = "button", disabled = false, className
       disabled={disabled}
       className={`
         h-14 w-full
-        mt-4
+        mt-3
         px-6 py-4
-        rounded-lg
-        font-semibold
+        rounded-[15px]
+        text-sm
+        font-suite
         flex items-center justify-center
         ${className}
         ${disabled 
