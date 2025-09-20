@@ -21,7 +21,7 @@ function PostDetail() {
     fetchData();
   }, [boardId]);
 
-  if (!board) return <div>로딩 중...</div>;
+  if (!board) return <div className="grid place-items-center mt-[400px]">삭제되었거나 찾을 수 없는 페이지입니다</div>;
 
   return (
     <div className="max-w-md mx-auto bg-gray-50 p-6 min-h-screen">
