@@ -52,16 +52,19 @@ function BoothMain() {
     <div className="flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6">
       <div className="flex flex-col items-center w-full h-full mx-auto gap-4">
         <AdminTitle text="진행한 이벤트 목록" />
-        
-        {/* 이벤트 목록 렌더링 */}
-        {events.map((event) => (
-          <NoticeBox
-            key={event.id}
-            noticeText="이벤트"
-            content={event.title}
-            org={event.booth_name}
-          />
-        ))}
+        <div className="overflow-y-scroll h-[650px]">
+          <div className="flex flex-col items-center w-full h-full mx-auto gap-1">
+          {/* 이벤트 목록 렌더링 */}
+          {events.map((event) => (
+            <NoticeBox
+              key={event.id}
+              noticeText="이벤트"
+              content={event.title}
+              org={event.booth_name}
+            />
+          ))}
+          </div>
+        </div>
 
         <Submitbtn text="이벤트 추가하기" onClick={handleAddEvent} />
       </div>
