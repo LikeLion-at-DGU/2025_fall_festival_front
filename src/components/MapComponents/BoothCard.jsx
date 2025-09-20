@@ -21,6 +21,7 @@ function BoothCard({
   isDorder,
   badges,
   onClick,
+  isSelected,
 }) {
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     boothId,
@@ -28,20 +29,19 @@ function BoothCard({
     initialIsLiked
   );
 
-  // 현재 시각 기준으로 night 판별
-  const now = new Date();
-  const shouldShowNight = now.getHours() >= 17; // 5시 이후면 true
-  // 조건 분기
-  if (shouldShowNight && !isNight) return null; // 5시 이후인데 낮 부스면 숨김
-  if (!shouldShowNight && isNight) return null; // 5시 이전인데 밤 부스면 숨김
-
   return (
     <div
-      className={`cursor-pointer bg-white w-full h-[92px] rounded-2xl border p-4 ${
-        isOperating ? "border-primary-400" : "border-neutral-200"
-      } `}
+      className={`cursor-pointer w-full h-[92px] p-4 transition shadow-sm
+        ${
+          isSelected
+            ? "bg-red-50 shadow-md" 
+            : "bg-white" 
+        }
+      `}
       style={{
-        boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
+        borderRadius: "16px",
+        border: "1px solid #E4E4E7",
+        backgroundColor: "#FFF",
       }}
       onClick={onClick}
     >
@@ -81,7 +81,7 @@ function BoothCard({
                 className="w-5 h-5 transition-all duration-200"
               />
             </button>
-            <span className="text-xs text-neutral-300 font-suite">
+            <span className="text-xs text-[#A1A1AA] font-suite">
               {likesCount}
             </span>
           </div>
