@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
+import ToastMessage from "../../components/AdminComponents/ToastMessage";
 import { createNormalPost, updateNormalPost } from "../../apis/admin/festa";
 
 function NormalPost() {
@@ -20,14 +21,13 @@ function NormalPost() {
       if (editingData) {
         // ✅ 수정 API 호출
         const res = await updateNormalPost(editingData.id, payload);
-        alert(res.message || "공지 수정 성공");
+        setToastMsg("공지가 수정되었습니다");
         console.log("수정할 데이터:", payload);
       } else {
         // 신규 작성
         const res = await createNormalPost(payload);
-        alert(res.message || "공지 작성 성공");
+        setToastMsg(res.message || "공지가 등록되었습니다");
       }
-      navigate("/admin/festa");
     } catch (err) {
         console.error("에러 전체:", err);
 
@@ -49,6 +49,24 @@ function NormalPost() {
       }
   };
 
+  // ✅ toastMsg가 성공 메시지일 때만 2초 후 이동
+  useEffect(() => {
+    if (toastMsg && (toastMsg.includes("수정") || toastMsg.includes("등록"))) {
+      const timer = setTimeout(() => {
+        navigate("/admin/festa");
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMsg, navigate]);
+
+  // 제출 버튼 비활성화
+  const isDisabled =
+    !title.trim() ||
+    !content.trim() ||
+    (editingData &&
+      title.trim() === editingData.title &&
+      content.trim() === editingData.content);
+
   return (
     <div className="flex flex-col justify-between w-full h-full px-4 py-8 mx-auto">
       <div className="flex flex-col items-center w-full h-full mx-auto gap-4">
@@ -64,13 +82,17 @@ function NormalPost() {
           onChange={(e) => setContent(e.target.value)}
         />
       </div>
+
       <Submitbtn
         text={editingData ? "수정하기" : "등록하기"}
         onClick={handleSubmit}
-        disabled={
-          !title.trim() || !content.trim() // 하나라도 비어 있으면 비활성화
-        }
+        disabled={isDisabled}
       />
+
+      {/* ✅ 토스트 메시지 표시 */}
+      {toastMsg && (
+        <ToastMessage text={toastMsg} onClose={() => setToastMsg("")} />
+      )}
 
     </div>
   );
