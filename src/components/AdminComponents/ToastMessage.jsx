@@ -28,12 +28,12 @@ function ToastMessage({ text, duration = 2500, onClose }) {
       <div
         className="inline-flex justify-center items-center 
                   h-[83px] w-[300px]
-                  px-[10px] pt-[29px] pb-[28px] 
+                  px-[20px] py-[20px]
                   rounded-xl bg-white 
                   shadow-[0_3px_5px_0_rgba(0,0,0,0.1)] 
                   flex-shrink-0 pointer-events-auto"
       >
-        <p className="text-[#000] text-[20px] font-normal leading-[130%]">
+        <p className="text-[#000] text-[16px] font-normal leading-[130%]">
           {text}
         </p>
       </div>

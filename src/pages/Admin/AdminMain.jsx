@@ -6,9 +6,11 @@ import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
 import NoticeBox from "../../components/AdminComponents/Admin/NoticeBox";
 import NoticeSearch from "../../components/AdminComponents/Admin/NoticeSearch";
+import ToastMessage from "../../components/AdminComponents/ToastMessage";
 
 import {
   patchEmergencyNotice,
+  getEmergencyNotice,
   getEmergencyNotices, // ✅ 최신 긴급공지 가져오기 추가
   getUnionNotices,
   getUnionLosts,
@@ -34,6 +36,10 @@ function AdminMain() {
 
   // 검색어 상태
   const [searchTerm, setSearchTerm] = useState("");
+  
+  // ✅ 토스트 메시지 상태
+  const [toast, setToast] = useState(null);
+
 
   const bigWrapperClass =
     "flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6";
@@ -49,10 +55,10 @@ function AdminMain() {
     // (1) 최신 긴급공지 가져오기
     const fetchEmergency = async () => {
       try {
-        const res = await getEmergencyNotices();
-        console.log("📡 getEmergencyNotices 응답:", res);
-        if (res && res.board_content) {
-          setNotice(res.board_content); // 긴급공지 필드에 최신값 반영
+        const res = await getEmergencyNotice();
+        console.log("📡 getEmergencyNotice 응답:", res.title);
+        if (res && res.title) {
+          setNotice(res.title); // 긴급공지 필드에 최신값 반영
         }
       } catch (err) {
         console.error("긴급공지 불러오기 실패:", err);
@@ -102,22 +108,14 @@ function AdminMain() {
     try {
       // PATCH 요청 → 서버에 수정 반영
       const result = await patchEmergencyNotice(1, {
-        title: "긴급 공지", // 제목은 고정
-        content: notice, // 입력 필드 값 전송
+        title: notice, // 입력 필드 값 전송
+        content: notice, // 현재 title만 써서 content 비활성화 해도 되나, 안전장치로 걸어둠
       });
 
-      alert(result.message);
-
-      // ✅ 서버 응답 구조에 맞게 notice state 갱신
-      if (result.board_title && result.board_content) {
-        setNotice(result.board_content); // 입력창 최신화
-        // 필요하다면 메인페이지에 따로 state로 전달 가능
-        // 예: setEmergencyNotice({ id: result.board_id, title: result.board_title, content: result.board_content });
-      }
-
+      setToast(result.message); 
       setIsEdited(false); // 버튼 비활성화
     } catch (err) {
-      alert(err.error || "수정 실패");
+      setToast(err.error || "수정 실패");
     }
   };
 
@@ -203,6 +201,13 @@ function AdminMain() {
           <Submitbtn text="공지 추가하기" onClick={handleAddNotice} />
         </div>
       </div>
+
+      {toast && (
+        <ToastMessage
+          text={toast}
+          onClose={() => setToast(null)} // 닫히면 상태 초기화
+        />
+      )}
     </div>
   );
 }
