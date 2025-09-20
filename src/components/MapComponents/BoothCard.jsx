@@ -31,13 +31,18 @@ function BoothCard({
 
   return (
     <div
-      className={`cursor-pointer w-full h-[92px] p-4 transition shadow-sm
-        ${isSelected ? "bg-red-50 shadow-md" : "bg-white"}
-      `}
+      className={`cursor-pointer w-full h-[92px] rounded-2xl border p-4 transition
+    ${
+      isSelected
+        ? "bg-red-50 border-red-500 shadow-md" //  선택됨
+        : //삭제 예정
+        isOperating
+        ? "bg-white border-primary-400" //  영업중
+        : "bg-white border-neutral-200" //  영업중 아님
+    }
+  `}
       style={{
-        borderRadius: "16px",
-        border: "1px solid #E4E4E7",
-        backgroundColor: "#FFF",
+        boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
       }}
       onClick={onClick}
     >
@@ -51,7 +56,9 @@ function BoothCard({
                 alt={title}
                 className="w-full h-full bg-[#C2C2C2] object-cover"
                 onError={(e) => {
-                  e.currentTarget.style.display = "none";
+                  <div className="w-full h-full bg-[#C2C2C2] flex items-center justify-center text-xs text-gray-500">
+                    이미지 없음
+                  </div>;
                 }}
               />
             ) : (

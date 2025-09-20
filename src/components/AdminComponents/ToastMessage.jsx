@@ -27,8 +27,8 @@ function ToastMessage({ text, duration = 2500, onClose }) {
     >
       <div
         className="inline-flex justify-center items-center 
-                  h-[83px] 
-                  px-[43px] pt-[29px] pb-[28px] 
+                  h-[83px] w-[300px]
+                  px-[10px] pt-[29px] pb-[28px] 
                   rounded-xl bg-white 
                   shadow-[0_3px_5px_0_rgba(0,0,0,0.1)] 
                   flex-shrink-0 pointer-events-auto"

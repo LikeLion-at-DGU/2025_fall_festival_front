@@ -65,7 +65,7 @@ const Layout = ({ children }) => {
       <div
         className="flex flex-col 
           min-w-[375px] max-w-[430px]
-          w-screen h-screen
+          w-screen min-h-[100dvh]
           bg-gray"
       >
         {/* 조건부 Header (Event 페이지가 아닐 때만 표시) */}
