@@ -297,7 +297,7 @@ export default function Board() {
   }, [totalPages, page]);
 
   return (
-    <div className="mx-auto max-w-screen-sm px-4 pb-4">
+    <div className="mx-auto max-w-screen-sm px-4 pb-4 min-h-screen flex flex-col">
       {/* 검색 */}
       <div className="pt-4">
         <SearchBar value={keyword} onChange={setKeyword} />
@@ -322,32 +322,37 @@ export default function Board() {
         </h2>
       </div>
 
-      {/* 리스트 */}
-      <div className="min-h-[320px]">
-        {loading && <div className="py-16 text-center text-gray-500">불러오는 중…</div>}
-        {!loading && error && <div className="py-16 text-center text-rose-600">{error}</div>}
-        {!loading && !error && paged.length === 0 && (
-          <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">
-            현재 게시물이 없습니다
-          </div>
-        )}
-        {!loading && !error && paged.length > 0 && (
-          <ul className="flex flex-col gap-[8px]">
-            {paged.map((item) => (
-              <BoardItem key={item.id} item={item} />
-            ))}
-          </ul>
-        )}
+      {/* 리스트 영역을 flex-1로 */}
+      <div className="flex-1">
+        <div className="min-h-[320px]">
+          {loading && <div className="py-16 text-center text-gray-500">불러오는 중…</div>}
+          {!loading && error && <div className="py-16 text-center text-rose-600">{error}</div>}
+          {!loading && !error && paged.length === 0 && (
+            <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">
+              현재 게시물이 없습니다
+            </div>
+          )}
+          {!loading && !error && paged.length > 0 && (
+            <ul className="flex flex-col gap-[8px]">
+              {paged.map((item) => (
+                <BoardItem key={item.id} item={item} />
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
+
 
       {/* 페이지네이션 */}
       {!loading && !error && totalForUI > 0 && totalPages > 1 && (
-        <Pagination
-          total={totalForUI}
-          page={page}
-          pageSize={pageSize}
-          onChange={setPage}
-        />
+        <div className="">
+          <Pagination
+            total={totalForUI}
+            page={page}
+            pageSize={pageSize}
+            onChange={setPage}
+          />
+        </div>
       )}
     </div>
   );
