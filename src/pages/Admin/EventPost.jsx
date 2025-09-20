@@ -4,6 +4,7 @@ import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import Popup from "../../components/AdminComponents/Popup";
 import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
+import ToastMessage from "../../components/AdminComponents/ToastMessage";
 import {createEvent} from "../../apis/admin/booth";
 
 function EventPost() {
@@ -14,6 +15,7 @@ function EventPost() {
   const [endHour, setEndHour] = useState("");
   const [endMinute, setEndMinute] = useState("");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
 
   const navigate = useNavigate();
   const timeWrapper = "flex flex-row items-center w-1/2 gap-2";
@@ -21,17 +23,28 @@ function EventPost() {
   // 제출 로직: 이벤트 등록 후 부스관리자 메인으로 이동합니다.
   const handleSubmit = async () => {
     try {
+      const uid = sessionStorage.getItem("uid");
+      if (!uid) {
+      setToastMsg("세션이 만료되었습니다. 다시 로그인해주세요.");
+      setTimeout(() => navigate("/admin/login"), 2000);
+      return;
+    }
       const start_time = `2025-09-20T${startHour}:${startMinute}:00`;
       const end_time = `2025-09-20T${endHour}:${endMinute}:00`;
 
-      await createEvent({ title, detail, start_time, end_time });
+      await createEvent({ uid, title, detail, start_time, end_time });
 
-      alert("이벤트가 등록되었습니다.");
-      setIsPopupOpen(false); // 팝업 닫기
-      navigate("/admin/booth");
+      setToastMsg("이벤트가 등록되었습니다");
+      setIsPopupOpen(false);
+      setTimeout(() => navigate("/admin/booth"), 2500);
     } catch (err) {
       console.error(err);
-      alert(err.response?.data?.error || "이벤트 등록 실패");
+      // ⛔ 여기서 서버 메시지 받아오기
+      const msg =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "이벤트 등록 실패";
+      setToastMsg(msg);
     }
   };
 
@@ -61,7 +74,7 @@ function EventPost() {
             value={startHour}
             onChange={(e) => setStartHour(e.target.value)}
           />
-          <AdminTitle text="시간" />
+          <AdminTitle text="시" />
         </div>
         <div className={timeWrapper}>
           <PostInput
@@ -81,7 +94,7 @@ function EventPost() {
             value={endHour}
             onChange={(e) => setEndHour(e.target.value)}
           />
-          <AdminTitle text="시간" />
+          <AdminTitle text="시" />
         </div>
         <div className={timeWrapper}>
           <PostInput
@@ -94,7 +107,18 @@ function EventPost() {
       </div>
 
       {/* 버튼 클릭 시 팝업 열림 */}
-      <Submitbtn text="확인" onClick={() => setIsPopupOpen(true)} />
+      <Submitbtn
+        text="확인"
+        onClick={() => setIsPopupOpen(true)}
+        disabled={
+          !title.trim() ||
+          !detail.trim() ||
+          !startHour.trim() ||
+          !startMinute.trim() ||
+          !endHour.trim() ||
+          !endMinute.trim()
+        }
+      />
 
       {/* 팝업 */}
       {isPopupOpen && (
@@ -111,6 +135,15 @@ function EventPost() {
           onSubmit={handleSubmit}
         />
       )}
+
+      {/* ✅ 토스트 메시지 */}
+      {toastMsg && (
+        <ToastMessage
+          text={toastMsg}
+          onClose={() => setToastMsg("")} // 닫히면 초기화
+        />
+      )}
+      
     </div>
   );
 }

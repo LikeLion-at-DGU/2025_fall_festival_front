@@ -1,5 +1,6 @@
+// src/pages/Board/Board.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
 
 /* =========================
@@ -43,10 +44,10 @@ function Tag({ label, active, onClick }) {
       type="button"
       onClick={onClick}
       className={[
-        "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px]",
+        "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
         active
-          ? "bg-black text-white font-[SUITE] text-[12px] not-italic font-normal leading-[150%]"
-          : "bg-white text-[#2A2A2E] font-[SUITE] text-[12px] not-italic font-normal leading-[150%]",
+          ? "bg-black text-white font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
+          : "bg-white text-[#2A2A2E] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
       ].join(" ")}
     >
       #{label}
@@ -54,38 +55,35 @@ function Tag({ label, active, onClick }) {
   );
 }
 
-function SearchBar({ value, onChange, onSubmit }) {
+function SearchBar({ value, onChange }) {
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit?.();
-      }}
-      className="w-full"
-    >
+    <div className="w-full">
       <div className="flex w-full items-center rounded-[8px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-2">
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="검색어를 입력해주세요"
-          className="flex-1 text-[#A1A1AA] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] outline-none"
+          className="flex-1 text-black placeholder:text-[#A1A1AA] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] outline-none"
         />
-        <button type="submit" className="flex items-center justify-center">
+        <div className="flex items-center justify-center">
           <img
             src={SearchIcon}
             alt="검색"
             className="w-[13.875px] h-[14.219px] flex-shrink-0"
           />
-        </button>
+        </div>
       </div>
-    </form>
+    </div>
   );
 }
 
+/* =========================
+   리스트 아이템
+   ========================= */
 function BoardItem({ item }) {
-  const { category, title, writer } = item;
+  const { category, title } = item;
+  const displayWriter = item.writer || item.booth_name || "";
 
-  // 카테고리별 태그 스타일
   const pillCls =
     category === "Notice"
       ? "bg-[#EF7063] text-white border border-[#EF7063] w-[42px]"
@@ -95,7 +93,6 @@ function BoardItem({ item }) {
 
   return (
     <li className="rounded-[12px] bg-white">
-      {/* 게시물 클릭 → 상세 페이지 이동 */}
       <Link
         to={`/board/${item.id}`}
         className="flex h-[41px] py-[8px] px-[8px] items-center justify-between gap-3 w-full"
@@ -106,25 +103,60 @@ function BoardItem({ item }) {
           >
             {CATEGORY_MAP[category] ?? category}
           </span>
+        </div>
+        <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
           <p className="truncate text-[#52525B] font-[SUITE] text-[12px] not-italic font-semibold leading-[150%]">
             {title}
           </p>
+          {displayWriter && (
+            <span className="text-[#52525B] font-[SUITE] text-[10px] not-italic font-normal leading-[150%] shrink-0">
+              - {displayWriter}
+            </span>
+          )}
         </div>
-        <span className="text-[#52525B] font-[SUITE] text-[10px] not-italic font-normal leading-[150%] shrink-0">
-          - {writer}
-        </span>
       </Link>
     </li>
   );
 }
 
+/* =========================
+   페이지네이션
+   ========================= */
 function Pagination({ total, page, pageSize, onChange }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
-  const windowSize = 5;
-  const start = Math.max(1, page - Math.floor(windowSize / 2));
-  const end = Math.min(totalPages, start + windowSize - 1);
-  const pages = [];
-  for (let p = start; p <= end; p++) pages.push(p);
+
+  // 표시할 페이지 번호(버튼) 목록을 만든다. (최대 5개)
+  const buildPages = () => {
+    if (totalPages <= 5) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    // 총 페이지가 6 이상인 경우
+    if (page <= 3) {
+      // 예: 1 2 3 4 ... N
+      return [1, 2, 3, 4, totalPages];
+    }
+
+    if (page >= totalPages - 2) {
+      // 예: 1 ... N-3 N-2 N-1 N
+      return [1, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+
+    // 가운데 근처
+    // 예: 1 ... p-1 p p+1 ... N  (버튼은 1, p-1, p, p+1, N)
+    return [1, page - 1, page, page + 1, totalPages];
+  };
+
+  const pages = buildPages();
+
+  // 인접하지 않는 구간 사이에만 '…'를 표시
+  const withGaps = [];
+  for (let i = 0; i < pages.length; i++) {
+    const prev = pages[i - 1];
+    const cur = pages[i];
+    if (i > 0 && cur - prev > 1) withGaps.push("gap-" + i); // gap marker
+    withGaps.push(cur);
+  }
 
   return (
     <div className="flex items-center justify-center gap-2 pt-4">
@@ -137,41 +169,24 @@ function Pagination({ total, page, pageSize, onChange }) {
         이전
       </button>
 
-      {start > 1 && (
-        <>
+      {withGaps.map((item) =>
+        typeof item === "string" ? (
+          // gap 표시 (실제 숨겨진 페이지가 있을 때만 보임)
+          <span key={item} className="px-1 text-gray-400">
+            …
+          </span>
+        ) : (
           <button
-            className="rounded-lg border px-2 py-1 text-sm"
-            onClick={() => onChange(1)}
+            key={item}
+            onClick={() => onChange(item)}
+            className={
+              "rounded-lg border px-2 py-1 text-sm " +
+              (item === page ? "bg-black text-white border-black" : "")
+            }
           >
-            1
+            {item}
           </button>
-          <span className="px-1 text-gray-400">…</span>
-        </>
-      )}
-
-      {pages.map((p) => (
-        <button
-          key={p}
-          onClick={() => onChange(p)}
-          className={
-            "rounded-lg border px-2 py-1 text-sm " +
-            (p === page ? "bg-black text-white border-black" : "")
-          }
-        >
-          {p}
-        </button>
-      ))}
-
-      {end < totalPages && (
-        <>
-          <span className="px-1 text-gray-400">…</span>
-          <button
-            className="rounded-lg border px-2 py-1 text-sm"
-            onClick={() => onChange(totalPages)}
-          >
-            {totalPages}
-          </button>
-        </>
+        )
       )}
 
       <button
@@ -186,71 +201,39 @@ function Pagination({ total, page, pageSize, onChange }) {
   );
 }
 
+
 /* =========================
-  메인 페이지
+   메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
    ========================= */
 export default function Board() {
-  // UI 상태
+  const location = useLocation();
   const [keyword, setKeyword] = useState("");
-  const [submittedKeyword, setSubmittedKeyword] = useState("");
   const [activeTag, setActiveTag] = useState("전체");
+
   const [page, setPage] = useState(1);
   const pageSize = 20;
 
-  // 데이터 상태
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [rawList, setRawList] = useState([]);
-  const [serverTotal, setServerTotal] = useState(0);
+  const [allItems, setAllItems] = useState([]);
+  const [totalFromServer, setTotalFromServer] = useState(0);
 
-  // 서버 호출 함수 (GET 시도 → 실패 시 POST 폴백)
   const BOARD_ENDPOINT = `${API_BASE}/board/`;
 
-  const requestBoard = async (signal) => {
-    const serverCategory = KOR_TO_SERVER[activeTag];
-    const params = new URLSearchParams();
-    if (serverCategory && serverCategory !== "ALL")
-      params.set("category", serverCategory);
-    if (submittedKeyword) params.set("q", submittedKeyword);
-    params.set("page", String(page));
-    params.set("limit", String(pageSize));
-  
-    // 2) GET: /board/?page=... 형태로 호출
-    try {
-      const res = await fetch(`${BOARD_ENDPOINT}?${params.toString()}`, {
-        method: "GET",
-        signal,
-        headers: { Accept: "application/json" },
-      });
-      if (res.ok) return res.json();
-    } catch (e) {
-      if (isAbortError(e)) throw e;
-    }
-  
-    // 3) POST 폴백도 /board/ 로 고정
-    const postRes = await fetch(BOARD_ENDPOINT, {
-      method: "POST",
-      signal,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        category: serverCategory === "ALL" ? undefined : serverCategory,
-        q: submittedKeyword || undefined,
-        page,
-        limit: pageSize,
-      }),
-    });
-  
-    if (!postRes.ok) {
-      const text = await postRes.text().catch(() => "");
-      throw new Error(`요청 실패: ${postRes.status} ${text}`);
-    }
-    return postRes.json();
-  };
+  useEffect(() => {
+    const category = location.state?.category;
+    const search = location.state?.search;
 
-  // 로드 & 의존성 변화시 호출
+    if (category) {
+      const koreanCategory = CATEGORY_MAP[category] || "전체";
+      setActiveTag(koreanCategory);
+    }
+
+    if (search) {
+      setKeyword(search);
+    }
+  }, []); 
+
   useEffect(() => {
     const controller = new AbortController();
 
@@ -259,30 +242,32 @@ export default function Board() {
         setLoading(true);
         setError("");
 
-        if (!API_BASE) {
-          throw new Error(
-            "API 베이스 주소가 설정되지 않았습니다. .env의 VITE_API_BASE_URL을 확인하세요."
-          );
+        const res = await fetch(BOARD_ENDPOINT, {
+          method: "GET",
+          signal: controller.signal,
+          headers: { Accept: "application/json" },
+        });
+
+        if (!res.ok) {
+          const text = await res.text().catch(() => "");
+          throw new Error(`요청 실패: ${res.status} ${text}`);
         }
 
-        const data = await requestBoard(controller.signal);
-
-        // 방어적 파싱
-        const list = Array.isArray(data?.board) ? data.board : [];
+        const data = await res.json();
+        const list = Array.isArray(data?.result) ? data.result : [];
         const total =
-          typeof data?.total_count === "number" ? data.total_count : list.length;
+          typeof data?.total_count === "number"
+            ? data.total_count
+            : list.length;
 
-        setRawList(list);
-        setServerTotal(total);
+        setAllItems(list);
+        setTotalFromServer(total);
       } catch (e) {
         if (isAbortError(e)) {
-          console.debug("Fetch aborted (expected in dev StrictMode)");
+          console.debug("Fetch aborted");
         } else {
           console.error(e);
-          setError(
-            e?.message ||
-              "게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요."
-          );
+          setError(e?.message || "게시글을 불러오지 못했습니다.");
         }
       } finally {
         setLoading(false);
@@ -290,57 +275,57 @@ export default function Board() {
     })();
 
     return () => controller.abort();
-  }, [activeTag, submittedKeyword, page]);
+  }, []);
 
-  // 클라 보정(서버 미지원 대비) + 페이지네이션 기준을 'filtered.length'로만 사용
+  // ✅ keyword 바로 사용해서 필터링
+  const serverCategory = KOR_TO_SERVER[activeTag];
+  const kw = keyword.trim().toLowerCase();
+
   const filtered = useMemo(() => {
-    const serverCategory = KOR_TO_SERVER[activeTag];
-    const kw = (submittedKeyword || "").trim().toLowerCase();
-    return rawList.filter((item) => {
+    return allItems.filter((item) => {
       const okCat =
         serverCategory === "ALL" ||
         !serverCategory ||
         item.category === serverCategory;
+
+      const t = item.title?.toLowerCase() || "";
+      const w = item.writer?.toLowerCase() || "";
+      const b = item.booth_name?.toLowerCase() || "";
+      const d = item.detail?.toLowerCase() || "";
       const okKw =
         !kw ||
-        item.title?.toLowerCase().includes(kw) ||
-        item.writer?.toLowerCase().includes(kw);
+        t.includes(kw) ||
+        w.includes(kw) ||
+        b.includes(kw) ||
+        d.includes(kw);
+
       return okCat && okKw;
     });
-  }, [rawList, activeTag, submittedKeyword]);
+  }, [allItems, serverCategory, kw]);
 
-  // ✅ 현재 뷰의 총 개수/총 페이지는 filtered 기준
+  // 검색/태그 변경 시 1페이지로
+  useEffect(() => {
+    setPage(1);
+  }, [keyword, activeTag]);
+
+  const clickTag = (korLabel) => setActiveTag(korLabel);
+
   const totalForUI = filtered.length;
   const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
-
-  // ✅ 필터 결과가 바뀌어 현재 page가 초과하면 마지막 페이지로 보정
-  useEffect(() => {
-    if (page > totalPages) {
-      setPage(totalPages);
-    }
-  }, [totalPages, page]);
-
-  // ✅ 실제 표시 리스트도 항상 filtered에서 slice
   const paged = useMemo(() => {
     const start = (page - 1) * pageSize;
     return filtered.slice(start, start + pageSize);
   }, [filtered, page, pageSize]);
 
-  // 핸들러
-  const submitSearch = () => {
-    setPage(1);
-    setSubmittedKeyword(keyword);
-  };
-  const clickTag = (korLabel) => {
-    setActiveTag(korLabel);
-    setPage(1);
-  };
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [totalPages, page]);
 
   return (
-    <div className="mx-auto max-w-screen-sm px-4 pb-4">
+    <div className="mx-auto max-w-screen-sm px-4 pb-4 min-h-screen flex flex-col">
       {/* 검색 */}
       <div className="pt-4">
-        <SearchBar value={keyword} onChange={setKeyword} onSubmit={submitSearch} />
+        <SearchBar value={keyword} onChange={setKeyword} />
       </div>
 
       {/* 태그 */}
@@ -362,36 +347,37 @@ export default function Board() {
         </h2>
       </div>
 
-      {/* 리스트 */}
-      <div className="min-h-[320px]">
-        {loading && (
-          <div className="py-16 text-center text-gray-500">불러오는 중…</div>
-        )}
-        {!loading && error && (
-          <div className="py-16 text-center text-rose-600">{error}</div>
-        )}
-        {!loading && !error && paged.length === 0 && (
-          <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">
-            현재 진행 중인 이벤트가 없습니다
-          </div>
-        )}
-        {!loading && !error && paged.length > 0 && (
-          <ul className="flex flex-col gap-[8px]">
-            {paged.map((item) => (
-              <BoardItem key={item.id} item={item} />
-            ))}
-          </ul>
-        )}
+      {/* 리스트 영역을 flex-1로 */}
+      <div className="flex-1">
+        <div className="min-h-[320px]">
+          {loading && <div className="py-16 text-center text-gray-500">불러오는 중…</div>}
+          {!loading && error && <div className="py-16 text-center text-rose-600">{error}</div>}
+          {!loading && !error && paged.length === 0 && (
+            <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">
+              현재 게시물이 없습니다
+            </div>
+          )}
+          {!loading && !error && paged.length > 0 && (
+            <ul className="flex flex-col gap-[8px]">
+              {paged.map((item) => (
+                <BoardItem key={item.id} item={item} />
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
-      {/* ✅ 페이지네이션: filtered 기준 / 1페이지면 숨김 / 0건이면 숨김 */}
+
+      {/* 페이지네이션 */}
       {!loading && !error && totalForUI > 0 && totalPages > 1 && (
-        <Pagination
-          total={totalForUI}
-          page={page}
-          pageSize={pageSize}
-          onChange={setPage}
-        />
+        <div className="">
+          <Pagination
+            total={totalForUI}
+            page={page}
+            pageSize={pageSize}
+            onChange={setPage}
+          />
+        </div>
       )}
     </div>
   );

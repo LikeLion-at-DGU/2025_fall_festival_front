@@ -1,0 +1,9 @@
+{
+  "nav": {
+    "home": "Home",
+    "map": "Map",
+    "timetable": "Schedule",
+    "board": "Board",
+    "game": "Game"
+  }
+}

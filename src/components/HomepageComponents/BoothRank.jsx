@@ -1,81 +1,75 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BoothCard from "../MapComponents/BoothCard";
+import Skeleton from "../Skeleton/Skeleton";
+import { getBoothRanking } from "../../apis/mainpage";
+import { formatTimeWithDay } from "../../utils/dateUtils";
 
-const BoothRank = () => {
+const BoothRank = ({ onDataChange }) => {
   const navigate = useNavigate();
+  const [rankData, setRankData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const handleBoothClick = (booth) => {
     navigate(`/booth/${booth.id}`, { state: { booth } });
   };
 
-  const rankData = [
-    {
-      id: 4,
-      rank: 1,
-      title: "치킨 부스",
-      location: "만해광장",
-      time: "화~금 15:00 ~ 21:00",
+  useEffect(() => {
+    const fetchBoothRanking = async () => {
+      try {
+        setLoading(true);
+        const response = await getBoothRanking();
+        const data = response.results || [];
+        setRankData(data);
+        setError(null);
+
+        if (onDataChange) {
+          onDataChange({
+            hasData: data.length > 0,
+            isLoading: false,
+            hasError: false,
+          });
+        }
+      } catch (err) {
+        console.error("부스 랭킹 조회 실패:", err);
+        setError(err);
+        setRankData([]);
+
+        if (onDataChange) {
+          onDataChange({
+            hasData: false,
+            isLoading: false,
+            hasError: true,
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBoothRanking();
+  }, [onDataChange]);
+
+  const formatBoothData = (booth) => {
+    return {
+      id: booth.booth_id,
+      title: booth.name,
+      image: booth.image_url,
+      location: booth.location.name,
+      time: formatTimeWithDay(
+        booth.business_days,
+        booth.start_time,
+        booth.end_time
+      ),
       isOperating: true,
-      likeCount: 35,
+      likeCount: booth.like_cnt || 0,
       badges: {
-        isEventActive: true,
-        isDOrderPartner: true,
+        isEventActive: booth.is_event,
+        isDOrderPartner: booth.is_dorder,
       },
-    },
-    {
-      id: 5,
-      rank: 2,
-      title: "갈비 부스",
-      location: "다향관",
-      time: "목,금 12:00 ~ 19:00",
-      isOperating: true,
-      likeCount: 32,
-      badges: {
-        isEventActive: true,
-        isDOrderPartner: false,
-      },
-    },
-    {
-      id: 6,
-      rank: 3,
-      title: "아이스크림 부스",
-      location: "학술문화관",
-      time: "월~금 10:00 ~ 19:00",
-      isOperating: true,
-      likeCount: 31,
-      badges: {
-        isEventActive: false,
-        isDOrderPartner: true,
-      },
-    },
-    {
-      id: 7,
-      rank: 4,
-      title: "닭갈비 부스",
-      location: "학림관",
-      time: "화,수,목 11:30 ~ 18:30",
-      isOperating: true,
-      likeCount: 28,
-      badges: {
-        isEventActive: true,
-        isDOrderPartner: true,
-      },
-    },
-    {
-      id: 8,
-      rank: 5,
-      title: "비빔밥 부스",
-      location: "사회과학관",
-      time: "수,금 11:00 ~ 16:00",
-      isOperating: true,
-      likeCount: 26,
-      badges: {
-        isEventActive: false,
-        isDOrderPartner: false,
-      },
-    },
-  ];
+    };
+  };
 
   return (
     <div className="mt-[27px] mb-[32px]">
@@ -83,23 +77,55 @@ const BoothRank = () => {
         <p className="text-xl font-semibold font-suite text-black">부스 랭킹</p>
       </div>
       <div className="space-y-4">
-        {rankData.length > 0 ? (
-          rankData.slice(0, 3).map((booth, index) => (
-            <div
-              key={index}
-              onClick={() => handleBoothClick(booth)}
-              className="cursor-pointer"
-            >
-              <BoothCard
-                title={booth.title}
-                location={booth.location}
-                time={booth.time}
-                isOperating={booth.isOperating}
-                likeCount={booth.likeCount}
-                badges={booth.badges}
-              />
-            </div>
-          ))
+        {loading ? (
+          <>
+            {[1, 2, 3].map((index) => (
+              <div
+                key={index}
+                className="bg-white w-full h-[92px] rounded-2xl border border-gray-200 p-4"
+                style={{
+                  boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
+                }}
+              >
+                <div className="flex gap-4">
+                  <Skeleton width={64} height={64} className="rounded-lg" />
+                  <div className="flex-1 space-y-2">
+                    <Skeleton width={96} height={12} />
+                    <Skeleton width={160} height={20} />
+                    <Skeleton width={80} height={16} />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </>
+        ) : error ? (
+          <div className="mb-[74px]">
+            <p className="text-[12px] font-normal leading-[150%] font-suite text-black">
+              부스 랭킹을 불러올 수 없습니다.
+            </p>
+          </div>
+        ) : rankData.length > 2 ? (
+          rankData.map((booth, index) => {
+            const formattedBooth = formatBoothData(booth);
+            return (
+              <div
+                key={formattedBooth.id}
+                onClick={() => handleBoothClick(formattedBooth)}
+                className="cursor-pointer"
+              >
+                <BoothCard
+                  boothId={formattedBooth.id}
+                  title={formattedBooth.title}
+                  image={formattedBooth.image}
+                  location={formattedBooth.location}
+                  time={formattedBooth.time}
+                  isOperating={formattedBooth.isOperating}
+                  likesCount={formattedBooth.likeCount}
+                  badges={formattedBooth.badges}
+                />
+              </div>
+            );
+          })
         ) : (
           <div className="mb-[74px]">
             <p className="text-[12px] font-normal leading-[150%] font-suite text-black">

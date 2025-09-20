@@ -12,21 +12,29 @@
   font-display: swap; /* 로딩 전엔 기본 글씨 보여줌 */
 }
 
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2")
+    format("woff2");
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* 스크롤바 숨기기 클래스 */
 .scrollbar-hidden::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge */
 }
 .scrollbar-hidden {
-  -ms-overflow-style: none;  /* IE, Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* 스크롤바 숨기기 */
 .hide-scrollbar {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
 }
 .hide-scrollbar::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
+  display: none; /* Safari and Chrome */
 }

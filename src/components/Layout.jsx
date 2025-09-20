@@ -15,13 +15,28 @@ const Layout = ({ children }) => {
   const adminPaths = [
     "/admin",
     "/admin/login",
-    "/admin/stuco",
-    "/admin/stuco/notice/normal",
-    "/admin/stuco/notice/lost",
+    "/admin/festa",
+    "/admin/festa/notice/normal",
+    "/admin/festa/notice/lost",
     "/admin/booth",
     "/admin/booth/event",
   ];
-  const isAdminPage = adminPaths.includes(location.pathname);
+
+  // 2) 동적 경로 정규식 추가
+  // 상세 조회 (/admin/stuco/notice/:id)
+  const adminDetailRegex = /^\/admin\/festa\/notice\/\d+$/;
+
+  // 수정 페이지 (/admin/stuco/notice/edit/:id)
+  const adminEditRegex = /^\/admin\/festa\/notice\/edit\/\d+$/;
+
+  // 분실물 수정 페이지 (/admin/stuco/lost/edit/:id)
+  const adminLostEditRegex = /^\/admin\/festa\/lost\/edit\/\d+$/;
+
+  const isAdminPage =
+    adminPaths.includes(location.pathname) ||
+    adminDetailRegex.test(location.pathname) ||
+    adminEditRegex.test(location.pathname) ||
+    adminLostEditRegex.test(location.pathname);
 
   // 2) 게시판 상세 경로 판별: /board/:boardId
   //   - 숫자만이 아니라 슬러그도 허용하려면 ([^/]+) 유지
@@ -55,7 +70,7 @@ const Layout = ({ children }) => {
       <div
         className="flex flex-col 
           min-w-[375px] max-w-[430px]
-          w-screen h-screen
+          w-screen min-h-[100dvh]
           bg-gray"
       >
         {/* 조건부 Header (카운트다운/게임플레이 단계가 아닐 때만 표시) */}

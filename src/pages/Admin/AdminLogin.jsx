@@ -16,9 +16,10 @@ import { adminLogin } from "../../apis/admin/admin";
 // adminLogin API 호출 후 uid/role/name을 저장하고, 이후 게시글목록 페이지로 이동합니다.
 
 /*----관리자 임의 생성 코드----*/
-// 총학: abc123
-// 동아리: abc456
-// 학과: abc789
+// 총학: stuco
+// 축기단: staff
+// 동아리: club
+// 학과: major
 
 function AdminLogin() {
   
@@ -34,20 +35,33 @@ function AdminLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
+    // ✅ 로그인 전에 세션스토리지 비우기 (꼬인 uid 방지)
+    sessionStorage.clear();
+    
 
     try {
       const data = await adminLogin({ admin_code: code });
+
+      // ✅ 서버에서 내려온 데이터 확인용 로그
+      console.log("📡 로그인 응답:", data);
 
       // 로그인 성공 시 응답 데이터에서 uid, role, name을 꺼내서 sessionStorage에 저장합니다.
       sessionStorage.setItem("uid", data.uid);
       sessionStorage.setItem("role", data.role);
       sessionStorage.setItem("name", data.name);
+
+      // ✅ 저장된 값도 다시 로그로 확인
+      console.log("✅ 세션스토리지 저장 완료:", {
+        uid: sessionStorage.getItem("uid"),
+        role: sessionStorage.getItem("role"),
+        name: sessionStorage.getItem("name"),
+      });
       
       alert("로그인 성공"); // ⛔ alert 창 최종 확인 후 제거 예정
 
       // role에 따라서 라우팅 분기
-      if (data.role === "Staff") {
-        navigate("/admin/stuco");
+      if (data.role === "Staff" || data.role === "Stuco") {
+        navigate("/admin/festa");
       } else if (data.role === "Club" || data.role === "Major") {
         navigate("/admin/booth");
       } else {
@@ -57,7 +71,8 @@ function AdminLogin() {
       }
 
     } catch (err) {
-      showToast(setErrorMsg, err.response?.data?.error || "로그인 실패");
+      //showToast(setErrorMsg, err.response?.data?.error || "로그인 실패");
+      showToast(setErrorMsg, "관리자 코드를 확인해주세요");
     }
   };
 

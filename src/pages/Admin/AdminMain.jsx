@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
-import NoticeBox from "../../components/AdminComponents/Stuco/NoticeBox";
-import NoticeSearch from "../../components/AdminComponents/Stuco/NoticeSearch";
+import NoticeBox from "../../components/AdminComponents/Admin/NoticeBox";
+import NoticeSearch from "../../components/AdminComponents/Admin/NoticeSearch";
 
-import { patchEmergencyNotice, getUnionNotices, getUnionLosts } from "../../apis/admin/stuco";
+import { patchEmergencyNotice, getUnionNotices, getUnionLosts } from "../../apis/admin/festa";
 
 
 function AdminMain() {
@@ -36,16 +36,13 @@ function AdminMain() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const [notices, losts] = await Promise.all([
+        const [noticeList, lostList] = await Promise.all([
           getUnionNotices(),
           getUnionLosts(),
         ]);
-        setNotices([...notices, ...losts]); // 합치기
-        
+        setNotices([...noticeList, ...lostList]);
       } catch (err) {
         console.error("게시글 불러오기 실패:", err);
-        console.log("res", res.data)
-        
       }
     };
 
@@ -70,7 +67,7 @@ function AdminMain() {
       navigate("/admin/login");
       return;
     }
-    if (role !== "Staff") {
+    if (role !== "Staff" && role !== "Stuco") {
       alert("공지 수정 권한이 없습니다.");
       return;
     }
@@ -98,7 +95,7 @@ function AdminMain() {
       navigate("/admin/login");
       return;
     }
-    if (role !== "Staff") {
+    if (role !== "Staff" && role !== "Stuco") {
       alert("분실물 추가 권한이 없습니다.");
       return;
     }
@@ -115,7 +112,7 @@ function AdminMain() {
       navigate("/admin/login");
       return;
     }
-    if (role !== "Staff") {
+    if (role !== "Staff" && role !== "Stuco") {
       alert("공지 추가 권한이 없습니다.");
       return;
     }
@@ -154,7 +151,8 @@ function AdminMain() {
           {filteredNotices.length > 0 ? (
             filteredNotices.map((n) => (
               <NoticeBox 
-                key={n.id} 
+                key={n.id}
+                id={n.id}
                 category={n.category}
                 title={n.title}
                 writer={n.writer} 
