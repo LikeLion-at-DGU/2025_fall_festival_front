@@ -32,16 +32,14 @@ isSelected,
 
   return (
 <div
-  className={`cursor-pointer w-full h-[92px] rounded-2xl border p-4 transition
-    ${
-      isSelected
-        ? "bg-red-50 border-red-500 shadow-md"   //  선택됨
-    //삭제 예정
-        : isOperating
-        ? "bg-white border-primary-400"          //  영업중
-        : "bg-white border-neutral-200"          //  영업중 아님
-    }
-  `}
+className={`cursor-pointer w-full h-[92px] rounded-2xl border p-4 transition
+  ${
+    isSelected
+      ? "bg-red-50 border-red-500 shadow-md"   // 선택됨
+      : "bg-white border-neutral-200"          // 기본
+  }
+`}
+
   style={{
     boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
   }}

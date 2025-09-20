@@ -17,9 +17,9 @@ function PullList({
   selectedPin,
   selectedBooth,
 }) {
-  const minHeight = 200;
-  const maxHeight = Math.min(520, window.innerHeight - 100 - 62);
-  const defaultHeight = 200;
+  const minHeight = 150;
+  const maxHeight = Math.min(500, window.innerHeight - 100 - 62);
+  const defaultHeight = 150;
 
   const snapPoints = [minHeight, maxHeight];
 
