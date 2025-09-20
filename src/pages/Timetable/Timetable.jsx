@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import EllipseIcon from "../../assets/images/icons/Timetable-icons/Ellipse.svg";     // 선택된 동그라미
-import EllipseIcon2 from "../../assets/images/icons/Timetable-icons/Ellipse2.svg";   // 미선택 동그라미 (img로 사용)
-import VectorIcon from "../../assets/images/icons/Timetable-icons/Vector.svg";       // 삼각형 (img로 사용)
+import dot from "../../assets/images/icons/Timetable-icons/dot.png";     // 선택된 동그라미
+import dot2 from "../../assets/images/icons/Timetable-icons/empty-dot.png";   // 미선택 동그라미 (img로 사용)
+import arrow from "../../assets/images/icons/Timetable-icons/arrow.png";       // 삼각형 (img로 사용)
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -124,13 +124,13 @@ export default function Timetable() {
             <button onClick={() => setSelectedHour(time)} className="mt-2">
               {selectedHour === time ? (
                 <img
-                  src={EllipseIcon}
+                  src={dot}
                   alt="selected"
                   className="w-[30px] h-[30px]"
                 />
               ) : (
                 <img
-                  src={EllipseIcon2}
+                  src={dot2}
                   alt="unselected"
                   className="w-[27px] h-[26px]"
                 />
@@ -140,7 +140,7 @@ export default function Timetable() {
             {/* ▼ 삼각형 포인터 (선택된 시간만 표시) */}
             {selectedHour === time && (
               <img
-                src={VectorIcon}
+                src={arrow}
                 alt="pointer"
                 className="w-[28px] h-[28px]"
               />

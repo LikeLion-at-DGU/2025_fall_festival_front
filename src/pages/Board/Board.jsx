@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
+import EmptyLogo from "../../assets/images/icons/logo/empty-logo.png";
 
 /* =========================
    환경변수 기반 API 베이스
@@ -32,6 +33,43 @@ function isAbortError(err) {
     err?.name === "AbortError" ||
     (typeof err?.message === "string" &&
       err.message.toLowerCase().includes("aborted"))
+  );
+}
+
+/* =========================
+   빈 상태 컴포넌트
+   ========================= */
+function EmptyState({ hasSearchKeyword, activeTag }) {
+  const getEmptyMessage = () => {
+    if (hasSearchKeyword) {
+      return "검색 결과가 없습니다.";
+    }
+
+    switch (activeTag) {
+      case "전체":
+        return "게시글이 없습니다.";
+      case "공지":
+        return "현재 공지글이 없습니다.";
+      case "이벤트":
+        return "현재 진행중인 이벤트가 없습니다.";
+      case "분실물":
+        return "다행히 아직 분실물이 없어요.";
+      default:
+        return "게시글이 없습니다.";
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[350px] w-full">
+      <img
+        src={EmptyLogo}
+        alt="빈 상태"
+        className="w-[224.556px] h-[43px] mb-4 opacity-60"
+      />
+      <p className="text-[#b6b6ba] text-center text-[18px] font-normal leading-[130%]">
+        {getEmptyMessage()}
+      </p>
+    </div>
   );
 }
 
@@ -95,7 +133,7 @@ function BoardItem({ item }) {
     <li className="rounded-[12px] bg-white">
       <Link
         to={`/board/${item.id}`}
-        className="flex h-[41px] py-[8px] px-[8px] items-center justify-between gap-3 w-full"
+        className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full"
       >
         <div className="flex items-center gap-3 min-w-0">
           <span
@@ -105,11 +143,11 @@ function BoardItem({ item }) {
           </span>
         </div>
         <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
-          <p className="truncate text-[#52525B] font-[SUITE] text-[12px] not-italic font-semibold leading-[150%]">
+          <p className="truncate text-[#52525B] font-[SUITE] text-[16px] not-italic font-semibold leading-[150%]">
             {title}
           </p>
           {displayWriter && (
-            <span className="text-[#52525B] font-[SUITE] text-[10px] not-italic font-normal leading-[150%] shrink-0">
+            <span className="text-[#52525B] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shrink-0">
               - {displayWriter}
             </span>
           )}
@@ -159,14 +197,14 @@ function Pagination({ total, page, pageSize, onChange }) {
   }
 
   return (
-    <div className="flex items-center justify-center gap-2 pt-4">
+    <div className="flex items-center justify-center gap-2 py-8">
       <button
         type="button"
         onClick={() => onChange(Math.max(1, page - 1))}
         disabled={page === 1}
-        className="rounded-lg border px-2 py-1 text-sm disabled:opacity-40"
+        className="rounded-lg bg-white px-3 py-2 text-sm disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-black hover:bg-primary-400 hover:text-white"
       >
-        이전
+        &lt;
       </button>
 
       {withGaps.map((item) =>
@@ -180,8 +218,10 @@ function Pagination({ total, page, pageSize, onChange }) {
             key={item}
             onClick={() => onChange(item)}
             className={
-              "rounded-lg border px-2 py-1 text-sm " +
-              (item === page ? "bg-black text-white border-black" : "")
+              "rounded-lg px-3 py-2 text-sm " +
+              (item === page
+                ? "bg-primary-500 text-white"
+                : "bg-white hover:bg-primary-400 hover:text-white")
             }
           >
             {item}
@@ -193,14 +233,13 @@ function Pagination({ total, page, pageSize, onChange }) {
         type="button"
         onClick={() => onChange(Math.min(totalPages, page + 1))}
         disabled={page === totalPages}
-        className="rounded-lg border px-2 py-1 text-sm disabled:opacity-40"
+        className="rounded-lg bg-white px-3 py-2 text-sm disabled:opacity-40 disabled:hover:bg-white disabled:hover:text-black hover:bg-primary-400 hover:text-white"
       >
-        다음
+        &gt;
       </button>
     </div>
   );
 }
-
 
 /* =========================
    메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
@@ -211,7 +250,7 @@ export default function Board() {
   const [activeTag, setActiveTag] = useState("전체");
 
   const [page, setPage] = useState(1);
-  const pageSize = 20;
+  const pageSize = 10;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -232,7 +271,7 @@ export default function Board() {
     if (search) {
       setKeyword(search);
     }
-  }, []); 
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -348,14 +387,16 @@ export default function Board() {
       </div>
 
       {/* 리스트 영역을 flex-1로 */}
-      <div className="flex-1">
-        <div className="min-h-[320px]">
-          {loading && <div className="py-16 text-center text-gray-500">불러오는 중…</div>}
-          {!loading && error && <div className="py-16 text-center text-rose-600">{error}</div>}
+      <div className="flex-1 flex flex-col">
+        <div className="flex-1 min-h-[320px]">
+          {loading && (
+            <div className="py-16 text-center text-gray-500">불러오는 중…</div>
+          )}
+          {!loading && error && (
+            <div className="py-16 text-center text-rose-600">{error}</div>
+          )}
           {!loading && !error && paged.length === 0 && (
-            <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">
-              현재 게시물이 없습니다
-            </div>
+            <EmptyState hasSearchKeyword={!!keyword} activeTag={activeTag} />
           )}
           {!loading && !error && paged.length > 0 && (
             <ul className="flex flex-col gap-[8px]">
@@ -365,20 +406,17 @@ export default function Board() {
             </ul>
           )}
         </div>
-      </div>
 
-
-      {/* 페이지네이션 */}
-      {!loading && !error && totalForUI > 0 && totalPages > 1 && (
-        <div className="">
+        {/* 페이지네이션 */}
+        {!loading && !error && totalForUI > 0 && totalPages > 1 && (
           <Pagination
             total={totalForUI}
             page={page}
             pageSize={pageSize}
             onChange={setPage}
           />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

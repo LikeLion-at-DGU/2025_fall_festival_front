@@ -3,7 +3,7 @@ import React from "react";
 
 const Badge = ({
   text = "Badge",
-  backgroundColor = "rgba(248, 176, 169, 0.90)",
+  backgroundColor = "rgba(239, 112, 99, 0.90)",
   className = "",
 }) => {
   return (

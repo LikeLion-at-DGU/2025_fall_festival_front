@@ -12,6 +12,7 @@ import UnheartIcon from "../../../assets/images/icons/map-icons/emptyHeart.png";
 import TimeCircleIcon from "../../../assets/images/icons/map-icons/TimeCircle.svg";
 import LocationIcon from "../../../assets/images/icons/map-icons/Location.svg";
 import tail from "../../../assets/images/icons/map-icons/triangle.svg";
+import defaultImg from "../../../assets/images/banners/default-img.png";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const fmtTime = (t) => (typeof t === "string" ? t.slice(0, 5) : t);
@@ -71,16 +72,14 @@ export default function BoothDetail() {
     <div className="flex flex-col w-[343px] mx-auto items-center pt-6 pb-8 space-y-4">
       {/* 상단 이미지 */}
       <div className="w-full h-[232px] rounded-[16px] bg-[#A1A1AA] flex items-center justify-center">
-        {booth.image_url && (
-          <img
-            src={booth.image_url}
-            alt={booth.name}
-            className="w-[343px] h-[232px] object-cover rounded-[16px]"
-            onError={(e) => {
-              e.currentTarget.style.display = "none"; // 로딩 실패 → 안보이게
-            }}
-          />
-        )}
+        <img
+          src={booth.image_url || defaultImg}
+          alt={booth.name}
+          className="w-[343px] h-[232px] object-cover rounded-[16px]"
+          onError={(e) => {
+            e.currentTarget.src = defaultImg;
+          }}
+        />
       </div>
 
       {/* 카드 */}
@@ -222,7 +221,6 @@ export default function BoothDetail() {
           디오더 측에서 제공하는 공식 데이터입니다
         </p>
       )}
-
     </div>
   );
 }
