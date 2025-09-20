@@ -54,15 +54,9 @@ function Tag({ label, active, onClick }) {
   );
 }
 
-function SearchBar({ value, onChange, onSubmit }) {
+function SearchBar({ value, onChange }) {
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSubmit?.();
-      }}
-      className="w-full"
-    >
+    <div className="w-full">
       <div className="flex w-full items-center rounded-[8px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-2">
         <input
           value={value}
@@ -70,15 +64,15 @@ function SearchBar({ value, onChange, onSubmit }) {
           placeholder="검색어를 입력해주세요"
           className="flex-1 text-[#A1A1AA] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] outline-none"
         />
-        <button type="submit" className="flex items-center justify-center">
+        <div className="flex items-center justify-center">
           <img
             src={SearchIcon}
             alt="검색"
             className="w-[13.875px] h-[14.219px] flex-shrink-0"
           />
-        </button>
+        </div>
       </div>
-    </form>
+    </div>
   );
 }
 
@@ -87,10 +81,8 @@ function SearchBar({ value, onChange, onSubmit }) {
    ========================= */
 function BoardItem({ item }) {
   const { category, title } = item;
-  // 이벤트는 writer가 없을 수 있음 → booth_name 사용
   const displayWriter = item.writer || item.booth_name || "";
 
-  // 카테고리별 태그 스타일
   const pillCls =
     category === "Notice"
       ? "bg-[#EF7063] text-white border border-[#EF7063] w-[42px]"
@@ -201,23 +193,18 @@ function Pagination({ total, page, pageSize, onChange }) {
    메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
    ========================= */
 export default function Board() {
-  // UI 상태
   const [keyword, setKeyword] = useState("");
-  const [submittedKeyword, setSubmittedKeyword] = useState("");
   const [activeTag, setActiveTag] = useState("전체");
   const [page, setPage] = useState(1);
   const pageSize = 20;
 
-  // 데이터 상태 (서버에서 전체를 한 번에 받아온다)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [allItems, setAllItems] = useState([]);       // ✅ 전체 목록
-  const [totalFromServer, setTotalFromServer] = useState(0); // 참고용 (total_count)
+  const [allItems, setAllItems] = useState([]);
+  const [totalFromServer, setTotalFromServer] = useState(0);
 
-  const BOARD_ENDPOINT_NO_SLASH = `${API_BASE}/board`;
-  const BOARD_ENDPOINT_WITH_SLASH = `${API_BASE}/board/`;
+  const BOARD_ENDPOINT = `${API_BASE}/board/`;
 
-  // 서버에서 전체 목록 1회 로드
   useEffect(() => {
     const controller = new AbortController();
 
@@ -226,25 +213,11 @@ export default function Board() {
         setLoading(true);
         setError("");
 
-        if (!API_BASE) {
-          throw new Error("API 베이스 주소가 설정되지 않았습니다. .env의 VITE_API_BASE_URL을 확인하세요.");
-        }
-
-        // 1차 시도: /board
-        let res = await fetch(BOARD_ENDPOINT_NO_SLASH, {
+        const res = await fetch(BOARD_ENDPOINT, {
           method: "GET",
           signal: controller.signal,
           headers: { Accept: "application/json" },
         });
-
-        // 실패 시 2차: /board/
-        if (!res.ok) {
-          res = await fetch(BOARD_ENDPOINT_WITH_SLASH, {
-            method: "GET",
-            signal: controller.signal,
-            headers: { Accept: "application/json" },
-          });
-        }
 
         if (!res.ok) {
           const text = await res.text().catch(() => "");
@@ -252,8 +225,6 @@ export default function Board() {
         }
 
         const data = await res.json();
-
-        // ✅ 백엔드 새 스키마 반영
         const list = Array.isArray(data?.result) ? data.result : [];
         const total = typeof data?.total_count === "number" ? data.total_count : list.length;
 
@@ -261,10 +232,10 @@ export default function Board() {
         setTotalFromServer(total);
       } catch (e) {
         if (isAbortError(e)) {
-          console.debug("Fetch aborted (expected in dev StrictMode)");
+          console.debug("Fetch aborted");
         } else {
           console.error(e);
-          setError(e?.message || "게시글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.");
+          setError(e?.message || "게시글을 불러오지 못했습니다.");
         }
       } finally {
         setLoading(false);
@@ -274,9 +245,9 @@ export default function Board() {
     return () => controller.abort();
   }, []);
 
-  // 태그/검색 로직 (프론트에서 처리)
+  // ✅ keyword 바로 사용해서 필터링
   const serverCategory = KOR_TO_SERVER[activeTag];
-  const kw = (submittedKeyword || "").trim().toLowerCase();
+  const kw = keyword.trim().toLowerCase();
 
   const filtered = useMemo(() => {
     return allItems.filter((item) => {
@@ -287,8 +258,8 @@ export default function Board() {
 
       const t = item.title?.toLowerCase() || "";
       const w = item.writer?.toLowerCase() || "";
-      const b = item.booth_name?.toLowerCase() || ""; // 이벤트 대응
-      const d = item.detail?.toLowerCase() || "";     // 이벤트 대응
+      const b = item.booth_name?.toLowerCase() || "";
+      const d = item.detail?.toLowerCase() || "";
       const okKw = !kw || t.includes(kw) || w.includes(kw) || b.includes(kw) || d.includes(kw);
 
       return okCat && okKw;
@@ -296,16 +267,12 @@ export default function Board() {
   }, [allItems, serverCategory, kw]);
 
   // 검색/태그 변경 시 1페이지로
-  const submitSearch = () => {
+  useEffect(() => {
     setPage(1);
-    setSubmittedKeyword(keyword.trim());
-  };
-  const clickTag = (korLabel) => {
-    setActiveTag(korLabel);
-    setPage(1);
-  };
+  }, [keyword, activeTag]);
 
-  // 페이지네이션 계산 및 슬라이스
+  const clickTag = (korLabel) => setActiveTag(korLabel);
+
   const totalForUI = filtered.length;
   const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
   const paged = useMemo(() => {
@@ -313,7 +280,6 @@ export default function Board() {
     return filtered.slice(start, start + pageSize);
   }, [filtered, page, pageSize]);
 
-  // 현재 page가 총 페이지를 넘어가면 보정
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
   }, [totalPages, page]);
@@ -322,7 +288,7 @@ export default function Board() {
     <div className="mx-auto max-w-screen-sm px-4 pb-4">
       {/* 검색 */}
       <div className="pt-4">
-        <SearchBar value={keyword} onChange={setKeyword} onSubmit={submitSearch} />
+        <SearchBar value={keyword} onChange={setKeyword} />
       </div>
 
       {/* 태그 */}
@@ -362,7 +328,7 @@ export default function Board() {
         )}
       </div>
 
-      {/* 페이지네이션: 프론트 계산 기준 */}
+      {/* 페이지네이션 */}
       {!loading && !error && totalForUI > 0 && totalPages > 1 && (
         <Pagination
           total={totalForUI}
