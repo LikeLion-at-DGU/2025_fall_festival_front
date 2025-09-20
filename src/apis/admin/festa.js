@@ -61,13 +61,13 @@ export async function getEmergencyNotices() {
 export async function getUnionNotices() {
   const res = await instance.get("/board/notices");
   const name = sessionStorage.getItem("name");
-  return res.data.results.filter((item) => item.writer === name);
+  return res.data.filter((item) => item.writer === name);
 }
 
 export async function getUnionLosts() {
   const res = await instance.get("/board/losts");
   const name = sessionStorage.getItem("name");
-  return res.data.results.filter((item) => item.writer === name);
+  return res.data.filter((item) => item.writer === name);
 }
 
 //-------- 공지글 상세페이지 get --------//
