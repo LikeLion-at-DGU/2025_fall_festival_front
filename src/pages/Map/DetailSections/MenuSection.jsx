@@ -26,8 +26,8 @@ export default function MenuSection({ menus }) {
                                 )}
                                 {/* 품절 배지 */}
                                 {m.is_soldout && (
-                                    <span className="absolute top-1 right-1 text-xs bg-[#2A2A2ECC] text-[#E65B4D] px-2 py-0.5 rounded-md z-10">
-                                        재고 소진
+                                    <span className="whitespace-nowrap absolute top-1 left-8 text-[10px] bg-[#2A2A2ECC] text-[#E65B4D] font-normal px-[6px] py-[3px] rounded-[16px] z-10">
+                                        재고 소진 임박
                                     </span>
                                 )}
                             </div>
