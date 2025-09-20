@@ -1,12 +1,11 @@
 // src/config/mapConfigs.js
 
-// ✅ 모든 상세지도 이미지를 detailmap-icons 폴더에서 import
 import DetailMapManhae from "../assets/images/icons/detailmap-icons/DetailMapManhae.png";
 import DetailMapDahyang from "../assets/images/icons/detailmap-icons/DetailMapDahyang.png";
-import DetailMapSocSci from "../assets/images/icons/detailmap-icons/DetailMapSocSci.svg";
+import DetailMapSocSci from "../assets/images/icons/detailmap-icons/DetailMapSocSci.png";
 import DetailMapWonheung from "../assets/images/icons/detailmap-icons/DetailMapWonheung.png";
 import DetailMapHyehwa from "../assets/images/icons/detailmap-icons/DetailMapHyehwa.png";
-import DetailMapPaljeongdo from "../assets/images/icons/detailmap-icons/DetailMapPaljeongdo.svg";
+import DetailMapPaljeongdo from "../assets/images/icons/detailmap-icons/DetailMapPaljeongdo.png";
 import DetailMapMyungjin from "../assets/images/icons/detailmap-icons/DetailMapMyungjin.png";
 import DetailMapLaw from "../assets/images/icons/detailmap-icons/DetailMapLaw.png";
 

@@ -48,7 +48,9 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
         .map((btn, idx) => (
           <button
             key={idx}
-            className="absolute whitespace-nowrap bg-[#EBC4C4] px-2 py-1 text-xs rounded"
+            className="text-[var(--Neutral-500,#52525B)] font-[SUITE] text-[10px] font-normal leading-[150%]
+            px-[6px] py-[13px]
+            absolute whitespace-nowrap bg-[linear-gradient(270deg,#EBC4C4_0%,#CCBCBC_58.17%)] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
             style={{
               left: `${btn.x}%`,
               top: `${btn.y}%`,

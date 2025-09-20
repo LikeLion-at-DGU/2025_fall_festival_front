@@ -2,14 +2,14 @@ import React from "react";
 import LocationPin from "./LocationPin";
 import emptyMap from "../../assets/images/icons/map-icons/emptyMap.svg";
 import Campusmap from "../../assets/images/icons/map-icons/Campusmap.svg";
-import MapToiletBadge from "../../assets/images/icons/map-icons/MapToilet.png";
+import MapToiletBadge from "../../assets/images/icons/map-icons/MapToilet.svg";
 import MapBeerBadge from "../../assets/images/icons/map-icons/MapBeer.png";
 import MapConvenienceBadge from "../../assets/images/icons/map-icons/MapConvenience.png";
 import FoodtruckBadge from "../../assets/images/icons/map-icons/MapFoodTruck.png";
 import { mapConfigs } from "../../config/mapConfigs";
 // 로컬 좌표 정보 (API 데이터에 맞게 수정)
 const buildingLocations = [
-  { name: "만해/법학관", x: 44.5, y: 32.5 },
+  { name: "만해/법학관", x: 44, y: 39 },
   { name: "신공학관", x: 61.5, y: 27 },
   { name: "중앙도서관", x: 55, y: 28 },
   { name: "대운동장", x: 32, y: 29 },
@@ -61,10 +61,15 @@ const MapWithPins = ({
     .filter(Boolean);
   // console.log(selectedFilter);
   // console.log("최종 mappedLocations:", mappedLocations); // 디버깅
+// 좌표 중복 제거 (name 기준으로 unique)
+const uniqueMappedLocations = mappedLocations.filter(
+  (loc, index, self) =>
+    index === self.findIndex((l) => l.location.name === loc.location.name)
+);
 
   // 핀 렌더링
   const renderPins = () =>
-    mappedLocations.map((item) => (
+    uniqueMappedLocations.map((item) => (
       <div key={item.booth_id} className="pointer-events-auto">
         <LocationPin
           label={item.location.name}

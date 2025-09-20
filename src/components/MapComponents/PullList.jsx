@@ -22,7 +22,7 @@ function PullList({
 
   // ✅ maxHeight를 상태로 관리
   const [maxHeight, setMaxHeight] = useState(
-    Math.min(480, window.innerHeight - 100 - 82)
+    Math.min(437, window.innerHeight - 100 - 82)
   );
 
   useEffect(() => {
@@ -34,7 +34,10 @@ function PullList({
   }, []);
 
   // ✅ snapPoints를 useMemo로 관리 → maxHeight 변하면 같이 반영
-  const snapPoints = useMemo(() => [minHeight, maxHeight], [minHeight, maxHeight]);
+  const snapPoints = useMemo(
+    () => [minHeight, maxHeight],
+    [minHeight, maxHeight]
+  );
 
   const [sheetHeight, setSheetHeight] = useState(defaultHeight);
   const [isDragging, setIsDragging] = useState(false);
