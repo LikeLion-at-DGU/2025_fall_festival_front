@@ -32,11 +32,7 @@ function BoothCard({
   return (
     <div
       className={`cursor-pointer w-full h-[92px] p-4 transition shadow-sm
-        ${
-          isSelected
-            ? "bg-red-50 shadow-md" 
-            : "bg-white" 
-        }
+        ${isSelected ? "bg-red-50 shadow-md" : "bg-white"}
       `}
       style={{
         borderRadius: "16px",
@@ -49,11 +45,20 @@ function BoothCard({
         {/* 이미지 */}
         <div className="relative w-16 h-16 flex-shrink-0">
           <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
-            <img
-              src={image}
-              alt="로딩..."
-              className="w-full h-full bg-[#C2C2C2] object-cover"
-            />
+            {image ? (
+              <img
+                src={image}
+                alt={title}
+                className="w-full h-full bg-[#C2C2C2] object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+            ) : (
+              <div className="w-full h-full bg-[#C2C2C2] flex items-center justify-center text-xs text-gray-500">
+                이미지 없음
+              </div>
+            )}
           </div>
           {/* Badge 겹치기 */}
           {badges?.isEventActive || isEvent ? (
