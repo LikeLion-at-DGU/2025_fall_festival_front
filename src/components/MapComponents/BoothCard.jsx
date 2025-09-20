@@ -81,7 +81,7 @@ function BoothCard({
                 className="w-5 h-5 transition-all duration-200"
               />
             </button>
-            <span className="text-xs text-neutral-300 font-suite">
+            <span className="text-xs text-[#A1A1AA] font-suite">
               {likesCount}
             </span>
           </div>
