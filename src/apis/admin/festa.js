@@ -47,11 +47,20 @@ export async function patchEmergencyNotice(id, data) {
   }
 }
 
-//-------- 가장 최근 긴급공지 get --------//
+//-------- ⛔폐기예정⛔ 가장 최근 긴급공지 get --------//
 export async function getEmergencyNotices() {
   try {
-    const res = await instance.get("/board?type=emergency");
+    const res = await instance.get(`/board/${id}`);
     return res.data; // ✅ 반드시 res.data 반환
+  } catch (err) {
+    throw err.response?.data || { error: "알 수 없는 오류" };
+  }
+}
+// 긴급공지 GET - id 직접 지정
+export async function getEmergencyNotice() {
+  try {
+    const res = await instance.get(`/board/1`);
+    return res.data; // { board_id, board_title, board_content, ... }
   } catch (err) {
     throw err.response?.data || { error: "알 수 없는 오류" };
   }
