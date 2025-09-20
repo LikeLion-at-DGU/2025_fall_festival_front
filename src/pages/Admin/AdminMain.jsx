@@ -7,7 +7,7 @@ import AdminTitle from "../../components/AdminComponents/AdminTitle";
 import NoticeBox from "../../components/AdminComponents/Admin/NoticeBox";
 import NoticeSearch from "../../components/AdminComponents/Admin/NoticeSearch";
 
-import { patchEmergencyNotice, getUnionNotices, getUnionLosts } from "../../apis/admin/stuco";
+import { patchEmergencyNotice, getUnionNotices, getUnionLosts } from "../../apis/admin/festa";
 
 
 function AdminMain() {

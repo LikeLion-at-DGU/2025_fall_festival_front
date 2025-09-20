@@ -36,7 +36,7 @@ function BoothMain() {
     // 1. 유저 로그인 여부 체크 (uid 존재 여부)
     if (!uid) {
       alert("로그인이 필요합니다.");
-      navigate("/login");
+      navigate("/admin/login");
       return;
     }
     // 2. 권한 체크(role 기반)

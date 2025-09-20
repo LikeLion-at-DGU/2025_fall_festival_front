@@ -21,8 +21,7 @@ function BoothCard({
   isDorder,
   badges,
   onClick,
-isSelected,
-
+  isSelected,
 }) {
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     boothId,
@@ -50,11 +49,22 @@ className={`cursor-pointer w-full h-[92px] rounded-2xl border p-4 transition
         {/* 이미지 */}
         <div className="relative w-16 h-16 flex-shrink-0">
           <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
-            <img
-              src={image}
-              alt="로딩..."
-              className="w-full h-full bg-[#C2C2C2] object-cover"
-            />
+            {image ? (
+              <img
+                src={image}
+                alt={title}
+                className="w-full h-full bg-[#C2C2C2] object-cover"
+                onError={(e) => {
+                  <div className="w-full h-full bg-[#C2C2C2] flex items-center justify-center text-xs text-gray-500">
+                    이미지 없음
+                  </div>;
+                }}
+              />
+            ) : (
+              <div className="w-full h-full bg-[#C2C2C2] flex items-center justify-center text-xs text-gray-500">
+                이미지 없음
+              </div>
+            )}
           </div>
           {/* Badge 겹치기 */}
           {badges?.isEventActive || isEvent ? (
@@ -82,7 +92,7 @@ className={`cursor-pointer w-full h-[92px] rounded-2xl border p-4 transition
                 className="w-5 h-5 transition-all duration-200"
               />
             </button>
-            <span className="text-xs text-neutral-300 font-suite">
+            <span className="text-xs text-[#A1A1AA] font-suite">
               {likesCount}
             </span>
           </div>
