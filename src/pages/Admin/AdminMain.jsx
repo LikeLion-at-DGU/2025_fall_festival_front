@@ -44,10 +44,8 @@ function AdminMain() {
   const bigWrapperClass =
     "flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6";
   const wrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-4";
-  const middleWrapperClass =
-    "flex flex-col items-center w-full h-full mx-auto gap-3";
-  const smallWrapperClass =
-    "flex flex-col items-center w-full h-full mx-auto gap-1";
+  const noticeWrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-0";
+  const smallWrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-2.5";
   const bottomWrapperClass = "flex flex-col w-full";
 
   // ✅ 게시글 및 긴급공지 불러오기
@@ -158,7 +156,8 @@ function AdminMain() {
       {/* 긴급공지 */}
       <div className={wrapperClass}>
         <AdminTitle text="긴급 공지" />
-
+  
+        <div className={noticeWrapperClass}>
         <PostInput
           placeholder="긴급하게 올릴 공지를 입력해주세요"
           value={notice}
@@ -171,8 +170,8 @@ function AdminMain() {
           text="긴급 공지 수정하기"
           onClick={handlePatchEvent}
           disabled={!isEdited || !notice.trim()} // 값 없거나 수정 안 됐으면 비활성화
-          className="mt-0"
         />
+        </div>
       </div>
 
       {/* 게시글 목록 */}
@@ -197,8 +196,8 @@ function AdminMain() {
         </div>
 
         <div className={bottomWrapperClass}>
-          <Submitbtn text="분실물 추가하기" onClick={handleAddLostItem} />
-          <Submitbtn text="공지 추가하기" onClick={handleAddNotice} />
+          <Submitbtn text="분실물 공지 추가하기" onClick={handleAddLostItem} />
+          <Submitbtn text="일반 공지 추가하기" onClick={handleAddNotice} />
         </div>
       </div>
 

@@ -26,20 +26,28 @@ function NoticeBox({ id, category, title, writer }) {
         flex items-center justify-between 
         w-full h-[48px] 
         px-3 py-2
-        rounded-lg cursor-pointer
-        border border-[#E4E4E7] bg-[#F9FAFB]
+        rounded-2xl cursor-pointer
+        border-[#f1f1f1] bg-[#ffffff]
         hover:bg-gray-100 transition
       "
     >
       {/* 왼쪽: 태그 + 텍스트 */}
       <div className="flex items-center gap-2">
         <span
-          className="
-            px-0.1 py-1 text-sm font-medium
-            text-white bg-[#EF7063] 
-            rounded-md w-10 h-6 flex items-center justify-center
-          "
-        >
+            className={`
+              px-1 py-1 text-[11px] font-medium
+              rounded-[10px] w-[45px] h-[26px] flex items-center justify-center
+              ${
+                category === "Notice"
+                  ? "bg-[#EF7063] text-white"                // 공지 → 빨간 배경, 흰 글씨
+                  : category === "Event"
+                  ? "border border-[#EF7063] text-[#EF7063]" // 이벤트 → 빨간 테두리, 빨간 글씨
+                  : category === "LostItem"
+                  ? "border border-[#71717A] text-[#71717A]"   // 분실물 → 회색 테두리, 회색 글씨
+                  : "bg-gray-200 text-gray-700"              // 기본값
+              }
+            `}
+          >
           {category === "Notice"
             ? "공지"
             : category === "LostItem"
@@ -52,7 +60,7 @@ function NoticeBox({ id, category, title, writer }) {
       </div>
 
       {/* 오른쪽: 작성자 */}
-      <span className="text-xs text-gray-500">{writer}</span>
+      <span className="text-xs text-gray-500">- {writer}</span>
     </div>
   );
 }
