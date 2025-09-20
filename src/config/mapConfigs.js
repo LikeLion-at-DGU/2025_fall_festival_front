@@ -10,13 +10,14 @@ import DetailMapPaljeongdo from "../assets/images/icons/detailmap-icons/DetailMa
 
 // 건물별 상세 지도 + 버튼 좌표
 export const mapConfigs = {
-  "만해/법학관": {
-    img: DetailMapManhae,
-    buttons: [
-      { label: "테스트부스1", x: 50, y: 30 },
-      { label: "입구", x: 20, y: 80 },
-    ],
-  },
+"만해/법학관": {
+  img: DetailMapManhae,
+  buttons: [
+    { type: "button", label: "테스트부스1", x: 50, y: 30 }, // 클릭 가능
+    { type: "label", label: "입구", x: 20, y: 80 },         // 표시만
+  ],
+},
+
   "다향관": {
     img: DetailMapDahyang,
     buttons: [{ label: "입구", x: 40, y: 70 }],
