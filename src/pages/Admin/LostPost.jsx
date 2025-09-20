@@ -54,11 +54,11 @@ function LostPost() {
 
       if (editingData) {
         const res = await updateLostPost(editingData.id, formData);
-        setToastMsg(res.message || "분실물 수정 성공");
+        setToastMsg(res.message || "분실물이 수정되었습니다");
         console.log("수정할 데이터:", { title, content, locationText, image });
       } else {
         const res = await createLostPost(formData);
-        setToastMsg(res.message || "분실물 등록 성공");
+        setToastMsg(res.message || "분실물이 등록되었습니다");
       }
 
       setTimeout(() => navigate("/admin/festa"), 2500);
@@ -90,6 +90,18 @@ function LostPost() {
     }
   };
 
+  // 버튼 비활성화 조건
+  const isDisabled =
+    !title.trim() ||
+    !content.trim() ||
+    !locationText.trim() ||
+    !image || // 이미지 필수로 일단 설정해둠
+    (editingData &&
+      title.trim() === editingData.title &&
+      content.trim() === editingData.content &&
+      locationText.trim() === (editingData.location || "") &&
+      !image); // 새 이미지를 업로드하지 않은 경우
+
   return (
     <div className="flex flex-col justify-between w-full h-full px-4 py-8 gap-4 mx-auto">
       <div className="flex flex-col items-center w-full h-full mx-auto gap-4">
@@ -120,7 +132,7 @@ function LostPost() {
       <Submitbtn
         text={editingData ? "수정하기" : "등록하기"}
         onClick={handleSubmit}
-        disabled={!title.trim() || !content.trim() || !locationText.trim() || !image}
+        disabled={isDisabled}
         // ✅ 이미지(image)는 선택사항이면 disabled 조건에서 제외 가능
       />
 
