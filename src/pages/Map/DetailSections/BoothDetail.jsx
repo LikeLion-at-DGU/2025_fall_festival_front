@@ -69,7 +69,7 @@ export default function BoothDetail() {
   if (!booth) return <div className="p-6">로딩 중...</div>;
 
   return (
-    <div className="flex flex-col w-[343px] mx-auto items-center pt-6 pb-8 space-y-4">
+    <div className="flex flex-col w-[343px] mx-auto items-center pt-6 pb-8 space-y-3">
       {/* 상단 이미지 */}
       <div className="w-full h-[232px] rounded-[16px] bg-[#A1A1AA] flex items-center justify-center">
         <img
@@ -94,7 +94,7 @@ export default function BoothDetail() {
           {/* 왼쪽 영역 */}
           <div className="flex-1">
             {/* 부스 타입 + 이름 */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 !mb-4">
               <span className="bg-[#EF7063] text-white px-2 py-1 rounded-full text-xs">
                 {booth.is_night ? "야간부스" : "주간부스"}
               </span>
@@ -103,8 +103,8 @@ export default function BoothDetail() {
 
             {/* 야간 부스 & 디오더 가능 표시 */}
             {booth.is_night && booth.is_dorder && (
-              <div className="flex items-center gap-1 mt-2">
-                <img src={CheckIcon} alt="check" className="w-4 h-4" />
+              <div className="flex items-center gap-2 mt-2">
+                <img src={CheckIcon} alt="check" className="w-[21.5px] h-[21.5px]" />
                 <span className="text-red-500 text-sm font-medium">
                   디오더 사용 가능 주점
                 </span>
@@ -115,9 +115,9 @@ export default function BoothDetail() {
             {groupSchedules(booth.schedules).map((g, i) => (
               <div
                 key={i}
-                className="flex items-center gap-2 mt-1 text-sm text-gray-600"
+                className="flex items-center gap-2 mt-1 text-[14px] text-gray-600"
               >
-                <img src={TimeCircleIcon} alt="time" className="w-4 h-4" />
+                <img src={TimeCircleIcon} alt="time" className="w-[21.5px] h-[21.5px]" />
                 <span>
                   {g.days.join(", ")} {g.time}
                 </span>
@@ -125,8 +125,8 @@ export default function BoothDetail() {
             ))}
 
             {/* 위치 */}
-            <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
-              <img src={LocationIcon} alt="location" className="w-4 h-4" />
+            <div className="flex items-center gap-2 mt-1 text-[14px] text-gray-600">
+              <img src={LocationIcon} alt="location" className="w-[21.5px] h-[24px]" />
               <span>{booth.location_description}</span>
             </div>
           </div>
@@ -154,16 +154,20 @@ export default function BoothDetail() {
       </div>
 
       {/* 소개 */}
-      <div className="w-full bg-white shadow rounded-[16px] px-[15px] py-[10px]">
+      <div
+        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${booth.is_night ? "!mt-4" : "!mt-10"
+          }`}
+      >
         <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">부스 소개</h2>
         <p className="text-sm text-gray-700">
           {booth.booth_description || "소개글이 없습니다."}
         </p>
       </div>
 
+
       {/* 디오더 상태 */}
       {booth.is_dorder && (
-        <div className="w-full bg-white shadow rounded-[13px] p-3 text-sm text-gray-700">
+        <div className="w-full bg-white shadow rounded-[13px] p-3 text-sm text-gray-700 !mt-4 !mb-2">
           {booth.booth_can_usage === "True" ? (
             <div className="flex items-center gap-2">
               <svg
@@ -175,7 +179,7 @@ export default function BoothDetail() {
               >
                 <circle cx="5" cy="5" r="5" fill="#E65B4D" />
               </svg>
-              <span>현재 바로 입장 가능합니다.</span>
+              <span>현재 바로 입장 가능합니다!</span>
             </div>
           ) : (
             <div className="flex items-center gap-2">
@@ -196,7 +200,7 @@ export default function BoothDetail() {
 
       {/* 운영 코너 */}
       {!booth.is_night && (
-        <div className="w-full bg-white shadow rounded-[16px] px-[15px] py-[10px]">
+        <div className="w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] !mt-4">
           <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">
             운영 코너
           </h2>

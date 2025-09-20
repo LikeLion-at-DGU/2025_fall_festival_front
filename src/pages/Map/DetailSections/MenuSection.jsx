@@ -8,7 +8,7 @@ export default function MenuSection({ menus }) {
             <h2 className="font-semibold mb-2 text-[#EF7063] text-xl">판매 메뉴</h2>
 
             {/* 가로 스크롤: 위로 튀는 뱃지 안 잘리게 pt 추가 + 스크롤바 숨김 */}
-            <div className="flex gap-3 overflow-x-auto scrollbar-hidden pt-3">
+            <div className="flex gap-3 overflow-x-auto scrollbar-hidden pt-1">
                 {menus.map((m, i) => (
                     // 카드 래퍼
                     <div key={i} className="relative flex-shrink-0 w-32">
