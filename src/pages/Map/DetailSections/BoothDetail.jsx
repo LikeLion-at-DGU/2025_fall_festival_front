@@ -215,6 +215,14 @@ export default function BoothDetail() {
 
       {/* 메뉴 */}
       <MenuSection menus={booth.menus} />
+
+      {/* 디오더 안내문구 */}
+      {booth.is_dorder && (
+        <p className="mt-[16px] text-[15px] text-[#71717A] text-left w-full">
+          디오더 측에서 제공하는 공식 데이터입니다
+        </p>
+      )}
+
     </div>
   );
 }
