@@ -44,10 +44,10 @@ function Tag({ label, active, onClick }) {
       type="button"
       onClick={onClick}
       className={[
-        "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px]",
+        "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
         active
-          ? "bg-black text-white font-[SUITE] text-[12px] not-italic font-normal leading-[150%]"
-          : "bg-white text-[#2A2A2E] font-[SUITE] text-[12px] not-italic font-normal leading-[150%]",
+          ? "bg-black text-white font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
+          : "bg-white text-[#2A2A2E] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
       ].join(" ")}
     >
       #{label}
