@@ -28,36 +28,44 @@ function BoothCard({
     initialLikesCount,
     initialIsLiked
   );
-console.log(endTime)
 
   return (
-<div
-  className={`cursor-pointer w-full h-[92px] rounded-2xl border p-4 transition
+    <div
+      className={`cursor-pointer w-full h-[92px] rounded-2xl border p-4 transition
     ${
       isSelected
-        ? "bg-red-50 border-red-500 shadow-md"   //  선택됨
-    //삭제 예정
-        : isOperating
-        ? "bg-white border-primary-400"          //  영업중
-        : "bg-white border-neutral-200"          //  영업중 아님
+        ? "bg-red-50 border-red-500 shadow-md" //  선택됨
+        : //삭제 예정
+        isOperating
+        ? "bg-white border-primary-400" //  영업중
+        : "bg-white border-neutral-200" //  영업중 아님
     }
   `}
-  style={{
-    boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
-  }}
-  onClick={onClick}
->
-
-
+      style={{
+        boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
+      }}
+      onClick={onClick}
+    >
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
         <div className="relative w-16 h-16 flex-shrink-0">
           <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
-            <img
-              src={image}
-              alt="로딩..."
-              className="w-full h-full bg-[#C2C2C2] object-cover"
-            />
+            {image ? (
+              <img
+                src={image}
+                alt={title}
+                className="w-full h-full bg-[#C2C2C2] object-cover"
+                onError={(e) => {
+                  <div className="w-full h-full bg-[#C2C2C2] flex items-center justify-center text-xs text-gray-500">
+                    이미지 없음
+                  </div>;
+                }}
+              />
+            ) : (
+              <div className="w-full h-full bg-[#C2C2C2] flex items-center justify-center text-xs text-gray-500">
+                이미지 없음
+              </div>
+            )}
           </div>
           {/* Badge 겹치기 */}
           {badges?.isEventActive || isEvent ? (
