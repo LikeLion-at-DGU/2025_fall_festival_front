@@ -99,7 +99,7 @@ function BoothCard({
           </div>
 
           {/* 영업시간 */}
-          <p className="text-xs text-neutral-400 mb-0.5 font-suite leading-[150%] font-normal">
+          <p className="text-xs text-[#71717A] mb-0.5 font-suite leading-[150%] font-normal">
             {time ||
               (businessDays && startTime && endTime
                 ? `${businessDays} ${startTime}~${endTime}`
