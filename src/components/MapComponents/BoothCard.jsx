@@ -21,6 +21,8 @@ function BoothCard({
   isDorder,
   badges,
   onClick,
+isSelected,
+
 }) {
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     boothId,
@@ -30,15 +32,22 @@ function BoothCard({
 
 
   return (
-    <div
-      className={`cursor-pointer bg-white w-full h-[92px] rounded-2xl border p-4 ${
-        isOperating ? "border-primary-400" : "border-neutral-200"
-      } `}
-      style={{
-        boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
-      }}
-      onClick={onClick}
-    >
+<div
+  className={`cursor-pointer w-full h-[92px] rounded-2xl border p-4 transition
+    ${
+      isSelected
+        ? "bg-red-50 border-red-500 shadow-md"   // ✅ 선택됨
+        : isOperating
+        ? "bg-white border-primary-400"          // ✅ 영업중
+        : "bg-white border-neutral-200"          // ✅ 영업중 아님
+    }
+  `}
+  style={{
+    boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
+  }}
+  onClick={onClick}
+>
+
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
         <div className="relative w-16 h-16 flex-shrink-0">
