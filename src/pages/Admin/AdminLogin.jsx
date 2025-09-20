@@ -35,20 +35,33 @@ function AdminLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
+    // ✅ 로그인 전에 세션스토리지 비우기 (꼬인 uid 방지)
+    sessionStorage.clear();
+    
 
     try {
       const data = await adminLogin({ admin_code: code });
+
+      // ✅ 서버에서 내려온 데이터 확인용 로그
+      console.log("📡 로그인 응답:", data);
 
       // 로그인 성공 시 응답 데이터에서 uid, role, name을 꺼내서 sessionStorage에 저장합니다.
       sessionStorage.setItem("uid", data.uid);
       sessionStorage.setItem("role", data.role);
       sessionStorage.setItem("name", data.name);
+
+      // ✅ 저장된 값도 다시 로그로 확인
+      console.log("✅ 세션스토리지 저장 완료:", {
+        uid: sessionStorage.getItem("uid"),
+        role: sessionStorage.getItem("role"),
+        name: sessionStorage.getItem("name"),
+      });
       
       alert("로그인 성공"); // ⛔ alert 창 최종 확인 후 제거 예정
 
       // role에 따라서 라우팅 분기
       if (data.role === "Staff" || data.role === "Stuco") {
-        navigate("/admin/stuco");
+        navigate("/admin/festa");
       } else if (data.role === "Club" || data.role === "Major") {
         navigate("/admin/booth");
       } else {

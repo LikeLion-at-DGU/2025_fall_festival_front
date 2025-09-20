@@ -15,22 +15,22 @@ const Layout = ({ children }) => {
   const adminPaths = [
     "/admin",
     "/admin/login",
-    "/admin/stuco",
-    "/admin/stuco/notice/normal",
-    "/admin/stuco/notice/lost",
+    "/admin/festa",
+    "/admin/festa/notice/normal",
+    "/admin/festa/notice/lost",
     "/admin/booth",
     "/admin/booth/event",
   ];
 
   // 2) 동적 경로 정규식 추가
   // 상세 조회 (/admin/stuco/notice/:id)
-  const adminDetailRegex = /^\/admin\/stuco\/notice\/\d+$/;
+  const adminDetailRegex = /^\/admin\/festa\/notice\/\d+$/;
 
   // 수정 페이지 (/admin/stuco/notice/edit/:id)
-  const adminEditRegex = /^\/admin\/stuco\/notice\/edit\/\d+$/;
+  const adminEditRegex = /^\/admin\/festa\/notice\/edit\/\d+$/;
 
   // 분실물 수정 페이지 (/admin/stuco/lost/edit/:id)
-  const adminLostEditRegex = /^\/admin\/stuco\/lost\/edit\/\d+$/;
+  const adminLostEditRegex = /^\/admin\/festa\/lost\/edit\/\d+$/;
 
   const isAdminPage =
     adminPaths.includes(location.pathname) ||

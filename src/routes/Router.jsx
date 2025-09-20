@@ -53,14 +53,14 @@ const Router = () => {
       {/*공통로그인*/}
       <Route path="/admin/login" element={<AdminLogin />} />
       {/*총학/축기단*/}
-      <Route path="/admin/stuco" element={<AdminMain />} /> {/*메인(게시글)*/}
-      <Route path="/admin/stuco/notice/normal" element={<NormalPost />} /> {/*일반공지 작성*/}
-      <Route path="/admin/stuco/notice/lost" element={<LostPost />} /> {/*분실물 작성*/}
+      <Route path="/admin/festa" element={<AdminMain />} /> {/*메인(게시글)*/}
+      <Route path="/admin/festa/notice/normal" element={<NormalPost />} /> {/*일반공지 작성*/}
+      <Route path="/admin/festa/notice/lost" element={<LostPost />} /> {/*분실물 작성*/}
       {/*<Route path="/admin/stuco/notice/normal" element={<NormalPost mode="create" />} /> {/*일반공지 작성*/}
       {/*<Route path="/admin/stuco/notice/lost" element={<LostPost mode="create" />} /> {/*분실물 작성*/}
-      <Route path="/admin/stuco/notice/:boardId" element={<PostDetail />} /> {/*공지 상세*/}
-      <Route path="/admin/stuco/notice/edit/:id" element={<NormalPost mode="edit" />} /> {/*일반공지 수정*/}
-      <Route path="/admin/stuco/lost/edit/:id" element={<LostPost mode="edit" />} /> {/*분실물 수정*/}
+      <Route path="/admin/festa/notice/:boardId" element={<PostDetail />} /> {/*공지 상세*/}
+      <Route path="/admin/festa/notice/edit/:id" element={<NormalPost mode="edit" />} /> {/*일반공지 수정*/}
+      <Route path="/admin/festa/lost/edit/:id" element={<LostPost mode="edit" />} /> {/*분실물 수정*/}
       
       {/*부스관리자*/}
       <Route path="/admin/booth" element={<BoothMain />} /> {/*메인(게시글)*/}

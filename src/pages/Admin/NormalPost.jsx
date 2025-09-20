@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
-import { createNormalPost, updateNormalPost } from "../../apis/admin/stuco";
+import { createNormalPost, updateNormalPost } from "../../apis/admin/festa";
 
 function NormalPost() {
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ function NormalPost() {
 
   const [title, setTitle] = useState(editingData?.title || "");
   const [content, setContent] = useState(editingData?.content || "");
+  const [toastMsg, setToastMsg] = useState("");
 
   const handleSubmit = async () => {
     try {
@@ -26,10 +27,26 @@ function NormalPost() {
         const res = await createNormalPost(payload);
         alert(res.message || "공지 작성 성공");
       }
-      navigate("/admin/stuco");
+      navigate("/admin/festa");
     } catch (err) {
-      alert(err.response?.data?.error || err.message || "공지 작성 실패");
-    }
+        console.error("에러 전체:", err);
+
+        let msg = "요청 실패";
+        if (err.response) {
+          if (typeof err.response.data === "string") {
+            // 서버가 그냥 문자열만 줬을 때
+            msg = err.response.data;
+          } else if (err.response.data?.message) {
+            msg = err.response.data.message;
+          } else if (err.response.data?.error) {
+            msg = err.response.data.error;
+          }
+        } else {
+          msg = err.message;
+        }
+
+        setToastMsg(msg);
+      }
   };
 
   return (
