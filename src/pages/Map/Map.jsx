@@ -47,7 +47,7 @@ function Map() {
   return (
     <div className="relative flex flex-col h-screen overflow-hidden">
       {/* 메인 콘텐츠 */}
-      <div className="flex-1 px-[19px] py-[28px] overflow-hidden">
+      <div className="flex-1 px-[19px] py-[24px] overflow-hidden">
         <div className="flex flex-col gap-[26px] h-full">
           <div className="flex flex-col gap-[20px]">
             <SearchBar searchTerm={searchText} setSearchTerm={setSearchText} />
