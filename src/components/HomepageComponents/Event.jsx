@@ -10,9 +10,12 @@ const Event = ({ onDataChange }) => {
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   const handleBoothClick = (booth) => {
-    navigate(`/booth/${booth.id}`, { state: { booth } });
+    navigate(`/board/${booth.id}`);
   };
 
   useEffect(() => {
@@ -50,6 +53,45 @@ const Event = ({ onDataChange }) => {
 
     fetchEventBooths();
   }, [onDataChange]);
+
+  /* 자동 슬라이드 */
+  useEffect(() => {
+    if (eventData.length <= 1) return;
+
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % eventData.length);
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [eventData.length]);
+
+  /* 터치 이벤트 핸들러 */
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd || eventData.length <= 1) return;
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) {
+      setCurrentSlide((prev) => (prev + 1) % eventData.length);
+    }
+
+    if (isRightSwipe) {
+      setCurrentSlide(
+        (prev) => (prev - 1 + eventData.length) % eventData.length
+      );
+    }
+  };
 
   const formatBoothData = (booth) => {
     return {
@@ -112,28 +154,37 @@ const Event = ({ onDataChange }) => {
             </p>
           </div>
         ) : eventData.length > 0 ? (
-          <div className="flex gap-4 pb-2" style={{ width: "max-content" }}>
-            {eventData.map((booth, index) => {
-              const formattedBooth = formatBoothData(booth);
-              return (
-                <div
-                  key={booth.booth_id || `event-${index}`}
-                  onClick={() => handleBoothClick(formattedBooth)}
-                  className="cursor-pointer flex-shrink-0"
-                  style={{ width: "330px" }}
-                >
-                  <BoothCard
-                    boothId={formattedBooth.id}
-                    title={formattedBooth.title}
-                    location={formattedBooth.location}
-                    time={formattedBooth.time}
-                    isOperating={formattedBooth.isOperating}
-                    likesCount={formattedBooth.likeCount}
-                    badges={formattedBooth.badges}
-                  />
-                </div>
-              );
-            })}
+          <div
+            className="relative overflow-hidden"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {eventData.map((booth, index) => {
+                const formattedBooth = formatBoothData(booth);
+                return (
+                  <div
+                    key={booth.booth_id || `event-${index}`}
+                    onClick={() => handleBoothClick(formattedBooth)}
+                    className="cursor-pointer flex-shrink-0 w-full"
+                  >
+                    <BoothCard
+                      boothId={formattedBooth.id}
+                      title={formattedBooth.title}
+                      location={formattedBooth.location}
+                      time={formattedBooth.time}
+                      isOperating={formattedBooth.isOperating}
+                      likesCount={formattedBooth.likeCount}
+                      badges={formattedBooth.badges}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         ) : (
           <div className="mb-[74px]">

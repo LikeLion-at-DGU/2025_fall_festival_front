@@ -1,6 +1,6 @@
 // src/pages/Board/Board.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
 
 /* =========================
@@ -30,7 +30,8 @@ const KOR_TO_SERVER = {
 function isAbortError(err) {
   return (
     err?.name === "AbortError" ||
-    (typeof err?.message === "string" && err.message.toLowerCase().includes("aborted"))
+    (typeof err?.message === "string" &&
+      err.message.toLowerCase().includes("aborted"))
   );
 }
 
@@ -205,8 +206,10 @@ function Pagination({ total, page, pageSize, onChange }) {
    메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
    ========================= */
 export default function Board() {
+  const location = useLocation();
   const [keyword, setKeyword] = useState("");
   const [activeTag, setActiveTag] = useState("전체");
+
   const [page, setPage] = useState(1);
   const pageSize = 20;
 
@@ -216,6 +219,20 @@ export default function Board() {
   const [totalFromServer, setTotalFromServer] = useState(0);
 
   const BOARD_ENDPOINT = `${API_BASE}/board/`;
+
+  useEffect(() => {
+    const category = location.state?.category;
+    const search = location.state?.search;
+
+    if (category) {
+      const koreanCategory = CATEGORY_MAP[category] || "전체";
+      setActiveTag(koreanCategory);
+    }
+
+    if (search) {
+      setKeyword(search);
+    }
+  }, []); 
 
   useEffect(() => {
     const controller = new AbortController();
@@ -238,7 +255,10 @@ export default function Board() {
 
         const data = await res.json();
         const list = Array.isArray(data?.result) ? data.result : [];
-        const total = typeof data?.total_count === "number" ? data.total_count : list.length;
+        const total =
+          typeof data?.total_count === "number"
+            ? data.total_count
+            : list.length;
 
         setAllItems(list);
         setTotalFromServer(total);
@@ -272,7 +292,12 @@ export default function Board() {
       const w = item.writer?.toLowerCase() || "";
       const b = item.booth_name?.toLowerCase() || "";
       const d = item.detail?.toLowerCase() || "";
-      const okKw = !kw || t.includes(kw) || w.includes(kw) || b.includes(kw) || d.includes(kw);
+      const okKw =
+        !kw ||
+        t.includes(kw) ||
+        w.includes(kw) ||
+        b.includes(kw) ||
+        d.includes(kw);
 
       return okCat && okKw;
     });
@@ -324,8 +349,12 @@ export default function Board() {
 
       {/* 리스트 */}
       <div className="min-h-[320px]">
-        {loading && <div className="py-16 text-center text-gray-500">불러오는 중…</div>}
-        {!loading && error && <div className="py-16 text-center text-rose-600">{error}</div>}
+        {loading && (
+          <div className="py-16 text-center text-gray-500">불러오는 중…</div>
+        )}
+        {!loading && error && (
+          <div className="py-16 text-center text-rose-600">{error}</div>
+        )}
         {!loading && !error && paged.length === 0 && (
           <div className="text-[#2A2A2E] font-[SUITE] text-[10px] not-italic font-normal leading-[150%]">
             현재 게시물이 없습니다
