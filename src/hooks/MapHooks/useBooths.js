@@ -31,7 +31,7 @@ function useBooths(selectedFilter, userLocation = null) {
               y: userLocation.y,
             },
             // 🔹 필요하다면 야간 여부도 같이 전달
-            isNight: isNight,
+            is_night: isNight,
             // 🔹 갯수 제한 (필요 없으면 제거 가능)
             limit: 50,
             ordering: "distance",
