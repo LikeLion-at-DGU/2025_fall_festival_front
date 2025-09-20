@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getBoardDetail, deleteBoard } from "../../apis/admin/stuco";
+import { getBoardDetail, deleteBoard } from "../../apis/admin/festa";
 import SubmitBtn from "../../components/AdminComponents/SubmitBtn"; // ✅ 공용 버튼 가져오기
 
 function PostDetail() {
@@ -21,7 +21,7 @@ function PostDetail() {
     fetchData();
   }, [boardId]);
 
-  if (!board) return <div>로딩 중...</div>;
+  if (!board) return <div className="grid place-items-center mt-[400px]">삭제되었거나 찾을 수 없는 페이지입니다</div>;
 
   return (
     <div className="max-w-md mx-auto bg-gray-50 p-6 min-h-screen">
@@ -64,8 +64,8 @@ function PostDetail() {
           onClick={() =>
             navigate(
               board.category === "Notice"
-                ? `/admin/stuco/notice/edit/${board.id}`
-                : `/admin/stuco/lost/edit/${board.id}`,
+                ? `/admin/festa/notice/edit/${board.id}`
+                : `/admin/festa/lost/edit/${board.id}`,
               { state: board }
             )
           }
@@ -75,7 +75,7 @@ function PostDetail() {
           onClick={async () => {
             if (window.confirm("정말 삭제하시겠습니까?")) {
               await deleteBoard(boardId);
-              navigate("/admin/stuco");
+              navigate("/admin/festa");
             }
           }}
         />

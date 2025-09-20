@@ -21,8 +21,7 @@ function BoothCard({
   isDorder,
   badges,
   onClick,
-isSelected,
-
+  isSelected,
 }) {
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     boothId,
@@ -48,6 +47,7 @@ console.log(endTime)
   }}
   onClick={onClick}
 >
+
 
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
@@ -85,7 +85,7 @@ console.log(endTime)
                 className="w-5 h-5 transition-all duration-200"
               />
             </button>
-            <span className="text-xs text-neutral-300 font-suite">
+            <span className="text-xs text-[#A1A1AA] font-suite">
               {likesCount}
             </span>
           </div>

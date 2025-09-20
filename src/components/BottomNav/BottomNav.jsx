@@ -33,10 +33,9 @@ const BottomNav = () => {
     w-[55px] h-[55px] px-[5px]
     whitespace-nowrap
     font-normal text-[12px]
-    ${
-      active
-        ? "text-orange font-semibold border-t-[1.5px] border-orange"
-        : "text-black"
+    ${active
+      ? "text-orange font-semibold border-t-[1.5px] border-orange"
+      : "text-black"
     }
   `;
 
@@ -44,7 +43,19 @@ const BottomNav = () => {
     <nav className="fixed bottom-0 z-999 w-full max-w-[430px] bg-white">
       <div className="flex items-start justify-around h-[62px]">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          let isActive;
+          if (item.path === "/map") {
+            // 지도 상세페이지들도 활성화 유지
+            isActive =
+              location.pathname.startsWith("/map") ||
+              location.pathname.startsWith("/booth") ||
+              location.pathname.startsWith("/drink") ||
+              location.pathname.startsWith("/foodtruck") ||
+              location.pathname.startsWith("/toilet");
+          } else {
+            isActive = location.pathname === item.path;
+          }
+
           return (
             <Link
               to={item.path}
