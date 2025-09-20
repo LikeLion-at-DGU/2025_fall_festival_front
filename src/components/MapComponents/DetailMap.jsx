@@ -2,7 +2,7 @@ import React from "react";
 import { mapConfigs } from "../../config/mapConfigs";
 import backbtn from "../../assets/images/icons/header-icons/left.svg";
 
-const DetailMap = ({ buildingName, selectedPin, onClose, onSelectBooth }) => {
+const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
   const config = mapConfigs[buildingName];
 
   if (!config) {
@@ -19,9 +19,8 @@ const DetailMap = ({ buildingName, selectedPin, onClose, onSelectBooth }) => {
       />
 
       {config.buttons
-        // 1) 먼저 조건 필터링
         .filter((btn) => {
-          if (!btn.showIf) return true; // showIf 없으면 항상 보임
+          if (!btn.showIf) return true;
 
           const { startDate, endDate, startTime, endTime } = btn.showIf;
           const now = new Date();
@@ -29,11 +28,9 @@ const DetailMap = ({ buildingName, selectedPin, onClose, onSelectBooth }) => {
           // 오늘 날짜 (YYYY-MM-DD)
           const today = now.toISOString().split("T")[0];
 
-          // 날짜 범위 체크
           if (startDate && today < startDate) return false;
           if (endDate && today > endDate) return false;
 
-          // 시간 범위 체크
           if (startTime && endTime) {
             const nowMinutes = now.getHours() * 60 + now.getMinutes();
             const [startH, startM] = startTime.split(":").map(Number);
@@ -41,50 +38,35 @@ const DetailMap = ({ buildingName, selectedPin, onClose, onSelectBooth }) => {
             const startMinutes = startH * 60 + startM;
             const endMinutes = endH * 60 + endM;
 
-            if (nowMinutes < startMinutes || nowMinutes > endMinutes)
+            if (nowMinutes < startMinutes || nowMinutes > endMinutes) {
               return false;
+            }
           }
 
           return true;
         })
-
-        // 2) 조건 통과한 버튼/라벨만 렌더링
-        .map((btn, idx) =>
-          btn.type === "button" ? (
-            <button
-              key={idx}
-              className="absolute bg-[#EBC4C4] px-2 py-1 text-xs"
-              style={{
-                left: `${btn.x}%`,
-                top: `${btn.y}%`,
-                transform: "translate(-50%, -50%)",
-              }}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelectBooth(btn.label);
-              }}
-            >
-              {btn.label}
-            </button>
-          ) : (
-            <span
-              key={idx}
-              className="absolute text-[#FFECEC] rounded px-2 py-1 text-xs"
-              style={{
-                left: `${btn.x}%`,
-                top: `${btn.y}%`,
-                transform: "translate(-50%, -50%)",
-              }}
-            >
-              {btn.label}
-            </span>
-          )
-        )}
+        .map((btn, idx) => (
+          <button
+            key={idx}
+            className="absolute whitespace-nowrap bg-[#EBC4C4] px-2 py-1 text-xs rounded"
+            style={{
+              left: `${btn.x}%`,
+              top: `${btn.y}%`,
+              transform: "translate(-50%, -50%)",
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              onSelectBooth?.(btn.label); // ✅ 클릭 이벤트 모두 발생
+            }}
+          >
+            {btn.label}
+          </button>
+        ))}
 
       {/* 뒤로가기 버튼 */}
       <div className="flex flex-row items-center absolute top-[10px] left-[11px]">
         <button
-          className="  w-[29px] h-[29px]"
+          className="w-[29px] h-[29px]"
           onClick={(e) => {
             e.stopPropagation();
             onClose();
