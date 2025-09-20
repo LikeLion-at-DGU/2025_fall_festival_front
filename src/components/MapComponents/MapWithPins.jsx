@@ -6,7 +6,7 @@ import MapToiletBadge from "../../assets/images/icons/map-icons/MapToilet.png";
 import MapBeerBadge from "../../assets/images/icons/map-icons/MapBeer.png";
 import MapConvenienceBadge from "../../assets/images/icons/map-icons/MapConvenience.png";
 import FoodtruckBadge from "../../assets/images/icons/map-icons/MapFoodTruck.png";
-
+import { mapConfigs } from "../../config/mapConfigs";
 // 로컬 좌표 정보 (API 데이터에 맞게 수정)
 const buildingLocations = [
   { name: "만해/법학관", x: 44.5, y: 32.5 },
@@ -73,6 +73,11 @@ const MapWithPins = ({
           isSelected={selectedPin === item.location.name}
           onClick={(e) => {
             e.stopPropagation(); // 이벤트 버블링 방지
+            if (!mapConfigs[item.location.name]) {
+              console.log("상세지도 없음:", item.location.name);
+              return;
+            }
+
             handlePinClick(item);
           }}
         />

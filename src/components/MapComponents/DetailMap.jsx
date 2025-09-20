@@ -6,23 +6,7 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
   const config = mapConfigs[buildingName];
 
   if (!config) {
-    return (
-      <div className="relative flex items-center justify-center w-full h-[232px] rounded-[16px] border border-[#E4E4E7]">
-        <p className="text-gray-600">상세지도가 준비되지 않은 건물입니다.</p>
-
-        {/* 뒤로가기 버튼 */}
-        <button
-          className="absolute top-2 left-2 flex items-center gap-1 bg-white/80 text-gray-800 px-2 py-1 rounded shadow-md"
-          onClick={(e) => {
-            e.stopPropagation();
-            onClose();
-          }}
-        >
-          <img src={backbtn} alt="뒤로가기" className="w-4 h-4" />
-          <span className="text-sm font-medium">뒤로</span>
-        </button>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -56,16 +40,20 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
       ))}
 
       {/* 뒤로가기 버튼 */}
-      <button
-        className="absolute top-2 left-2 flex items-center gap-1 bg-white/80 text-gray-800 px-2 py-1 rounded shadow-md"
-        onClick={(e) => {
-          e.stopPropagation();
-          onClose();
-        }}
-      >
-        <img src={backbtn} alt="뒤로가기" className="w-4 h-4" />
-        <span className="text-sm font-medium">뒤로</span>
-      </button>
+      <div className="flex flex-row items-center absolute top-[10px] left-[11px]">
+        <button
+          className="  w-[29px] h-[29px]"
+          onClick={(e) => {
+            e.stopPropagation();
+            onClose();
+          }}
+        >
+          <img src={backbtn} alt="뒤로가기" />
+        </button>
+        <div className="rounded-[10px] h-[18px] text-[#fff] bg-[rgba(42,42,46,0.60)] text-[12px] font-semibold leading-[18px] flex px-[6px] items-center">
+          {buildingName}
+        </div>
+      </div>
     </div>
   );
 };
