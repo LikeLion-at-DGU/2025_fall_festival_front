@@ -31,17 +31,36 @@ export const mapConfigs = {
   },
   "원흥관": {
     img: DetailMapWonheung,
-    buttons: [{ label: "입구", x: 30, y: 85 }],
+     buttons: [
+    { type: "button", label: "테스트부스9", x: 50, y: 50 }, 
+    { type: "label", label: "입구", x: 20, y: 80 },        
+    { type: "label", label: "신공학관", x: 10, y: 30 },         
+    { type: "label", label: "중앙도서관", x: 10, y: 80 }, 
+    { type: "label", label: "원흥관", x: 50, y: 20 },      
+    { type: "label", label: "본관", x: 50, y: 80 },      
+  ],
   },
+  
   "혜화관": {
     img: DetailMapHyehwa,
     buttons: [{ label: "홀", x: 50, y: 50 }],
   },
-  "팔정도": {
-    img: DetailMapPaljeongdo,
-    buttons: [
-      { label: "중앙", x: 50, y: 50 },
-      { label: "출구", x: 10, y: 90 },
-    ],
-  },
+"팔정도": {
+  img: DetailMapPaljeongdo,
+  buttons: [
+    {
+      type: "button",
+      label: "이벤트 부스",
+      x: 50,
+      y: 50,
+      showIf: {
+        startDate: "2025-09-25",  // 시작 날짜
+        endDate: "2025-09-27",    // 종료 날짜
+        startTime: "09:00",       // 하루 시작 시간
+        endTime: "18:00",         // 하루 종료 시간
+      },
+    },
+  ],
+},
+
 };

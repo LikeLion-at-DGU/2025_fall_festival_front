@@ -1,9 +1,8 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
-import { useTranslations } from "../../context/TranslationContext";
 
 function PullList({ booths, selectedFilter, searchTerm, selectedPin, selectedBooth }) {
   const minHeight = 310;
@@ -20,34 +19,9 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin, selectedBoo
   const textClass = "text-[14px] font-normal leading-[150%]";
 
   const navigate = useNavigate();
-  const { translations, requestTranslations } = useTranslations(); // ✅ 번역 Context
 
   // ----------------------------
-  // 번역 요청
-  // ----------------------------
-  useEffect(() => {
-    if (!booths || booths.length === 0) return;
-
-    const items = booths.flatMap((booth) => [
-      {
-        entity_type: "booth",
-        entity_id: booth.booth_id,
-        field: "BoothName",
-        source_text: booth.name,
-      },
-      {
-        entity_type: "location",
-        entity_id: booth.location?.id ?? booth.booth_id,
-        field: "LocationName",
-        source_text: booth.location?.name ?? "",
-      },
-    ]);
-
-    requestTranslations(items);
-  }, [booths, requestTranslations]);
-
-  // ----------------------------
-  // 드래그 핸들러 (원래 코드 유지)
+  // 드래그 핸들러
   // ----------------------------
   const handleStart = useCallback(
     (clientY) => {
@@ -154,39 +128,36 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin, selectedBoo
   // ----------------------------
   // 검색 및 필터링
   // ----------------------------
-  const searchFilteredBooths = booths.filter((booth) => {
-    const boothName = translations[booth.booth_id + "-BoothName"] ?? booth.name;
-    const locationName =
-      translations[(booth.location?.id ?? booth.booth_id) + "-LocationName"] ??
-      booth.location?.name ??
-      "";
-console.log("부스네임",boothName)
-console.log("위치",locationName)
+  const searchFilteredBooths = useMemo(() => {
+    return booths.filter((booth) => {
+      const boothName = booth.name;
+      const locationName = booth.location?.name ?? "";
 
-    const matchesSearch =
-      searchTerm === "" ||
-      boothName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      locationName.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch =
+        searchTerm === "" ||
+        boothName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        locationName.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesPin = selectedPin === null || locationName === selectedPin;
-console.log("매치핀",matchesPin)
-console.log("고른핀",selectedPin)
+      const matchesPin = selectedPin === null || locationName === selectedPin;
 
-    return matchesSearch && matchesPin;
-  });
+      return matchesSearch && matchesPin;
+    });
+  }, [booths, searchTerm, selectedPin]);
 
-  const sortedBooths = [...searchFilteredBooths].sort((a, b) => {
-    if (!searchTerm) return 0;
-    const aName = translations[a.booth_id + "-BoothName"] ?? a.name;
-    const bName = translations[b.booth_id + "-BoothName"] ?? b.name;
-    const aMatch = aName.toLowerCase().includes(searchTerm.toLowerCase())
-      ? 0
-      : 1;
-    const bMatch = bName.toLowerCase().includes(searchTerm.toLowerCase())
-      ? 0
-      : 1;
-    return aMatch - bMatch;
-  });
+  const sortedBooths = useMemo(() => {
+    return [...searchFilteredBooths].sort((a, b) => {
+      if (!searchTerm) return 0;
+      const aName = a.name;
+      const bName = b.name;
+      const aMatch = aName.toLowerCase().includes(searchTerm.toLowerCase())
+        ? 0
+        : 1;
+      const bMatch = bName.toLowerCase().includes(searchTerm.toLowerCase())
+        ? 0
+        : 1;
+      return aMatch - bMatch;
+    });
+  }, [searchFilteredBooths, searchTerm]);
 
   // ----------------------------
   // 렌더링
@@ -237,45 +208,45 @@ console.log("고른핀",selectedPin)
             </div>
           ) : (
             <div className="w-full flex flex-col gap-2">
-{sortedBooths.map((booth) => {
-  const boothName = translations[booth.booth_id + "-BoothName"] ?? booth.name;
-  const locationName =
-    translations[(booth.location?.id ?? booth.booth_id) + "-LocationName"] ??
-    booth.location?.name ?? "";
+              {sortedBooths.map((booth) => {
+                const boothName = booth.name;
+                const locationName = booth.location?.name ?? "";
 
-  return booth.category === "Booth" || booth.category === "FoodTruck" ? (
-    <BoothCard
-      key={booth.booth_id}
-      boothId={booth.booth_id}
-      title={boothName}
-      image={booth.image_url}
-      location={locationName}
-      // ✅ 선택된 핀과 같은 카드 강조
-       isSelected={selectedBooth === boothName}
-      className="w-full"
-      onClick={() =>
-        navigate(
-          booth.category === "FoodTruck"
-            ? `/foodtruck/${booth.booth_id}`
-            : `/booth/${booth.booth_id}`
-        )
-      }
-    />
-  ) : (
-    <NotBoothCard
-      key={booth.booth_id}
-      title={boothName}
-      distance_m={booth.distance_m}
-      category={booth.category}
-      isSelected={selectedPin === locationName}   // ✅ 동일하게 강조
-      onClick={() => {
-        if (booth.category === "Drink") navigate(`/drink/${booth.booth_id}`);
-        else if (booth.category === "Toilet") navigate(`/toilet/${booth.booth_id}`);
-      }}
-    />
-  );
-})}
+                return booth.category === "Booth" ||
+                  booth.category === "FoodTruck" ||
+                  booth.category==="Drink" ? (
+                  <BoothCard
+  key={booth.booth_id}
+  boothId={booth.booth_id}
+  title={booth.name ?? ""}                       // ✅ 이름 없으면 빈칸
+  image={booth.image_url || undefined}           // ✅ 없으면 undefined (img 자체 안 그림)
+  location={booth.location?.name ?? ""}          // ✅ 위치 없으면 빈칸
+  isSelected={selectedBooth === booth.name}
+  className="w-full"
+  onClick={() =>
+    navigate(
+      booth.category === "FoodTruck"
+        ? `/foodtruck/${booth.booth_id}`
+        : booth.category === "Drink"
+        ? `/drink/${booth.booth_id}`
+        : `/booth/${booth.booth_id}`
+    )
+  }
+/>
 
+                ) : (
+                  <NotBoothCard
+                    key={booth.booth_id}
+                    title={boothName}
+                    distance_m={booth.distance_m}
+                    category={booth.category}
+                    isSelected={selectedPin === locationName}
+                    onClick={() => {
+                      if (booth.category === "Toilet") navigate(`/toilet/${booth.booth_id}`);
+                    }}
+                  />
+                );
+              })}
             </div>
           )}
         </div>
