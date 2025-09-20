@@ -6,7 +6,7 @@ import PullList from "../../components/MapComponents/PullList";
 import MapWithPins from "../../components/MapComponents/MapWithPins";
 
 import useBooths from "../../hooks/MapHooks/useBooths";
-import useFilteredBooths from "../../hooks/MapHooks/useFilteredBooths";
+// import useFilteredBooths from "../../hooks/MapHooks/useFilteredBooths";
 import useUserLocation from "../../hooks/MapHooks/useUserLocation";
 import usePinSelection from "../../hooks/MapHooks/usePinSelection";
 import useSearch from "../../hooks/MapHooks/useSearch";
@@ -15,7 +15,7 @@ function Map() {
   const [selectedFilter, setSelectedFilter] = useState("Booth");
   const { location: userLocation, getCurrentLocation } = useUserLocation();
   const { booths, loading, error } = useBooths(selectedFilter, userLocation);
-  const filteredBooths = useFilteredBooths(booths, selectedFilter);
+  // const filteredBooths = useFilteredBooths(booths, selectedFilter);
   const { selectedPin, handlePinClick, handleFilterClick } =
     usePinSelection(selectedFilter);
   const { searchText, setSearchText } = useSearch();
@@ -34,7 +34,7 @@ function Map() {
 
   // 콘솔 확인
   console.log("booths 데이터:", booths);
-  console.log("filteredbooths 데이터:", filteredBooths);
+  // console.log("filteredbooths 데이터:", filteredBooths);
 
   // 컴포넌트 마운트 시 body 스크롤 방지
   useEffect(() => {
@@ -58,7 +58,7 @@ function Map() {
             />
           </div>
           <MapContainer
-            apiData={filteredBooths}
+            apiData={booths}
             selectedFilter={selectedFilter}
             onSelectBooth={setSelectedBooth} // ✅ 추가
             selectedPin={selectedPin}
@@ -69,7 +69,7 @@ function Map() {
 
       {/* 바텀시트 */}
   <PullList
-  booths={filteredBooths}
+  booths={booths}
   selectedFilter={selectedFilter}
   searchTerm={searchText}
   selectedPin={selectedPin}
