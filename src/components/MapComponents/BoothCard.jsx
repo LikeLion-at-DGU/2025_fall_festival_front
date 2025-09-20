@@ -3,6 +3,7 @@ import HeartIcon from "../../assets/images/icons/map-icons/Heart.png";
 import UnheartIcon from "../../assets/images/icons/map-icons/emptyHeart.png";
 import Badge from "./BoothCardComponents/Badge";
 import useBoothLikes from "../../hooks/useBoothLikes";
+import defaultImg from "../../assets/images/banners/default-img.png";
 
 function BoothCard({
   boothId,
@@ -30,45 +31,35 @@ function BoothCard({
   );
 
   return (
-<div
-className={`cursor-pointer w-full h-[92px] rounded-2xl border p-4 transition
+    <div
+      className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
   ${
     isSelected
-      ? "bg-red-50 border-red-500 shadow-md"   // 선택됨
-      : "bg-white border-neutral-200"          // 기본
+      ? "bg-red-50 border-red-500 shadow-md" // 선택됨
+      : "bg-white border-neutral-200" // 기본
   }
 `}
-
-  style={{
-    boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
-  }}
-  onClick={onClick}
->
-
+      style={{
+        borderRadius: "16px",
+      }}
+      onClick={onClick}
+    >
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
-        <div className="relative w-16 h-16 flex-shrink-0">
-          <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
-            {image ? (
-              <img
-                src={image}
-                alt={title}
-                className="w-full h-full bg-[#C2C2C2] object-cover"
-                onError={(e) => {
-                  <div className="w-full h-full bg-[#C2C2C2] flex items-center justify-center text-xs text-gray-500">
-                    이미지 없음
-                  </div>;
-                }}
-              />
-            ) : (
-              <div className="w-full h-full bg-[#C2C2C2] flex items-center justify-center text-xs text-gray-500">
-                이미지 없음
-              </div>
-            )}
+        <div className="relative w-[68px] h-[68px] flex-shrink-0">
+          <div className="w-[68px] h-[68px] bg-gray-100 rounded-lg overflow-hidden">
+            <img
+              src={image || defaultImg}
+              alt={title}
+              className="w-full h-full bg-[#C2C2C2] object-cover"
+              onError={(e) => {
+                e.currentTarget.src = defaultImg;
+              }}
+            />
           </div>
           {/* Badge 겹치기 */}
           {badges?.isEventActive || isEvent ? (
-            <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/2">
+            <div className="absolute top-[5px] left-[5px] -translate-x-1/4 -translate-y-1/2">
               <Badge backgroundColor=" rgba(239, 112, 99, 0.90)" text="Event" />
             </div>
           ) : null}

@@ -40,7 +40,7 @@ const Stage = () => {
       return artists26th;
     }
 
-    return artists25th;
+    return null; 
   };
 
   const currentArtists = getCurrentArtists();
@@ -60,7 +60,7 @@ const Stage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isShowTime || currentArtists.length <= 1) return;
+    if (!isShowTime || !currentArtists || currentArtists.length <= 1) return;
 
     const interval = setInterval(() => {
       setIsTransitioning(true);
@@ -72,7 +72,7 @@ const Stage = () => {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [isShowTime, currentArtists.length]);
+  }, [isShowTime, currentArtists]);
 
   const handleStageClick = () => {
     navigate("/timetable");
@@ -88,8 +88,8 @@ const Stage = () => {
         <p className="text-xl font-semibold font-suite text-black">STAGE NOW</p>
       </div>
       <div className="relative cursor-pointer" onClick={handleStageClick}>
-        {isShowTime ? (
-          /* 오후 8시 이후: 연예인 이미지 슬라이드 */
+        {isShowTime && currentArtists ? (
+          /* 오후 8시 이후이고 해당 날짜의 연예인이 있을 때: 연예인 이미지 슬라이드 */
           <>
             <img
               src={currentArtists[currentArtistIndex].image}
@@ -128,7 +128,7 @@ const Stage = () => {
                 공연 준비중이에요!
               </p>
               <p className="text-xl font-medium text-[#2A2A2E]">
-                coming Soon...
+                Coming Soon...
               </p>
             </div>
           </div>

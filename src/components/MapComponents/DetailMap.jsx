@@ -1,6 +1,6 @@
 import React from "react";
 import { mapConfigs } from "../../config/mapConfigs";
-import backbtn from "../../assets/images/icons/header-icons/left.svg";
+import backbtn from "../../assets/images/icons/header-icons/left.png";
 
 const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
   const config = mapConfigs[buildingName];
@@ -72,7 +72,7 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
             onClose();
           }}
         >
-          <img src={backbtn} alt="뒤로가기" />
+          <img src={backbtn} alt="뒤로가기" width={24} height={24}/>
         </button>
         <div className="rounded-[10px] h-[18px] text-[#fff] bg-[rgba(42,42,46,0.60)] text-[12px] font-semibold leading-[18px] flex px-[6px] items-center">
           {buildingName}
