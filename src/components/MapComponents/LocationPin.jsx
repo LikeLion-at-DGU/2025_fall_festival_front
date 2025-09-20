@@ -1,6 +1,15 @@
 import React from "react";
+import WhitePolygon from "../../assets/images/icons/detailmap-icons/WhitePolygon.svg";
+import OrangePolygon from "../../assets/images/icons/detailmap-icons/OrangePolygon.svg";
 
-const LocationPin = ({ label, x, y, onClick, isSelected = false, className = "" }) => {
+const LocationPin = ({
+  label,
+  x,
+  y,
+  onClick,
+  isSelected = false,
+  className = "",
+}) => {
   return (
     <button
       onClick={onClick}
@@ -27,12 +36,14 @@ const LocationPin = ({ label, x, y, onClick, isSelected = false, className = "" 
             isSelected
               ? {
                   borderRadius: "12px",
-                  background: "linear-gradient(180deg, #E65B4D 61.11%, #D33E2F 111.11%)",
+                  background:
+                    "linear-gradient(180deg, #E65B4D 61.11%, #D33E2F 111.11%)",
                   boxShadow: "0 1px 4px rgba(0,0,0,0.15)",
                 }
               : {
                   borderRadius: "16px",
-                  background: "linear-gradient(180deg, rgba(255, 255, 255, 0.80) 58.33%, #FFF 97.22%)",
+                  background:
+                    "linear-gradient(180deg, rgba(255, 255, 255, 0.80) 58.33%, #FFF 97.22%)",
                   boxShadow: "0 1px 4px 0 rgba(0, 0, 0, 0.15)",
                 }
           }
@@ -41,12 +52,13 @@ const LocationPin = ({ label, x, y, onClick, isSelected = false, className = "" 
         </div>
 
         {/* 삼각형 핀 */}
-        <div
-          className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-8 border-l-transparent border-r-transparent"
-          style={{
-            borderTopColor: isSelected ? "#E65B4D" : "#FFFFFF",
-          }}
-        ></div>
+        <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[4.5px]">
+          <img
+            src={isSelected ? OrangePolygon : WhitePolygon}
+            alt="핀"
+            className="w-4 h-4"
+          />
+        </div>
       </div>
     </button>
   );
