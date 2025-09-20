@@ -39,6 +39,12 @@ function LostPost() {
         return;
       }
 
+      // ✅ 작성 모드일 때는 이미지 필수 체크 (방어로직입니다)
+      if (!editingData && !image) {
+        setToastMsg("이미지를 등록해주세요.");
+        return;
+      }
+
       console.log("=== LostPost 요청 직전 ===");
       console.log("uid:", uid);
       console.log("title:", title);
