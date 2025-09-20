@@ -2,11 +2,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getBoardDetail, deleteBoard } from "../../apis/admin/festa";
 import SubmitBtn from "../../components/AdminComponents/SubmitBtn"; // ✅ 공용 버튼 가져오기
+import Popup from "../../components/AdminComponents/Popup";
 
 function PostDetail() {
   const { boardId } = useParams();
   const navigate = useNavigate();
   const [board, setBoard] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -70,16 +72,27 @@ function PostDetail() {
             )
           }
         />
-        <SubmitBtn
-          text="삭제"
-          onClick={async () => {
-            if (window.confirm("정말 삭제하시겠습니까?")) {
+        <SubmitBtn text="삭제" onClick={() => setIsPopupOpen(true)} />
+      </div>
+
+      {/* ✅ 삭제 확인 모달 */}
+      {isPopupOpen && (
+        <Popup
+          text="정말 삭제하시겠습니까?"
+          buttontext="삭제하기"
+          onSubmit={async () => {
+            try {
               await deleteBoard(boardId);
               navigate("/admin/festa");
+            } catch (err) {
+              console.error("삭제 실패:", err);
+            } finally {
+              setIsPopupOpen(false);
             }
           }}
+          onClose={() => setIsPopupOpen(false)}
         />
-      </div>
+      )}
     </div>
   );
 }
