@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import backBtn from "../../assets/images/icons/header-icons/left.svg";
+import backBtn from "../../assets/images/icons/header-icons/left.png";
 
 const BoardDetailHeader = () => {
   const navigate = useNavigate();
@@ -23,13 +23,18 @@ const BoardDetailHeader = () => {
           onClick={handleBackClick}
           className="hover:opacity-70 transition-opacity"
         >
-          <img src={backBtn} alt="back" className="h-full w-auto m-[10px]" />
+          <img
+            src={backBtn}
+            alt="back"
+            className="m-[10px]"
+            width={24}
+            height={24}
+          />
         </button>
-        <h1 className="text-[#2A2A2E] font-[SUITE] text-[14px] not-italic font-semibold leading-[150%] ml-[5px]">
+        <h1 className="text-[#2A2A2E] text-[14px] font-semibold leading-[150%] ml-[5px]">
           게시판
         </h1>
       </div>
-      <div className="h-[4px] w-full bg-[#F4F4F5]" />
     </header>
   );
 };

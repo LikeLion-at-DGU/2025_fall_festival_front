@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import backBtn from "../../assets/images/icons/header-icons/left.svg";
+import backBtn from "../../assets/images/icons/header-icons/left.png";
 
 const AdminHeader = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const AdminHeader = () => {
       <button
         onClick={() => navigate(-1)}
       >
-        <img src={backBtn} alt="back" className="h-full w-auto m-[10px]" />
+        <img src={backBtn} alt="back" className="m-[10px]" width={24} height={24}/>
       </button>
     </header>
   );

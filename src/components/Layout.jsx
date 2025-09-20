@@ -54,6 +54,11 @@ const Layout = ({ children }) => {
 
   // Event 페이지 판별
   const isEventPage = location.pathname === "/event";
+  
+  // Event 페이지에서 게임 단계 확인
+  const searchParams = new URLSearchParams(location.search);
+  const gamePhase = searchParams.get('phase');
+  const shouldHideNavigation = isEventPage && (gamePhase === 'countdown' || gamePhase === 'playing');
 
   // 3) 헤더 선택 로직: 관리자 > 게시판상세 > 기본
   const HeaderComponent = isAdminPage
@@ -68,11 +73,11 @@ const Layout = ({ children }) => {
       <div
         className="flex flex-col 
           min-w-[375px] max-w-[430px]
-          w-screen h-screen
+          w-screen min-h-[100dvh]
           bg-gray"
       >
-        {/* 조건부 Header (Event 페이지가 아닐 때만 표시) */}
-        {!isEventPage && <HeaderComponent />}
+        {/* 조건부 Header (카운트다운/게임플레이 단계가 아닐 때만 표시) */}
+        {!shouldHideNavigation && <HeaderComponent />}
 
         {/* 페이지의 실제 내용과 푸터가 이 안에서 스크롤됩니다. */}
         <main
@@ -91,8 +96,8 @@ const Layout = ({ children }) => {
           {location.pathname === "/" && <Footer />}
         </main>
 
-        {/* 관리자 페이지와 Event 페이지가 아니면 BottomNav 표시 */}
-        {!isAdminPage && !isEventPage && <BottomNav />}
+        {/* 관리자 페이지와 네비게이션 숨김 페이지가 아니면 BottomNav 표시 */}
+        {!isAdminPage && !shouldHideNavigation && <BottomNav />}
       </div>
     </div>
   );

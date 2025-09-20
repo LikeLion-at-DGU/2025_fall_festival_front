@@ -97,6 +97,7 @@ const Event = ({ onDataChange }) => {
     return {
       id: booth.booth_id,
       title: booth.name,
+      image: booth.image_url,
       location: booth.location.name,
       time: formatTimeWithDay(
         booth.business_days,
@@ -119,7 +120,7 @@ const Event = ({ onDataChange }) => {
           이벤트 진행 부스
         </p>
         <button
-          onClick={() => navigate("/board?category=event")}
+          onClick={() => navigate("/board", { state: { category: "Event" } })}
           className="text-[15px] font-normal font-suite text-black hover:underline"
         >
           더보기 &gt;
@@ -175,6 +176,7 @@ const Event = ({ onDataChange }) => {
                     <BoothCard
                       boothId={formattedBooth.id}
                       title={formattedBooth.title}
+                      image={formattedBooth.image}
                       location={formattedBooth.location}
                       time={formattedBooth.time}
                       isOperating={formattedBooth.isOperating}

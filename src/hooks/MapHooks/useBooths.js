@@ -1,42 +1,59 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function useBooths(userLocation = null) {
+function useBooths(selectedFilter, userLocation = null) {
   const [booths, setBooths] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setLoading(true);
+    // 위치 없으면 요청 안 보냄
+    if (!userLocation) return;
 
-    const now = new Date();
-    const date = now.toISOString().split("T")[0];
-    const isNight = now.getHours() >= 18 || now.getHours() < 6;
+    const fetchBooths = async () => {
+      setLoading(true);
 
-    const baseURL =
-      import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+      try {
+        const now = new Date();
+        const isNight = now.getHours() >= 18 || now.getHours() < 6;
 
-    axios
-      .get(`${baseURL}/booths/`, {
-        headers: { "Content-Type": "application/json" },
-      })
-      .then((res) => {
-        const results = res.data.results || res.data.booths || [];
-        const filtered = results.filter((b) => {
-          if (b.category === "Booth") {
-            return isNight ? b.is_night : !b.is_night;
+        const baseURL =
+          import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+
+        const response = await axios.post(
+          `${baseURL}/booths/list/`,
+          {
+            // 🔹 백엔드에서 types로 필터
+            types: [selectedFilter],
+            // 🔹 사용자 위치 전달 (distance_m 계산용)
+            location: {
+              lat: userLocation.x,
+              lng: userLocation.y,
+            },
+            // 🔹 필요하다면 야간 여부도 같이 전달
+            isNight: isNight,
+            // 🔹 갯수 제한 (필요 없으면 제거 가능)
+            limit: 50,
+            ordering: "-id",
+          },
+          {
+            headers: { "Content-Type": "application/json" },
           }
-          return true;
-        });
-        setBooths(filtered);
-      })
-      .catch((err) => {
-        console.error("API 호출 실패:", err);
+        );
+
+        const results = response.data.results || response.data.booths || [];
+        setBooths(results);
+      } catch (err) {
+        console.error("부스 조회 실패:", err);
         setError(err);
         setBooths([]);
-      })
-      .finally(() => setLoading(false));
-  }, [userLocation]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBooths();
+  }, [selectedFilter, userLocation]);
 
   return { booths, loading, error };
 }

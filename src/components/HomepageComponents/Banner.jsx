@@ -98,7 +98,25 @@ const Banner = () => {
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
         {banners.map((banner, index) => (
-          <div key={banner.id} className="w-full flex-shrink-0 relative">
+          <div
+            key={banner.id}
+            className="w-full flex-shrink-0 relative cursor-pointer"
+            onClick={() => {
+              switch (banner.id) {
+                case 2:
+                  navigate("/board", { state: { category: "Event" } });
+                  break;
+                case 3:
+                  navigate("/event");
+                  break;
+                case 4:
+                  navigate("/board", { state: { category: "LostItem" } });
+                  break;
+                default:
+                  break;
+              }
+            }}
+          >
             <img
               src={banner.image}
               alt={banner.alt}
@@ -111,7 +129,8 @@ const Banner = () => {
                   ...banner.buttonPosition,
                   boxShadow: "2px 4px 10px 0 rgba(66, 8, 8, 0.30)",
                 }}
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation(); // 이미지 클릭 이벤트 전파 방지
                   switch (banner.id) {
                     case 2:
                       navigate("/board", { state: { category: "Event" } });

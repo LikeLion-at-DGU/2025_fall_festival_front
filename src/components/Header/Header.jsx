@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import likelion from "../../assets/images/icons/logo/likelionblack.svg";
-import dirvana from "../../assets/images/icons/logo/dirvanablacksmall.svg";
+import dirvana from "../../assets/images/icons/logo/dirvanablacksmall.png";
 import TranslateBtn from "./TranslateBtn";
 const Header = () => {
   return (
@@ -15,7 +15,7 @@ const Header = () => {
     >
       {/* 왼쪽 로고 */}
       <Link to="/">
-        <img src={dirvana} alt="DIRVANA" className="h-full w-[65px] m-[10px]" />
+        <img src={dirvana} alt="DIRVANA" className="h-full w-[85px] m-[10px]" />
       </Link>
       <div className=" flex items-center gap-[10px]">
         {/* 번역버튼 */}

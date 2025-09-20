@@ -1,15 +1,43 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { useNavigate } from "react-router-dom";
 
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
 
-function PullList({ booths, selectedFilter, searchTerm, selectedPin, selectedBooth }) {
-  const minHeight = 310;
-  const maxHeight = Math.min(620, window.innerHeight - 100 - 62);
-  const defaultHeight = 310;
+function PullList({
+  booths,
+  selectedFilter,
+  searchTerm,
+  selectedPin,
+  selectedBooth,
+}) {
+  const minHeight = 150;
+  const defaultHeight = 150;
 
-  const snapPoints = [minHeight, maxHeight];
+  // ✅ maxHeight를 상태로 관리
+  const [maxHeight, setMaxHeight] = useState(
+    Math.min(437, window.innerHeight - 100 - 82)
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setMaxHeight(Math.min(480, window.innerHeight - 100 - 82));
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // ✅ snapPoints를 useMemo로 관리 → maxHeight 변하면 같이 반영
+  const snapPoints = useMemo(
+    () => [minHeight, maxHeight],
+    [minHeight, maxHeight]
+  );
 
   const [sheetHeight, setSheetHeight] = useState(defaultHeight);
   const [isDragging, setIsDragging] = useState(false);
@@ -214,26 +242,28 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin, selectedBoo
 
                 return booth.category === "Booth" ||
                   booth.category === "FoodTruck" ||
-                  booth.category==="Drink" ? (
+                  booth.category === "Drink" ? (
                   <BoothCard
-  key={booth.booth_id}
-  boothId={booth.booth_id}
-  title={booth.name ?? ""}                       // ✅ 이름 없으면 빈칸
-  image={booth.image_url || undefined}           // ✅ 없으면 undefined (img 자체 안 그림)
-  location={booth.location?.name ?? ""}          // ✅ 위치 없으면 빈칸
-  isSelected={selectedBooth === booth.name}
-  className="w-full"
-  onClick={() =>
-    navigate(
-      booth.category === "FoodTruck"
-        ? `/foodtruck/${booth.booth_id}`
-        : booth.category === "Drink"
-        ? `/drink/${booth.booth_id}`
-        : `/booth/${booth.booth_id}`
-    )
-  }
-/>
-
+                    key={booth.booth_id}
+                    boothId={booth.booth_id}
+                    title={booth.name ?? ""}
+                    image={booth.image_url || undefined}
+                    location={booth.location?.name ?? ""}
+                    isSelected={selectedBooth === booth.name}
+                    startTime={booth.start_time}
+                    endTime={booth.end_time}
+                    businessDays={booth.business_days[0]?.weekday}
+                    className="w-full"
+                    onClick={() =>
+                      navigate(
+                        booth.category === "FoodTruck"
+                          ? `/foodtruck/${booth.booth_id}`
+                          : booth.category === "Drink"
+                          ? `/drink/${booth.booth_id}`
+                          : `/booth/${booth.booth_id}`
+                      )
+                    }
+                  />
                 ) : (
                   <NotBoothCard
                     key={booth.booth_id}
@@ -242,7 +272,8 @@ function PullList({ booths, selectedFilter, searchTerm, selectedPin, selectedBoo
                     category={booth.category}
                     isSelected={selectedPin === locationName}
                     onClick={() => {
-                      if (booth.category === "Toilet") navigate(`/toilet/${booth.booth_id}`);
+                      if (booth.category === "Toilet")
+                        navigate(`/toilet/${booth.booth_id}`);
                     }}
                   />
                 );

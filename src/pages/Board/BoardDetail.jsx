@@ -104,7 +104,9 @@ export default function BoardDetail() {
         });
         if (r.ok) {
           const rel = await r.json();
-          setRelated(Array.isArray(rel?.related) ? rel.related.slice(0, 3) : []);
+          setRelated(
+            Array.isArray(rel?.related) ? rel.related.slice(0, 3) : []
+          );
         } else {
           setRelated([]);
         }
@@ -331,18 +333,15 @@ export default function BoardDetail() {
                   다른 게시물
                 </div>
 
-                <ul className="mt-3 flex flex-col gap-[4px]">
+                <ul className="mt-3 flex flex-col gap-[10px]">
                   {related.slice(0, 3).map((item) => {
                     const pillCls = pillClsByCategory(item.category);
                     const writerOrBooth = item.writer || item.booth_name || "";
                     return (
-                      <li
-                        key={item.id}
-                        className="rounded-[12px] bg-white border border-gray-100 px-3 py-2 shadow-sm"
-                      >
+                      <li key={item.id} className="rounded-[12px] bg-white">
                         <Link
                           to={`/board/${item.id}`}
-                          className="flex items-center justify-between gap-3"
+                          className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full"
                         >
                           <div className="flex items-center gap-3 min-w-0">
                             <span
@@ -350,15 +349,17 @@ export default function BoardDetail() {
                             >
                               {CATEGORY_MAP[item.category] ?? item.category}
                             </span>
-                            <p className="truncate text-[#52525B] font-[SUITE] text-[12px] not-italic font-semibold leading-[150%]">
+                          </div>
+                          <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
+                            <p className="truncate text-[#52525B] font-[SUITE] text-[16px] not-italic font-semibold leading-[150%]">
                               {item.title}
                             </p>
+                            {writerOrBooth && (
+                              <span className="text-[#52525B] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shrink-0">
+                                - {writerOrBooth}
+                              </span>
+                            )}
                           </div>
-                          {writerOrBooth && (
-                            <span className="shrink-0 text-[#52525B] font-[SUITE] text-[10px]">
-                              - {writerOrBooth}
-                            </span>
-                          )}
                         </Link>
                       </li>
                     );
@@ -390,9 +391,9 @@ async function fetchBoothById({
 }) {
   // 실제 운영 API 우선 → 그 외는 폴백
   const candidates = [
-    `${apiBase}/booths/${boothId}/`,          // ✅ 주요 엔드포인트
-    `${apiBase}/booths/detail/${boothId}/`,   // fallback
-    `${apiBase}/booths/${boothId}`,           // fallback (슬래시 없음)
+    `${apiBase}/booths/${boothId}/`, // ✅ 주요 엔드포인트
+    `${apiBase}/booths/detail/${boothId}/`, // fallback
+    `${apiBase}/booths/${boothId}`, // fallback (슬래시 없음)
   ];
 
   try {

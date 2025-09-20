@@ -8,7 +8,7 @@ import ConvenienceCard from "../../components/MapComponents/ConvenienceCard";
 
 import SearchIcon from "../../assets/images/icons/map-icons/Search.svg";
 import CampusmapIcon from "../../assets/images/icons/map-icons/Campusmap.svg";
-import MapToiletIcon from "../../assets/images/icons/map-icons/MapToilet.png";
+import MapToiletIcon from "../../assets/images/icons/map-icons/MapToilet.svg";
 import MapBeerIcon from "../../assets/images/icons/map-icons/MapBeer.png";
 import MapConvenienceIcon from "../../assets/images/icons/map-icons/MapConvenience.png";
 import FoodtruckIcon from "../../assets/images/icons/map-icons/Foodtruck.svg";

@@ -4,9 +4,10 @@ import ProgressBar from "../../components/GameComponents/ProgressBar";
 import StatusMessage from "../../components/GameComponents/StatusMessage";
 import WordGrid from "../../components/GameComponents/WordGrid";
 import ActionButton from "../../components/GameComponents/ActionButton";
+import GameSuccessModal from "../../components/GameComponents/GameSuccessModal";
 import { getRandomWordSet, getGameStage } from "../../utils/gameData";
 
-function GamePlay({ onGameEnd }) {
+function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   const [currentStage, setCurrentStage] = useState(1); // 현재 단계 (1-4)
   const [gameStatus, setGameStatus] = useState("playing"); // 'ready', 'playing', 'correct', 'timeout', 'wrong'
   const [timeLeft, setTimeLeft] = useState(5.5); // 5.5초 제한
@@ -14,6 +15,7 @@ function GamePlay({ onGameEnd }) {
   const [words, setWords] = useState([]);
   const [currentWordSet, setCurrentWordSet] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(""); // distractor가 정답
+  const [showCompleteModal, setShowCompleteModal] = useState(false);
 
   // 게임 초기화
   useEffect(() => {
@@ -89,27 +91,40 @@ function GamePlay({ onGameEnd }) {
       console.log(`${currentStage}단계에서 ${currentStage + 1}단계로 이동`);
       setCurrentStage(currentStage + 1);
     } else {
-      // 게임 완료
-      alert("모든 단계를 완료했습니다!");
+      // 게임 완료 - 성공 모달 표시
+      setShowCompleteModal(true);
+    }
+  };
+
+  // 다시 도전하기 (카운트다운부터 재시작)
+  const handleRetry = () => {
+    if (onRetryFromCountdown) {
+      onRetryFromCountdown();
+    } else {
+      // fallback: 현재 스테이지 재시작
+      prepareStage(currentStage);
+    }
+  };
+
+  // 모달 닫기
+  const handleModalClose = () => {
+    setShowCompleteModal(false);
+    if (onGameEnd) {
       onGameEnd(); // 게임 종료 후 intro로 돌아가기
     }
   };
 
-  // 다시 도전하기 (1단계부터 재시작)
-  const handleRetry = () => {
-    setCurrentStage(1);
-    prepareStage(1);
-  };
+
 
   if (!currentWordSet)
     return (
-      <div className="w-96 h-[812px] flex items-center justify-center">
+      <div className="w-full max-w-[430px] mx-auto h-screen flex items-center justify-center">
         Loading...
       </div>
     );
 
   return (
-    <div className="w-96 h-[812px] relative bg-neutral-100 overflow-hidden mx-auto flex flex-col items-center px-4">
+    <div className="w-full max-w-[430px] mx-auto h-screen relative bg-neutral-100 overflow-hidden flex flex-col items-center px-4">
       {/* 게임 헤더 */}
       <GameHeader round={currentStage} currentStep={currentStage} />
 
@@ -148,6 +163,12 @@ function GamePlay({ onGameEnd }) {
           currentStage={currentStage}
         />
       </div>
+
+      {/* 게임 완료 모달 (성공 시만) */}
+      <GameSuccessModal
+        isOpen={showCompleteModal}
+        onClose={handleModalClose}
+      />
     </div>
   );
 }

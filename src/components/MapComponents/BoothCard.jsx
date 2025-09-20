@@ -3,6 +3,7 @@ import HeartIcon from "../../assets/images/icons/map-icons/Heart.png";
 import UnheartIcon from "../../assets/images/icons/map-icons/emptyHeart.png";
 import Badge from "./BoothCardComponents/Badge";
 import useBoothLikes from "../../hooks/useBoothLikes";
+import defaultImg from "../../assets/images/banners/default-img.png";
 
 function BoothCard({
   boothId,
@@ -31,33 +32,34 @@ function BoothCard({
 
   return (
     <div
-      className={`cursor-pointer w-full h-[92px] p-4 transition shadow-sm
-        ${
-          isSelected
-            ? "bg-red-50 shadow-md" 
-            : "bg-white" 
-        }
-      `}
+      className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
+  ${
+    isSelected
+      ? "bg-red-50 border-red-500 shadow-md" // 선택됨
+      : "bg-white border-neutral-200" // 기본
+  }
+`}
       style={{
         borderRadius: "16px",
-        border: "1px solid #E4E4E7",
-        backgroundColor: "#FFF",
       }}
       onClick={onClick}
     >
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
-        <div className="relative w-16 h-16 flex-shrink-0">
-          <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden">
+        <div className="relative w-[68px] h-[68px] flex-shrink-0">
+          <div className="w-[68px] h-[68px] bg-gray-100 rounded-lg overflow-hidden">
             <img
-              src={image}
-              alt="로딩..."
+              src={image || defaultImg}
+              alt={title}
               className="w-full h-full bg-[#C2C2C2] object-cover"
+              onError={(e) => {
+                e.currentTarget.src = defaultImg;
+              }}
             />
           </div>
           {/* Badge 겹치기 */}
           {badges?.isEventActive || isEvent ? (
-            <div className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/2">
+            <div className="absolute top-[5px] left-[5px] -translate-x-1/4 -translate-y-1/2">
               <Badge backgroundColor=" rgba(239, 112, 99, 0.90)" text="Event" />
             </div>
           ) : null}
@@ -87,7 +89,7 @@ function BoothCard({
           </div>
 
           {/* 영업시간 */}
-          <p className="text-xs text-neutral-400 mb-0.5 font-suite leading-[150%] font-normal">
+          <p className="text-xs text-[#71717A] mb-0.5 font-suite leading-[150%] font-normal">
             {time ||
               (businessDays && startTime && endTime
                 ? `${businessDays} ${startTime}~${endTime}`

@@ -55,6 +55,7 @@ const BoothRank = ({ onDataChange }) => {
     return {
       id: booth.booth_id,
       title: booth.name,
+      image: booth.image_url,
       location: booth.location.name,
       time: formatTimeWithDay(
         booth.business_days,
@@ -115,6 +116,7 @@ const BoothRank = ({ onDataChange }) => {
                 <BoothCard
                   boothId={formattedBooth.id}
                   title={formattedBooth.title}
+                  image={formattedBooth.image}
                   location={formattedBooth.location}
                   time={formattedBooth.time}
                   isOperating={formattedBooth.isOperating}
