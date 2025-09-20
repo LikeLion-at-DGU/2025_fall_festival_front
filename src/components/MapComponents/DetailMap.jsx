@@ -18,38 +18,68 @@ const DetailMap = ({ buildingName, selectedPin, onClose, onSelectBooth }) => {
         className="w-full h-full object-contain"
       />
 
-      {config.buttons.map((btn, idx) =>
-  btn.type === "button" ? (
-    <button
-      key={idx}
-      className="absolute bg-white border border-gray-400 rounded px-2 py-1 text-xs"
-      style={{
-        left: `${btn.x}%`,
-        top: `${btn.y}%`,
-        transform: "translate(-50%, -50%)",
-      }}
-      onClick={(e) => {
-        e.stopPropagation();
-        onSelectBooth(btn.label);
-      }}
-    >
-      {btn.label}
-    </button>
-  ) : (
-    <span
-      key={idx}
-      className="absolute bg-gray-300 rounded px-2 py-1 text-xs"
-      style={{
-        left: `${btn.x}%`,
-        top: `${btn.y}%`,
-        transform: "translate(-50%, -50%)",
-      }}
-    >
-      {btn.label}
-    </span>
-  )
-)}
+      {config.buttons
+        // 1) 먼저 조건 필터링
+        .filter((btn) => {
+          if (!btn.showIf) return true; // showIf 없으면 항상 보임
 
+          const { startDate, endDate, startTime, endTime } = btn.showIf;
+          const now = new Date();
+
+          // 오늘 날짜 (YYYY-MM-DD)
+          const today = now.toISOString().split("T")[0];
+
+          // 날짜 범위 체크
+          if (startDate && today < startDate) return false;
+          if (endDate && today > endDate) return false;
+
+          // 시간 범위 체크
+          if (startTime && endTime) {
+            const nowMinutes = now.getHours() * 60 + now.getMinutes();
+            const [startH, startM] = startTime.split(":").map(Number);
+            const [endH, endM] = endTime.split(":").map(Number);
+            const startMinutes = startH * 60 + startM;
+            const endMinutes = endH * 60 + endM;
+
+            if (nowMinutes < startMinutes || nowMinutes > endMinutes)
+              return false;
+          }
+
+          return true;
+        })
+
+        // 2) 조건 통과한 버튼/라벨만 렌더링
+        .map((btn, idx) =>
+          btn.type === "button" ? (
+            <button
+              key={idx}
+              className="absolute bg-[#EBC4C4] px-2 py-1 text-xs"
+              style={{
+                left: `${btn.x}%`,
+                top: `${btn.y}%`,
+                transform: "translate(-50%, -50%)",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelectBooth(btn.label);
+              }}
+            >
+              {btn.label}
+            </button>
+          ) : (
+            <span
+              key={idx}
+              className="absolute text-[#FFECEC] rounded px-2 py-1 text-xs"
+              style={{
+                left: `${btn.x}%`,
+                top: `${btn.y}%`,
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              {btn.label}
+            </span>
+          )
+        )}
 
       {/* 뒤로가기 버튼 */}
       <div className="flex flex-row items-center absolute top-[10px] left-[11px]">
