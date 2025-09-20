@@ -399,7 +399,7 @@ export default function Board() {
             <EmptyState hasSearchKeyword={!!keyword} activeTag={activeTag} />
           )}
           {!loading && !error && paged.length > 0 && (
-            <ul className="flex flex-col gap-[8px]">
+            <ul className="flex flex-col gap-[10px]">
               {paged.map((item) => (
                 <BoardItem key={item.id} item={item} />
               ))}

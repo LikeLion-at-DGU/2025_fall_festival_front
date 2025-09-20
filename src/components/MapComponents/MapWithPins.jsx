@@ -86,7 +86,7 @@ const MapWithPins = ({
 
   return (
     <div
-      className="w-[343px] h-[232px]
+      className="w-full h-[232px]
         relative
         flex justify-center items-center
          flex-shrink-0 rounded-[16px]

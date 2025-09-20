@@ -32,7 +32,7 @@ function FilterBar({ selectedFilter, setSelectedFilter, onFilterClick }) {
   };
 
   return (
-    <div className="flex mx-auto w-[343px] flex-wrap gap-[10px]">
+    <div className="flex mx-auto w-full flex-wrap gap-[10px]">
       {filters.map((filter) => (
         <FilterButton
           key={filter}

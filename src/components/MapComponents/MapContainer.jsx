@@ -6,7 +6,7 @@ import { mapConfigs } from "../../config/mapConfigs";
 
 const MapContainer = ({ apiData, selectedFilter, onSelectBooth, selectedPin, handlePinClick }) => {
   return (
-    <div className="w-[343px] mx-auto relative">
+    <div className="w-full mx-auto relative">
       {selectedPin ? (
         <DetailMap
           buildingName={selectedPin}

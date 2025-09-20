@@ -10,7 +10,7 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
   }
 
   return (
-    <div className="relative w-full h-[232px] rounded-[16px] border border-[#E4E4E7]">
+    <div className="relative w-full h-full rounded-[16px] border border-[#E4E4E7]">
       {/* 상세지도 이미지 */}
       <img
         src={config.img}
