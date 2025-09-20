@@ -202,7 +202,7 @@ function AdminMain() {
         </div>
 
         <div className={bottomWrapperClass}>
-          <Submitbtn text="분실물 공지 추가하기" onClick={handleAddLostItem} />
+          <Submitbtn text="분실물 공지 추가하기" onClick={handleAddLostItem} className="mt-2"/>
           <Submitbtn text="일반 공지 추가하기" onClick={handleAddNotice} />
         </div>
       </div>
