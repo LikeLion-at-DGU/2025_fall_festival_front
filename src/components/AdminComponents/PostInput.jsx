@@ -9,13 +9,11 @@ function PostInput({ placeholder, value, onChange, className, disabled = false }
       disabled={disabled}
       className={`
         w-full px-6 py-4
-        rounded-[15px]
+        rounded-[13px]
         bg-[#E4E4E7] text-[#000]
         text-sm
-        font-SUITE
         placeholder-[#A1A1AA]
         focus:outline-none
-        whitespace-nowrap
         resize-none  /* 사용자가 크기 조절 못 하도록 */
         ${className}
         ${disabled 

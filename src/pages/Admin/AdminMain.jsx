@@ -10,7 +10,9 @@ import ToastMessage from "../../components/AdminComponents/ToastMessage";
 
 import {
   patchEmergencyNotice,
+  getEmergencyNoticeFromNotices,
   getEmergencyNotice,
+  getEmergencyNoticeById,
   getEmergencyNotices, // ✅ 최신 긴급공지 가져오기 추가
   getUnionNotices,
   getUnionLosts,
@@ -45,26 +47,26 @@ function AdminMain() {
     "flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6";
   const wrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-4";
   const noticeWrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-0";
-  const postWrapperClass = "flex flex-col items-center w-full h-[43vh] mx-auto gap-2.5 overflow-y-scroll";
+  const postWrapperClass = "flex flex-col items-center w-full h-[37vh] mx-auto gap-2.5 overflow-y-scroll";
   const bottomWrapperClass = "flex flex-col w-full";
   
 
   // ✅ 게시글 및 긴급공지 불러오기
   useEffect(() => {
-    // (1) 최신 긴급공지 가져오기
     const fetchEmergency = async () => {
       try {
-        const res = await getEmergencyNotice();
-        console.log("📡 getEmergencyNotice 응답:", res.title);
-        if (res && res.title) {
-          setNotice(res.title); // 긴급공지 필드에 최신값 반영
+        const emergency = await getEmergencyNoticeFromNotices();
+        if (emergency) {
+          setNotice(emergency.title);
+        } else {
+          setNotice(""); // 긴급 공지가 없으면 빈칸
         }
       } catch (err) {
         console.error("긴급공지 불러오기 실패:", err);
+        setNotice("");
       }
     };
 
-    // (2) 일반 공지 + 분실물 게시글 불러오기
     const fetchPosts = async () => {
       try {
         const [noticeList, lostList] = await Promise.all([
@@ -80,6 +82,7 @@ function AdminMain() {
     fetchEmergency();
     fetchPosts();
   }, []);
+
 
   // 검색 기능
   const handleSearch = (keyword) => {
@@ -106,7 +109,7 @@ function AdminMain() {
 
     try {
       // PATCH 요청 → 서버에 수정 반영
-      const result = await patchEmergencyNotice(1, {
+      const result = await patchEmergencyNotice(143, {
         title: notice, // 입력 필드 값 전송
         content: notice, // 현재 title만 써서 content 비활성화 해도 되나, 안전장치로 걸어둠
       });
