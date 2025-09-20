@@ -7,9 +7,9 @@ export async function createNormalPost(postData) {
   const uid = sessionStorage.getItem("uid");
   const role = sessionStorage.getItem("role");
 
-  if (!uid) {
-    throw new Error("로그인이 필요합니다."); // ⛔ toastMsg 변경 예정
-  }
+  //if (!uid) {
+    //throw new Error("로그인이 필요합니다."); // ⛔ toastMsg 변경 예정
+  //}
   if (role !== "Staff" && role !== "Stuco") {
     throw new Error("일반공지 작성 권한이 없습니다.");
   }
@@ -22,6 +22,12 @@ export async function createNormalPost(postData) {
   };
 
   const res = await instance.post("/board/notices", payload);
+
+  // uid 유효성 체크
+  if (res.data?.uid_valid === false) {
+    throw { message: res.data.message || "만료된 UID 입니다.", uidExpired: true };
+  }
+
   return res.data;
 }
 
@@ -31,9 +37,13 @@ export async function createLostPost(formData) {
     const res = await instance.post("/board/losts", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+  // uid 유효성 체크
+  if (res.data?.uid_valid === false) {
+    throw { message: res.data.message || "만료된 UID 입니다.", uidExpired: true };
+  }
     return res.data;
   } catch (err) {
-    throw err.response?.data || err;
+    throw err.response?.data || err; //?
   }
 }
 
