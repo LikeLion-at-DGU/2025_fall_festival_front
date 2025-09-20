@@ -68,14 +68,13 @@ function Map() {
       </div>
 
       {/* 바텀시트 */}
-  <PullList
-  booths={booths}
-  selectedFilter={selectedFilter}
-  searchTerm={searchText}
-  selectedPin={selectedPin}
-  selectedBooth={selectedBooth}   // ✅ 추가
-/>
-
+      <PullList
+        booths={booths}
+        selectedFilter={selectedFilter}
+        searchTerm={searchText}
+        selectedPin={selectedPin}
+        selectedBooth={selectedBooth} // ✅ 추가
+      />
     </div>
   );
 }
