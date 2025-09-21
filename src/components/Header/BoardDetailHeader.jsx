@@ -7,7 +7,8 @@ const BoardDetailHeader = () => {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate(-1);
+    // ✅ 항상 /board 로 이동
+    navigate("/board");
   };
 
   return (
