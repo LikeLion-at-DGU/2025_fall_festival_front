@@ -13,7 +13,7 @@ const Footer = () => {
     <footer
       className={`flex flex-col items-center justify-between
       w-full max-h-[350px]
-      px-[36px] py-[50px] 
+      px-[36px] pb-[50px] 
       bg-[#F3CDC9]`}
     >
       <img src={line} alt="Line" className="w-full mb-[42px]" />
@@ -26,7 +26,7 @@ const Footer = () => {
       <div className="flex flex-col items-center gap-2 ">
         {/* 검정 */}
         <span
-          className={`${fontClass} font-pretendard font-normal text-white mb-[8px]`}
+          className={`${fontClass} font-suite font-normal text-white mb-[8px]`}
         >
           동국대학교 멋쟁이사자처럼
           <br />
@@ -35,7 +35,7 @@ const Footer = () => {
 
         {/* 회색 */}
         <span
-          className={`${fontClass} font-pretendard font-light text-white mb-[27px]`}
+          className={`${fontClass} font-suite font-light text-white mb-[27px]`}
         >
           @Data supported by 축제기획단
         </span>
@@ -45,9 +45,9 @@ const Footer = () => {
           {/* likelion */}
           <Link to="/admin/login">
             <div className="flex justify-center items-center gap-1">
-              <img src={likelion} alt="LIKELION" className="w-[23px] h-[13px]" />
+              <img src={likelion} alt="LIKELION" className="w-[26px] h-[16px]" />
               <span
-                className={`${fontClass} font-suite font-normal text-[11px] text-white`}
+                className={`${fontClass} font-suite font-normal text-[12px] text-white`}
               >
                 Administrator
               </span>
@@ -61,9 +61,9 @@ const Footer = () => {
             rel="noopener noreferrer"
           >
             <div className="flex justify-center items-center gap-[6px]">
-              <img src={instagram} alt="Instagram" className="w-[15px] h-[15px]"/>
+              <img src={instagram} alt="Instagram" className="w-[20px] h-[20px]"/>
               <span
-                className={`${fontClass} font-suite font-normal text-[11px] text-white`}
+                className={`${fontClass} font-suite font-normal text-[12px] text-white`}
               >
                 Instagram
               </span>
