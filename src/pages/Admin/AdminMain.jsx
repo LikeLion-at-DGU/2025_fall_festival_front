@@ -10,7 +10,6 @@ import ToastMessage from "../../components/AdminComponents/ToastMessage";
 
 import {
   patchEmergencyNotice,
-  getEmergencyNoticeFromNotices,
   getEmergencyNotice,
   getEmergencyNoticeById,
   getEmergencyNotices, // ✅ 최신 긴급공지 가져오기 추가
@@ -55,9 +54,9 @@ function AdminMain() {
   useEffect(() => {
     const fetchEmergency = async () => {
       try {
-        const emergency = await getEmergencyNoticeFromNotices();
+        const emergency = await getEmergencyNotice();
         if (emergency) {
-          setNotice(emergency.title);
+          setNotice(emergency.title); // title을 바로 반영
         } else {
           setNotice(""); // 긴급 공지가 없으면 빈칸
         }
@@ -73,7 +72,14 @@ function AdminMain() {
           getUnionNotices(),
           getUnionLosts(),
         ]);
-        setNotices([...noticeList, ...lostList]);
+
+        // 두 배열 합치고
+        const combined = [...noticeList, ...lostList];
+
+        // 최신순 정렬 (created_at 기준)
+        combined.sort((a, b) => b.id - a.id);
+
+        setNotices(combined);
       } catch (err) {
         console.error("게시글 불러오기 실패:", err);
       }
@@ -83,6 +89,7 @@ function AdminMain() {
     fetchPosts();
   }, []);
 
+  
 
   // 검색 기능
   const handleSearch = (keyword) => {
@@ -94,32 +101,24 @@ function AdminMain() {
 
   // 제출 로직: 긴급 공지 수정 field의 수정 사항 반영
   const handlePatchEvent = async () => {
-    const uid = sessionStorage.getItem("uid");
-    const role = sessionStorage.getItem("role");
-
-    if (!uid) {
-      alert("로그인이 필요합니다.");
-      navigate("/admin/login");
-      return;
-    }
-    if (role !== "Staff" && role !== "Stuco") {
-      alert("공지 수정 권한이 없습니다.");
-      return;
-    }
-
     try {
-      // PATCH 요청 → 서버에 수정 반영
       const result = await patchEmergencyNotice(143, {
-        title: notice, // 입력 필드 값 전송
-        content: notice, // 현재 title만 써서 content 비활성화 해도 되나, 안전장치로 걸어둠
+        title: notice,
+        content: notice,
       });
 
-      setToast(result.message); 
-      setIsEdited(false); // 버튼 비활성화
+      setToast(result.message);
+
+      // 🔥 PATCH 후 최신 긴급공지 다시 불러오기
+      const updated = await getEmergencyNotice();
+      if (updated) setNotice(updated.title);
+
+      setIsEdited(false);
     } catch (err) {
       setToast(err.error || "수정 실패");
     }
   };
+
 
   // 제출 로직: 유저 정보 확인 후, 분실물 페이지로 연결
   const handleAddLostItem = () => {
