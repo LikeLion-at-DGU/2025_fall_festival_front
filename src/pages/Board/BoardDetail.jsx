@@ -255,6 +255,51 @@ export default function BoardDetail() {
     });
   }, [post?.writer, post?.id, requestSingleTranslation]);
 
+  // 이벤트 카테고리 글의 부스 위치 번역 요청
+  useEffect(() => {
+    if (!post?.booth_location || post?.category !== "Event") return;
+
+    requestSingleTranslation({
+      entity_type: "board",
+      entity_id: post.id.toString(),
+      field: "BoothLocation",
+      source_lang: "ko",
+      source_text: post.booth_location,
+    });
+  }, [
+    post?.booth_location,
+    post?.category,
+    post?.id,
+    requestSingleTranslation,
+  ]);
+
+  // 부스 카드 정보 번역 요청
+  useEffect(() => {
+    if (!boothRaw) return;
+
+    // 부스명 번역 요청
+    if (boothRaw.name) {
+      requestSingleTranslation({
+        entity_type: "booth",
+        entity_id: boothRaw.booth_id?.toString() || boothRaw.id?.toString(),
+        field: "BoothName",
+        source_lang: "ko",
+        source_text: boothRaw.name,
+      });
+    }
+
+    // 부스 위치 번역 요청
+    if (boothRaw.location?.name) {
+      requestSingleTranslation({
+        entity_type: "booth",
+        entity_id: boothRaw.booth_id?.toString() || boothRaw.id?.toString(),
+        field: "BoothLocation",
+        source_lang: "ko",
+        source_text: boothRaw.location.name,
+      });
+    }
+  }, [boothRaw, requestSingleTranslation]);
+
   // 이벤트/공지/분실물 작성자 보정: writer 없으면 booth_name 사용
   const displayWriter = post?.writer || post?.booth_name || "";
 
@@ -282,8 +327,22 @@ export default function BoardDetail() {
     //   like_cnt, is_event, is_dorder, ...
     // }
     const id = boothRaw.booth_id ?? boothRaw.id;
-    const title = boothRaw.name ?? "";
-    const locationName = boothRaw.location?.name ?? "";
+    const boothIdStr = id?.toString();
+
+    // 번역된 부스명과 위치 사용
+    const title = getTranslation(
+      "booth",
+      boothIdStr,
+      "BoothName",
+      boothRaw.name ?? ""
+    );
+    const locationName = getTranslation(
+      "booth",
+      boothIdStr,
+      "BoothLocation",
+      boothRaw.location?.name ?? ""
+    );
+
     const timeText = formatTimeWithDay(
       boothRaw.business_days,
       boothRaw.start_time,
@@ -304,7 +363,7 @@ export default function BoardDetail() {
       likesCount: likes,
       badges,
     };
-  }, [boothRaw]);
+  }, [boothRaw, getTranslation]);
 
   const handleClickBoothCard = () => {
     if (!boothCardProps?.boothId) return;
@@ -392,7 +451,14 @@ export default function BoardDetail() {
                             {t("board.boothLocation")} :{" "}
                           </span>
                           <span className="text-[#52525B]">
-                            {boothCardProps?.location ?? boothLabel}
+                            {post.booth_location
+                              ? getTranslation(
+                                  "board",
+                                  post.id.toString(),
+                                  "BoothLocation",
+                                  post.booth_location
+                                )
+                              : boothCardProps?.location ?? boothLabel}
                           </span>
                         </p>
                       )}
