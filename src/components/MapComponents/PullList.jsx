@@ -238,8 +238,7 @@ function PullList({
       </div>
 
       {/* 헤더 */}
-      <div className="px-[17px] pb-4">
-      </div>
+      <div className="px-[17px] pb-4"></div>
 
       {/* 스크롤 가능한 콘텐츠 */}
       <div className="flex-1 overflow-hidden">
