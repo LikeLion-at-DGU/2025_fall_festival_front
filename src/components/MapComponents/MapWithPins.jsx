@@ -102,7 +102,7 @@ const MapWithPins = ({
          flex-shrink-0 rounded-[16px]
          border border-[#E4E4E7] bg-gradient-to-b from-[#FFFFFF] via-[#FFFFFF] to-[#FBD1CD]"
       onClick={() => handlePinClick && handlePinClick(null)} // 지도 클릭 시 핀 초기화
-    >z
+    >
       <img src={emptyMap} alt={t("map.campusMap")} />
 
       {/* 왼쪽 위 로고 (selectedFilter 아이콘) */}
