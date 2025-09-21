@@ -11,6 +11,7 @@ import i18n from "i18next";
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
 import { useBoothTranslation } from "../../hooks/useTranslation";
+import { useTranslation } from 'react-i18next';
 
 function PullList({
   booths,
@@ -21,6 +22,7 @@ function PullList({
 }) {
   // 번역 훅 사용
   const { getTranslatedBooths } = useBoothTranslation(booths);
+  const { t } = useTranslation();
 
   // 언어 변경 감지 로그
   useEffect(() => {
@@ -247,10 +249,10 @@ function PullList({
             <div className="flex items-center justify-center h-32">
               <span className={`${textClass} text-[#8A8A8A]`}>
                 {selectedPin
-                  ? `부스가 없어요`
+                  ? t("pullList.noBooths")
                   : searchTerm
-                  ? "검색 결과가 없어요"
-                  : `부스가 없어요`}
+                  ? t("pullList.noSearchResults")
+                  : t("pullList.noBooths")}
               </span>
             </div>
           ) : (

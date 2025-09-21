@@ -7,6 +7,15 @@
     "game": "ゲーム"
   },
 
+  "search": {
+    "placeholder": "学科/サークル/ブース名を入力してください",
+    "alt": "検索"
+  },
+  "pullList": {
+    "noBooths": "ブースがありません",
+    "noSearchResults": "検索結果がありません"
+  },
+
   "board": {
     "searchPlaceholder": "検索語を入力してください",
     "tabs": {
