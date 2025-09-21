@@ -6,7 +6,7 @@
     "board": "Board",
     "game": "Game"
   },
-  
+
   "search": {
     "placeholder": "Enter department/club/booth name",
     "alt": "Search"
@@ -70,9 +70,14 @@
     "congratsMessage": "You have successfully completed all stages!\nYour focus was truly amazing :)",
     "retry": "Try Again"
   },
-   "gameHeader": {
+
+  "gameHeader": {
     "step": "Step"
+  },
+
+  "booth": {
+    "nightBooth": "Night Booth",
+    "dayBooth": "Day Booth",
+    "preparingHours": "Preparing business hours"
   }
-
-
 }
