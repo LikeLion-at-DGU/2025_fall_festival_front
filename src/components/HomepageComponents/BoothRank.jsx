@@ -4,12 +4,16 @@ import BoothCard from "../MapComponents/BoothCard";
 import Skeleton from "../Skeleton/Skeleton";
 import { getBoothRanking } from "../../apis/mainpage";
 import { formatTimeWithDay } from "../../utils/dateUtils";
+import { useBoothTranslation } from "../../hooks/useTranslation";
 
 const BoothRank = ({ onDataChange }) => {
   const navigate = useNavigate();
   const [rankData, setRankData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // 번역 훅 사용
+  const { getTranslatedBooths } = useBoothTranslation(rankData);
 
   const handleBoothClick = (booth) => {
     navigate(`/booth/${booth.id}`, { state: { booth } });
@@ -109,6 +113,12 @@ const BoothRank = ({ onDataChange }) => {
         ) : rankData.length > 2 ? (
           rankData.map((booth, index) => {
             const formattedBooth = formatBoothData(booth);
+            // 번역된 부스 데이터 가져오기
+            const translatedBooths = getTranslatedBooths();
+            const translatedBooth =
+              translatedBooths.find((tb) => tb.booth_id === booth.booth_id) ||
+              booth;
+
             return (
               <div
                 key={formattedBooth.id}
@@ -117,9 +127,12 @@ const BoothRank = ({ onDataChange }) => {
               >
                 <BoothCard
                   boothId={formattedBooth.id}
-                  title={formattedBooth.title}
+                  title={translatedBooth.translatedName || formattedBooth.title}
                   image={formattedBooth.image}
-                  location={formattedBooth.location}
+                  location={
+                    translatedBooth.translatedLocation ||
+                    formattedBooth.location
+                  }
                   time={formattedBooth.time}
                   isOperating={formattedBooth.isOperating}
                   likesCount={formattedBooth.likeCount}

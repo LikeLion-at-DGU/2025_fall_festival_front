@@ -11,9 +11,11 @@ import {
   getCurrentClubPerformance,
   formatPerformanceTime,
 } from "../../data/clubPerformances";
+import { useTranslations } from "../../context/TranslationContext";
 
 const Stage = () => {
   const navigate = useNavigate();
+  const { getTranslation } = useTranslations();
   const [currentArtistIndex, setCurrentArtistIndex] = useState(0);
   const [isShowTime, setIsShowTime] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -121,7 +123,12 @@ const Stage = () => {
                 )}
               </p>
               <p className="text-2xl font-semibold font-suite text-white">
-                {currentClubPerformance.name}
+                {getTranslation(
+                  "stage",
+                  "club",
+                  "StageName",
+                  currentClubPerformance.name
+                )}
               </p>
             </div>
           </>
@@ -147,7 +154,12 @@ const Stage = () => {
                 isTransitioning ? "opacity-0" : "opacity-100"
               }`}
             >
-              {currentArtists[currentArtistIndex].name}
+              {getTranslation(
+                "stage",
+                currentArtists[currentArtistIndex].name.toLowerCase(),
+                "StageName",
+                currentArtists[currentArtistIndex].name
+              )}
             </p>
           </>
         ) : (

@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-import dot from "../../assets/images/icons/Timetable-icons/dot.png";     // 선택된 동그라미
-import dot2 from "../../assets/images/icons/Timetable-icons/empty-dot.png";   // 미선택 동그라미
-import arrow from "../../assets/images/icons/Timetable-icons/arrow.png";       // 삼각형
+import dot from "../../assets/images/icons/Timetable-icons/dot.png"; // 선택된 동그라미
+import dot2 from "../../assets/images/icons/Timetable-icons/empty-dot.png"; // 미선택 동그라미
+import arrow from "../../assets/images/icons/Timetable-icons/arrow.png"; // 삼각형
 import dirvana from "../../assets/images/icons/Timetable-icons/DIRVANA.svg";
+import { useTranslations } from "../../context/TranslationContext";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Timetable() {
+  const { getTranslation, requestSingleTranslation } = useTranslations();
   const [currentClubEvents, setCurrentClubEvents] = useState([]);
   const [remainingClubEvents, setRemainingClubEvents] = useState([]);
   const [celebrityEvents, setCelebrityEvents] = useState([]);
@@ -96,6 +98,80 @@ export default function Timetable() {
       .finally(() => setLoading(false));
   };
 
+  // 공연 데이터 번역 요청 트리거
+  useEffect(() => {
+    // 현재 공연 번역 요청
+    currentClubEvents.forEach((event) => {
+      if (event.name) {
+        requestSingleTranslation({
+          entity_type: "stage",
+          entity_id: event.id?.toString() || event.name.toLowerCase(),
+          field: "StageName",
+          source_lang: "ko",
+          source_text: event.name,
+        });
+      }
+      if (event.location_name) {
+        requestSingleTranslation({
+          entity_type: "stage",
+          entity_id: event.id?.toString() || event.name.toLowerCase(),
+          field: "StageLocation",
+          source_lang: "ko",
+          source_text: event.location_name,
+        });
+      }
+    });
+
+    // 남은 공연 번역 요청
+    remainingClubEvents.forEach((event) => {
+      if (event.name) {
+        requestSingleTranslation({
+          entity_type: "stage",
+          entity_id: event.id?.toString() || event.name.toLowerCase(),
+          field: "StageName",
+          source_lang: "ko",
+          source_text: event.name,
+        });
+      }
+      if (event.location_name) {
+        requestSingleTranslation({
+          entity_type: "stage",
+          entity_id: event.id?.toString() || event.name.toLowerCase(),
+          field: "StageLocation",
+          source_lang: "ko",
+          source_text: event.location_name,
+        });
+      }
+    });
+
+    // 연예인 공연 번역 요청
+    celebrityEvents.forEach((event) => {
+      if (event.name) {
+        requestSingleTranslation({
+          entity_type: "stage",
+          entity_id: event.id?.toString() || event.name.toLowerCase(),
+          field: "StageName",
+          source_lang: "ko",
+          source_text: event.name,
+        });
+      }
+      if (event.location_name) {
+        requestSingleTranslation({
+          entity_type: "stage",
+          entity_id: event.id?.toString() || event.name.toLowerCase(),
+          field: "StageLocation",
+          source_lang: "ko",
+          source_text: event.location_name,
+        });
+      }
+    });
+  }, [
+    currentClubEvents,
+    remainingClubEvents,
+    celebrityEvents,
+    requestSingleTranslation,
+  ]);
+
   return (
     <div className="font-sans flex flex-col gap-4 p-6 pt-3">
       {/* 날짜 탭 */}
@@ -108,10 +184,11 @@ export default function Timetable() {
               setIsCelebrityMode(false);
               setSelectedHour(null);
             }}
-            className={`pb-2 text-xl font-medium ${selectedDay === d.value
+            className={`pb-2 text-xl font-medium ${
+              selectedDay === d.value
                 ? "text-red-500 border-b-2 border-red-500"
                 : "text-black"
-              }`}
+            }`}
           >
             {d.label}
           </button>
@@ -129,10 +206,11 @@ export default function Timetable() {
         {hours.map((time) => (
           <div key={time} className="flex flex-col items-center">
             <span
-              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${selectedHour === time && !isCelebrityMode
+              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${
+                selectedHour === time && !isCelebrityMode
                   ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
                   : "text-[#71717A]"
-                }`}
+              }`}
             >
               {time}
             </span>
@@ -164,10 +242,11 @@ export default function Timetable() {
         {/* 연예인 버튼 */}
         <div className="flex flex-col items-center">
           <span
-            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${isCelebrityMode
+            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${
+              isCelebrityMode
                 ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
                 : "text-[#71717A]"
-              }`}
+            }`}
           >
             연예인
           </span>
@@ -183,11 +262,7 @@ export default function Timetable() {
             {isCelebrityMode ? (
               <img src={dot} alt="selected" className="w-[30px] h-[30px]" />
             ) : (
-              <img
-                src={dot2}
-                alt="unselected"
-                className="w-[27px] h-[26px]"
-              />
+              <img src={dot2} alt="unselected" className="w-[27px] h-[26px]" />
             )}
           </button>
 
@@ -216,8 +291,22 @@ export default function Timetable() {
                   className="w-16 h-16 rounded-lg object-cover"
                 />
                 <div className="flex flex-row items-center gap-[10px]">
-                  <p className="text-5 font-semibold">{s.name}</p>
-                  <p className="text-sm text-gray-600">{s.location_name}</p>
+                  <p className="text-5 font-semibold">
+                    {getTranslation(
+                      "stage",
+                      s.id?.toString() || s.name.toLowerCase(),
+                      "StageName",
+                      s.name
+                    )}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    {getTranslation(
+                      "stage",
+                      s.id?.toString() || s.name.toLowerCase(),
+                      "StageLocation",
+                      s.location_name
+                    )}
+                  </p>
                   {/* ⛔ 연예인 모드에서는 시간 표시 안함 */}
                 </div>
               </div>
@@ -246,55 +335,80 @@ export default function Timetable() {
                     {(s.end_time || "").slice(11, 16)}
                   </p>
                   <div className="flex items-center gap-[10px]">
-                    <p className="text-5 font-semibold">{s.name}</p>
-                    <p className="text-sm text-gray-600">{s.location_name}</p>
+                    <p className="text-5 font-semibold">
+                      {getTranslation(
+                        "stage",
+                        s.id?.toString() || s.name.toLowerCase(),
+                        "StageName",
+                        s.name
+                      )}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {getTranslation(
+                        "stage",
+                        s.id?.toString() || s.name.toLowerCase(),
+                        "StageLocation",
+                        s.location_name
+                      )}
+                    </p>
                   </div>
                 </div>
               </div>
             ))}
 
             {/* 바로 다음 공연 (동아리 remaining + 연예인) */}
-            {(remainingClubEvents.length > 0 ||
-              celebrityEvents.length > 0) && (
-                <div className="mt-4">
-                  <p className="text-sm text-[#71717A] mb-5">
-                    바로 다음 공연도 확인해보세요
-                  </p>
-                  <div className="flex flex-col gap-6">
-                    {[...remainingClubEvents, ...celebrityEvents].map((s) => (
-                      <div
-                        key={s.id}
-                        className={`flex items-center gap-[13px] px-[14px] pr-[75px] py-[18px] rounded-[16px] 
+            {(remainingClubEvents.length > 0 || celebrityEvents.length > 0) && (
+              <div className="mt-4">
+                <p className="text-sm text-[#71717A] mb-5">
+                  바로 다음 공연도 확인해보세요
+                </p>
+                <div className="flex flex-col gap-6">
+                  {[...remainingClubEvents, ...celebrityEvents].map((s) => (
+                    <div
+                      key={s.id}
+                      className={`flex items-center gap-[13px] px-[14px] pr-[75px] py-[18px] rounded-[16px] 
                         border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
-                        ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
-                      >
-                        <img
-                          src={s.image_url || "/images/placeholder.jpg"}
-                          alt={s.name}
-                          className="w-16 h-16 rounded-lg object-cover"
-                        />
-                        <div className="flex flex-col">
-                          {/* ⛔ 연예인 공연은 시간 표시하지 않음 */}
-                          {remainingClubEvents.some((c) => c.id === s.id) && (
-                            <p className="text-sm text-[#A1A1AA]">
-                              {(s.start_time || "").slice(11, 16)} -{" "}
-                              {(s.end_time || "").slice(11, 16)}
-                            </p>
-                          )}
-                          <div className="flex items-center gap-[10px]">
-                            <p className="text-5 font-semibold text-[#A1A1AA]">
-                              {s.name}
-                            </p>
-                            <p className="text-sm text-[#A1A1AA]">
-                              {s.location_name}
-                            </p>
-                          </div>
+                        ${
+                          s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"
+                        }`}
+                    >
+                      <img
+                        src={s.image_url || "/images/placeholder.jpg"}
+                        alt={s.name}
+                        className="w-16 h-16 rounded-lg object-cover"
+                      />
+                      <div className="flex flex-col">
+                        {/* ⛔ 연예인 공연은 시간 표시하지 않음 */}
+                        {remainingClubEvents.some((c) => c.id === s.id) && (
+                          <p className="text-sm text-[#A1A1AA]">
+                            {(s.start_time || "").slice(11, 16)} -{" "}
+                            {(s.end_time || "").slice(11, 16)}
+                          </p>
+                        )}
+                        <div className="flex items-center gap-[10px]">
+                          <p className="text-5 font-semibold text-[#A1A1AA]">
+                            {getTranslation(
+                              "stage",
+                              s.id?.toString() || s.name.toLowerCase(),
+                              "StageName",
+                              s.name
+                            )}
+                          </p>
+                          <p className="text-sm text-[#A1A1AA]">
+                            {getTranslation(
+                              "stage",
+                              s.id?.toString() || s.name.toLowerCase(),
+                              "StageLocation",
+                              s.location_name
+                            )}
+                          </p>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
-              )}
+              </div>
+            )}
           </>
         ) : (
           <div className="flex flex-col items-center gap-6 pt-20">
