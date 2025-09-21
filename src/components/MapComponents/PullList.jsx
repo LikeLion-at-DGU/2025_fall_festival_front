@@ -6,12 +6,11 @@ import React, {
   useMemo,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import i18n from "i18next";
 
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
 import { useBoothTranslation } from "../../hooks/useTranslation";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 function PullList({
   booths,
@@ -24,19 +23,6 @@ function PullList({
   const { getTranslatedBooths } = useBoothTranslation(booths);
   const { t } = useTranslation();
 
-  // 언어 변경 감지 로그
-  useEffect(() => {
-    console.log("PullList - 현재 언어:", i18n.language);
-    if (booths && booths.length > 0) {
-      const translatedBooths = getTranslatedBooths();
-      console.log("PullList - 번역된 부스 데이터:", {
-        원본: booths[0]?.name,
-        번역: translatedBooths[0]?.translatedName,
-        위치원본: booths[0]?.location?.name,
-        위치번역: translatedBooths[0]?.translatedLocation,
-      });
-    }
-  }, [i18n.language, booths, getTranslatedBooths]);
   const minHeight = 150;
   const defaultHeight = 150;
 
