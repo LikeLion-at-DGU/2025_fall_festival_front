@@ -6,6 +6,12 @@
     "board": "게시판",
     "game": "게임"
   },
+  
+  "banner": {
+    "joinEvent": "이벤트 참여",
+    "playGame": "게임하기",
+    "checkLost": "분실물 확인"
+  },
 
   "map": {
     "campusMap": "캠퍼스 지도",

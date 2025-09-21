@@ -7,6 +7,12 @@
     "game": "游戏"
   },
 
+  "banner": {
+    "joinEvent": "参加活动",
+    "playGame": "玩游戏",
+    "checkLost": "查看失物"
+  },
+
   "map": {
     "campusMap": "校园地图",
     "noDetailMap": "没有详细地图",

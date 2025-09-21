@@ -7,6 +7,12 @@
     "game": "ゲーム"
   },
 
+  "banner": {
+    "joinEvent": "イベント参加",
+    "playGame": "ゲームする",
+    "checkLost": "遺失物を確認"
+  },
+
   "map": {
     "campusMap": "キャンパスマップ",
     "noDetailMap": "詳細地図はありません",
