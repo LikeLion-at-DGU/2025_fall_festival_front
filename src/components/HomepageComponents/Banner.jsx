@@ -6,7 +6,8 @@ import festivalBanner3 from "../../assets/images/banners/festival-banner3.png";
 import festivalBanner4 from "../../assets/images/banners/festival-banner4.png";
 
 const Banner = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(1); // 첫 번째 실제 슬라이드부터 시작
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const navigate = useNavigate();
@@ -47,17 +48,38 @@ const Banner = () => {
     },
   ];
 
+  const extendedBanners = [banners[banners.length - 1], ...banners, banners[0]];
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
+      setCurrentSlide((prev) => prev + 1);
     }, 3000);
 
     return () => clearInterval(timer);
-  }, [banners.length]);
+  }, []);
+
+  useEffect(() => {
+    if (currentSlide === extendedBanners.length - 1) {
+      const timer = setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentSlide(1);
+        setTimeout(() => setIsTransitioning(true), 50);
+      }, 200);
+      return () => clearTimeout(timer);
+    } else if (currentSlide === 0) {
+      const timer = setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentSlide(banners.length);
+        setTimeout(() => setIsTransitioning(true), 50);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [currentSlide, banners.length, extendedBanners.length]);
 
   /* 점 클릭으로 슬라이드 이동 가능하게 구현함 */
   const goToSlide = (index) => {
-    setCurrentSlide(index);
+    setIsTransitioning(true);
+    setCurrentSlide(index + 1);
   };
 
   /* 터치 이벤트 핸들러 */
@@ -78,11 +100,13 @@ const Banner = () => {
     const isRightSwipe = distance < -50;
 
     if (isLeftSwipe) {
-      setCurrentSlide((prev) => (prev + 1) % banners.length);
+      setIsTransitioning(true);
+      setCurrentSlide((prev) => prev + 1);
     }
 
     if (isRightSwipe) {
-      setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+      setIsTransitioning(true);
+      setCurrentSlide((prev) => prev - 1);
     }
   };
 
@@ -94,12 +118,14 @@ const Banner = () => {
       onTouchEnd={handleTouchEnd}
     >
       <div
-        className="flex transition-transform duration-500 ease-in-out"
+        className={`flex ${
+          isTransitioning ? "transition-transform duration-500 ease-in-out" : ""
+        }`}
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
-        {banners.map((banner, index) => (
+        {extendedBanners.map((banner, index) => (
           <div
-            key={banner.id}
+            key={`${banner.id}-${index}`}
             className="w-full flex-shrink-0 relative cursor-pointer"
             onClick={() => {
               switch (banner.id) {
@@ -111,8 +137,6 @@ const Banner = () => {
                   break;
                 case 4:
                   navigate("/board", { state: { category: "LostItem" } });
-                  break;
-                default:
                   break;
               }
             }}
@@ -130,7 +154,7 @@ const Banner = () => {
                   boxShadow: "2px 4px 10px 0 rgba(66, 8, 8, 0.30)",
                 }}
                 onClick={(e) => {
-                  e.stopPropagation(); // 이미지 클릭 이벤트 전파 방지
+                  e.stopPropagation();
                   switch (banner.id) {
                     case 2:
                       navigate("/board", { state: { category: "Event" } });
@@ -141,8 +165,6 @@ const Banner = () => {
                     case 4:
                       navigate("/board", { state: { category: "LostItem" } });
                       break;
-                    default:
-                      console.log(`${banner.buttonText} 버튼 클릭됨`);
                   }
                 }}
               >
@@ -159,7 +181,7 @@ const Banner = () => {
             key={index}
             onClick={() => goToSlide(index)}
             className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              index === currentSlide
+              index === currentSlide - 1
                 ? "bg-primary-400 scale-125"
                 : "bg-[#2C2C2CCC] hover:bg-primary-400/75"
             }`}
