@@ -40,7 +40,6 @@ function TagPill({ category }) {
   );
 }
 
-
 // AbortError 무시
 const isAbortError = (e) =>
   e?.name === "AbortError" ||
@@ -147,20 +146,16 @@ export default function BoardDetail() {
   const isLost = post?.category === "LostItem";
   const isEvent = post?.category === "Event";
 
-  // 이벤트 스키마 대비: content가 없으면 detail 사용
   const contentText = post?.content ?? post?.detail ?? "";
 
-  // 본문 텍스트 파싱
   const paragraphs = useMemo(() => {
     if (!contentText) return [];
     return String(contentText).split(/\n+/);
   }, [contentText]);
 
-  // 번역 요청 트리거
   useEffect(() => {
     if (!post) return;
 
-    // 제목 번역 요청
     requestSingleTranslation({
       entity_type: "board",
       entity_id: post.id.toString(),
@@ -169,7 +164,6 @@ export default function BoardDetail() {
       source_text: post.title,
     });
 
-    // 내용 번역 요청 (각 문단별로)
     if (post.content) {
       const contentLines = String(post.content).split(/\n+/);
       contentLines.forEach((line, index) => {
@@ -182,6 +176,16 @@ export default function BoardDetail() {
             source_text: line,
           });
         }
+      });
+    }
+
+    if (post.location && post.category === "LostItem") {
+      requestSingleTranslation({
+        entity_type: "board",
+        entity_id: post.id.toString(),
+        field: "LostLocation",
+        source_lang: "ko",
+        source_text: post.location,
       });
     }
   }, [post, requestSingleTranslation]);
@@ -315,7 +319,9 @@ export default function BoardDetail() {
       <main className="">
         <div className="px-5 min-h-[calc(100vh)] flex flex-col">
           {loading && (
-            <div className="py-16 text-center text-gray-500">{t("board.loading")}</div>
+            <div className="py-16 text-center text-gray-500">
+              {t("board.loading")}
+            </div>
           )}
           {!loading && error && (
             <div className="py-16 text-center text-rose-600">{error}</div>
@@ -338,7 +344,9 @@ export default function BoardDetail() {
                 <div className="text-[#71717A] font-suite text-[14px] not-italic font-normal leading-[150%] mt-[4px]">
                   {displayWriter && (
                     <p>
-                      <span className="text-gray-400">{t("board.writer")} : </span>
+                      <span className="text-gray-400">
+                        {t("board.writer")} :{" "}
+                      </span>
                       <span className="text-[#52525B]">
                         {post?.booth_name
                           ? getTranslation(
@@ -362,8 +370,17 @@ export default function BoardDetail() {
 
                   {isLost && post?.location && (
                     <p>
-                      <span className="text-gray-400">{t("board.lostLocation")} : </span>
-                      <span className="text-[#52525B]">{post.location}</span>
+                      <span className="text-gray-400">
+                        {t("board.lostLocation")} :{" "}
+                      </span>
+                      <span className="text-[#52525B]">
+                        {getTranslation(
+                          "board",
+                          post.id.toString(),
+                          "LostLocation",
+                          post.location
+                        )}
+                      </span>
                     </p>
                   )}
 
@@ -371,7 +388,9 @@ export default function BoardDetail() {
                     <>
                       {boothLabel && (
                         <p>
-                          <span className="text-gray-400">{t("board.boothLocation")} : </span>
+                          <span className="text-gray-400">
+                            {t("board.boothLocation")} :{" "}
+                          </span>
                           <span className="text-[#52525B]">
                             {boothCardProps?.location ?? boothLabel}
                           </span>
@@ -379,7 +398,9 @@ export default function BoardDetail() {
                       )}
                       {eventTime && (
                         <p>
-                          <span className="text-gray-400">{t("board.eventTime")} : </span>
+                          <span className="text-gray-400">
+                            {t("board.eventTime")} :{" "}
+                          </span>
                           <span className="text-[#52525B]">{eventTime}</span>
                         </p>
                       )}
