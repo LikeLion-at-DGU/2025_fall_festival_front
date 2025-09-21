@@ -239,7 +239,6 @@ function PullList({
 
       {/* 헤더 */}
       <div className="px-[17px] pb-4">
-        <span className={`${textClass} text-[#2A2A2A]`}>미리보기</span>
       </div>
 
       {/* 스크롤 가능한 콘텐츠 */}
