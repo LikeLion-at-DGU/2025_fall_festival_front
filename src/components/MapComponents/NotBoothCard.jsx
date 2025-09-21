@@ -3,16 +3,19 @@ import MapToiletIcon from "../../assets/images/icons/map-icons/Toilet.png";
 import MapBeerIcon from "../../assets/images/icons/map-icons/Beer.png";
 import MapConvenienceIcon from "../../assets/images/icons/map-icons/Convenience.png";
 import Badge from "./BoothCardComponents/Badge";
+import { useTranslation } from "react-i18next";
 
 const NotBoothCard = ({ title, distance_m, category, onClick }) => {
+  const { t } = useTranslation();
+
   // 카테고리별 이미지 선택
   const getImageByCategory = (category) => {
     switch (category) {
-      case "Toilet":
+      case t("notBooth.categories.[Toilet]"):
         return MapToiletIcon;
-      case "Drink":
+      case t("notBooth.categories.[Drink]"):
         return MapBeerIcon;
-      case "Store":
+      case t("notBooth.categories.[Store]"):
         return MapConvenienceIcon;
       default:
         return MapToiletIcon; // 기본값
@@ -59,7 +62,7 @@ const NotBoothCard = ({ title, distance_m, category, onClick }) => {
           {category !== "Toilet" && (
             <div>
               <Badge
-                text={distance_m ? `${distance_m}m` : "현재 위치 알 수 없음"}
+                text={distance_m ? `${distance_m}m` : t("notBooth.unknownLocation")}
                 backgroundColor="#EF7063"
               />
             </div>

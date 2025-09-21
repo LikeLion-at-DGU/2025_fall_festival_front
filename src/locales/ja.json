@@ -7,6 +7,37 @@
     "game": "ゲーム"
   },
 
+  "map": {
+    "campusMap": "キャンパスマップ",
+    "noDetailMap": "詳細地図はありません",
+    "locations": {
+      "manhaeLaw": "マンヘ/法学館",
+      "newEngineering": "新工学館",
+      "library": "中央図書館",
+      "stadium": "運動場",
+      "myeongjin": "明進館",
+      "paljeongdo": "八井堂",
+      "manhaeSquare": "マンヘ広場",
+      "dahyang": "多香館",
+      "hakrim": "学林館",
+      "infoCulture": "情報文化館",
+      "business": "経営館",
+      "hyehwa": "恵化館",
+      "socialScience": "社会科学館",
+      "academicCulture": "学術文化館",
+      "mainBuilding": "本館",
+      "science": "科学館",
+      "wonheung": "元興館"
+    }
+  },
+  "notBooth": {
+    "unknownLocation": "現在地が不明です",
+    "categories": {
+      "Toilet": "トイレ",
+      "Drink": "ドリンク",
+      "Store": "コンビニ"
+    }
+  },
   "search": {
     "placeholder": "学科/サークル/ブース名を入力してください",
     "alt": "検索"
