@@ -31,6 +31,15 @@ function NormalPost() {
     } catch (err) {
         console.error("에러 전체:", err);
 
+        if (err.uidExpired) {
+          // 🔥 uid 만료 → 로그인 페이지로 이동
+          setToastMsg(err.message);
+          setTimeout(() => {
+            navigate("/admin/login");
+          }, 1500);
+          return;
+        }
+
         let msg = "요청 실패";
         if (err.response) {
           if (typeof err.response.data === "string") {
@@ -51,7 +60,7 @@ function NormalPost() {
 
   // ✅ toastMsg가 성공 메시지일 때만 2초 후 이동
   useEffect(() => {
-    if (toastMsg && (toastMsg.includes("수정") || toastMsg.includes("등록"))) {
+    if (toastMsg && (toastMsg.includes("수정") || toastMsg.includes("완료"))) {
       const timer = setTimeout(() => {
         navigate("/admin/festa");
       }, 2000);

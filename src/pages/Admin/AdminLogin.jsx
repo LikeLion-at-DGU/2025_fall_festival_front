@@ -80,7 +80,7 @@ function AdminLogin() {
     <div className="flex flex-col items-center justify-center
     w-full gap-[104px]
     pt-[155px] ">
-      <div className="flex flex-col items-center gap-2">
+      <div className="flex flex-col items-center gap-8">
         <img className="h-10" src={dirvana} alt="DIRVANA" />
         <img className="h-3" src={collab} alt="with" />
         <img className="h-10" src={likelion} alt="LIKELION" />

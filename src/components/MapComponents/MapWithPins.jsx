@@ -79,6 +79,8 @@ const uniqueMappedLocations = mappedLocations.filter(
           onClick={(e) => {
             e.stopPropagation(); // 이벤트 버블링 방지
             if (!mapConfigs[item.location.name]) {
+            handlePinClick(item);
+             
               console.log("상세지도 없음:", item.location.name);
               return;
             }

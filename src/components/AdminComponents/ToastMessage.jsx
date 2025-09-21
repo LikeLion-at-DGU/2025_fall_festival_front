@@ -21,7 +21,7 @@ function ToastMessage({ text, duration = 2500, onClose }) {
 
   return (
     <div
-      className={`fixed top-[283px] left-1/2 transform -translate-x-1/2 z-50 pointer-events-none 
+      className={`fixed top-[350px] left-1/2 transform -translate-x-1/2 z-50 pointer-events-none 
         transition-opacity duration-500 ease-in-out
         ${visible ? "opacity-100" : "opacity-0"}`}
     >

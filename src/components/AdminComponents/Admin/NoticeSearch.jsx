@@ -26,19 +26,19 @@ function NoticeSearch({ onSearch }) {
         onChange={(e) => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
         className="
-          w-full h-11 pl-4 pr-10
-          mb-10
-          rounded-md  
+          w-full h-10 pl-4 pr-10
+          mb-2
+          rounded-[10px]  
           bg-white
-          shadow-sm
-          text-sm text-gray-700
+          shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]
+          text-xs text-gray-700
           focus:outline-none
         "
       />
       <button
         type="button"
         onClick={handleSearchClick}
-        className="absolute right-2 top-1/4 -translate-y-1/2 text-gray-500 hover:text-[#EF7063]"
+        className="absolute right-2 top-[20px] -translate-y-1/2 text-gray-500 hover:text-[#EF7063]"
       >
         <Search size={18} />
       </button>

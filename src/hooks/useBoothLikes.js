@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { toggleBoothLike } from "../apis/mainpage";
 
-const useBoothLikes = (boothId, initialLikesCount) => {
-  const [isLiked, setIsLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(initialLikesCount || 0);
+const useBoothLikes = (
+  boothId,
+  initialLikesCount = 0,
+  initialIsLiked = false
+) => {
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
+  const [likesCount, setLikesCount] = useState(initialLikesCount);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  // 처음 마운트될 때 로컬스토리지 값 반영
   useEffect(() => {
     if (!boothId) return;
 
@@ -21,7 +27,6 @@ const useBoothLikes = (boothId, initialLikesCount) => {
 
     const cleanupOldData = () => {
       if (localStorage.getItem("likedCounts")) {
-        console.log("기존 likedCounts 로컬스토리지 데이터 정리");
         localStorage.removeItem("likedCounts");
       }
     };
@@ -39,7 +44,7 @@ const useBoothLikes = (boothId, initialLikesCount) => {
     return () => {
       window.removeEventListener("boothLikeChanged", handleBoothLikeChanged);
     };
-  }, [boothId]);
+  }, [boothId, initialIsLiked]);
 
   const toggleLike = async (e) => {
     if (e && e.stopPropagation) {
@@ -54,6 +59,7 @@ const useBoothLikes = (boothId, initialLikesCount) => {
       const isCurrentlyLiked = isLiked;
       const newIsLiked = !isCurrentlyLiked;
 
+      // 낙관적 업데이트 (UI 먼저 업데이트)
       setIsLiked(newIsLiked);
       const newLikesCount = newIsLiked
         ? likesCount + 1
@@ -119,12 +125,7 @@ const useBoothLikes = (boothId, initialLikesCount) => {
     }
   };
 
-  return {
-    isLiked,
-    likesCount,
-    toggleLike,
-    loading,
-  };
+  return { isLiked, likesCount, toggleLike, loading, error };
 };
 
 export default useBoothLikes;

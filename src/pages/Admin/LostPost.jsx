@@ -159,7 +159,7 @@ function LostPost() {
           <img
             src={previewImage}
             alt="분실물 이미지"
-            className="w-40 h-40 object-cover rounded-lg mb-2"
+            className="w-full h-40 object-cover rounded-lg mb-2"
           />
         )}
         <PhotoUpload onChange={handleImageChange} />
@@ -180,6 +180,7 @@ function LostPost() {
         text={editingData ? "수정하기" : "등록하기"}
         onClick={handleSubmit}
         disabled={isDisabled}
+        className="mt-auto"
         // ✅ 이미지(image)는 선택사항이면 위 isDisabled 조건에서 !image 제거
       />
 
