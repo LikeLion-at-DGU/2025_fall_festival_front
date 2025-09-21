@@ -55,6 +55,7 @@
   },
 
   "board": {
+    "title": "掲示板",
     "searchPlaceholder": "検索語を入力してください",
     "tabs": {
       "all": "全体",
@@ -134,6 +135,28 @@
     "menu": "メニュー",
     "lowStock": "売り切れ",
     "currency": "ウォン",
-    "nearbyRecommendation": "近くのおすすめブース"
+    "nearbyRecommendation": "近くのおすすめブース",
+    "popular": "人気ブース",
+    "rankError": "ブースランキングを読み込めませんでした。",
+    "rankPending": "ブースランキングを集計中です。",
+    "event": "イベントブース",
+    "eventError": "イベントブースを読み込めませんでした。",
+    "noEvent": "現在進行中のイベントブースはありません。"
+  },
+  "common": {
+    "more": "もっと見る"
+  },
+  "stage": {
+    "now": "ステージ ナウ",
+    "preparing": "公演準備中です！",
+    "comingSoon": "近日公開..."
+  },
+
+  "footer": {
+    "team": "東国大学 LIKE LION",
+    "copyright": "@LIKELION DGU. All rights Reserved",
+    "dataSupport": "@データ提供: 祭り企画団",
+    "admin": "管理者",
+    "instagram": "インスタグラム"
   }
 }

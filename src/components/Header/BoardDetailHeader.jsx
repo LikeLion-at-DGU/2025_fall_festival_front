@@ -1,9 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import backBtn from "../../assets/images/icons/header-icons/left.png";
 
 const BoardDetailHeader = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -36,7 +38,7 @@ const BoardDetailHeader = () => {
           />
         </button>
         <h1 className="text-[#2A2A2E] text-[14px] font-semibold leading-[150%] ml-[5px]">
-          게시판
+          {t("board.title")}
         </h1>
       </div>
     </header>

@@ -55,6 +55,7 @@
   },
 
   "board": {
+    "title": "Board",
     "searchPlaceholder": "Enter a keyword",
     "tabs": {
       "all": "All",
@@ -134,6 +135,28 @@
     "menu": "Menu",
     "lowStock": "Sold Out",
     "currency": "KRW",
-    "nearbyRecommendation": "Nearby Recommended Booths"
+    "nearbyRecommendation": "Nearby Recommended Booths",
+    "popular": "Popular Booths",
+    "rankError": "Unable to load booth rankings.",
+    "rankPending": "Booth rankings are being calculated.",
+    "event": "Event Booths",
+    "eventError": "Unable to load event booths.",
+    "noEvent": "No event booths are currently available."
+  },
+  "common": {
+    "more": "More"
+  },
+  "stage": {
+    "now": "STAGE NOW",
+    "preparing": "The performance is being prepared!",
+    "comingSoon": "Coming Soon..."
+  },
+
+  "footer": {
+    "team": "LikeLion at Dongguk University",
+    "copyright": "@LIKELION DGU. All rights Reserved",
+    "dataSupport": "@Data supported by Festival Committee",
+    "admin": "Administrator",
+    "instagram": "Instagram"
   }
 }

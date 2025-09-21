@@ -12,6 +12,8 @@ import {
   formatPerformanceTime,
 } from "../../data/clubPerformances";
 import { useTranslations } from "../../context/TranslationContext";
+import { useTranslation } from "react-i18next";
+
 
 const Stage = () => {
   const navigate = useNavigate();
@@ -21,6 +23,8 @@ const Stage = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [currentClubPerformance, setCurrentClubPerformance] = useState(null);
 
+  const { t } = useTranslation();
+  
   /* 9월 25일 연예인 */
   const artists25th = [
     { name: "FTISLAND", image: ftisland },
@@ -174,7 +178,7 @@ const Stage = () => {
           >
             <div className="text-center">
               <p className="text-[18px] font-semibold text-[#52525B] mb-[15px]">
-                공연 준비중이에요!
+                {t("stage.preparing")}
               </p>
               <p className="text-[18px] font-medium text-[#52525B]">
                 Coming Soon...
