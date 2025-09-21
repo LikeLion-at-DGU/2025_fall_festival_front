@@ -40,6 +40,14 @@
     }
   },
 
+  "timetable": {
+    "celebrity": "연예인",
+    "loading": "불러오는 중...",
+    "noCelebrity": "연예인 공연이 없습니다",
+    "noStage": "진행 중인 공연이 없어요",
+    "nextStage": "바로 다음 공연도 확인해보세요"
+  },
+
   "game": {
     "start": "게임 시작",
     "nextStep": "다음 단계로",
