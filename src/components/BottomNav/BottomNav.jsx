@@ -32,16 +32,16 @@ const BottomNav = () => {
     flex flex-col items-center justify-center
     w-[55px] h-[55px] px-[5px]
     whitespace-nowrap
-    font-normal text-[12px]
+    gap-[2px]
     ${active
-      ? "text-orange font-semibold border-t-[1.5px] border-orange"
-      : "text-black"
+      ? "text-[12px] text-orange font-semibold border-t-[1.5px] border-orange"
+      : "text-black font-normal text-[10px]"
     }
   `;
 
   return (
     <nav className="fixed bottom-0 z-999 w-full max-w-[430px] bg-white">
-      <div className="flex items-start justify-around h-[62px]">
+      <div className="flex items-start justify-around h-[62px] ">
         {navItems.map((item) => {
           let isActive;
           if (item.path === "/map") {
@@ -65,7 +65,7 @@ const BottomNav = () => {
               <img
                 src={isActive ? item.activeIcon : item.icon}
                 alt={t(item.key)} // ✅ 번역 적용
-                className="h-[24px] w-[24px]"
+                className="h-[24px] w-[24px] mt-[5px]"
               />
               <span>{t(item.key)}</span> {/* ✅ 번역 적용 */}
             </Link>

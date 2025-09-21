@@ -19,9 +19,9 @@ function PhotoUpload({ onChange }) {
         />
         <div
           className="h-14 w-full px-6 py-4
-                     rounded-lg
+                     rounded-[13px]
                      bg-[#EF7063] text-[#F4F4F5]
-                     font-semibold
+                     text-sm
                      flex items-center justify-center
                      cursor-pointer"
         >

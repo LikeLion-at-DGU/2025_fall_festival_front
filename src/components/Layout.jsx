@@ -25,10 +25,8 @@ const Layout = ({ children }) => {
   // 2) 동적 경로 정규식 추가
   // 상세 조회 (/admin/stuco/notice/:id)
   const adminDetailRegex = /^\/admin\/festa\/notice\/\d+$/;
-
   // 수정 페이지 (/admin/stuco/notice/edit/:id)
   const adminEditRegex = /^\/admin\/festa\/notice\/edit\/\d+$/;
-
   // 분실물 수정 페이지 (/admin/stuco/lost/edit/:id)
   const adminLostEditRegex = /^\/admin\/festa\/lost\/edit\/\d+$/;
 
@@ -37,6 +35,11 @@ const Layout = ({ children }) => {
     adminDetailRegex.test(location.pathname) ||
     adminEditRegex.test(location.pathname) ||
     adminLostEditRegex.test(location.pathname);
+  
+  // 🎯 스크롤바 숨길 admin 경로 판별
+  const isAdminScrollHidden =
+    location.pathname === "/admin/festa" ||
+    location.pathname === "/admin/booth";
 
   // 2) 게시판 상세 경로 판별: /board/:boardId
   //   - 숫자만이 아니라 슬러그도 허용하려면 ([^/]+) 유지
@@ -78,8 +81,12 @@ const Layout = ({ children }) => {
 
         {/* 페이지의 실제 내용과 푸터가 이 안에서 스크롤됩니다. */}
         <main
-          className={`flex-grow ${!shouldHideNavigation ? 'pt-[54px] pb-[62px]' : ''} ${
-            location.pathname === "/map" ? "overflow-hidden" : "overflow-y-auto"
+          className={`flex-grow ${!isEventPage ? "pt-[54px] pb-[62px]" : ""} ${
+            isAdminScrollHidden
+              ? "overflow-y-scroll hide-scrollbar" // 🎯 스크롤은 되지만 스크롤바 숨김
+              : location.pathname === "/map"
+              ? "overflow-hidden"
+              : "overflow-y-auto"
           }`}
         >
           {/* 1. 페이지의 실제 내용 */}

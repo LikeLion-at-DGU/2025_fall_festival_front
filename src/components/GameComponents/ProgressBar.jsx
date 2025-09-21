@@ -7,12 +7,13 @@ import React from 'react';
  */
 const ProgressBar = ({ timeProgress, isTimeOut = false }) => {
   return (
-    <div className="w-80 h-3 left-[30px] top-[95px] absolute bg-primary-300 rounded-2xl overflow-hidden">
+    <div className="w-80 h-3 top-[95px] absolute bg-neutral-300 rounded-2xl overflow-hidden">
       <div 
-        className={`h-4 left-0 top-0 absolute transition-all duration-100 ease-linear ${
-          isTimeOut ? 'bg-primary-500' : 'bg-primary-600'
-        }`}
-        style={{ width: `${timeProgress}%` }}
+        className="h-full left-0 top-0 absolute transition-all duration-100 ease-linear rounded-2xl"
+        style={{ 
+          width: `${timeProgress}%`,
+          backgroundColor: isTimeOut ? '#D33E2F' : '#D33E2F'
+        }}
       ></div>
     </div>
   );

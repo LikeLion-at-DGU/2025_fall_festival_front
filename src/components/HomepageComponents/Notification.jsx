@@ -22,7 +22,7 @@ const Notification = ({ notice, loading, error }) => {
           className="w-6 h-6 flex-shrink-0"
         />
         <div className="flex-1 overflow-hidden">
-          <p className="text-sm font-semibold font-suite text-black whitespace-nowrap animate-marquee">
+          <p className="text-sm font-semibold font-suite text-[#52525B] whitespace-nowrap animate-marquee">
             긴급하거나 중요한 공지는 이곳에서 전달드립니다~
           </p>
         </div>
@@ -41,7 +41,7 @@ const Notification = ({ notice, loading, error }) => {
         className="w-6 h-6 flex-shrink-0"
       />
       <div className="flex-1 overflow-hidden">
-        <p className="text-sm font-semibold font-suite text-black whitespace-nowrap animate-marquee">
+        <p className="text-sm font-semibold font-suite text-[#52525B] whitespace-nowrap animate-marquee">
           {notice.title}
         </p>
       </div>

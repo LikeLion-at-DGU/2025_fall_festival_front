@@ -7,9 +7,10 @@ export async function createNormalPost(postData) {
   const uid = sessionStorage.getItem("uid");
   const role = sessionStorage.getItem("role");
 
-  if (!uid) {
-    throw new Error("로그인이 필요합니다."); // ⛔ toastMsg 변경 예정
-  }
+  // ⛔ 폐기 예정 ⛔ uid는 늘 존재함
+  //if (!uid) {
+    //throw new Error("로그인이 필요합니다."); // ⛔ toastMsg 변경 예정
+  //}
   if (role !== "Staff" && role !== "Stuco") {
     throw new Error("일반공지 작성 권한이 없습니다.");
   }
@@ -22,6 +23,12 @@ export async function createNormalPost(postData) {
   };
 
   const res = await instance.post("/board/notices", payload);
+
+  // uid 유효성 체크
+  //if (res.data?.uid_valid === false) {
+  //  throw { uidExpired: true, message: res.data.message || "만료된 UID 입니다." };
+  //}
+
   return res.data;
 }
 
@@ -31,9 +38,15 @@ export async function createLostPost(formData) {
     const res = await instance.post("/board/losts", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+
+  // uid 유효성 체크
+  //if (res.data?.uid_valid === false) {
+  //  throw { uidExpired: true, message: res.data.message || "만료된 UID 입니다." };
+  //}
+
     return res.data;
   } catch (err) {
-    throw err.response?.data || err;
+    throw err.response?.data || err; //?
   }
 }
 
@@ -56,15 +69,35 @@ export async function getEmergencyNotices() {
     throw err.response?.data || { error: "알 수 없는 오류" };
   }
 }
+// -------- 공지글 중에서 긴급공지 가져오기 -------- //
+export async function getEmergencyNoticeFromNotices() {
+  try {
+    const res = await instance.get("/board/notices");
+    const emergency = res.data.find((item) => item.is_emergency === true);
+    return emergency || null;
+  } catch (err) {
+    throw err.response?.data || { error: "알 수 없는 오류" };
+  }
+}
 // 긴급공지 GET - id 직접 지정
 export async function getEmergencyNotice() {
   try {
-    const res = await instance.get(`/board/1`);
+    const res = await instance.get(`/board/emergency`);
     return res.data; // { board_id, board_title, board_content, ... }
   } catch (err) {
     throw err.response?.data || { error: "알 수 없는 오류" };
   }
 }
+// ⛔폐기예정⛔ 긴급공지 GET - id 직접 지정
+export async function getEmergencyNoticeById(id = 1) {
+  try {
+    const res = await instance.get(`/board/${id}`);
+    return res.data; // { board_id, board_title, board_content, ... }
+  } catch (err) {
+    throw err.response?.data || { error: "알 수 없는 오류" };
+  }
+}
+
 
 //-------- 본인이 작성한 공지글 get --------//
 export async function getUnionNotices() {

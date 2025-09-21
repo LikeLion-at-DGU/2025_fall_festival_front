@@ -36,11 +36,11 @@ const Stage = () => {
 
     if (month === 9 && date === 25) {
       return artists25th;
-    } else if (month === 9 && date === 26) {
+    } else if (month === 9 && date === 21) {
       return artists26th;
     }
 
-    return null; 
+    return null;
   };
 
   const currentArtists = getCurrentArtists();
@@ -50,7 +50,7 @@ const Stage = () => {
     const checkTime = () => {
       const now = new Date();
       const hour = now.getHours();
-      setIsShowTime(hour >= 20);
+      setIsShowTime(hour >= 10);
     };
 
     checkTime();
@@ -85,7 +85,9 @@ const Stage = () => {
         onClick={handleStageClick}
       >
         <img src={stage} alt="stage" className="w-6 h-6" />
-        <p className="text-xl font-semibold font-suite text-black">STAGE NOW</p>
+        <p className="text-xl font-semibold font-suite text-[#52525B]">
+          STAGE NOW
+        </p>
       </div>
       <div className="relative cursor-pointer" onClick={handleStageClick}>
         {isShowTime && currentArtists ? (
@@ -124,10 +126,10 @@ const Stage = () => {
             }}
           >
             <div className="text-center">
-              <p className="text-xl font-semibold text-[#2A2A2E] mb-[19px]">
+              <p className="text-[18px] font-semibold text-[#52525B] mb-[15px]">
                 공연 준비중이에요!
               </p>
-              <p className="text-xl font-medium text-[#2A2A2E]">
+              <p className="text-[18px] font-medium text-[#52525B]">
                 Coming Soon...
               </p>
             </div>

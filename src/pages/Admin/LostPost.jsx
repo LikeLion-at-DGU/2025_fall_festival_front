@@ -78,6 +78,16 @@ function LostPost() {
     } catch (err) {
       console.error("에러 전체:", err);
 
+      // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
+      if (err.response?.data?.uid_valid === false) {
+        setToastMsg(err.response.data.message || "세션이 만료되었습니다.");
+        setTimeout(() => {
+          navigate("/admin/login");
+        }, 1500);
+        return;
+      }// ⚠️ 여기서 빠져나오는 로직! 
+
+      // 그 외 에러 처리 (⛔ 점검 후 삭제 예정)
       let msg = "다시 한 번 시도해주세요";
 
       // 서버에서 내려주는 에러 메시지 처리
@@ -159,7 +169,7 @@ function LostPost() {
           <img
             src={previewImage}
             alt="분실물 이미지"
-            className="w-40 h-40 object-cover rounded-lg mb-2"
+            className="w-full h-40 object-cover rounded-lg mb-2"
           />
         )}
         <PhotoUpload onChange={handleImageChange} />
@@ -180,6 +190,7 @@ function LostPost() {
         text={editingData ? "수정하기" : "등록하기"}
         onClick={handleSubmit}
         disabled={isDisabled}
+        className="mt-auto"
         // ✅ 이미지(image)는 선택사항이면 위 isDisabled 조건에서 !image 제거
       />
 

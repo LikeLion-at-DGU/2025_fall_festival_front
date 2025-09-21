@@ -28,7 +28,7 @@ const pillClsByCategory = (category) =>
 function TagPill({ category }) {
   return (
     <span
-      className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-[SUITE] font-normal leading-none ${pillClsByCategory(
+      className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillClsByCategory(
         category
       )}`}
     >
@@ -229,23 +229,23 @@ export default function BoardDetail() {
                 </div>
 
                 {/* 제목 */}
-                <h1 className="text-[#2A2A2E] font-[SUITE] text-[24px] not-italic font-semibold leading-[130%]">
+                <h1 className="text-[#2A2A2E] font-suite text-[20px] not-italic font-semibold leading-[130%]">
                   {post.title}
                 </h1>
 
                 {/* 작성자/위치/시간 */}
-                <div className="text-[#71717A] font-[SUITE] text-[14px] not-italic font-normal leading-[150%] mt-[4px]">
+                <div className="text-[#71717A] font-suite text-[14px] not-italic font-normal leading-[150%] mt-[4px]">
                   {displayWriter && (
                     <p>
                       <span className="text-gray-400">작성자 : </span>
-                      <span className="text-gray-600">{displayWriter}</span>
+                      <span className="text-[#52525B]">{displayWriter}</span>
                     </p>
                   )}
 
                   {isLost && post?.location && (
                     <p>
                       <span className="text-gray-400">발견 위치 : </span>
-                      <span className="text-gray-600">{post.location}</span>
+                      <span className="text-[#52525B]">{post.location}</span>
                     </p>
                   )}
 
@@ -254,7 +254,7 @@ export default function BoardDetail() {
                       {boothLabel && (
                         <p>
                           <span className="text-gray-400">부스 위치 : </span>
-                          <span className="text-gray-600">
+                          <span className="text-[#52525B]">
                             {boothCardProps?.location ?? boothLabel}
                           </span>
                         </p>
@@ -262,7 +262,7 @@ export default function BoardDetail() {
                       {eventTime && (
                         <p>
                           <span className="text-gray-400">이벤트 시간 : </span>
-                          <span className="text-gray-600">{eventTime}</span>
+                          <span className="text-[#52525B]">{eventTime}</span>
                         </p>
                       )}
                     </>
@@ -271,7 +271,7 @@ export default function BoardDetail() {
 
                 {/* 본문 텍스트 */}
                 {paragraphs.length > 0 && (
-                  <section className="text-[#2A2A2E] font-[SUITE] text-[16px] not-italic font-normal leading-[150%] mt-[24px]">
+                  <section className="text-[#2A2A2E] text-[14px] not-italic font-normal leading-[150%] mt-[24px]">
                     {paragraphs.map((line, i) => (
                       <p key={i}>{line}</p>
                     ))}
@@ -329,7 +329,7 @@ export default function BoardDetail() {
 
               {/* --- 다른 게시물: 하단 고정 + 배경 #F4F4F5 --- */}
               <section className="-mx-5 mt-8 bg-[#F4F4F5] px-5 py-[32px]">
-                <div className="text-[#2A2A2E] font-[SUITE] text-[20px] not-italic font-normal mb-[16px]">
+                <div className="text-[#2A2A2E] font-suite text-[14px] not-italic font-semibold mb-[16px]">
                   다른 게시물
                 </div>
 
@@ -345,17 +345,17 @@ export default function BoardDetail() {
                         >
                           <div className="flex items-center gap-3 min-w-0">
                             <span
-                              className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-[SUITE] font-normal leading-none ${pillCls}`}
+                              className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillCls}`}
                             >
                               {CATEGORY_MAP[item.category] ?? item.category}
                             </span>
                           </div>
                           <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
-                            <p className="truncate text-[#52525B] font-[SUITE] text-[16px] not-italic font-semibold leading-[150%]">
+                            <p className="truncate text-[#52525B] font-suite text-[16px] not-italic font-semibold leading-[150%]">
                               {item.title}
                             </p>
                             {writerOrBooth && (
-                              <span className="text-[#52525B] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shrink-0">
+                              <span className="text-[#52525B] font-suite text-[12px] not-italic font-normal leading-[150%] shrink-0">
                                 - {writerOrBooth}
                               </span>
                             )}

@@ -129,7 +129,7 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
       <GameHeader round={currentStage} currentStep={currentStage} />
 
       {/* 진행률 바 */}
-      <ProgressBar progress={timeProgress} isTimeOut={gameStatus === "timeout"} />
+      <ProgressBar timeProgress={timeProgress} isTimeOut={gameStatus === "timeout"} />
 
       {/* 상태 메시지 */}
       <StatusMessage
@@ -137,31 +137,33 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
         gameStatus={gameStatus}
       />
 
-      {/* 타이머 (개발용 - 필요시 제거) */}
+      {/* 타이머 (개발용 - 필요시 제거)
       {gameStatus === "playing" && (
         <div className="absolute top-[140px] left-[16px] text-sm text-neutral-500">
           남은 시간: {timeLeft.toFixed(1)}초
         </div>
-      )}
+      )} */}
 
       {/* 단어 격자 */}
-      <WordGrid
-        words={words}
-        size={getGameStage(currentStage).size}
-        correctAnswer={correctAnswer}
-        onWordClick={handleWordClick}
-        gameStatus={gameStatus}
-      />
-
-      {/* 액션 버튼 - 고정 위치 */}
-      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 w-80 px-4">
-        <ActionButton
+      <div className="mt-[178px] flex flex-col items-center">
+        <WordGrid
+          words={words}
+          size={getGameStage(currentStage).size}
+          correctAnswer={correctAnswer}
+          onWordClick={handleWordClick}
           gameStatus={gameStatus}
-          onNextStep={handleNextStep}
-          onRetry={handleRetry}
-          onStartGame={startGame}
-          currentStage={currentStage}
         />
+
+        {/* 액션 버튼 - 고정 위치 */}
+        <div className="mt-[521px] w-80 px-4">
+          <ActionButton
+            gameStatus={gameStatus}
+            onNextStep={handleNextStep}
+            onRetry={handleRetry}
+            onStartGame={startGame}
+            currentStage={currentStage}
+          />
+        </div>
       </div>
 
       {/* 게임 완료 모달 (성공 시만) */}
