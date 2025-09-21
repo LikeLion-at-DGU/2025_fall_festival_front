@@ -46,5 +46,12 @@
     "complete": "ゲームクリア",
     "retry": "もう一度挑戦",
     "default": "違う文字を探してください"
+  },
+
+  "gameCompleteModal": {
+    "congratsTitle": "おめでとうございます！",
+    "congratsMessage": "すべてのステージを無事にクリアしました！\n本当に素晴らしい集中力でした :)",
+    "retry": "もう一度挑戦"
   }
+  
 }

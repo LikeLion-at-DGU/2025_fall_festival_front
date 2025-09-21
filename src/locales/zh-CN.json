@@ -46,5 +46,12 @@
     "complete": "游戏完成",
     "retry": "再试一次",
     "default": "请找出不同的字符"
+  },
+
+  "gameCompleteModal": {
+    "congratsTitle": "恭喜！",
+    "congratsMessage": "你已成功完成所有关卡！\n你的专注力真的很棒 :)",
+    "retry": "再试一次"
   }
+  
 }
