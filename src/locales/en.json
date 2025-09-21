@@ -5,5 +5,28 @@
     "timetable": "Schedule",
     "board": "Board",
     "game": "Game"
+  },
+  
+  "board": {
+    "searchPlaceholder": "Enter a keyword",
+    "tabs": {
+      "all": "All",
+      "notice": "Notice",
+      "event": "Event",
+      "lost": "Lost"
+    },
+    "header": "Posts",
+    "empty": {
+      "noResult": "No results found.",
+      "noPosts": "No posts available.",
+      "noNotice": "No notices at the moment.",
+      "noEvent": "No ongoing events right now.",
+      "noLost": "Luckily, no lost items yet."
+    },
+    "loading": "Loading…",
+    "error": "Failed to load posts.",
+    "toast": {
+      "endedEvent": "This event has ended."
+    }
   }
 }

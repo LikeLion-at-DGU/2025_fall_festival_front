@@ -5,5 +5,28 @@
     "timetable": "일정",
     "board": "게시판",
     "game": "게임"
+  },
+
+  "board": {
+    "searchPlaceholder": "검색어를 입력해주세요",
+    "tabs": {
+      "all": "전체",
+      "notice": "공지",
+      "event": "이벤트",
+      "lost": "분실물"
+    },
+    "header": "게시물",
+    "empty": {
+      "noResult": "검색 결과가 없습니다.",
+      "noPosts": "게시글이 없습니다.",
+      "noNotice": "현재 공지글이 없습니다.",
+      "noEvent": "현재 진행중인 이벤트가 없습니다.",
+      "noLost": "다행히 아직 분실물이 없어요."
+    },
+    "loading": "불러오는 중…",
+    "error": "게시글을 불러오지 못했습니다.",
+    "toast": {
+      "endedEvent": "종료된 이벤트입니다."
+    }
   }
 }
