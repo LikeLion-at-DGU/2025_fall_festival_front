@@ -6,7 +6,7 @@
     "board": "公告栏",
     "game": "游戏"
   },
-  
+
   "board": {
     "searchPlaceholder": "请输入关键词",
     "tabs": {
@@ -25,6 +25,16 @@
     },
     "loading": "加载中…",
     "error": "无法加载帖子。",
+    
+    "writer": "作者",
+    "lostLocation": "发现地点",
+    "boothLocation": "展位位置",
+    "eventTime": "活动时间",
+    "relatedPosts": "相关帖子",
+    "noRelatedPosts": "暂无相关帖子。",
+    "loadingBooth": "正在加载展位信息…",
+    "loadBoothError": "加载展位信息时出错。",
+
     "toast": {
       "endedEvent": "该活动已结束。"
     }

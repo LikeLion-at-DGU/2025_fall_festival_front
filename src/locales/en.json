@@ -25,6 +25,16 @@
     },
     "loading": "Loading…",
     "error": "Failed to load posts.",
+
+    "writer": "Writer",
+    "lostLocation": "Found location",
+    "boothLocation": "Booth location",
+    "eventTime": "Event time",
+    "relatedPosts": "Related posts",
+    "noRelatedPosts": "No related posts available.",
+    "loadingBooth": "Loading booth information…",
+    "loadBoothError": "An error occurred while loading booth information.",
+
     "toast": {
       "endedEvent": "This event has ended."
     }
