@@ -181,7 +181,7 @@ export const developersData = [
   {
     id: 20,
     name: "PARK JUN HONG",
-    roles: ["Front-End"],
+    roles: ["Back-End"],
     roleDisplay: "백엔드",
     major: "컴퓨터공학전공",
     image: parkjunhong,
