@@ -7,6 +7,7 @@ export async function createNormalPost(postData) {
   const uid = sessionStorage.getItem("uid");
   const role = sessionStorage.getItem("role");
 
+  // ⛔ 폐기 예정 ⛔ uid는 늘 존재함
   //if (!uid) {
     //throw new Error("로그인이 필요합니다."); // ⛔ toastMsg 변경 예정
   //}
@@ -24,9 +25,9 @@ export async function createNormalPost(postData) {
   const res = await instance.post("/board/notices", payload);
 
   // uid 유효성 체크
-  if (res.data?.uid_valid === false) {
-    throw { message: res.data.message || "만료된 UID 입니다.", uidExpired: true };
-  }
+  //if (res.data?.uid_valid === false) {
+  //  throw { uidExpired: true, message: res.data.message || "만료된 UID 입니다." };
+  //}
 
   return res.data;
 }
@@ -37,10 +38,12 @@ export async function createLostPost(formData) {
     const res = await instance.post("/board/losts", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
+
   // uid 유효성 체크
-  if (res.data?.uid_valid === false) {
-    throw { message: res.data.message || "만료된 UID 입니다.", uidExpired: true };
-  }
+  //if (res.data?.uid_valid === false) {
+  //  throw { uidExpired: true, message: res.data.message || "만료된 UID 입니다." };
+  //}
+
     return res.data;
   } catch (err) {
     throw err.response?.data || err; //?

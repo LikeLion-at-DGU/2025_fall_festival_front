@@ -8,9 +8,6 @@ export async function createEvent(eventData) {
   const uid = sessionStorage.getItem("uid");
   const role = sessionStorage.getItem("role");
 
-  if (!uid) {
-    throw new Error("로그인이 필요합니다."); // ⛔ toastMsg 변경 예정
-  }
   if (role !== "Club" && role !== "Major") {
     throw new Error("이벤트 작성 권한이 없습니다.");
   } 
@@ -25,6 +22,12 @@ export async function createEvent(eventData) {
   };
 
   const res = await instance.post("/board/events", payload);
+
+  // uid 유효성 체크
+  //if (res.data?.uid_valid === false) {
+  //  throw { uidExpired: true, message: res.data.message || "만료된 UID 입니다." };
+  //}
+
   return res.data;
 }
 

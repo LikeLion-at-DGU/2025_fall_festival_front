@@ -39,6 +39,16 @@ function EventPost() {
       setTimeout(() => navigate("/admin/booth"), 2500);
     } catch (err) {
       console.error(err);
+
+      // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
+      if (err.response?.data?.uid_valid === false) {
+        setToastMsg(err.response.data.message || "세션이 만료되었습니다.");
+        setTimeout(() => {
+          navigate("/admin/login");
+        }, 1500);
+        return;
+      }
+
       // ⛔ 여기서 서버 메시지 받아오기
       const msg =
         err.response?.data?.message ||
