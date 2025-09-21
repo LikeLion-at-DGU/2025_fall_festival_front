@@ -145,8 +145,22 @@ function BoardItem({ item }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { category, title } = item;
-  const displayWriter = item.writer || item.booth_name || "";
   const [toast, setToast] = useState("");
+  const { getTranslation } = useTranslations();
+
+  const displayWriter = item.writer
+    ? (() => {
+        const translatedName = getTranslation(
+          "writer",
+          item.id.toString(),
+          "WriterName",
+          item.writer
+        );
+        return translatedName.length > 20
+          ? translatedName.substring(0, 20) + "..."
+          : translatedName;
+      })()
+    : "";
 
   // 번역된 제목 사용 (부모 컴포넌트에서 전달받음)
   const translatedTitle = item.translatedTitle || title;
@@ -245,16 +259,7 @@ function BoardItem({ item }) {
             </p>
             {displayWriter && (
               <span className="text-[#52525B] font-suite text-[10px] not-italic font-normal leading-[150%] shrink-0">
-                -{" "}
-                {item?.booth_name && displayWriter === item.booth_name
-                  ? getTranslation(
-                      "booth",
-                      item.booth_id?.toString() ||
-                        item.booth_name.toLowerCase(),
-                      "BoothName",
-                      displayWriter
-                    )
-                  : displayWriter}
+                - {displayWriter}
               </span>
             )}
           </div>
@@ -374,6 +379,24 @@ export default function Board() {
 
   // 번역 훅 사용
   const { getTranslatedBoards } = useBoardTranslation(allItems);
+  const { requestSingleTranslation } = useTranslations();
+
+  // 작성자 이름 번역 요청
+  useEffect(() => {
+    if (!allItems || allItems.length === 0) return;
+
+    allItems.forEach((item) => {
+      if (item.writer) {
+        requestSingleTranslation({
+          entity_type: "writer",
+          entity_id: item.id.toString(),
+          field: "WriterName",
+          source_lang: "ko",
+          source_text: item.writer,
+        });
+      }
+    });
+  }, [allItems, requestSingleTranslation]);
 
   const BOARD_ENDPOINT = `${API_BASE}/board/`;
 

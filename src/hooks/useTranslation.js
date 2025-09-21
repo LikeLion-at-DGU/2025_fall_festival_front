@@ -82,6 +82,7 @@ export const useBoardTranslation = (boards) => {
 
   useEffect(() => {
     if (boards && boards.length > 0) {
+      // 게시판 데이터 번역 요청
       const translationItems = createBoardTranslationItems(boards);
       requestBatchTranslations(translationItems);
     }
