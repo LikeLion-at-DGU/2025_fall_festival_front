@@ -114,6 +114,24 @@
   "booth": {
     "nightBooth": "야간부스",
     "dayBooth": "주간부스",
-    "preparingHours": "영업시간 준비중입니다"
+    "preparingHours": "영업시간 준비중입니다",
+    "loading": "로딩 중...",
+    "drinkImagePlaceholder": "주류 부스 사진",
+    "tailAlt": "말풍선 꼬리",
+    "dorderAvailable": "디오더 사용 가능 주점",
+    "locationAlt": "위치 아이콘",
+    "like": "좋아요",
+    "unlike": "좋아요 취소",
+    "introduction": "부스 소개",
+    "noDescription": "소개글이 없습니다.",
+    "dorderAvailableNow": "현재 바로 입장 가능합니다!",
+    "dorderFull": "현재 만석입니다.",
+    "corners": "운영 코너",
+    "noCorners": "운영 코너가 없습니다.",
+    "dorderNotice": "디오더 측에서 제공하는 공식 데이터입니다",
+    "menu": "메뉴",
+    "lowStock": "품절",
+    "currency": "원",
+    "nearbyRecommendation": "근처 운영 중인 부스 추천"
   }
 }

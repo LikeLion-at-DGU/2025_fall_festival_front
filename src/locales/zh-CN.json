@@ -116,6 +116,24 @@
   "booth": {
     "nightBooth": "夜间摊位",
     "dayBooth": "日间摊位",
-    "preparingHours": "准备营业时间"
+    "preparingHours": "准备营业时间",
+    "loading": "加载中...",
+    "drinkImagePlaceholder": "酒水展位照片",
+    "tailAlt": "气泡尾巴",
+    "dorderAvailable": "支持Dorder的展位",
+    "locationAlt": "位置图标",
+    "like": "点赞",
+    "unlike": "取消点赞",
+    "introduction": "展位介绍",
+    "noDescription": "暂无介绍。",
+    "dorderAvailableNow": "现在可以直接入场！",
+    "dorderFull": "目前已满。",
+    "corners": "运营角落",
+    "noCorners": "没有运营角落。",
+    "dorderNotice": "此数据由Dorder官方提供。",
+    "menu": "菜单",
+    "lowStock": "售罄",
+    "currency": "韩元",
+    "nearbyRecommendation": "附近推荐的展位"
   }
 }

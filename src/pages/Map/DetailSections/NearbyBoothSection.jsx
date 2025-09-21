@@ -3,12 +3,14 @@ import axios from "axios";
 import i18n from "i18next";
 
 import { useBoothTranslation } from "../../../hooks/useTranslation";
+import { useTranslation } from "react-i18next";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function NearbyBoothSection({ boothId }) {
   const [nearby, setNearby] = useState(null);
   const { getTranslatedBooths } = useBoothTranslation(nearby?.booths);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // 사용자 위치 요청
@@ -41,7 +43,7 @@ export default function NearbyBoothSection({ boothId }) {
   return (
     <div className="mx-4 mt-8">
       <h2 className="font-semibold mb-1 text-[#EF7063] text-xl">
-        근처 운영 중인 부스 추천
+        {t("booth.nearbyRecommendation")}
       </h2>
 
       {/* 가로 스크롤 영역 */}
