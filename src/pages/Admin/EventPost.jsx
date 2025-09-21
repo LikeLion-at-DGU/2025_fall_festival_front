@@ -83,7 +83,6 @@ function EventPost() {
     return null; // ✅ 모든 검증 통과
   };
 
-
   // 인풋 onChange에서 바로 검증
   const handleTimeChange = (field, value) => {
     // state 업데이트
