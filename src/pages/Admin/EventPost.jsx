@@ -25,7 +25,7 @@ function EventPost() {
     try {
       const uid = sessionStorage.getItem("uid");
       if (!uid) {
-      setToastMsg("세션이 만료되었습니다. 다시 로그인해주세요.");
+      setToastMsg("세션이 만료되었습니다. \n 다시 로그인해주세요."); // ⛔ 폐기 예정
       setTimeout(() => navigate("/admin/login"), 2000);
       return;
     }
@@ -36,13 +36,13 @@ function EventPost() {
 
       setToastMsg("이벤트가 등록되었습니다");
       setIsPopupOpen(false);
-      setTimeout(() => navigate("/admin/booth"), 2500);
+      setTimeout(() => navigate("/admin/booth"), 1500);
     } catch (err) {
       console.error(err);
 
       // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
       if (err.response?.data?.uid_valid === false) {
-        setToastMsg(err.response.data.message || "세션이 만료되었습니다.");
+        setToastMsg("세션이 만료되었습니다.\n 다시 로그인해주세요");
         setTimeout(() => {
           navigate("/admin/login");
         }, 1500);

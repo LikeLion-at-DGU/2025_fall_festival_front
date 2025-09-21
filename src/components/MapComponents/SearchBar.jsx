@@ -17,6 +17,7 @@ function SearchBar({ searchTerm, setSearchTerm }) {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full
                text-[#000] font-sans text-[16px] font-normal leading-[18px]
+
                focus:outline-none"
           />
           <img src={SearchIcon} alt="검색" className="w-4 h-4 opacity-60" />
