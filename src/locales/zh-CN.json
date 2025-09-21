@@ -52,6 +52,9 @@
     "congratsTitle": "恭喜！",
     "congratsMessage": "你已成功完成所有关卡！\n你的专注力真的很棒 :)",
     "retry": "再试一次"
+  },
+  "gameHeader": {
+    "step": "步骤"
   }
-  
+
 }

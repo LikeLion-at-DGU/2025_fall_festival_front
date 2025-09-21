@@ -52,6 +52,10 @@
     "congratsTitle": "Congratulations!",
     "congratsMessage": "You have successfully completed all stages!\nYour focus was truly amazing :)",
     "retry": "Try Again"
+  },
+   "gameHeader": {
+    "step": "Step"
   }
-  
+
+
 }
