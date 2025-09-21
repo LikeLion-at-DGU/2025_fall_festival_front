@@ -28,6 +28,13 @@
       "mainBuilding": "本館",
       "science": "科学館",
       "wonheung": "元興館"
+    },
+    "filters": {
+      "booth": "ブース",
+      "toilet": "トイレ",
+      "drink": "酒類販売",
+      "store": "コンビニ",
+      "foodTruck": "フードトラック"
     }
   },
   "notBooth": {

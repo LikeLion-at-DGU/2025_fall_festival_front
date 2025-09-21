@@ -28,6 +28,13 @@
       "mainBuilding": "본관",
       "science": "과학관",
       "wonheung": "원흥관"
+    },
+    "filters": {
+      "booth": "부스",
+      "toilet": "화장실",
+      "drink": "주류 판매",
+      "store": "편의점",
+      "foodTruck": "푸드트럭"
     }
   },
   "notBooth": {

@@ -28,6 +28,13 @@
       "mainBuilding": "本馆",
       "science": "科学馆",
       "wonheung": "元兴馆"
+    },
+    "filters": {
+      "booth": "展位",
+      "toilet": "厕所",
+      "drink": "酒水销售",
+      "store": "便利店",
+      "foodTruck": "餐车"
     }
   },
   "notBooth": {

@@ -28,6 +28,13 @@
       "mainBuilding": "Main Building",
       "science": "Science Hall",
       "wonheung": "Wonheung Hall"
+    },
+    "filters": {
+      "booth": "Booth",
+      "toilet": "Toilet",
+      "drink": "Drink",
+      "store": "Store",
+      "foodTruck": "Food Truck"
     }
   },
   "notBooth": {
