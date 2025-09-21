@@ -5,7 +5,7 @@ import Popup from "../../components/AdminComponents/Popup";
 import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
 import ToastMessage from "../../components/AdminComponents/ToastMessage";
-import {createEvent} from "../../apis/admin/booth";
+import { createEvent } from "../../apis/admin/booth";
 
 function EventPost() {
   const [title, setTitle] = useState("");
@@ -21,7 +21,6 @@ function EventPost() {
   const navigate = useNavigate();
   const timeWrapper = "flex flex-row items-center w-1/2 gap-2";
 
-
   //------- 시간 필드 유효성 검사 로직 ------//
 
   // 1. 올바른 시각 형태 여부 검사
@@ -29,42 +28,61 @@ function EventPost() {
     const h = Number(hour);
     const m = Number(minute);
     return (
-      !isNaN(h) && !isNaN(m) &&
-      h >= 0 && h <= 24 &&
-      m >= 0 && m < 60
+      !isNaN(h) &&
+      !isNaN(m) &&
+      h >= 0 &&
+      h <= 24 &&
+      m >= 0 &&
+      m < 60
     );
   };
 
   // 2. 시간 검증 함수 (현재 시각 / 종료 시간 비교까지 포함)
   const validateTimes = (startHour, startMinute, endHour, endMinute) => {
+    // 필수 입력 체크
+    if (!startHour || !startMinute || !endHour || !endMinute) {
+      return "시작/종료 시간을 모두 입력해주세요.";
+    }
+
     // 오늘 날짜 구하기
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, "0");
     const dd = String(today.getDate()).padStart(2, "0");
 
-    // 입력한 시간 조합 → Date 객체
-    const startDate = new Date(`${yyyy}-${mm}-${dd}T${startHour}:${startMinute}:00`);
-    const endDate = new Date(`${yyyy}-${mm}-${dd}T${endHour}:${endMinute}:00`);
+    // 두 자리 인식으로 보정 완료
+    const pad = (num) => String(num).padStart(2, "0");
+    const startDate = new Date(`${yyyy}-${mm}-${dd}T${pad(startHour)}:${pad(startMinute)}:00`);
+    const endDate = new Date(`${yyyy}-${mm}-${dd}T${pad(endHour)}:${pad(endMinute)}:00`);
+
+
+    // Date 유효성 체크
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      return "올바른 시간 형식이 아닙니다.";
+    }
 
     // (1) 숫자 범위 유효성 체크
-    if (!isValidTime(startHour, startMinute) || !isValidTime(endHour, endMinute)) {
-      return "시간 형식이 잘못되었습니다 \n (0~24시, 0~59분).";
+    if (!isValidTime(startHour, startMinute)) {
+      return "시작 시간이 올바르지 않습니다 (0~24시, 0~59분).";
+    }
+    if (!isValidTime(endHour, endMinute)) {
+      return "종료 시간이 올바르지 않습니다 (0~24시, 0~59분).";
     }
 
     // (2) 시작 시간이 현재보다 이전인지 체크
     const now = new Date();
     if (startDate < now) {
-      return "시작 시간은 현재 이후여야 합니다.";
+      return "시작 시간은 현재보다 \n 이전일 수 없습니다. \n (24시간 단위를 사용해주세요)";
     }
 
     // (3) 종료 시간이 시작 시간보다 빠른지 체크
     if (endDate <= startDate) {
-      return "종료 시간은 시작 시간보다 늦어야 합니다.";
+      return "종료 시간은 시작 시간보다 \n 이전일 수 없습니다. \n (24시간 단위를 사용해주세요)";
     }
 
     return null; // ✅ 모든 검증 통과
   };
+
 
   // 인풋 onChange에서 바로 검증
   const handleTimeChange = (field, value) => {
@@ -74,32 +92,29 @@ function EventPost() {
     if (field === "endHour") setEndHour(value);
     if (field === "endMinute") setEndMinute(value);
 
-    // 유효성 검사
-    // startHour/startMinute 검증
+    // 유효성 검사 (단순 숫자 범위 확인)
     if (
       !isValidTime(
         field === "startHour" ? value : startHour,
         field === "startMinute" ? value : startMinute
       )
     ) {
-      setTimeError("시작 시간이 올바르지 않습니다 (0~24시, 0~59분).");
+      setTimeError("시작 시간이 올바르지 않습니다 (00~24시, 00~59분).");
       return;
     }
-    // endHour/endMinute 검증
     if (
       !isValidTime(
         field === "endHour" ? value : endHour,
         field === "endMinute" ? value : endMinute
       )
     ) {
-      setTimeError("종료 시간이 올바르지 않습니다 (0~24시, 0~59분).");
+      setTimeError("종료 시간이 올바르지 않습니다 (00~24시, 00~59분).");
       return;
     }
 
     // ✅ 모두 통과
     setTimeError("");
   };
-
 
   //------- 이벤트 개최 폼 제출 로직 ------//
 
@@ -113,10 +128,10 @@ function EventPost() {
         return;
       }
 
-      // 유효성 검사 실행
+      // 시작/종료/현재시간 비교
       const validationError = validateTimes(startHour, startMinute, endHour, endMinute);
       if (validationError) {
-        setToastMsg(validationError);
+        setToastMsg(validationError); // 🔥 토스트로 에러 표시
         return;
       }
 
@@ -155,7 +170,6 @@ function EventPost() {
       setToastMsg(msg);
     }
   };
-
 
   //------------- UI --------------//
 
@@ -217,12 +231,20 @@ function EventPost() {
         </div>
       </div>
 
+      {/* 시간 에러 메시지 (입력 단계) */}
       {timeError && <p className="text-red-500 text-xs">{timeError}</p>}
 
-      {/* 버튼 클릭 시 팝업 열림 */}
+      {/* 버튼 클릭 시: 모달 열기 전에 시간 검증 먼저 실행 */}
       <Submitbtn
         text="확인"
-        onClick={() => setIsPopupOpen(true)}
+        onClick={() => {
+          const validationError = validateTimes(startHour, startMinute, endHour, endMinute);
+          if (validationError) {
+            setToastMsg(validationError); // 🔥 토스트로 표시
+            return;
+          }
+          setIsPopupOpen(true); // ✅ 검증 통과했을 때만 모달 열림
+        }}
         disabled={
           !title.trim() ||
           !detail.trim() ||
@@ -257,7 +279,6 @@ function EventPost() {
           onClose={() => setToastMsg("")} // 닫히면 초기화
         />
       )}
-      
     </div>
   );
 }
