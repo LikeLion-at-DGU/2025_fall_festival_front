@@ -22,7 +22,7 @@ const BoardDetailHeader = () => {
         boxShadow: "0 1px 5px 0 rgba(0, 0, 0, 0.05)",
       }}
     >
-      <div className="flex items-center w-full mb-[6px]">
+      <div className="flex items-center w-full">
         <button
           onClick={handleBackClick}
           className="hover:opacity-70 transition-opacity"
