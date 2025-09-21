@@ -38,5 +38,13 @@
     "toast": {
       "endedEvent": "このイベントは終了しました。"
     }
+  },
+
+  "game": {
+    "start": "ゲーム開始",
+    "nextStep": "次のステージへ",
+    "complete": "ゲームクリア",
+    "retry": "もう一度挑戦",
+    "default": "違う文字を探してください"
   }
 }

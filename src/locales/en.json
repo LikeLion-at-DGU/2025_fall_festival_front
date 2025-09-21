@@ -38,5 +38,13 @@
     "toast": {
       "endedEvent": "This event has ended."
     }
+  },
+
+  "game": {
+    "start": "Start Game",
+    "nextStep": "Next Stage",
+    "complete": "Game Complete",
+    "retry": "Try Again",
+    "default": "Find the different character"
   }
 }

@@ -38,5 +38,13 @@
     "toast": {
       "endedEvent": "该活动已结束。"
     }
+  },
+
+  "game": {
+    "start": "开始游戏",
+    "nextStep": "进入下一关",
+    "complete": "游戏完成",
+    "retry": "再试一次",
+    "default": "请找出不同的字符"
   }
 }
