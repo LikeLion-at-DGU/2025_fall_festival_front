@@ -74,7 +74,9 @@ const BoothRank = ({ onDataChange }) => {
   return (
     <div className="mt-[27px] mb-[32px]">
       <div className="mb-4">
-        <p className="text-xl font-semibold font-suite text-black">부스 랭킹</p>
+        <p className="text-[20px] font-semibold font-suite text-[#52525B]">
+          부스 랭킹
+        </p>
       </div>
       <div className="space-y-4">
         {loading ? (
@@ -100,7 +102,7 @@ const BoothRank = ({ onDataChange }) => {
           </>
         ) : error ? (
           <div className="mb-[74px]">
-            <p className="text-[12px] font-normal leading-[150%] font-suite text-black">
+            <p className="text-[12px] font-normal leading-[150%] font-suite text-[#52525B]">
               부스 랭킹을 불러올 수 없습니다.
             </p>
           </div>
@@ -128,7 +130,7 @@ const BoothRank = ({ onDataChange }) => {
           })
         ) : (
           <div className="mb-[74px]">
-            <p className="text-[12px] font-normal leading-[150%] font-suite text-black">
+            <p className="text-[12px] font-normal leading-[150%] font-suite text-[#52525B]">
               부스 랭킹 집계 중입니다.
             </p>
           </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { toggleBoothLike } from "../apis/mainpage";
 
 const useBoothLikes = (boothId, initialLikesCount) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -14,17 +15,17 @@ const useBoothLikes = (boothId, initialLikesCount) => {
       );
       const isBoothLiked = likedBooths.includes(boothId.toString());
       setIsLiked(isBoothLiked);
-
-      const likedCounts = JSON.parse(
-        localStorage.getItem("likedCounts") || "{}"
-      );
-      const savedCount = likedCounts[boothId.toString()];
-      if (savedCount !== undefined) {
-        setLikesCount(savedCount);
-      }
     };
 
     loadLikesState();
+
+    const cleanupOldData = () => {
+      if (localStorage.getItem("likedCounts")) {
+        console.log("기존 likedCounts 로컬스토리지 데이터 정리");
+        localStorage.removeItem("likedCounts");
+      }
+    };
+    cleanupOldData();
 
     const handleBoothLikeChanged = (event) => {
       if (event.detail.boothId === boothId.toString()) {
@@ -40,8 +41,7 @@ const useBoothLikes = (boothId, initialLikesCount) => {
     };
   }, [boothId]);
 
-  // 좋아요 토글 함수 (로컬스토리지 기반)
-  const toggleLike = (e) => {
+  const toggleLike = async (e) => {
     if (e && e.stopPropagation) {
       e.stopPropagation();
     }
@@ -51,10 +51,7 @@ const useBoothLikes = (boothId, initialLikesCount) => {
     setLoading(true);
 
     try {
-      const likedBooths = JSON.parse(
-        localStorage.getItem("likedBooths") || "[]"
-      );
-      const isCurrentlyLiked = likedBooths.includes(boothId.toString());
+      const isCurrentlyLiked = isLiked;
       const newIsLiked = !isCurrentlyLiked;
 
       setIsLiked(newIsLiked);
@@ -63,35 +60,58 @@ const useBoothLikes = (boothId, initialLikesCount) => {
         : Math.max(0, likesCount - 1);
       setLikesCount(newLikesCount);
 
-      if (newIsLiked) {
-        /* 좋아요 추가 */
-        if (!likedBooths.includes(boothId.toString())) {
-          likedBooths.push(boothId.toString());
+      const storedUserId = localStorage.getItem("user_id");
+      const userId = storedUserId ? parseInt(storedUserId) : null;
+
+      let response;
+      try {
+        response = await toggleBoothLike(boothId, userId);
+
+        if (response && typeof response.likes_count === "number") {
+          setLikesCount(response.likes_count);
+          setIsLiked(response.is_liked);
+
+          if (response.user_id && response.user_id !== userId) {
+            localStorage.setItem("user_id", response.user_id.toString());
+          } else if (!response.user_id && !userId) {
+            const tempUserId = Math.floor(Math.random() * 1000000);
+            localStorage.setItem("user_id", tempUserId.toString());
+          }
         }
-      } else {
-        /* 좋아요 제거 */
-        const index = likedBooths.indexOf(boothId.toString());
-        if (index > -1) {
-          likedBooths.splice(index, 1);
+
+        const currentLikedBooths = JSON.parse(
+          localStorage.getItem("likedBooths") || "[]"
+        );
+
+        if (response.is_liked) {
+          /* 좋아요 추가 */
+          if (!currentLikedBooths.includes(boothId.toString())) {
+            currentLikedBooths.push(boothId.toString());
+          }
+        } else {
+          /* 좋아요 제거 */
+          const index = currentLikedBooths.indexOf(boothId.toString());
+          if (index > -1) {
+            currentLikedBooths.splice(index, 1);
+          }
         }
+
+        localStorage.setItem("likedBooths", JSON.stringify(currentLikedBooths));
+
+        const event = new CustomEvent("boothLikeChanged", {
+          detail: {
+            boothId: boothId.toString(),
+            isLiked: response.is_liked,
+            likesCount: response.likes_count,
+          },
+        });
+        window.dispatchEvent(event);
+      } catch (apiError) {
+        console.error("좋아요 API 실패:", apiError);
+        setIsLiked(isCurrentlyLiked);
+        setLikesCount(likesCount);
+        return;
       }
-
-      const likedCounts = JSON.parse(
-        localStorage.getItem("likedCounts") || "{}"
-      );
-      likedCounts[boothId.toString()] = newLikesCount;
-
-      localStorage.setItem("likedBooths", JSON.stringify(likedBooths));
-      localStorage.setItem("likedCounts", JSON.stringify(likedCounts));
-
-      const event = new CustomEvent("boothLikeChanged", {
-        detail: {
-          boothId: boothId.toString(),
-          isLiked: newIsLiked,
-          likesCount: newLikesCount,
-        },
-      });
-      window.dispatchEvent(event);
     } catch (error) {
       console.error("좋아요 토글 실패:", error);
     } finally {

@@ -89,7 +89,7 @@ function BoothCard({
           </div>
 
           {/* 영업시간 */}
-          <p className="text-xs text-[#71717A] mb-0.5 font-suite leading-[150%] font-normal">
+          <p className="text-[10px] text-[#52525B] mb-0.5 font-suite leading-[150%] font-normal">
             {time ||
               (businessDays && startTime && endTime
                 ? `${businessDays} ${startTime}~${endTime}`
@@ -101,7 +101,7 @@ function BoothCard({
 
           {/* 위치 */}
           <div className="flex items-center gap-[13px]">
-            <p className="text-sm text-black font-suite leading-[150%] font-normal">
+            <p className="text-sm text-[#2A2A2E] font-suite leading-[150%] font-normal">
               {location}
             </p>
             {/* 디오더 뱃지 */}
