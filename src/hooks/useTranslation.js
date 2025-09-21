@@ -5,6 +5,7 @@ import {
   createBoothTranslationItems,
   createStageTranslationItems,
   createBoardTranslationItems,
+  createNoticeTranslationItems,
 } from "../utils/translationApi";
 
 // 카테고리 영어-한글 매핑
@@ -124,6 +125,42 @@ export const useBoardTranslation = (boards) => {
   };
 
   return { getTranslatedBoards };
+};
+
+// 긴급공지 번역 훅
+export const useNoticeTranslation = (notice) => {
+  const { requestBatchTranslations, getTranslation } = useTranslations();
+
+  useEffect(() => {
+    if (notice) {
+      const translationItems = createNoticeTranslationItems(notice);
+      if (translationItems.length > 0) {
+        requestBatchTranslations(translationItems);
+      }
+    }
+  }, [notice, requestBatchTranslations]);
+
+  // 번역된 공지사항 데이터 반환
+  const getTranslatedNotice = () => {
+    if (!notice) return null;
+
+    const entityId = notice.id ? notice.id.toString() : "emergency";
+
+    return {
+      ...notice,
+      translatedTitle: getTranslation(
+        "notice",
+        entityId,
+        "NoticeTitle",
+        notice.title
+      ),
+      translatedContent: notice.content
+        ? getTranslation("notice", entityId, "NoticeContent", notice.content)
+        : notice.content,
+    };
+  };
+
+  return { getTranslatedNotice };
 };
 
 // 단일 아이템 번역 훅 (상세 페이지용)

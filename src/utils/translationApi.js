@@ -166,3 +166,31 @@ export function createBoardTranslationItems(boards) {
     ],
   }));
 }
+
+// 긴급공지 데이터 번역용 헬퍼 함수
+export function createNoticeTranslationItems(notice) {
+  if (!notice) return [];
+
+  return [
+    {
+      entity_type: "notice",
+      entity_id: notice.id ? notice.id.toString() : "emergency",
+      fields: [
+        {
+          field: "NoticeTitle",
+          source_lang: "ko",
+          source_text: notice.title || "",
+        },
+        ...(notice.content
+          ? [
+              {
+                field: "NoticeContent",
+                source_lang: "ko",
+                source_text: notice.content,
+              },
+            ]
+          : []),
+      ],
+    },
+  ];
+}

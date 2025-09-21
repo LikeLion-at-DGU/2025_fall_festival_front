@@ -5,6 +5,7 @@ import Stage from "../../components/HomepageComponents/Stage";
 import Event from "../../components/HomepageComponents/Event";
 import BoothRank from "../../components/HomepageComponents/BoothRank";
 import { getEmergencyNotice } from "../../apis/mainpage";
+import { useNoticeTranslation } from "../../hooks/useTranslation";
 
 function Home() {
   const [emergencyNotice, setEmergencyNotice] = useState(null);
@@ -18,6 +19,9 @@ function Home() {
     hasData: false,
     isLoading: true,
   });
+
+  // 긴급공지 번역 훅 사용
+  const { getTranslatedNotice } = useNoticeTranslation(emergencyNotice);
 
   /* 동적 배경 스타일 계산 */
   const getBackgroundStyle = () => {
@@ -57,12 +61,14 @@ function Home() {
     fetchEmergencyNotice();
   }, []);
 
+  const translatedNotice = getTranslatedNotice();
+
   return (
     <div style={getBackgroundStyle()}>
       <Banner />
       <div className="px-4 flex flex-col">
         <Notification
-          notice={emergencyNotice}
+          notice={translatedNotice || emergencyNotice}
           loading={loading}
           error={error}
         />
