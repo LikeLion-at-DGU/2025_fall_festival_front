@@ -33,7 +33,7 @@ export default function Timetable() {
     return `${hour.toString().padStart(2, "0")}:00`;
   });
 
-  // ✅ 초기 자동 선택 로직
+  // 초기 자동 선택 로직
   useEffect(() => {
     const now = new Date();
 
@@ -417,9 +417,9 @@ export default function Timetable() {
             <img
               src={dirvana}
               alt="no timetable"
-              className="mt-4 w-[224.556px] h-[43px]"
+              className="mt-4 w-[185px] h-[35px]"
             />
-            <p className="text-center text-[#71717A] text-xl font-medium">
+            <p className="text-center text-[#A1A1AA] text-[16px] font-[400]">
               {t("timetable.noStage")}
             </p>
           </div>
