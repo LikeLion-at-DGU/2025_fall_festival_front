@@ -5,7 +5,7 @@ export default function MenuSection({ menus }) {
 
     return (
         <div className="w-full mx-4 mt-4">
-            <h2 className="font-semibold mb-2 text-[#EF7063] text-xl">판매 메뉴</h2>
+            <h2 className="font-semibold mb-[12px] text-[#EF7063] text-xl">판매 메뉴</h2>
 
             {/* 가로 스크롤: 위로 튀는 뱃지 안 잘리게 pt 추가 + 스크롤바 숨김 */}
             <div className="flex gap-3 overflow-x-auto scrollbar-hidden pt-1">
