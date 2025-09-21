@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { toggleBoothLike } from "../apis/mainpage";
 
-const useBoothLikes = (boothId, initialIsLiked = false, initialLikesCount = 0) => {
+const useBoothLikes = (
+  boothId,
+  initialLikesCount = 0,
+  initialIsLiked = false
+) => {
   const [isLiked, setIsLiked] = useState(initialIsLiked);
   const [likesCount, setLikesCount] = useState(initialLikesCount);
   const [loading, setLoading] = useState(false);
@@ -11,70 +15,111 @@ const useBoothLikes = (boothId, initialIsLiked = false, initialLikesCount = 0) =
   useEffect(() => {
     if (!boothId) return;
 
-    const likedBooths = JSON.parse(localStorage.getItem("likedBooths") || "[]");
-    const isBoothLiked = likedBooths.includes(boothId.toString());
-    if (isBoothLiked) setIsLiked(true);
+    const loadLikesState = () => {
+      const likedBooths = JSON.parse(
+        localStorage.getItem("likedBooths") || "[]"
+      );
+      const isBoothLiked = likedBooths.includes(boothId.toString());
+      setIsLiked(isBoothLiked);
+    };
 
-    const likedCounts = JSON.parse(localStorage.getItem("likedCounts") || "{}");
-    const savedCount = likedCounts[boothId.toString()];
-    if (savedCount !== undefined) {
-      setLikesCount(savedCount);
-    }
-  }, [boothId]);
+    loadLikesState();
 
-  // 좋아요 토글 (서버 + 로컬스토리지 반영)
+    const cleanupOldData = () => {
+      if (localStorage.getItem("likedCounts")) {
+        localStorage.removeItem("likedCounts");
+      }
+    };
+    cleanupOldData();
+
+    const handleBoothLikeChanged = (event) => {
+      if (event.detail.boothId === boothId.toString()) {
+        setIsLiked(event.detail.isLiked);
+        setLikesCount(event.detail.likesCount);
+      }
+    };
+
+    window.addEventListener("boothLikeChanged", handleBoothLikeChanged);
+
+    return () => {
+      window.removeEventListener("boothLikeChanged", handleBoothLikeChanged);
+    };
+  }, [boothId, initialIsLiked]);
+
   const toggleLike = async (e) => {
-    if (e?.stopPropagation) e.stopPropagation();
-    if (!boothId || loading) return;
+    if (e && e.stopPropagation) {
+      e.stopPropagation();
+    }
+
+    if (loading || !boothId) return;
 
     setLoading(true);
-    setError(null);
 
     try {
-      // 서버에 POST 요청
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/booths/${boothId}/likes/`,
-        {},
-        { headers: { "Content-Type": "application/json" } }
-      );
+      const isCurrentlyLiked = isLiked;
+      const newIsLiked = !isCurrentlyLiked;
 
-      // 서버 응답 구조에 맞게 수정하세요!
-      const newIsLiked = response.data.is_liked;
-      const newLikesCount = response.data.likes_count;
-
+      // 낙관적 업데이트 (UI 먼저 업데이트)
       setIsLiked(newIsLiked);
+      const newLikesCount = newIsLiked
+        ? likesCount + 1
+        : Math.max(0, likesCount - 1);
       setLikesCount(newLikesCount);
 
-      // 로컬스토리지 업데이트
-      const likedBooths = JSON.parse(localStorage.getItem("likedBooths") || "[]");
-      const likedCounts = JSON.parse(localStorage.getItem("likedCounts") || "{}");
+      const storedUserId = localStorage.getItem("user_id");
+      const userId = storedUserId ? parseInt(storedUserId) : null;
 
-      if (newIsLiked) {
-        if (!likedBooths.includes(boothId.toString())) {
-          likedBooths.push(boothId.toString());
+      let response;
+      try {
+        response = await toggleBoothLike(boothId, userId);
+
+        if (response && typeof response.likes_count === "number") {
+          setLikesCount(response.likes_count);
+          setIsLiked(response.is_liked);
+
+          if (response.user_id && response.user_id !== userId) {
+            localStorage.setItem("user_id", response.user_id.toString());
+          } else if (!response.user_id && !userId) {
+            const tempUserId = Math.floor(Math.random() * 1000000);
+            localStorage.setItem("user_id", tempUserId.toString());
+          }
         }
-      } else {
-        const index = likedBooths.indexOf(boothId.toString());
-        if (index > -1) likedBooths.splice(index, 1);
+
+        const currentLikedBooths = JSON.parse(
+          localStorage.getItem("likedBooths") || "[]"
+        );
+
+        if (response.is_liked) {
+          /* 좋아요 추가 */
+          if (!currentLikedBooths.includes(boothId.toString())) {
+            currentLikedBooths.push(boothId.toString());
+          }
+        } else {
+          /* 좋아요 제거 */
+          const index = currentLikedBooths.indexOf(boothId.toString());
+          if (index > -1) {
+            currentLikedBooths.splice(index, 1);
+          }
+        }
+
+        localStorage.setItem("likedBooths", JSON.stringify(currentLikedBooths));
+
+        const event = new CustomEvent("boothLikeChanged", {
+          detail: {
+            boothId: boothId.toString(),
+            isLiked: response.is_liked,
+            likesCount: response.likes_count,
+          },
+        });
+        window.dispatchEvent(event);
+      } catch (apiError) {
+        console.error("좋아요 API 실패:", apiError);
+        setIsLiked(isCurrentlyLiked);
+        setLikesCount(likesCount);
+        return;
       }
-
-      likedCounts[boothId.toString()] = newLikesCount;
-
-      localStorage.setItem("likedBooths", JSON.stringify(likedBooths));
-      localStorage.setItem("likedCounts", JSON.stringify(likedCounts));
-
-      // 이벤트 발송 (다른 컴포넌트들도 동기화)
-      const event = new CustomEvent("boothLikeChanged", {
-        detail: {
-          boothId: boothId.toString(),
-          isLiked: newIsLiked,
-          likesCount: newLikesCount,
-        },
-      });
-      window.dispatchEvent(event);
-    } catch (err) {
-      console.error("좋아요 업데이트 실패:", err);
-      setError(err);
+    } catch (error) {
+      console.error("좋아요 토글 실패:", error);
     } finally {
       setLoading(false);
     }

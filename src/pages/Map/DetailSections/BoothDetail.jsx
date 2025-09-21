@@ -50,7 +50,8 @@ export default function BoothDetail() {
   // 좋아요 훅
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     id,
-    initialLikesCount
+    initialLikesCount || 0,
+    false
   );
 
   useEffect(() => {
@@ -104,7 +105,11 @@ export default function BoothDetail() {
             {/* 야간 부스 & 디오더 가능 표시 */}
             {booth.is_night && booth.is_dorder && (
               <div className="flex items-center gap-2 mt-2">
-                <img src={CheckIcon} alt="check" className="w-[21.5px] h-[21.5px]" />
+                <img
+                  src={CheckIcon}
+                  alt="check"
+                  className="w-[21.5px] h-[21.5px]"
+                />
                 <span className="text-red-500 text-sm font-medium">
                   디오더 사용 가능 주점
                 </span>
@@ -117,7 +122,11 @@ export default function BoothDetail() {
                 key={i}
                 className="flex items-center gap-2 mt-1 text-[14px] text-gray-600"
               >
-                <img src={TimeCircleIcon} alt="time" className="w-[21.5px] h-[21.5px]" />
+                <img
+                  src={TimeCircleIcon}
+                  alt="time"
+                  className="w-[21.5px] h-[21.5px]"
+                />
                 <span>
                   {g.days.join(", ")} {g.time}
                 </span>
@@ -126,7 +135,11 @@ export default function BoothDetail() {
 
             {/* 위치 */}
             <div className="flex items-center gap-2 mt-1 text-[14px] text-gray-600">
-              <img src={LocationIcon} alt="location" className="w-[21.5px] h-[24px]" />
+              <img
+                src={LocationIcon}
+                alt="location"
+                className="w-[21.5px] h-[24px]"
+              />
               <span>{booth.location_description}</span>
             </div>
           </div>
@@ -155,15 +168,15 @@ export default function BoothDetail() {
 
       {/* 소개 */}
       <div
-        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${booth.is_night ? "!mt-4" : "!mt-10"
-          }`}
+        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${
+          booth.is_night ? "!mt-4" : "!mt-10"
+        }`}
       >
         <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">부스 소개</h2>
         <p className="text-sm text-gray-700">
           {booth.booth_description || "소개글이 없습니다."}
         </p>
       </div>
-
 
       {/* 디오더 상태 */}
       {booth.is_dorder && (

@@ -45,12 +45,17 @@ export const getEventBooths = async () => {
 };
 
 // 부스 좋아요 토글 API
-export const toggleBoothLike = async (boothId) => {
+export const toggleBoothLike = async (boothId, userId = null) => {
   try {
-    const response = await axios.post(`${BASE_URL}/booths/${boothId}/likes`);
+    const response = await axios.post(`${BASE_URL}/booths/${boothId}/likes/`, {
+      user_id: userId,
+    });
     return response.data;
   } catch (error) {
     console.error("부스 좋아요 토글 실패:", error);
+    console.error("요청 URL:", `${BASE_URL}/booths/${boothId}/likes/`);
+    console.error("boothId:", boothId, typeof boothId);
+    console.error("userId:", userId);
     throw error;
   }
 };

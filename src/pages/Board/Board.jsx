@@ -85,8 +85,8 @@ function Tag({ label, active, onClick }) {
       className={[
         "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
         active
-          ? "bg-black text-white font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
-          : "bg-white text-[#2A2A2E] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
+          ? "bg-black text-white font-suite text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
+          : "bg-white text-[#2A2A2E] font-suite text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
       ].join(" ")}
     >
       #{label}
@@ -97,18 +97,18 @@ function Tag({ label, active, onClick }) {
 function SearchBar({ value, onChange }) {
   return (
     <div className="w-full">
-      <div className="flex w-full items-center rounded-[8px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-2">
+      <div className="flex w-full items-center rounded-[10px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-3">
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="검색어를 입력해주세요"
-          className="flex-1 text-black placeholder:text-[#A1A1AA] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] outline-none"
+          className="flex-1 text-black placeholder:text-[#A1A1AA] font-suite text-[14px] not-italic font-normal leading-[150%] outline-none"
         />
         <div className="flex items-center justify-center">
           <img
             src={SearchIcon}
             alt="검색"
-            className="w-[13.875px] h-[14.219px] flex-shrink-0"
+            className="w-[18px] h-[18px] flex-shrink-0"
           />
         </div>
       </div>
@@ -180,7 +180,9 @@ function BoardItem({ item }) {
     let endISO = null;
 
     if (EVENT_TIME_CACHE.has(item.id)) {
-      ({ start_time: startISO, end_time: endISO } = EVENT_TIME_CACHE.get(item.id));
+      ({ start_time: startISO, end_time: endISO } = EVENT_TIME_CACHE.get(
+        item.id
+      ));
     } else {
       try {
         const res = await fetch(`${API_BASE}/board/${item.id}`, {
@@ -190,7 +192,10 @@ function BoardItem({ item }) {
           const detail = await res.json();
           startISO = detail?.start_time ?? null;
           endISO = detail?.end_time ?? null;
-          EVENT_TIME_CACHE.set(item.id, { start_time: startISO, end_time: endISO });
+          EVENT_TIME_CACHE.set(item.id, {
+            start_time: startISO,
+            end_time: endISO,
+          });
         } else {
           // 상세를 못 받으면 차단 판단 불가 → 그냥 이동(정책에 따라 조정 가능)
           navigate(`/board/${item.id}`);
@@ -223,17 +228,17 @@ function BoardItem({ item }) {
         >
           <div className="flex items-center gap-3 min-w-0">
             <span
-              className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-[SUITE] font-normal leading-none ${pillCls}`}
+              className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillCls}`}
             >
               {CATEGORY_MAP[category] ?? category}
             </span>
           </div>
           <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
-            <p className="truncate text-[#52525B] font-[SUITE] text-[16px] not-italic font-semibold leading-[150%]">
+            <p className="truncate text-[#52525B] font-suite text-[14px] not-italic font-semibold leading-[150%]">
               {title}
             </p>
             {displayWriter && (
-              <span className="text-[#52525B] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shrink-0">
+              <span className="text-[#52525B] font-suite text-[10px] not-italic font-normal leading-[150%] shrink-0">
                 - {displayWriter}
               </span>
             )}
@@ -246,7 +251,6 @@ function BoardItem({ item }) {
     </>
   );
 }
-
 
 /* =========================
   페이지네이션
@@ -452,7 +456,7 @@ export default function Board() {
   }, [totalPages, page]);
 
   return (
-    <div className="mx-auto max-w-screen-sm px-4 pb-4 min-h-screen flex flex-col">
+    <div className="mx-auto max-w-screen-sm px-4 pb-4 flex flex-col">
       {/* 검색 */}
       <div className="pt-4">
         <SearchBar value={keyword} onChange={setKeyword} />
@@ -472,14 +476,14 @@ export default function Board() {
 
       {/* 리스트 헤더 */}
       <div className="mt-6 mb-5">
-        <h2 className="text-[#2A2A2E] font-[SUITE] text-[16px] not-italic font-normal leading-normal">
+        <h2 className="text-[#2A2A2E] font-suite text-[16px] not-italic font-normal leading-normal">
           게시물
         </h2>
       </div>
 
       {/* 리스트 영역을 flex-1로 */}
       <div className="flex-1 flex flex-col">
-        <div className="flex-1 min-h-[320px]">
+        <div className="flex-1">
           {loading && (
             <div className="py-16 text-center text-gray-500">불러오는 중…</div>
           )}
