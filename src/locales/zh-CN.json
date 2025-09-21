@@ -7,6 +7,37 @@
     "game": "游戏"
   },
 
+  "map": {
+    "campusMap": "校园地图",
+    "noDetailMap": "没有详细地图",
+    "locations": {
+      "manhaeLaw": "万海/法学馆",
+      "newEngineering": "新工学馆",
+      "library": "中央图书馆",
+      "stadium": "大运动场",
+      "myeongjin": "明进馆",
+      "paljeongdo": "八井堂",
+      "manhaeSquare": "万海广场",
+      "dahyang": "茶香馆",
+      "hakrim": "学林馆",
+      "infoCulture": "信息文化馆",
+      "business": "经营馆",
+      "hyehwa": "惠化馆",
+      "socialScience": "社会科学馆",
+      "academicCulture": "学术文化馆",
+      "mainBuilding": "本馆",
+      "science": "科学馆",
+      "wonheung": "元兴馆"
+    }
+  },
+  "notBooth": {
+    "unknownLocation": "当前位置未知",
+    "categories": {
+      "Toilet": "厕所",
+      "Drink": "饮料",
+      "Store": "便利店"
+    }
+  },
   "search": {
     "placeholder": "请输入院系/社团/展位名称",
     "alt": "搜索"

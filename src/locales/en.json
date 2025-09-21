@@ -6,7 +6,38 @@
     "board": "Board",
     "game": "Game"
   },
-  
+
+  "map": {
+    "campusMap": "Campus Map",
+    "noDetailMap": "No detailed map",
+    "locations": {
+      "manhaeLaw": "Manhae/Law Building",
+      "newEngineering": "New Engineering Building",
+      "library": "Central Library",
+      "stadium": "Main Stadium",
+      "myeongjin": "Myeongjin Hall",
+      "paljeongdo": "Paljeongdo",
+      "manhaeSquare": "Manhae Square",
+      "dahyang": "Dahyang Hall",
+      "hakrim": "Hakrim Hall",
+      "infoCulture": "Information & Culture Hall",
+      "business": "Business Hall",
+      "hyehwa": "Hyehwa Hall",
+      "socialScience": "Social Science Hall",
+      "academicCulture": "Academic & Culture Hall",
+      "mainBuilding": "Main Building",
+      "science": "Science Hall",
+      "wonheung": "Wonheung Hall"
+    }
+  },
+  "notBooth": {
+    "unknownLocation": "Location unknown",
+    "categories": {
+      "Toilet": "Toilet",
+      "Drink": "Drink",
+      "Store": "Store"
+    }
+  },
   "search": {
     "placeholder": "Enter department/club/booth name",
     "alt": "Search"

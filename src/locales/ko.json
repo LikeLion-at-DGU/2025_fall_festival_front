@@ -7,6 +7,37 @@
     "game": "게임"
   },
 
+  "map": {
+    "campusMap": "캠퍼스 지도",
+    "noDetailMap": "상세지도 없음",
+    "locations": {
+      "manhaeLaw": "만해/법학관",
+      "newEngineering": "신공학관",
+      "library": "중앙도서관",
+      "stadium": "대운동장",
+      "myeongjin": "명진관",
+      "paljeongdo": "팔정도",
+      "manhaeSquare": "만해광장",
+      "dahyang": "다향관",
+      "hakrim": "학림관",
+      "infoCulture": "정보문화관",
+      "business": "경영관",
+      "hyehwa": "혜화관",
+      "socialScience": "사회과학관",
+      "academicCulture": "학술문화관",
+      "mainBuilding": "본관",
+      "science": "과학관",
+      "wonheung": "원흥관"
+    }
+  },
+  "notBooth": {
+    "unknownLocation": "현재 위치 알 수 없음",
+    "categories": {
+      "Toilet": "화장실",
+      "Drink": "음료",
+      "Store": "편의점"
+    }
+  },
   "search": {
     "placeholder": "학과/동아리/부스명을 입력하세요",
     "alt": "검색"
