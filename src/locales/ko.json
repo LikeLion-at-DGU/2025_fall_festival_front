@@ -25,6 +25,16 @@
     },
     "loading": "불러오는 중…",
     "error": "게시글을 불러오지 못했습니다.",
+
+    "writer": "작성자",
+    "lostLocation": "발견 위치",
+    "boothLocation": "부스 위치",
+    "eventTime": "이벤트 시간",
+    "relatedPosts": "다른 게시물",
+    "noRelatedPosts": "관련 게시물이 없습니다.",
+    "loadingBooth": "부스 정보를 불러오는 중…",
+    "loadBoothError": "부스 정보를 불러오는 중 오류가 발생했습니다.",
+
     "toast": {
       "endedEvent": "종료된 이벤트입니다."
     }

@@ -49,7 +49,7 @@ function EmptyState({ hasSearchKeyword, activeTag }) {
 
   const getEmptyMessage = () => {
     if (hasSearchKeyword) {
-      return "검색 결과가 없습니다.";
+      return t("board.empty.noResult");
     }
 
     switch (activeTag) {
