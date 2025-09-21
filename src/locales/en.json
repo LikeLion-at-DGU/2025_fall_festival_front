@@ -40,6 +40,14 @@
     }
   },
 
+  "timetable": {
+    "celebrity": "Celebrity",
+    "loading": "Loading...",
+    "noCelebrity": "No celebrity performances",
+    "noStage": "No ongoing performances",
+    "nextStage": "Check out the next performance too"
+  },
+
   "game": {
     "start": "Start Game",
     "nextStep": "Next Stage",

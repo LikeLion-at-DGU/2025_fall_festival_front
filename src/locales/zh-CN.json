@@ -40,6 +40,14 @@
     }
   },
 
+  "timetable": {
+    "celebrity": "明星",
+    "loading": "加载中...",
+    "noCelebrity": "没有明星演出",
+    "noStage": "当前没有进行中的演出",
+    "nextStage": "也请查看下一场演出"
+  },
+
   "game": {
     "start": "开始游戏",
     "nextStep": "进入下一关",

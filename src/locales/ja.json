@@ -40,6 +40,14 @@
     }
   },
 
+  "timetable": {
+    "celebrity": "Celebrity",
+    "loading": "読み込み中...",
+    "noCelebrity": "有名人の公演はありません",
+    "noStage": "進行中の公演はありません",
+    "nextStage": "次の公演もチェックしてみてください"
+  },
+
   "game": {
     "start": "ゲーム開始",
     "nextStep": "次のステージへ",
