@@ -23,7 +23,8 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
           if (!btn.showIf) return true;
 
           const { startDate, endDate, startTime, endTime } = btn.showIf;
-          const now = new Date();
+          // const now = new Date();
+const now = new Date("2025-09-25T12:00:00"); 
 
           // 오늘 날짜 (YYYY-MM-DD)
           const today = now.toISOString().split("T")[0];
