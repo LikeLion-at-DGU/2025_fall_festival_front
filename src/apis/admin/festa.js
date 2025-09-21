@@ -69,25 +69,17 @@ export async function getEmergencyNotices() {
     throw err.response?.data || { error: "알 수 없는 오류" };
   }
 }
-// -------- 공지글 중에서 긴급공지 가져오기 -------- //
-export async function getEmergencyNoticeFromNotices() {
-  try {
-    const res = await instance.get("/board/notices");
-    const emergency = res.data.find((item) => item.is_emergency === true);
-    return emergency || null;
-  } catch (err) {
-    throw err.response?.data || { error: "알 수 없는 오류" };
-  }
-}
-// 긴급공지 GET - id 직접 지정
+
+// -------- 긴급공지 GET -------- //
 export async function getEmergencyNotice() {
   try {
-    const res = await instance.get(`/board/emergency`);
-    return res.data; // { board_id, board_title, board_content, ... }
+    const res = await instance.get("/board/emergency");
+    return res.data.notice; // ✅ response 안의 notice 객체만 반환
   } catch (err) {
     throw err.response?.data || { error: "알 수 없는 오류" };
   }
 }
+
 // ⛔폐기예정⛔ 긴급공지 GET - id 직접 지정
 export async function getEmergencyNoticeById(id = 1) {
   try {
@@ -98,12 +90,17 @@ export async function getEmergencyNoticeById(id = 1) {
   }
 }
 
-
 //-------- 본인이 작성한 공지글 get --------//
 export async function getUnionNotices() {
   const res = await instance.get("/board/notices");
   const name = sessionStorage.getItem("name");
-  return res.data.filter((item) => item.writer === name);
+  
+  return res.data.filter(
+    (item) => item.writer === name && item.is_emergency !== true
+  );
+  //return res.data.filter(
+  //  (item) => item.writer === name && item.id !== 143 // id=143은 제외 >> 추천x 임시용입니다
+  //);
 }
 
 export async function getUnionLosts() {

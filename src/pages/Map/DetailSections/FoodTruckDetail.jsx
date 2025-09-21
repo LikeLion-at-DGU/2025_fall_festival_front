@@ -72,7 +72,7 @@ export default function FoodTruckDetail() {
             </div>
 
             {/* 카드 */}
-            <div className="bg-white shadow-md rounded-[16px] px-4 py-3 mx-4 mt-3 relative z-10">
+            <div className="bg-white shadow-md rounded-[16px] px-4 py-3 mx-4 mt-3 mb-10 relative z-10">
                 {/* triangle tail */}
                 <img
                     src={TailIcon}

@@ -22,7 +22,7 @@ function PullList({
 
   // ✅ maxHeight를 상태로 관리
   const [maxHeight, setMaxHeight] = useState(
-    Math.min(437, window.innerHeight - 100 - 82)
+    Math.min(424, window.innerHeight - 100 - 82)
   );
 
   useEffect(() => {
@@ -217,7 +217,9 @@ function PullList({
       </div>
 
       {/* 헤더 */}
-      <div className="px-[17px] pb-4"></div>
+      <div className="px-[17px] pb-4">
+        <span className={`${textClass} text-[#2A2A2A]`}>미리보기</span>
+      </div>
 
       {/* 스크롤 가능한 콘텐츠 */}
       <div className="flex-1 overflow-hidden">
@@ -226,14 +228,14 @@ function PullList({
             <div className="flex items-center justify-center h-32">
               <span className={`${textClass} text-[#8A8A8A]`}>
                 {selectedPin
-                  ? `부스가 없어요`
+                  ? `${selectedPin}에 부스가 없어요`
                   : searchTerm
                   ? "검색 결과가 없어요"
-                  : `부스가 없어요`}
+                  : `${selectedFilter}에 부스가 없어요`}
               </span>
             </div>
           ) : (
-            <div className="w-full flex flex-col gap-2">
+            <div className="w-full flex flex-col gap-[12px]">
               {sortedBooths.map((booth) => {
                 const boothName = booth.name;
                 const locationName = booth.location?.name ?? "";
@@ -251,12 +253,6 @@ function PullList({
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days[0]?.weekday}
-                    likesCount={booth.like_cnt || 0}
-                    isLiked={false}
-                    badges={{
-                      isEventActive: booth.is_event || false,
-                      isDOrderPartner: booth.is_dorder || false,
-                    }}
                     className="w-full"
                     onClick={() =>
                       navigate(
