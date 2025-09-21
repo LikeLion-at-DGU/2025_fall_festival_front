@@ -46,7 +46,12 @@
     "complete": "게임 완료",
     "retry": "다시 도전하기",
     "default": "다른 글자를 찾아보세요"
-  }
+  },
 
+  "gameCompleteModal": {
+    "congratsTitle": "축하합니다!",
+    "congratsMessage": "모든 단계를 성공적으로 완료했어요!\n정말 훌륭한 집중력이었습니다 :)",
+    "retry": "다시 도전하기"
+  }
   
 }
