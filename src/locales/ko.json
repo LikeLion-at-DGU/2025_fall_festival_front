@@ -148,6 +148,14 @@
     "now": "STAGE NOW",
     "preparing": "공연 준비중이에요!",
     "comingSoon": "Coming Soon..."
+  },
+
+  "footer": {
+    "team": "동국대학교 멋쟁이사자처럼",
+    "copyright": "@LIKELION DGU. All rights Reserved",
+    "dataSupport": "@Data supported by 축제기획단",
+    "admin": "Administrator",
+    "instagram": "Instagram"
   }
 
 }

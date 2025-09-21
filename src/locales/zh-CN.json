@@ -150,5 +150,13 @@
     "now": "舞台进行中",
     "preparing": "演出准备中！",
     "comingSoon": "敬请期待..."
+  },
+
+  "footer": {
+    "team": "东国大学 LIKE LION",
+    "copyright": "@LIKELION DGU. All rights Reserved",
+    "dataSupport": "@数据支持：庆典企划团",
+    "admin": "管理员",
+    "instagram": "Instagram"
   }
 }

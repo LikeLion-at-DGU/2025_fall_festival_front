@@ -150,5 +150,13 @@
     "now": "ステージ ナウ",
     "preparing": "公演準備中です！",
     "comingSoon": "近日公開..."
+  },
+
+  "footer": {
+    "team": "東国大学 LIKE LION",
+    "copyright": "@LIKELION DGU. All rights Reserved",
+    "dataSupport": "@データ提供: 祭り企画団",
+    "admin": "管理者",
+    "instagram": "インスタグラム"
   }
 }
