@@ -23,8 +23,10 @@ const Layout = ({ children }) => {
   ];
 
   // 2) 동적 경로 정규식 추가
-  // 상세 조회 (/admin/stuco/notice/:id)
+  // festa 화면 상세 조회 (/admin/festa/notice/:id)
   const adminDetailRegex = /^\/admin\/festa\/notice\/\d+$/;
+  // booth 화면 상세 조회 (/admin/booth/notice/:id)
+  const boothDetailRegex = /^\/admin\/booth\/notice\/event\/\d+$/;
   // 수정 페이지 (/admin/stuco/notice/edit/:id)
   const adminEditRegex = /^\/admin\/festa\/notice\/edit\/\d+$/;
   // 분실물 수정 페이지 (/admin/stuco/lost/edit/:id)
@@ -34,7 +36,8 @@ const Layout = ({ children }) => {
     adminPaths.includes(location.pathname) ||
     adminDetailRegex.test(location.pathname) ||
     adminEditRegex.test(location.pathname) ||
-    adminLostEditRegex.test(location.pathname);
+    adminLostEditRegex.test(location.pathname) ||
+    boothDetailRegex.test(location.pathname);
   
   // 🎯 스크롤바 숨길 admin 경로 판별
   const isAdminScrollHidden =

@@ -29,7 +29,7 @@ function NoticeBox({ id, noticeText = "공지", content, org }) {
             w-[40px] h-[25px] 
             px-[1px] py-[4px]
             rounded-[20px] 
-            text-[0.6rem]
+            text-xs
             bg-[#FFA6A6] 
             text-white text-sm font-medium flex-shrink-0
           "
