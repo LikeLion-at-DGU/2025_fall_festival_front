@@ -7,6 +7,12 @@
     "game": "Game"
   },
 
+  "banner": {
+    "joinEvent": "Join Event",
+    "playGame": "Play Game",
+    "checkLost": "Check Lost Items"
+  },
+
   "map": {
     "campusMap": "Campus Map",
     "noDetailMap": "No detailed map",
