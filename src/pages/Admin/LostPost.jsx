@@ -74,13 +74,13 @@ function LostPost() {
       }
 
       // 성공 시 2.5초 후 목록으로 이동
-      setTimeout(() => navigate("/admin/festa"), 2500);
+      setTimeout(() => navigate("/admin/festa"), 1500);
     } catch (err) {
       console.error("에러 전체:", err);
 
       // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
       if (err.response?.data?.uid_valid === false) {
-        setToastMsg(err.response.data.message || "세션이 만료되었습니다.");
+        setToastMsg("세션이 만료되었습니다. \n 다시 로그인해주세요");
         setTimeout(() => {
           navigate("/admin/login");
         }, 1500);
