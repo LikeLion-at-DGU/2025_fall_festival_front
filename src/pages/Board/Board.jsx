@@ -67,7 +67,7 @@ function EmptyState({ hasSearchKeyword, activeTag }) {
         alt="빈 상태"
         className="w-[224.556px] h-[43px] mb-4 opacity-60"
       />
-      <p className="text-[#b6b6ba] text-center text-[18px] font-normal leading-[130%]">
+      <p className="text-center text-[#71717A] text-xl font-medium">
         {getEmptyMessage()}
       </p>
     </div>
