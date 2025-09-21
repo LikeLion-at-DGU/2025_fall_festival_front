@@ -12,7 +12,6 @@ export const TranslationProvider = ({ children }) => {
   // 언어 변경 감지
   useEffect(() => {
     const handleLanguageChange = () => {
-      console.log("언어 변경 감지:", i18n.language);
       // 언어가 변경되면 캐시 초기화
       setTranslations({});
       setPendingTranslations(new Set());
@@ -34,27 +33,13 @@ export const TranslationProvider = ({ children }) => {
       return;
     }
 
-    console.log("번역 시작 - 언어:", i18n.language, "아이템 수:", items.length);
-
     try {
       const results = await translateBatch(items, i18n.language);
-      console.log("번역 결과:", results);
 
       const newTranslations = {};
 
       results.forEach((result) => {
         const key = `${result.entity_type}-${result.entity_id}-${result.field}`;
-        console.log("번역 결과 처리:", {
-          key,
-          result,
-          translated: result.translated,
-          meta: result.translated?.meta,
-        });
-
-        // meta 정보 상세 출력
-        if (result.translated?.meta) {
-          console.log(`${key} meta 상세:`, result.translated.meta);
-        }
 
         // 번역 실패 시 원문 사용
         const sourceText =
@@ -133,14 +118,6 @@ export const TranslationProvider = ({ children }) => {
   const getTranslation = (entityType, entityId, field, sourceText) => {
     const key = `${entityType}-${entityId}-${field}`;
     const translation = translations[key];
-
-    console.log("getTranslation 호출:", {
-      key,
-      sourceText,
-      translation: translation?.text,
-      status: translation?.status,
-      hasTranslation: !!translation,
-    });
 
     if (translation && translation.status === "ok") {
       return translation.text;
