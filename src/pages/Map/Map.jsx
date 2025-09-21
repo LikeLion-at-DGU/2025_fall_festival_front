@@ -51,11 +51,12 @@ function Map() {
         <div className="flex flex-col gap-[26px] h-full">
           <div className="flex flex-col gap-[20px]">
             <SearchBar searchTerm={searchText} setSearchTerm={setSearchText} />
-            <FilterBar
-              selectedFilter={selectedFilter}
-              setSelectedFilter={setSelectedFilter}
-              onFilterClick={handleFilterClick}
-            />
+          <FilterBar
+  selectedFilter={selectedFilter}
+  setSelectedFilter={setSelectedFilter}
+  onFilterClick={handlePinClick}   // 여기서 selectedPin을 null로 만듦
+/>
+
           </div>
           <MapContainer
             apiData={filteredBooths}
