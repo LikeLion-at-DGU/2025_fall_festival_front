@@ -12,8 +12,7 @@ export const mapConfigs = {
 만해광장: {
   img: DetailMapManhae,
   schedules: {
-        "2024-09-24:day": [
-    ],
+   
     "2024-09-25:day": [
       { label: "갤럭시아머니트리", x: 40, y: 50 },
       { label: "스타벅스 RTD", x: 80, y: 50 },

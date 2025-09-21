@@ -235,7 +235,7 @@ function PullList({
               </span>
             </div>
           ) : (
-            <div className="w-full flex flex-col gap-2">
+            <div className="w-full flex flex-col gap-[12px]">
               {sortedBooths.map((booth) => {
                 const boothName = booth.name;
                 const locationName = booth.location?.name ?? "";
