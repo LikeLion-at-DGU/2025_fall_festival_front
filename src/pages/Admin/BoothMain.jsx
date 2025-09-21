@@ -58,6 +58,7 @@ function BoothMain() {
           {events.map((event) => (
             <NoticeBox
               key={event.id}
+              id={event.id}
               noticeText="이벤트"
               content={event.title}
               org={event.booth_name}
