@@ -66,8 +66,8 @@ const useBoothLikes = (
         : Math.max(0, likesCount - 1);
       setLikesCount(newLikesCount);
 
-      const storedUserId = localStorage.getItem("user_id");
-      const userId = storedUserId ? parseInt(storedUserId) : null;
+      const storedUserId = localStorage.getItem("booth_user_id");
+      const userId = storedUserId || null;
 
       let response;
       try {
@@ -77,11 +77,9 @@ const useBoothLikes = (
           setLikesCount(response.likes_count);
           setIsLiked(response.is_liked);
 
-          if (response.user_id && response.user_id !== userId) {
-            localStorage.setItem("user_id", response.user_id.toString());
-          } else if (!response.user_id && !userId) {
-            const tempUserId = Math.floor(Math.random() * 1000000);
-            localStorage.setItem("user_id", tempUserId.toString());
+          // 백엔드에서 받은 user_id를 저장 (Django 세션 키)
+          if (response.user_id) {
+            localStorage.setItem("booth_user_id", response.user_id);
           }
         }
 

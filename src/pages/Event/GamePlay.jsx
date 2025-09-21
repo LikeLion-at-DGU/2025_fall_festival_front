@@ -124,53 +124,59 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
     );
 
   return (
-    <div className="w-full max-w-[430px] mx-auto h-screen relative bg-neutral-100 overflow-hidden flex flex-col items-center px-4">
-      {/* 게임 헤더 */}
-      <GameHeader round={currentStage} currentStep={currentStage} />
-
-      {/* 진행률 바 */}
-      <ProgressBar timeProgress={timeProgress} isTimeOut={gameStatus === "timeout"} />
-
-      {/* 상태 메시지 */}
-      <StatusMessage
-        targetWord={currentWordSet.target}
-        gameStatus={gameStatus}
-      />
-
-      {/* 타이머 (개발용 - 필요시 제거)
-      {gameStatus === "playing" && (
-        <div className="absolute top-[140px] left-[16px] text-sm text-neutral-500">
-          남은 시간: {timeLeft.toFixed(1)}초
+    <div className="w-full min-h-screen relative bg-neutral-100 overflow-hidden">
+      <div className="w-full max-w-[430px] mx-auto min-h-screen flex flex-col items-center px-4 py-safe">
+        {/* 게임 헤더 */}
+        <div className="w-full flex-shrink-0 mt-safe">
+          <GameHeader round={currentStage} currentStep={currentStage} />
         </div>
-      )} */}
 
-      {/* 단어 격자 */}
-      <div className="mt-[178px] flex flex-col items-center">
-        <WordGrid
-          words={words}
-          size={getGameStage(currentStage).size}
-          correctAnswer={correctAnswer}
-          onWordClick={handleWordClick}
-          gameStatus={gameStatus}
-        />
+        {/* 진행률 바 */}
+        <div className="w-full flex-shrink-0">
+          <ProgressBar timeProgress={timeProgress} isTimeOut={gameStatus === "timeout"} />
+        </div>
 
-        {/* 액션 버튼 - 고정 위치 */}
-        <div className="mt-[521px] w-80 px-4">
-          <ActionButton
+        {/* 상태 메시지 */}
+        <div className="w-full flex-shrink-0">
+          <StatusMessage
+            targetWord={currentWordSet.target}
             gameStatus={gameStatus}
-            onNextStep={handleNextStep}
-            onRetry={handleRetry}
-            onStartGame={startGame}
-            currentStage={currentStage}
           />
         </div>
-      </div>
 
-      {/* 게임 완료 모달 (성공 시만) */}
-      <GameSuccessModal
-        isOpen={showCompleteModal}
-        onClose={handleModalClose}
-      />
+        {/* 게임 영역 - 남은 공간을 차지하며 중앙 정렬 */}
+        <div className="flex-1 flex flex-col justify-center items-center w-full py-8 min-h-0">
+          {/* 단어 격자 */}
+          <div className="flex justify-center items-center">
+            <WordGrid
+              words={words}
+              size={getGameStage(currentStage).size}
+              correctAnswer={correctAnswer}
+              onWordClick={handleWordClick}
+              gameStatus={gameStatus}
+            />
+          </div>
+        </div>
+
+        {/* 액션 버튼 - 하단 고정 */}
+        <div className="w-full flex-shrink-0 pb-safe">
+          <div className="w-full max-w-80 mx-auto px-4">
+            <ActionButton
+              gameStatus={gameStatus}
+              onNextStep={handleNextStep}
+              onRetry={handleRetry}
+              onStartGame={startGame}
+              currentStage={currentStage}
+            />
+          </div>
+        </div>
+
+        {/* 게임 완료 모달 (성공 시만) */}
+        <GameSuccessModal
+          isOpen={showCompleteModal}
+          onClose={handleModalClose}
+        />
+      </div>
     </div>
   );
 }

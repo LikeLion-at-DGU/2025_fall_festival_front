@@ -19,48 +19,19 @@ const WordCard = ({ text, size, status = 'Normal', onClick, isCorrectAnswer = fa
   const getSizeClasses = () => {
     switch (size) {
       case 'XL':
-        return 'w-40 h-56 text-3xl leading-10';
+        return 'w-40 h-56';
       case 'L':
-        return 'w-24 h-36 text-2xl leading-loose';
+        return 'w-24 h-36';
       case 'M':
-        return 'w-20 h-28 text-base leading-normal';
+        return 'w-20 h-28';
       case 'S':
-        return 'w-14 h-20 text-sm leading-tight';
+        return 'w-14 h-20';
       default:
-        return 'w-24 h-36 text-2xl leading-loose';
+        return 'w-24 h-36';
     }
   };
 
-  const getAnswerBackground = () => {
-    switch (size) {
-      case 'XL':
-        return AnswerXL;
-      case 'L':
-        return AnswerL;
-      case 'M':
-        return AnswerM;
-      case 'S':
-        return AnswerS;
-      default:
-        return AnswerL;
-    }
-  };
-
-  const getCardClasses = () => {
-    if (status === 'Answer' || isCorrectAnswer) {
-      return 'rounded-2xl shadow-[0px_3px_5px_0px_rgba(0,0,0,0.10)]';
-    }
-    return 'bg-white rounded-2xl shadow-[0px_3px_5px_0px_rgba(0,0,0,0.10)]';
-  };
-
-  const getTextClasses = () => {
-    if (status === 'Answer' || isCorrectAnswer) {
-      return 'text-primary-50';
-    }
-    return 'text-neutral-600';
-  };
-
-  const getTextSize = () => {
+  const getTextSizeClasses = () => {
     switch (size) {
       case 'XL':
         return 'text-3xl leading-10';
@@ -75,33 +46,55 @@ const WordCard = ({ text, size, status = 'Normal', onClick, isCorrectAnswer = fa
     }
   };
 
+  const getAnswerBackground = () => {
+    switch (size) {
+      case 'XL':
+        return AnswerXL;
+      case 'L':
+        return AnswerXL;
+      case 'M':
+        return AnswerL;
+      case 'S':
+        return AnswerM;
+      default:
+        return AnswerL;
+    }
+  };
+
+  const getTextClasses = () => {
+    if (status === 'Answer' || isCorrectAnswer) {
+      return 'text-primary-50';
+    }
+    return 'text-neutral-600';
+  };
+
   const sizeClasses = getSizeClasses();
 
   return (
-    <div 
-      data-size={size} 
+    <div
+      data-size={size}
       data-status={status}
-      className={`${sizeClasses} py-10 relative cursor-pointer hover:scale-105 transition-transform flex justify-center items-center gap-2.5`}
+      className={`${sizeClasses} relative cursor-pointer hover:scale-105 transition-transform`}
       onClick={onClick}
     >
-      {/* 카드 배경 */}
-      <div 
-        className={`${sizeClasses} absolute ${getCardClasses()}`}
-        style={
-          status === 'Answer' || isCorrectAnswer
-            ? {
-                backgroundImage: `url(${getAnswerBackground()})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
-              }
-            : {}
-        }
-      ></div>
+      {/* 정답일 때 SVG 배경 */}
+      {(status === 'Answer' || isCorrectAnswer) && (
+        <img
+          src={getAnswerBackground()}
+          alt="정답 배경"
+          className={`${sizeClasses} absolute inset-0 w-full h-full rounded-2xl object-contain`}
+        />
+      )}
 
-      
-      {/* 텍스트 - 피그마 디자인에 맞게 */}
-      <div className={`text-center justify-center font-semibold font-['SUITE'] ${getTextClasses()} ${getTextSize()} relative z-10`}>
+      {/* 일반 카드 배경 */}
+      {!(status === 'Answer' || isCorrectAnswer) && (
+        <div
+          className={`${sizeClasses} absolute inset-0 rounded-2xl bg-white shadow-md`}
+        />
+      )}
+
+      {/* 텍스트 중앙 정렬 */}
+      <div className={`absolute inset-0 flex justify-center items-center font-semibold font-['SUITE'] ${getTextClasses()} ${getTextSizeClasses()} z-10 select-none`}>
         {text || '텍스트 없음'}
       </div>
     </div>

@@ -33,32 +33,66 @@ function GameSuccessModal({ isOpen, onClose }) {
   const renderModalContent = () => {
     switch (currentStep) {
       case 1:
-        // 축하드립니다 모달
+        // 축하드립니다 모달 - 새로운 디자인
         return (
-          <div className="w-72 h-56 relative bg-white rounded-2xl overflow-hidden shadow-xl">
-            <div 
-              className="left-[273px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-['SUITE'] leading-normal cursor-pointer"
-              onClick={handleClose}
-            >
-              X
-            </div>
-            <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-8">
-              <div className="flex flex-col justify-start items-start gap-1.5">
-                <div className="w-60 flex flex-col justify-start items-center">
-                  <div className="self-stretch text-center justify-start text-neutral-600 text-xl font-normal font-['SUITE'] leading-relaxed">축하드립니다!</div>
-                  <div className="self-stretch text-center justify-start text-neutral-300 text-xs font-normal font-['SUITE'] leading-none">기록 : 상위 12%</div>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="w-80 bg-white rounded-3xl p-8 relative shadow-2xl">
+              {/* 닫기 버튼 */}
+              <button 
+                className="absolute top-6 right-6 text-neutral-400 hover:text-neutral-600 text-xl font-bold"
+                onClick={handleClose}
+              >
+                ×
+              </button>
+              
+              {/* 카드 그리드 */}
+              <div className="flex flex-col items-center gap-4 mb-8">
+                {/* 첫 번째 줄 - XL 카드 */}
+                <div className="flex justify-center">
+                  <div className="w-32 h-44 rounded-2xl bg-gradient-to-br from-pink-200 to-red-400 shadow-lg relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-radial from-white/30 via-transparent to-transparent opacity-60"></div>
+                  </div>
                 </div>
-                <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-['SUITE'] leading-none">
-                  모든 단계를 시간 안에 클리어하셨습니다.<br/>그럼 두근두근... 상자를 열어볼까요?
+                
+                {/* 두 번째 줄 - L 카드 */}
+                <div className="flex justify-center">
+                  <div className="w-20 h-32 rounded-2xl bg-gradient-to-br from-pink-200 to-red-400 shadow-lg relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-radial from-white/30 via-transparent to-transparent opacity-60"></div>
+                  </div>
+                </div>
+                
+                {/* 세 번째 줄 - M 카드 */}
+                <div className="flex justify-center">
+                  <div className="w-16 h-24 rounded-2xl bg-gradient-to-br from-pink-200 to-red-400 shadow-lg relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-radial from-white/30 via-transparent to-transparent opacity-60"></div>
+                  </div>
+                </div>
+                
+                {/* 네 번째 줄 - S 카드 */}
+                <div className="flex justify-center">
+                  <div className="w-12 h-18 rounded-2xl bg-gradient-to-br from-pink-200 to-red-400 shadow-lg relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-radial from-white/30 via-transparent to-transparent opacity-60"></div>
+                  </div>
                 </div>
               </div>
-              <div 
-                data-status="Header" 
-                className="self-stretch h-9 px-6 py-4 bg-primary-400 rounded-xl flex flex-col justify-between items-center cursor-pointer hover:bg-primary-500 transition-colors"
+
+              {/* 텍스트 */}
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-bold text-neutral-700 mb-2">축하드립니다!</h2>
+                <p className="text-sm text-neutral-500 mb-1">기록 : 상위 12%</p>
+                <p className="text-xs text-neutral-600 leading-relaxed">
+                  모든 단계를 시간 안에 클리어하셨습니다.<br/>
+                  그럼 두근두근... 상자를 열어볼까요?
+                </p>
+              </div>
+
+              {/* 버튼 */}
+              <button 
+                className="w-full py-3 bg-primary-400 hover:bg-primary-500 text-white font-semibold rounded-xl transition-colors"
                 onClick={handleNextStep}
               >
-                <div className="text-center justify-start text-neutral-100 text-sm font-semibold font-['SUITE'] leading-tight">상자 열어보기</div>
-              </div>
+                상자 열어보기
+              </button>
             </div>
           </div>
         );
@@ -66,13 +100,8 @@ function GameSuccessModal({ isOpen, onClose }) {
       case 2:
         // 대박... 당첨! (부스 선택) 모달
         return (
-          <div className="w-72 h-56 relative bg-white rounded-2xl overflow-hidden shadow-xl">
-            <div 
-              className="left-[273px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-['SUITE'] leading-normal cursor-pointer"
-              onClick={handleClose}
-            >
-              X
-            </div>
+          <div className="w-72 h-56 relative bg-neutral-000 rounded-2xl overflow-hidden">
+            <div className="left-[273px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-['SUITE'] leading-normal cursor-pointer" onClick={handleClose}>X</div>
             <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-6">
               <div className="flex flex-col justify-start items-center gap-1.5">
                 <div className="flex flex-col justify-start items-start gap-4">
@@ -81,10 +110,7 @@ function GameSuccessModal({ isOpen, onClose }) {
                   </div>
                   <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-['SUITE'] leading-none">쿠폰에 당첨되었어요! 사용할 주점을 골라주세요</div>
                 </div>
-                <div 
-                  className="w-64 bg-neutral-100 rounded-xl flex flex-col justify-start items-start overflow-hidden cursor-pointer hover:bg-neutral-200 transition-colors"
-                  onClick={() => setShowBoothList(true)}
-                >
+                <div className="w-64 bg-neutral-100 rounded-xl flex flex-col justify-start items-start overflow-hidden cursor-pointer" onClick={() => setShowBoothList(true)}>
                   <div className="self-stretch h-7 p-4 flex flex-col justify-between items-center">
                     <div className="self-stretch inline-flex justify-start items-center gap-2">
                       <div className="flex-1 justify-start text-neutral-500 text-[10px] font-semibold font-['SUITE'] leading-none">{selectedBooth}</div>
@@ -93,11 +119,7 @@ function GameSuccessModal({ isOpen, onClose }) {
                   </div>
                 </div>
               </div>
-              <div 
-                data-status="Header" 
-                className="self-stretch h-9 px-6 py-4 bg-primary-400 rounded-xl flex flex-col justify-between items-center cursor-pointer hover:bg-primary-500 transition-colors"
-                onClick={handleNextStep}
-              >
+              <div data-status="Header" className="self-stretch h-9 px-6 py-4 bg-primary-400 rounded-xl flex flex-col justify-between items-center cursor-pointer" onClick={handleNextStep}>
                 <div className="text-center justify-start text-neutral-100 text-sm font-semibold font-['SUITE'] leading-tight">쿠폰 발급받기</div>
               </div>
             </div>
