@@ -7,6 +7,15 @@
     "game": "游戏"
   },
 
+  "search": {
+    "placeholder": "请输入院系/社团/展位名称",
+    "alt": "搜索"
+  },
+  "pullList": {
+    "noBooths": "没有可用的展位",
+    "noSearchResults": "没有搜索结果"
+  },
+
   "board": {
     "searchPlaceholder": "请输入关键词",
     "tabs": {

@@ -1,7 +1,10 @@
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import SearchIcon from "../../assets/images/icons/map-icons/Search.svg";
 
 function SearchBar({ searchTerm, setSearchTerm }) {
+  const { t } = useTranslation();
+  
   return (
     <div className="mx-auto w-full">
       <div
@@ -12,7 +15,7 @@ function SearchBar({ searchTerm, setSearchTerm }) {
         <div className="w-full flex flex-row justify-between"> 
           <input
             type="text"
-            placeholder="학과/동아리/부스명을 입력하세요"
+            placeholder={t("search.placeholder")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full
@@ -20,7 +23,7 @@ function SearchBar({ searchTerm, setSearchTerm }) {
 
                focus:outline-none"
           />
-          <img src={SearchIcon} alt="검색" className="w-4 h-4 opacity-60" />
+          <img src={SearchIcon} alt={t("search.alt")} className="w-4 h-4 opacity-60" />
         </div>
       </div>
     </div>

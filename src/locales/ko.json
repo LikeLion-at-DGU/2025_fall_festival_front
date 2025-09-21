@@ -7,6 +7,15 @@
     "game": "게임"
   },
 
+  "search": {
+    "placeholder": "학과/동아리/부스명을 입력하세요",
+    "alt": "검색"
+  },
+  "pullList": {
+    "noBooths": "부스가 없어요",
+    "noSearchResults": "검색 결과가 없어요"
+  },
+
   "board": {
     "searchPlaceholder": "검색어를 입력해주세요",
     "tabs": {

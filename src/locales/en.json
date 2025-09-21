@@ -7,6 +7,15 @@
     "game": "Game"
   },
   
+  "search": {
+    "placeholder": "Enter department/club/booth name",
+    "alt": "Search"
+  },
+  "pullList": {
+    "noBooths": "No booths available",
+    "noSearchResults": "No search results"
+  },
+
   "board": {
     "searchPlaceholder": "Enter a keyword",
     "tabs": {
