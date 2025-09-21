@@ -7,7 +7,7 @@ function SearchBar({ searchTerm, setSearchTerm }) {
       <div className="z-10 relative flex flex-col items-start self-stretch p-[8px] px-[16px] gap-[10px] rounded-[8px] bg-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]">
         <input
           type="text"
-          placeholder="학과/동아리/부스명을 입력하세요"
+          placeholder="부스명을 입력해주세요"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="w-full
