@@ -55,6 +55,7 @@
   },
 
   "board": {
+    "title": "게시판",
     "searchPlaceholder": "검색어를 입력해주세요",
     "tabs": {
       "all": "전체",

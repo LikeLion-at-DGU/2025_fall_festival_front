@@ -55,6 +55,7 @@
   },
 
   "board": {
+    "title": "公告板",
     "searchPlaceholder": "请输入关键词",
     "tabs": {
       "all": "全部",

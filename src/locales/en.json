@@ -55,6 +55,7 @@
   },
 
   "board": {
+    "title": "Board",
     "searchPlaceholder": "Enter a keyword",
     "tabs": {
       "all": "All",

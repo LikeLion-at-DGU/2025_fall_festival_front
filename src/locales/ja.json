@@ -55,6 +55,7 @@
   },
 
   "board": {
+    "title": "掲示板",
     "searchPlaceholder": "検索語を入力してください",
     "tabs": {
       "all": "全体",
