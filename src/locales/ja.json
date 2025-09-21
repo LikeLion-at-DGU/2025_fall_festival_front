@@ -52,6 +52,11 @@
     "congratsTitle": "おめでとうございます！",
     "congratsMessage": "すべてのステージを無事にクリアしました！\n本当に素晴らしい集中力でした :)",
     "retry": "もう一度挑戦"
+  },
+
+  "booth": {
+    "nightBooth": "夜間ブース",
+    "dayBooth": "日間ブース",
+    "preparingHours": "営業時間準備中"
   }
-  
 }

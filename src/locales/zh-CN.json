@@ -25,7 +25,7 @@
     },
     "loading": "加载中…",
     "error": "无法加载帖子。",
-    
+
     "writer": "作者",
     "lostLocation": "发现地点",
     "boothLocation": "展位位置",
@@ -52,6 +52,11 @@
     "congratsTitle": "恭喜！",
     "congratsMessage": "你已成功完成所有关卡！\n你的专注力真的很棒 :)",
     "retry": "再试一次"
+  },
+
+  "booth": {
+    "nightBooth": "夜间摊位",
+    "dayBooth": "日间摊位",
+    "preparingHours": "营业时间准备中"
   }
-  
 }
