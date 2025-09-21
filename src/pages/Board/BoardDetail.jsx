@@ -182,6 +182,71 @@ export default function BoardDetail() {
     }
   }, [post, requestSingleTranslation]);
 
+  // 관련 게시물 번역 요청
+  useEffect(() => {
+    if (!related || related.length === 0) return;
+
+    related.forEach((item) => {
+      // 관련 게시물 제목 번역 요청
+      if (item.title) {
+        requestSingleTranslation({
+          entity_type: "board",
+          entity_id: item.id.toString(),
+          field: "BoardTitle",
+          source_lang: "ko",
+          source_text: item.title,
+        });
+      }
+
+      // 관련 게시물의 부스 정보 번역 요청
+      if (item.booth_name && item.booth_id) {
+        requestSingleTranslation({
+          entity_type: "booth",
+          entity_id: item.booth_id.toString(),
+          field: "BoothName",
+          source_lang: "ko",
+          source_text: item.booth_name,
+        });
+      }
+
+      if (item.writer) {
+        requestSingleTranslation({
+          entity_type: "writer",
+          entity_id: item.id.toString(),
+          field: "WriterName",
+          source_lang: "ko",
+          source_text: item.writer,
+        });
+      }
+    });
+  }, [related, requestSingleTranslation]);
+
+  // 현재 게시물의 부스 정보 번역 요청
+  useEffect(() => {
+    if (!post?.booth_name || !post?.booth_id) return;
+
+    requestSingleTranslation({
+      entity_type: "booth",
+      entity_id: post.booth_id.toString(),
+      field: "BoothName",
+      source_lang: "ko",
+      source_text: post.booth_name,
+    });
+  }, [post?.booth_name, post?.booth_id, requestSingleTranslation]);
+
+  // 현재 게시물의 작성자 이름 번역 요청 (모든 작성자)
+  useEffect(() => {
+    if (!post?.writer) return;
+
+    requestSingleTranslation({
+      entity_type: "writer",
+      entity_id: post.id.toString(),
+      field: "WriterName",
+      source_lang: "ko",
+      source_text: post.writer,
+    });
+  }, [post?.writer, post?.id, requestSingleTranslation]);
+
   // 이벤트/공지/분실물 작성자 보정: writer 없으면 booth_name 사용
   const displayWriter = post?.writer || post?.booth_name || "";
 
@@ -271,13 +336,20 @@ export default function BoardDetail() {
                     <p>
                       <span className="text-gray-400">작성자 : </span>
                       <span className="text-[#52525B]">
-                        {post?.booth_name && displayWriter === post.booth_name
+                        {post?.booth_name
                           ? getTranslation(
                               "booth",
                               post.booth_id?.toString() ||
                                 post.booth_name.toLowerCase(),
                               "BoothName",
-                              displayWriter
+                              post.booth_name
+                            )
+                          : post?.writer
+                          ? getTranslation(
+                              "writer",
+                              post.id.toString(),
+                              "WriterName",
+                              post.writer
                             )
                           : displayWriter}
                       </span>
@@ -401,11 +473,38 @@ export default function BoardDetail() {
                           </div>
                           <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
                             <p className="truncate text-[#52525B] font-suite text-[16px] not-italic font-semibold leading-[150%]">
-                              {item.title}
+                              {getTranslation(
+                                "board",
+                                item.id,
+                                "BoardTitle",
+                                item.title
+                              )}
                             </p>
                             {writerOrBooth && (
                               <span className="text-[#52525B] font-suite text-[12px] not-italic font-normal leading-[150%] shrink-0">
-                                - {writerOrBooth}
+                                -{" "}
+                                {item?.booth_name
+                                  ? getTranslation(
+                                      "booth",
+                                      item.booth_id?.toString() ||
+                                        item.booth_name.toLowerCase(),
+                                      "BoothName",
+                                      item.booth_name
+                                    )
+                                  : item?.writer
+                                  ? (() => {
+                                      const translatedName = getTranslation(
+                                        "writer",
+                                        item.id.toString(),
+                                        "WriterName",
+                                        item.writer
+                                      );
+                                      return translatedName.length > 20
+                                        ? translatedName.substring(0, 20) +
+                                            "..."
+                                        : translatedName;
+                                    })()
+                                  : writerOrBooth}
                               </span>
                             )}
                           </div>
