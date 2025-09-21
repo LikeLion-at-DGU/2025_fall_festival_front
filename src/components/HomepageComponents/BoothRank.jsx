@@ -5,6 +5,7 @@ import Skeleton from "../Skeleton/Skeleton";
 import { getBoothRanking } from "../../apis/mainpage";
 import { formatTimeWithDay } from "../../utils/dateUtils";
 import { useBoothTranslation } from "../../hooks/useTranslation";
+import { useTranslation } from "react-i18next"; 
 
 const BoothRank = ({ onDataChange }) => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const BoothRank = ({ onDataChange }) => {
 
   // 번역 훅 사용
   const { getTranslatedBooths } = useBoothTranslation(rankData);
+  const { t } = useTranslation(); 
 
   const handleBoothClick = (booth) => {
     navigate(`/booth/${booth.id}`, { state: { booth } });
@@ -79,7 +81,7 @@ const BoothRank = ({ onDataChange }) => {
     <div className="mt-[27px] mb-[32px]">
       <div className="mb-4">
         <p className="text-[20px] font-semibold font-suite text-[#52525B]">
-          인기 부스
+          {t("booth.popular")}
         </p>
       </div>
       <div className="space-y-4">
@@ -107,7 +109,7 @@ const BoothRank = ({ onDataChange }) => {
         ) : error ? (
           <div className="mb-[74px]">
             <p className="text-[12px] font-normal leading-[150%] font-suite text-[#52525B]">
-              부스 랭킹을 불러올 수 없습니다.
+              {t("booth.rankError")}
             </p>
           </div>
         ) : rankData.length > 2 ? (
@@ -144,7 +146,7 @@ const BoothRank = ({ onDataChange }) => {
         ) : (
           <div className="mb-[74px]">
             <p className="text-[12px] font-normal leading-[150%] font-suite text-[#52525B]">
-              부스 랭킹 집계 중입니다.
+              {t("booth.rankPending")}
             </p>
           </div>
         )}

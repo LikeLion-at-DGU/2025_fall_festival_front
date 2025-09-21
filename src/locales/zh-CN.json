@@ -134,6 +134,20 @@
     "menu": "菜单",
     "lowStock": "售罄",
     "currency": "韩元",
-    "nearbyRecommendation": "附近推荐的展位"
+    "nearbyRecommendation": "附近推荐的展位",
+    "popular": "人气展位",
+    "rankError": "无法加载展位排名。",
+    "rankPending": "展位排名统计中。",
+    "event": "活动展位",
+    "eventError": "无法加载活动展位。",
+    "noEvent": "当前没有正在进行的活动展位。"
+  },
+  "common": {
+    "more": "查看更多"
+  },
+  "stage": {
+    "now": "舞台进行中",
+    "preparing": "演出准备中！",
+    "comingSoon": "敬请期待..."
   }
 }

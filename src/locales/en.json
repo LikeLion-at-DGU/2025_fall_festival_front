@@ -134,6 +134,20 @@
     "menu": "Menu",
     "lowStock": "Sold Out",
     "currency": "KRW",
-    "nearbyRecommendation": "Nearby Recommended Booths"
+    "nearbyRecommendation": "Nearby Recommended Booths",
+    "popular": "Popular Booths",
+    "rankError": "Unable to load booth rankings.",
+    "rankPending": "Booth rankings are being calculated.",
+    "event": "Event Booths",
+    "eventError": "Unable to load event booths.",
+    "noEvent": "No event booths are currently available."
+  },
+  "common": {
+    "more": "More"
+  },
+  "stage": {
+    "now": "STAGE NOW",
+    "preparing": "The performance is being prepared!",
+    "comingSoon": "Coming Soon..."
   }
 }
