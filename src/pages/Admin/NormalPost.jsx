@@ -31,15 +31,16 @@ function NormalPost() {
     } catch (err) {
         console.error("에러 전체:", err);
 
-        if (err.uidExpired) {
-          // 🔥 uid 만료 → 로그인 페이지로 이동
-          setToastMsg(err.message);
+        // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
+        if (err.response?.data?.uid_valid === false) {
+          setToastMsg(err.response.data.message || "세션이 만료되었습니다.");
           setTimeout(() => {
             navigate("/admin/login");
           }, 1500);
           return;
         }
-
+        
+        // 그 외 에러 처리
         let msg = "요청 실패";
         if (err.response) {
           if (typeof err.response.data === "string") {
