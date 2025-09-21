@@ -1,19 +1,22 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import SearchIcon from "../../assets/images/icons/map-icons/Search.svg";
 import FilterButton from "../../components/MapComponents/FilterButton";
 
 function FilterBar({ selectedFilter, setSelectedFilter, onFilterClick }) {
+  const { t } = useTranslation();
 
   // 1) 한글 ↔ 영문 매핑
   const filterMap = {
-    부스: "Booth",
-    화장실: "Toilet",
-    "주류 판매": "Drink",
-    편의점: "Store",
-    푸드트럭: "FoodTruck",
+    booth: "Booth",
+    toilet: "Toilet",
+    drink: "Drink",
+    store: "Store",
+    foodTruck: "FoodTruck",
   };
-  const filters = Object.keys(filterMap); // ["부스", "화장실", "주류 판매", "편의점", "푸드트럭"]
+  const filters = Object.keys(filterMap); 
+  // ["booth", "toilet", "drink", "store", "foodTruck"]
 
   // 2) 버튼 클릭 시
  
@@ -46,7 +49,7 @@ const handleFilterClick = (filter) => {
        isActive={filterMap[filter] === selectedFilter}
           onClick={() => handleFilterClick(filter)}
         >
-          {filter}
+          {t(`map.filters.${filter}`)}
         </FilterButton>
       ))}
     </div>

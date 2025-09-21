@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import festivalBanner from "../../assets/images/banners/festival-banner.png";
 import festivalBanner2 from "../../assets/images/banners/festival-banner2.png";
@@ -11,6 +12,7 @@ const Banner = () => {
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const banners = [
     {
@@ -24,7 +26,7 @@ const Banner = () => {
       image: festivalBanner2,
       alt: "축제 배너 2",
       hasButton: true,
-      buttonText: "이벤트 참여",
+      buttonText: t("banner.joinEvent"),
       buttonPosition: { top: "48%", left: "4%" },
     },
     {
@@ -32,7 +34,7 @@ const Banner = () => {
       image: festivalBanner3,
       alt: "축제 배너 3",
       hasButton: true,
-      buttonText: "게임하기",
+      buttonText: t("banner.playGame"),
       buttonPosition: { top: "65%", left: "6%" },
     },
     {
@@ -40,7 +42,7 @@ const Banner = () => {
       image: festivalBanner4,
       alt: "축제 배너 4",
       hasButton: true,
-      buttonText: "분실물 확인",
+      buttonText: t("banner.checkLost"),
       buttonPosition: {
         bottom: "32%",
         left: "7%",

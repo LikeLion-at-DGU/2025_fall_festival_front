@@ -10,6 +10,7 @@ import TimeCircleIcon from "../../../assets/images/icons/map-icons/TimeCircle.sv
 import LocationIcon from "../../../assets/images/icons/map-icons/Location.svg";
 import TailIcon from "../../../assets/images/icons/map-icons/triangle.svg";
 import { useTranslations } from "../../../context/TranslationContext";
+import { useTranslation } from "react-i18next";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const fmtTime = (t) => (typeof t === "string" ? t.slice(0, 5) : t);
@@ -57,6 +58,7 @@ function groupSchedules(schedules) {
 }
 
 export default function FoodTruckDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const { getTranslation, requestSingleTranslation } = useTranslations();
   const [truck, setTruck] = useState(null);
@@ -98,7 +100,7 @@ export default function FoodTruckDetail() {
     }
   }, [truck, id, requestSingleTranslation]);
 
-  if (!truck) return <div className="p-6">로딩 중...</div>;
+  if (!truck) return <div className="p-6">{t("booth.loading")}</div>;
 
   return (
     <div className="pt-6 pb-8">

@@ -7,6 +7,12 @@
     "game": "Game"
   },
 
+  "banner": {
+    "joinEvent": "Join Event",
+    "playGame": "Play Game",
+    "checkLost": "Check Lost Items"
+  },
+
   "map": {
     "campusMap": "Campus Map",
     "noDetailMap": "No detailed map",
@@ -28,6 +34,13 @@
       "mainBuilding": "Main Building",
       "science": "Science Hall",
       "wonheung": "Wonheung Hall"
+    },
+    "filters": {
+      "booth": "Booth",
+      "toilet": "Toilet",
+      "drink": "Drink",
+      "store": "Store",
+      "foodTruck": "Food Truck"
     }
   },
   "notBooth": {
@@ -48,6 +61,7 @@
   },
 
   "board": {
+    "title": "Board",
     "searchPlaceholder": "Enter a keyword",
     "tabs": {
       "all": "All",
@@ -109,6 +123,46 @@
   "booth": {
     "nightBooth": "Night Booth",
     "dayBooth": "Day Booth",
-    "preparingHours": "Preparing business hours"
+    "preparingHours": "Preparing business hours",
+    "loading": "Loading...",
+    "drinkImagePlaceholder": "Drink booth photo",
+    "tailAlt": "speech bubble tail",
+    "dorderAvailable": "Dorder available booth",
+    "locationAlt": "location icon",
+    "like": "Like",
+    "unlike": "Unlike",
+    "introduction": "Booth Introduction",
+    "noDescription": "No description available.",
+    "dorderAvailableNow": "You can enter right now!",
+    "dorderFull": "Currently full.",
+    "corners": "Operating Corners",
+    "noCorners": "No operating corners.",
+    "dorderNotice": "This is official data provided by Dorder.",
+    "menu": "Menu",
+    "lowStock": "Sold Out",
+    "currency": "KRW",
+    "nearbyRecommendation": "Nearby Recommended Booths",
+    "popular": "Popular Booths",
+    "rankError": "Unable to load booth rankings.",
+    "rankPending": "Booth rankings are being calculated.",
+    "event": "Event Booths",
+    "eventError": "Unable to load event booths.",
+    "noEvent": "No event booths are currently available."
+  },
+  "common": {
+    "more": "More"
+  },
+  "stage": {
+    "now": "STAGE NOW",
+    "preparing": "The performance is being prepared!",
+    "comingSoon": "Coming Soon..."
+  },
+
+  "footer": {
+    "team": "LikeLion at Dongguk University",
+    "copyright": "@LIKELION DGU. All rights Reserved",
+    "dataSupport": "@Data supported by Festival Committee",
+    "admin": "Administrator",
+    "instagram": "Instagram"
   }
 }

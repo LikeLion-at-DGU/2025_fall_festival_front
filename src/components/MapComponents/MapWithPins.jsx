@@ -54,6 +54,7 @@ const MapWithPins = ({
       const local = buildingLocations.find((b) => b.ko === item.location?.name);
       if (!local) {
         console.log(t("map.noDetailMap"), item.location?.name);
+        return null; // 안전 처리
       }
       // console.log("매핑 성공:", local); // 디버깅
       return {

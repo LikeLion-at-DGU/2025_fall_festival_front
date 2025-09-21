@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import dirvana from "../../assets/images/icons/logo/dirvanawhite.png";
 import dorder from "../../assets/images/icons/logo/dorder.png";
@@ -9,6 +10,7 @@ import line from "../../assets/images/icons/logo/line.svg";
 
 const Footer = () => {
   const fontClass = "text-center whitespace-nowrap font-normal";
+  const { t } = useTranslation();
   return (
     <footer
       className={`flex flex-col items-center justify-between
@@ -28,7 +30,7 @@ const Footer = () => {
         <span
           className={`${fontClass} font-suite font-normal text-white mb-[8px]`}
         >
-          동국대학교 멋쟁이사자처럼
+          {t("footer.team")}
           <br />
           @LIKELION DGU. All rights Reserved
         </span>
@@ -37,7 +39,7 @@ const Footer = () => {
         <span
           className={`${fontClass} font-suite font-light text-white mb-[27px]`}
         >
-          @Data supported by 축제기획단
+          {t("footer.dataSupport")}
         </span>
 
         {/* 로고 + 텍스트 */}
