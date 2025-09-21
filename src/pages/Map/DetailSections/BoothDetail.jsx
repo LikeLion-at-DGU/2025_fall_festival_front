@@ -168,7 +168,7 @@ export default function BoothDetail() {
     }
   }, [booth, id, requestSingleTranslation]);
 
-  if (!booth) return <div className="p-6">로딩 중...</div>;
+  if (!booth) return <div className="p-6">{t("booth.loading")}</div>;
 
   return (
     <div className="flex flex-col w-[343px] mx-auto items-center pt-6 pb-8 space-y-3">
@@ -190,7 +190,7 @@ export default function BoothDetail() {
         <img
           src={tail}
           className="absolute -top-6 left-10 -translate-x-1/2"
-          alt="tail"
+          alt={t("booth.tailAlt")}
         />
         <div className="flex justify-between items-start">
           {/* 왼쪽 영역 */}
@@ -219,7 +219,7 @@ export default function BoothDetail() {
                   className="w-[21.5px] h-[21.5px]"
                 />
                 <span className="text-red-500 text-sm font-medium">
-                  디오더 사용 가능 주점
+                  {t("booth.dorderAvailable")}
                 </span>
               </div>
             )}
@@ -245,7 +245,7 @@ export default function BoothDetail() {
             <div className="flex items-center gap-2 mt-1 text-[14px] text-gray-600">
               <img
                 src={LocationIcon}
-                alt="location"
+                alt={t("booth.locationAlt")}
                 className="w-[21.5px] h-[24px]"
               />
               <span>
@@ -266,7 +266,7 @@ export default function BoothDetail() {
               disabled={loading}
               className="w-[25px] h-[24px] flex items-center justify-center hover:scale-110 transition-transform duration-200 disabled:opacity-50"
               aria-pressed={isLiked}
-              aria-label={isLiked ? "좋아요 취소" : "좋아요"}
+              aria-label={isLiked ? t("booth.unlike") : t("booth.like")}
             >
               <img
                 src={isLiked ? HeartIcon : UnheartIcon}
@@ -287,7 +287,7 @@ export default function BoothDetail() {
           booth.is_night ? "!mt-4" : "!mt-10"
         }`}
       >
-        <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">부스 소개</h2>
+        <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">{t("booth.introduction")}</h2>
         <p className="text-sm text-gray-700">
           {booth.booth_description
             ? getTranslation(
@@ -296,7 +296,7 @@ export default function BoothDetail() {
                 "BoothDescription",
                 booth.booth_description
               )
-            : "소개글이 없습니다."}
+            : t("booth.noDescription")}
         </p>
       </div>
 
@@ -314,7 +314,7 @@ export default function BoothDetail() {
               >
                 <circle cx="5" cy="5" r="5" fill="#E65B4D" />
               </svg>
-              <span>현재 바로 입장 가능합니다!</span>
+              <span>{t("booth.dorderAvailableNow")}</span>
             </div>
           ) : (
             <div className="flex items-center gap-2">
@@ -327,7 +327,7 @@ export default function BoothDetail() {
               >
                 <circle cx="5" cy="5" r="5" fill="#A1A1AA" />
               </svg>
-              <span>현재 만석입니다.</span>
+              <span>{t("booth.dorderFull")}</span>
             </div>
           )}
         </div>
@@ -337,7 +337,7 @@ export default function BoothDetail() {
       {!booth.is_night && (
         <div className="w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] !mt-4">
           <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">
-            운영 코너
+            {t("booth.corners")}
           </h2>
           {booth.corners?.length > 0 ? (
             <ul className="list-disc ml-5 text-sm">
@@ -353,7 +353,7 @@ export default function BoothDetail() {
               ))}
             </ul>
           ) : (
-            <p className="text-sm text-gray-700">운영 코너가 없습니다.</p>
+            <p className="text-sm text-gray-700">{t("booth.noCorners")}</p>
           )}
         </div>
       )}
@@ -364,7 +364,7 @@ export default function BoothDetail() {
       {/* 디오더 안내문구 */}
       {booth.is_dorder && (
         <p className="mt-[16px] text-[15px] text-[#71717A] text-left w-full">
-          디오더 측에서 제공하는 공식 데이터입니다
+          {t("booth.dorderNotice")}
         </p>
       )}
     </div>

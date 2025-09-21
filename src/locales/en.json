@@ -116,6 +116,24 @@
   "booth": {
     "nightBooth": "Night Booth",
     "dayBooth": "Day Booth",
-    "preparingHours": "Preparing business hours"
+    "preparingHours": "Preparing business hours",
+    "loading": "Loading...",
+    "drinkImagePlaceholder": "Drink booth photo",
+    "tailAlt": "speech bubble tail",
+    "dorderAvailable": "Dorder available booth",
+    "locationAlt": "location icon",
+    "like": "Like",
+    "unlike": "Unlike",
+    "introduction": "Booth Introduction",
+    "noDescription": "No description available.",
+    "dorderAvailableNow": "You can enter right now!",
+    "dorderFull": "Currently full.",
+    "corners": "Operating Corners",
+    "noCorners": "No operating corners.",
+    "dorderNotice": "This is official data provided by Dorder.",
+    "menu": "Menu",
+    "lowStock": "Sold Out",
+    "currency": "KRW",
+    "nearbyRecommendation": "Nearby Recommended Booths"
   }
 }

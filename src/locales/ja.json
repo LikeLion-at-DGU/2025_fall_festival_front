@@ -116,6 +116,24 @@
   "booth": {
     "nightBooth": "夜間ブース",
     "dayBooth": "日間ブース",
-    "preparingHours": "営業時間準備中"
+    "preparingHours": "営業時間準備中",
+    "loading": "読み込み中...",
+    "drinkImagePlaceholder": "酒ブースの写真",
+    "tailAlt": "吹き出しのしっぽ",
+    "dorderAvailable": "Dorder利用可能ブース",
+    "locationAlt": "位置アイコン",
+    "like": "いいね",
+    "unlike": "いいね解除",
+    "introduction": "ブース紹介",
+    "noDescription": "紹介文がありません。",
+    "dorderAvailableNow": "今すぐ入場できます！",
+    "dorderFull": "現在満席です。",
+    "corners": "運営コーナー",
+    "noCorners": "運営コーナーはありません。",
+    "dorderNotice": "これはDorderが提供する公式データです。",
+    "menu": "メニュー",
+    "lowStock": "売り切れ",
+    "currency": "ウォン",
+    "nearbyRecommendation": "近くのおすすめブース"
   }
 }
