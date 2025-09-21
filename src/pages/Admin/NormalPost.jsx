@@ -26,6 +26,8 @@ function NormalPost() {
       } else {
         // 신규 작성
         const res = await createNormalPost(payload);
+        console.log("✅ 작성 응답:", res);
+        console.log("✅ uid_valid:", res.uid_valid);
         setToastMsg(res.message || "공지가 등록되었습니다");
       }
     } catch (err) {
@@ -33,7 +35,8 @@ function NormalPost() {
 
         // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
         if (err.response?.data?.uid_valid === false) {
-          setToastMsg(err.response.data.message || "세션이 만료되었습니다.");
+          console.log("❌ uid_valid:", err.response.data.uid_valid);
+          setToastMsg("세션이 만료되었습니다. \n 다시 로그인해주세요");
           setTimeout(() => {
             navigate("/admin/login");
           }, 1500);
@@ -54,7 +57,6 @@ function NormalPost() {
         } else {
           msg = err.message;
         }
-
         setToastMsg(msg);
       }
   };
@@ -64,7 +66,7 @@ function NormalPost() {
     if (toastMsg && (toastMsg.includes("수정") || toastMsg.includes("완료"))) {
       const timer = setTimeout(() => {
         navigate("/admin/festa");
-      }, 2000);
+      }, 1500);
       return () => clearTimeout(timer);
     }
   }, [toastMsg, navigate]);
@@ -98,7 +100,7 @@ function NormalPost() {
         onClick={handleSubmit}
         disabled={isDisabled}
       />
-
+      
       {/* ✅ 토스트 메시지 표시 */}
       {toastMsg && (
         <ToastMessage text={toastMsg} onClose={() => setToastMsg("")} />
