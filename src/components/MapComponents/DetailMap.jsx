@@ -24,7 +24,7 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
 
           const { startDate, endDate, startTime, endTime } = btn.showIf;
           // const now = new Date();
-const now = new Date("2025-09-25T12:00:00"); 
+          const now = new Date("2025-09-21T19:00:00");
 
           // 오늘 날짜 (YYYY-MM-DD)
           const today = now.toISOString().split("T")[0];
@@ -75,7 +75,7 @@ const now = new Date("2025-09-25T12:00:00");
             onClose();
           }}
         >
-          <img src={backbtn} alt="뒤로가기" width={24} height={24}/>
+          <img src={backbtn} alt="뒤로가기" width={24} height={24} />
         </button>
         <div className="rounded-[10px] h-[18px] text-[#fff] bg-[rgba(42,42,46,0.60)] text-[12px] font-semibold leading-[18px] flex px-[6px] items-center">
           {buildingName}
