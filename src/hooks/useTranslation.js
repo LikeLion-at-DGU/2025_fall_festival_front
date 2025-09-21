@@ -7,6 +7,15 @@ import {
   createBoardTranslationItems,
 } from "../utils/translationApi";
 
+// 카테고리 영어-한글 매핑
+const categoryMapping = {
+  FoodTruck: "푸드트럭",
+  Toilet: "화장실",
+  Drink: "주류판매",
+  Store: "편의점",
+  Booth: "부스",
+};
+
 // 부스 데이터 번역 훅
 export const useBoothTranslation = (booths) => {
   const { requestBatchTranslations, getTranslation } = useTranslations();
@@ -30,6 +39,14 @@ export const useBoothTranslation = (booths) => {
         "BoothName",
         booth.name
       ),
+      translatedCategory: booth.category
+        ? getTranslation(
+            "booth",
+            booth.booth_id,
+            "BoothCategory",
+            categoryMapping[booth.category] || booth.category
+          )
+        : booth.category,
       translatedLocation: booth.location?.name
         ? getTranslation(
             "booth",

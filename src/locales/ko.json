@@ -58,7 +58,7 @@
     "header": "게시물",
     "empty": {
       "noResult": "검색 결과가 없습니다.",
-      "noPosts": "게시글이 없습니다.",
+      "noPosts": "게시글이 없어요",
       "noNotice": "현재 공지글이 없습니다.",
       "noEvent": "현재 진행중인 이벤트가 없습니다.",
       "noLost": "다행히 아직 분실물이 없어요."
@@ -102,7 +102,11 @@
   },
   "gameHeader": {
     "step": "단계"
-  }
+  },
 
-  
+  "booth": {
+    "nightBooth": "야간부스",
+    "dayBooth": "주간부스",
+    "preparingHours": "영업시간 준비중입니다"
+  }
 }

@@ -7,6 +7,7 @@ import { useTranslations } from "../../context/TranslationContext";
 const EVENT_TIME_CACHE = new Map();
 import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
 import EmptyLogo from "../../assets/images/icons/logo/empty-logo.png";
+import dirvana from "../../assets/images/icons/Timetable-icons/DIRVANA.svg";
 
 /* =========================
    환경변수 기반 API 베이스
@@ -67,13 +68,13 @@ function EmptyState({ hasSearchKeyword, activeTag }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[350px] w-full">
+    <div className="flex flex-col items-center justify-center min-h-[350px] w-full gap-6">
       <img
-        src={EmptyLogo}
+        src={dirvana}
         alt={t("board.empty.noPosts")}
-        className="w-[224.556px] h-[43px] mb-4 opacity-60"
+        className="w-[185px] h-[35px] mb-0"
       />
-      <p className="text-center text-[#71717A] text-xl font-medium">
+      <p className="text-center text-[#A1A1AA] text-[16px] font-[400]">
         {getEmptyMessage()}
       </p>
     </div>
@@ -150,16 +151,16 @@ function BoardItem({ item }) {
 
   const displayWriter = item.writer
     ? (() => {
-        const translatedName = getTranslation(
-          "writer",
-          item.id.toString(),
-          "WriterName",
-          item.writer
-        );
-        return translatedName.length > 20
-          ? translatedName.substring(0, 20) + "..."
-          : translatedName;
-      })()
+      const translatedName = getTranslation(
+        "writer",
+        item.id.toString(),
+        "WriterName",
+        item.writer
+      );
+      return translatedName.length > 20
+        ? translatedName.substring(0, 20) + "..."
+        : translatedName;
+    })()
     : "";
 
   // 번역된 제목 사용 (부모 컴포넌트에서 전달받음)
@@ -169,8 +170,8 @@ function BoardItem({ item }) {
     category === "Notice"
       ? "bg-[#EF7063] text-white border border-[#EF7063] w-[42px]"
       : category === "Event"
-      ? "bg-white text-[#EF7063] border border-[#EF7063] w-[42px]"
-      : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
+        ? "bg-white text-[#EF7063] border border-[#EF7063] w-[42px]"
+        : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
 
   // 종료 여부 판단(목록엔 시간이 없으므로, 필요한 경우 상세 1회 조회)
   const isEnded = (endISO) => {
@@ -564,8 +565,7 @@ export default function Board() {
                 // 번역된 데이터 가져오기
                 const translatedBoards = getTranslatedBoards();
                 const translatedItem =
-                  translatedBoards.find((board) => board.id === item.id) ||
-                  item;
+                  translatedBoards.find((board) => board.id === item.id) || item;
                 return <BoardItem key={item.id} item={translatedItem} />;
               })}
             </ul>

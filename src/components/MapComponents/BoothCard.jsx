@@ -1,4 +1,6 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+import i18n from "i18next";
 import HeartIcon from "../../assets/images/icons/map-icons/Heart.png";
 import UnheartIcon from "../../assets/images/icons/map-icons/emptyHeart.png";
 import Badge from "./BoothCardComponents/Badge";
@@ -24,13 +26,28 @@ function BoothCard({
   onClick,
   isSelected,
 }) {
+  const { t } = useTranslation();
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     boothId,
     initialLikesCount || 0,
     initialIsLiked || false
   );
-  const today = new Date();
-  const todayLabel = today.toLocaleDateString("ko-KR", { weekday: "short" });
+
+  const getLocalizedWeekday = () => {
+    const today = new Date();
+
+    const languageMap = {
+      ko: "ko-KR",
+      en: "en-US",
+      ja: "ja-JP",
+      "zh-CN": "zh-CN",
+    };
+
+    const locale = languageMap[i18n.language] || "ko-KR";
+    return today.toLocaleDateString(locale, { weekday: "short" });
+  };
+
+  const translatedTodayLabel = getLocalizedWeekday();
   return (
     <div
       className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
@@ -93,8 +110,8 @@ function BoothCard({
           <p className="text-[10px] text-[#52525B] mb-0.5 font-suite leading-[150%] font-normal">
             {time ||
               (startTime && endTime
-                ? `${todayLabel} ${startTime}~${endTime}`
-                : "영업시간 준비중입니다")}
+                ? `${translatedTodayLabel} ${startTime}~${endTime}`
+                : t("booth.preparingHours"))}
           </p>
           <h3 className="text-xl font-semibold text-black mb-0.5 font-suite leading-[130%] truncate pr-[24px]">
             {title}
