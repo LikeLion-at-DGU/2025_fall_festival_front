@@ -3,7 +3,7 @@ import React from "react";
 import MapWithPins from "./MapWithPins";
 import DetailMap from "./DetailMap";
 import { mapConfigs } from "../../config/mapConfigs";
-
+import defaultMap from "../../assets/images/banners/default-img.png"
 const MapContainer = ({ apiData, selectedFilter, onSelectBooth, selectedPin, handlePinClick }) => {
   return (
     <div className="w-full mx-auto relative">

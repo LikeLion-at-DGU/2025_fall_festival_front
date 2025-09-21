@@ -8,7 +8,6 @@ function useBooths(selectedFilter, userLocation = null) {
 
   useEffect(() => {
     // 위치 없으면 요청 안 보냄
-    if (!userLocation) return;
 
     const fetchBooths = async () => {
       setLoading(true);
@@ -23,18 +22,19 @@ function useBooths(selectedFilter, userLocation = null) {
         const response = await axios.post(
           `${baseURL}/booths/list/`,
           {
-            // 🔹 백엔드에서 types로 필터
             types: [selectedFilter],
-            // 🔹 사용자 위치 전달 (distance_m 계산용)
-            user_location: {
-              x: userLocation.x,
-              y: userLocation.y,
-            },
-            // 🔹 필요하다면 야간 여부도 같이 전달
-            is_night: isNight,
-            // 🔹 갯수 제한 (필요 없으면 제거 가능)
             limit: 50,
             ordering: "distance",
+
+            // 🚀 Booth일 때만 is_night 추가
+            ...(selectedFilter === "Booth" && { is_night: isNight }),
+
+            // 🚀 Toilet 아닐 때만 user_location 추가
+            ...(selectedFilter !== "toilet" && {
+              user_location: userLocation
+                ? { x: userLocation.x, y: userLocation.y }
+                : null,
+            }),
           },
           {
             headers: { "Content-Type": "application/json" },
