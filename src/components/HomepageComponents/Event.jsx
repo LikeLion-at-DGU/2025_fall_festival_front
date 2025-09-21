@@ -4,6 +4,7 @@ import BoothCard from "../MapComponents/BoothCard";
 import Skeleton from "../Skeleton/Skeleton";
 import { getEventBooths } from "../../apis/mainpage";
 import { formatTimeWithDay } from "../../utils/dateUtils";
+import { useBoothTranslation } from "../../hooks/useTranslation";
 
 const Event = ({ onDataChange }) => {
   const navigate = useNavigate();
@@ -14,6 +15,9 @@ const Event = ({ onDataChange }) => {
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+
+  // 번역 훅 사용
+  const { getTranslatedBooths } = useBoothTranslation(eventData);
 
   const handleBoothClick = (booth) => {
     navigate(`/board/${booth.id}`);
@@ -202,6 +206,13 @@ const Event = ({ onDataChange }) => {
               {(eventData.length > 1 ? extendedEventData : eventData).map(
                 (booth, index) => {
                   const formattedBooth = formatBoothData(booth);
+                  // 번역된 부스 데이터 가져오기
+                  const translatedBooths = getTranslatedBooths();
+                  const translatedBooth =
+                    translatedBooths.find(
+                      (tb) => tb.booth_id === booth.booth_id
+                    ) || booth;
+
                   return (
                     <div
                       key={`${booth.booth_id || `event-${index}`}-${index}`}
@@ -210,9 +221,14 @@ const Event = ({ onDataChange }) => {
                     >
                       <BoothCard
                         boothId={formattedBooth.id}
-                        title={formattedBooth.title}
+                        title={
+                          translatedBooth.translatedName || formattedBooth.title
+                        }
                         image={formattedBooth.image}
-                        location={formattedBooth.location}
+                        location={
+                          translatedBooth.translatedLocation ||
+                          formattedBooth.location
+                        }
                         time={formattedBooth.time}
                         isOperating={formattedBooth.isOperating}
                         likesCount={formattedBooth.likeCount}

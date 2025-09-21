@@ -4,6 +4,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import BoardDetailHeader from "../../components/Header/BoardDetailHeader";
 import BoothCard from "../../components/MapComponents/BoothCard";
 import { formatTimeWithDay } from "../../utils/dateUtils";
+import { useTranslations } from "../../context/TranslationContext";
 
 // .env 설정
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
@@ -63,6 +64,7 @@ function fmtDateTime(iso) {
 export default function BoardDetail() {
   const { boardId } = useParams();
   const navigate = useNavigate();
+  const { getTranslation, requestSingleTranslation } = useTranslations();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -150,6 +152,36 @@ export default function BoardDetail() {
     return String(contentText).split(/\n+/);
   }, [contentText]);
 
+  // 번역 요청 트리거
+  useEffect(() => {
+    if (!post) return;
+
+    // 제목 번역 요청
+    requestSingleTranslation({
+      entity_type: "board",
+      entity_id: post.id.toString(),
+      field: "BoardTitle",
+      source_lang: "ko",
+      source_text: post.title,
+    });
+
+    // 내용 번역 요청 (각 문단별로)
+    if (post.content) {
+      const contentLines = String(post.content).split(/\n+/);
+      contentLines.forEach((line, index) => {
+        if (line.trim()) {
+          requestSingleTranslation({
+            entity_type: "board",
+            entity_id: post.id.toString(),
+            field: `BoardContent_${index}`,
+            source_lang: "ko",
+            source_text: line,
+          });
+        }
+      });
+    }
+  }, [post, requestSingleTranslation]);
+
   // 이벤트/공지/분실물 작성자 보정: writer 없으면 booth_name 사용
   const displayWriter = post?.writer || post?.booth_name || "";
 
@@ -230,7 +262,7 @@ export default function BoardDetail() {
 
                 {/* 제목 */}
                 <h1 className="text-[#2A2A2E] font-suite text-[20px] not-italic font-semibold leading-[130%]">
-                  {post.title}
+                  {getTranslation("board", post.id, "BoardTitle", post.title)}
                 </h1>
 
                 {/* 작성자/위치/시간 */}
@@ -238,7 +270,17 @@ export default function BoardDetail() {
                   {displayWriter && (
                     <p>
                       <span className="text-gray-400">작성자 : </span>
-                      <span className="text-[#52525B]">{displayWriter}</span>
+                      <span className="text-[#52525B]">
+                        {post?.booth_name && displayWriter === post.booth_name
+                          ? getTranslation(
+                              "booth",
+                              post.booth_id?.toString() ||
+                                post.booth_name.toLowerCase(),
+                              "BoothName",
+                              displayWriter
+                            )
+                          : displayWriter}
+                      </span>
                     </p>
                   )}
 
@@ -273,7 +315,14 @@ export default function BoardDetail() {
                 {paragraphs.length > 0 && (
                   <section className="text-[#2A2A2E] text-[14px] not-italic font-normal leading-[150%] mt-[24px]">
                     {paragraphs.map((line, i) => (
-                      <p key={i}>{line}</p>
+                      <p key={i}>
+                        {getTranslation(
+                          "board",
+                          post.id,
+                          `BoardContent_${i}`,
+                          line
+                        )}
+                      </p>
                     ))}
                   </section>
                 )}
