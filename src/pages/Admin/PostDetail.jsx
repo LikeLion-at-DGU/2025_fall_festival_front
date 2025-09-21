@@ -26,20 +26,20 @@ function PostDetail() {
   if (!board) return <div className="grid place-items-center mt-[400px]">loading..⌛</div>;
 
   return (
-    <div className="max-w-md mx-auto bg-gray-50 p-6 min-h-screen">
+    <div className="max-w-md mx-auto bg-gray-50 px-6 py-6 min-h-screen">
       {/* 카테고리 뱃지 */}
       <span
-        className={`inline-block px-3 py-1 text-sm font-semibold rounded ${
-          board.category === "Notice"
-            ? "bg-red-400 text-white"
-            : "bg-green-500 text-white"
-        }`}
+        className={`inline-block px-3 py-1.5 text-sm text-white font-medium rounded-xl
+          ${board.category === "Notice"
+            ? "bg-[#FFA6A6]"
+            : "bg-[#3C8932]"}
+        `}
       >
         {board.category === "Notice" ? "공지" : "분실물"}
       </span>
 
       {/* 제목 */}
-      <h1 className="text-2xl font-bold mt-3">{board.title}</h1>
+      <h1 className="text-xl font-bold mt-4">{board.title}</h1>
 
       {/* 작성자 / 위치 */}
       <p className="text-sm text-gray-500 mt-1">작성자 : {board.writer}</p>
@@ -48,19 +48,19 @@ function PostDetail() {
       )}
 
       {/* 본문 */}
-      <p className="mt-4 leading-relaxed">{board.content}</p>
+      <p className="mt-6 leading-relaxed text-gray-800">{board.content}</p>
 
       {/* 이미지 */}
       {board.image && (
         <img
           src={board.image}
           alt="첨부 이미지"
-          className="mt-4 rounded-lg shadow"
+          className="mt-6 rounded-lg shadow"
         />
       )}
 
       {/* 수정/삭제 버튼 */}
-      <div className="mt-6 flex flex-col gap-3">
+      <div className="mt-[100%] flex flex-col gap-3">
         <SubmitBtn
           text="수정"
           onClick={() =>
@@ -95,6 +95,7 @@ function PostDetail() {
       )}
     </div>
   );
+
 }
 
 export default PostDetail;
