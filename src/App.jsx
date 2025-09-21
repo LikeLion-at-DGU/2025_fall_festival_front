@@ -1,14 +1,17 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import Router from "./routes/Router";
-import Layout from './components/Layout';
+import Layout from "./components/Layout";
+import { TranslationProvider } from "./context/TranslationContext";
 
 function App() {
   return (
     <BrowserRouter>
-      <Layout>
-        <Router />
-      </Layout>
+      <TranslationProvider>
+        <Layout>
+          <Router />
+        </Layout>
+      </TranslationProvider>
     </BrowserRouter>
   );
 }

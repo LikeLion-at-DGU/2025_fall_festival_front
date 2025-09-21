@@ -6,9 +6,11 @@ import React, {
   useMemo,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import i18n from "i18next";
 
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
+import { useBoothTranslation } from "../../hooks/useTranslation";
 
 function PullList({
   booths,
@@ -17,6 +19,22 @@ function PullList({
   selectedPin,
   selectedBooth,
 }) {
+  // 번역 훅 사용
+  const { getTranslatedBooths } = useBoothTranslation(booths);
+
+  // 언어 변경 감지 로그
+  useEffect(() => {
+    console.log("PullList - 현재 언어:", i18n.language);
+    if (booths && booths.length > 0) {
+      const translatedBooths = getTranslatedBooths();
+      console.log("PullList - 번역된 부스 데이터:", {
+        원본: booths[0]?.name,
+        번역: translatedBooths[0]?.translatedName,
+        위치원본: booths[0]?.location?.name,
+        위치번역: translatedBooths[0]?.translatedLocation,
+      });
+    }
+  }, [i18n.language, booths, getTranslatedBooths]);
   const minHeight = 150;
   const defaultHeight = 150;
 
@@ -154,12 +172,15 @@ function PullList({
   ]);
 
   // ----------------------------
-  // 검색 및 필터링
+  // 검색 및 필터링 (번역된 데이터 사용)
   // ----------------------------
   const searchFilteredBooths = useMemo(() => {
-    return booths.filter((booth) => {
-      const boothName = booth.name;
-      const locationName = booth.location?.name ?? "";
+    const translatedBooths = getTranslatedBooths();
+
+    return translatedBooths.filter((booth) => {
+      const boothName = booth.translatedName || booth.name;
+      const locationName =
+        booth.translatedLocation || (booth.location?.name ?? "");
 
       const matchesSearch =
         searchTerm === "" ||
@@ -170,13 +191,13 @@ function PullList({
 
       return matchesSearch && matchesPin;
     });
-  }, [booths, searchTerm, selectedPin]);
+  }, [booths, searchTerm, selectedPin, getTranslatedBooths]);
 
   const sortedBooths = useMemo(() => {
     return [...searchFilteredBooths].sort((a, b) => {
       if (!searchTerm) return 0;
-      const aName = a.name;
-      const bName = b.name;
+      const aName = a.translatedName || a.name;
+      const bName = b.translatedName || b.name;
       const aMatch = aName.toLowerCase().includes(searchTerm.toLowerCase())
         ? 0
         : 1;
@@ -237,8 +258,9 @@ function PullList({
           ) : (
             <div className="w-full flex flex-col gap-[12px]">
               {sortedBooths.map((booth) => {
-                const boothName = booth.name;
-                const locationName = booth.location?.name ?? "";
+                const boothName = booth.translatedName || booth.name;
+                const locationName =
+                  booth.translatedLocation || (booth.location?.name ?? "");
 
                 return booth.category === "Booth" ||
                   booth.category === "FoodTruck" ||
@@ -246,9 +268,9 @@ function PullList({
                   <BoothCard
                     key={booth.booth_id}
                     boothId={booth.booth_id}
-                    title={booth.name ?? ""}
+                    title={boothName}
                     image={booth.image_url || undefined}
-                    location={booth.location?.name ?? ""}
+                    location={locationName}
                     isSelected={selectedBooth === booth.name}
                     startTime={booth.start_time}
                     endTime={booth.end_time}

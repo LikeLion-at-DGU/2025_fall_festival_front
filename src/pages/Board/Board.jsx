@@ -1,7 +1,9 @@
 // src/pages/Board/Board.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next"; 
+import { useTranslation } from "react-i18next";
+import { useBoardTranslation } from "../../hooks/useTranslation";
+import { useTranslations } from "../../context/TranslationContext";
 const EVENT_TIME_CACHE = new Map();
 import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
 import EmptyLogo from "../../assets/images/icons/logo/empty-logo.png";
@@ -146,6 +148,9 @@ function BoardItem({ item }) {
   const displayWriter = item.writer || item.booth_name || "";
   const [toast, setToast] = useState("");
 
+  // 번역된 제목 사용 (부모 컴포넌트에서 전달받음)
+  const translatedTitle = item.translatedTitle || title;
+
   const pillCls =
     category === "Notice"
       ? "bg-[#EF7063] text-white border border-[#EF7063] w-[42px]"
@@ -229,16 +234,27 @@ function BoardItem({ item }) {
                 category === "LostItem"
                   ? "board.tabs.lost"
                   : `board.tabs.${category.toLowerCase()}`
-              ) ?? CATEGORY_MAP[category] ?? category}
+              ) ??
+                CATEGORY_MAP[category] ??
+                category}
             </span>
           </div>
           <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
             <p className="truncate text-[#52525B] font-suite text-[14px] not-italic font-semibold leading-[150%]">
-              {title}
+              {translatedTitle}
             </p>
             {displayWriter && (
               <span className="text-[#52525B] font-suite text-[10px] not-italic font-normal leading-[150%] shrink-0">
-                - {displayWriter}
+                -{" "}
+                {item?.booth_name && displayWriter === item.booth_name
+                  ? getTranslation(
+                      "booth",
+                      item.booth_id?.toString() ||
+                        item.booth_name.toLowerCase(),
+                      "BoothName",
+                      displayWriter
+                    )
+                  : displayWriter}
               </span>
             )}
           </div>
@@ -344,6 +360,7 @@ function Pagination({ total, page, pageSize, onChange }) {
 export default function Board() {
   const { t } = useTranslation();
   const location = useLocation();
+  const { getTranslation } = useTranslations();
   const [keyword, setKeyword] = useState("");
   const [activeTag, setActiveTag] = useState(t("board.tabs.all"));
 
@@ -354,6 +371,9 @@ export default function Board() {
   const [error, setError] = useState("");
   const [allItems, setAllItems] = useState([]);
   const [totalFromServer, setTotalFromServer] = useState(0);
+
+  // 번역 훅 사용
+  const { getTranslatedBoards } = useBoardTranslation(allItems);
 
   const BOARD_ENDPOINT = `${API_BASE}/board/`;
 
@@ -505,7 +525,9 @@ export default function Board() {
       <div className="flex-1 flex flex-col">
         <div className="flex-1">
           {loading && (
-            <div className="py-16 text-center text-gray-500">{t("board.loading")}</div>
+            <div className="py-16 text-center text-gray-500">
+              {t("board.loading")}
+            </div>
           )}
           {!loading && error && (
             <div className="py-16 text-center text-rose-600">{error}</div>
@@ -515,9 +537,14 @@ export default function Board() {
           )}
           {!loading && !error && paged.length > 0 && (
             <ul className="flex flex-col gap-[12px]">
-              {paged.map((item) => (
-                <BoardItem key={item.id} item={item} />
-              ))}
+              {paged.map((item) => {
+                // 번역된 데이터 가져오기
+                const translatedBoards = getTranslatedBoards();
+                const translatedItem =
+                  translatedBoards.find((board) => board.id === item.id) ||
+                  item;
+                return <BoardItem key={item.id} item={translatedItem} />;
+              })}
             </ul>
           )}
         </div>
