@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import axios from "axios";
+import i18n from "i18next";
 
 import MenuSection from "./MenuSection";
 import NearbyBoothSection from "./NearbyBoothSection";
 import useBoothLikes from "../../../hooks/useBoothLikes";
+import { useTranslations } from "../../../context/TranslationContext";
 
 import CheckIcon from "../../../assets/images/icons/map-icons/Check.svg";
 import HeartIcon from "../../../assets/images/icons/map-icons/Heart.png";
@@ -20,6 +23,22 @@ const fmtTime = (t) => (typeof t === "string" ? t.slice(0, 5) : t);
 // 요일 매핑
 const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
 
+const getLocalizedWeekday = (dayIndex) => {
+  const date = new Date();
+
+  date.setDate(date.getDate() - date.getDay() + dayIndex);
+
+  const languageMap = {
+    ko: "ko-KR",
+    en: "en-US",
+    ja: "ja-JP",
+    "zh-CN": "zh-CN",
+  };
+
+  const locale = languageMap[i18n.language] || "ko-KR";
+  return date.toLocaleDateString(locale, { weekday: "short" });
+};
+
 // 스케줄 그룹핑 함수 (같은 시간대면 요일 묶기)
 function groupSchedules(schedules) {
   if (!schedules) return [];
@@ -27,7 +46,8 @@ function groupSchedules(schedules) {
   const groups = {};
   schedules.forEach((s) => {
     const date = new Date(s.day);
-    const dayName = weekdays[date.getDay()];
+    const dayIndex = date.getDay();
+    const dayName = getLocalizedWeekday(dayIndex);
     const timeRange = `${fmtTime(s.start_time)} ~ ${fmtTime(s.end_time)}`;
 
     if (!groups[timeRange]) {
@@ -44,28 +64,109 @@ function groupSchedules(schedules) {
 
 export default function BoothDetail() {
   const { id } = useParams();
+  const { t } = useTranslation();
+  const { getTranslation, requestSingleTranslation } = useTranslations();
   const [booth, setBooth] = useState(null);
   const [initialLikesCount, setInitialLikesCount] = useState(0);
+  const [initialIsLiked, setInitialIsLiked] = useState(false);
 
   // 좋아요 훅
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     id,
     initialLikesCount || 0,
-    false
+    initialIsLiked
   );
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL}/booths/detail/${id}/`)
-      .then((res) => {
-        setBooth(res.data);
-        setInitialLikesCount(res.data.likes_count || 0);
-      })
-      .catch((err) => {
+    const fetchBoothDetail = async () => {
+      try {
+        // 1. 부스 상세 정보 조회
+        const detailRes = await axios.get(`${BASE_URL}/booths/detail/${id}/`);
+        setBooth(detailRes.data);
+
+        // 2. 좋아요 정보를 위해 부스 목록에서 해당 부스 조회
+        try {
+          const listRes = await axios.post(`${BASE_URL}/booths/list/`, {
+            types: ["Booth"],
+          });
+
+          const targetBooth = listRes.data.results.find(
+            (booth) => booth.booth_id.toString() === id.toString()
+          );
+
+          if (targetBooth) {
+            setInitialLikesCount(targetBooth.like_cnt || 0);
+            setInitialIsLiked(targetBooth.is_liked || false);
+          } else {
+            setInitialLikesCount(0);
+            setInitialIsLiked(false);
+          }
+        } catch (listError) {
+          console.error("부스 목록 조회 실패:", listError);
+          setInitialLikesCount(0);
+          setInitialIsLiked(false);
+        }
+      } catch (err) {
         console.error("BoothDetail API 실패", err);
         setBooth(null);
-      });
+      }
+    };
+
+    fetchBoothDetail();
   }, [id]);
+
+  // 부스 데이터 번역 요청
+  useEffect(() => {
+    if (!booth) return;
+
+    // 부스 이름 번역 요청
+    if (booth.name) {
+      requestSingleTranslation({
+        entity_type: "booth",
+        entity_id: booth.booth_id?.toString() || id,
+        field: "BoothName",
+        source_lang: "ko",
+        source_text: booth.name,
+      });
+    }
+
+    // 부스 위치 번역 요청
+    if (booth.location_description) {
+      requestSingleTranslation({
+        entity_type: "booth",
+        entity_id: booth.booth_id?.toString() || id,
+        field: "BoothLocation",
+        source_lang: "ko",
+        source_text: booth.location_description,
+      });
+    }
+
+    // 부스 설명 번역 요청
+    if (booth.booth_description) {
+      requestSingleTranslation({
+        entity_type: "booth",
+        entity_id: booth.booth_id?.toString() || id,
+        field: "BoothDescription",
+        source_lang: "ko",
+        source_text: booth.booth_description,
+      });
+    }
+
+    // 코너 이름들 번역 요청
+    if (booth.corners && booth.corners.length > 0) {
+      booth.corners.forEach((corner, index) => {
+        if (corner.name) {
+          requestSingleTranslation({
+            entity_type: "booth",
+            entity_id: booth.booth_id?.toString() || id,
+            field: `CornerName_${index}`,
+            source_lang: "ko",
+            source_text: corner.name,
+          });
+        }
+      });
+    }
+  }, [booth, id, requestSingleTranslation]);
 
   if (!booth) return <div className="p-6">로딩 중...</div>;
 
@@ -97,9 +198,16 @@ export default function BoothDetail() {
             {/* 부스 타입 + 이름 */}
             <div className="flex items-center gap-2 !mb-4">
               <span className="bg-[#EF7063] text-white px-2 py-1 rounded-full text-xs">
-                {booth.is_night ? "야간부스" : "주간부스"}
+                {booth.is_night ? t("booth.nightBooth") : t("booth.dayBooth")}
               </span>
-              <h1 className="text-lg font-bold">{booth.name}</h1>
+              <h1 className="text-lg font-bold">
+                {getTranslation(
+                  "booth",
+                  booth.booth_id?.toString() || id,
+                  "BoothName",
+                  booth.name
+                )}
+              </h1>
             </div>
 
             {/* 야간 부스 & 디오더 가능 표시 */}
@@ -140,7 +248,14 @@ export default function BoothDetail() {
                 alt="location"
                 className="w-[21.5px] h-[24px]"
               />
-              <span>{booth.location_description}</span>
+              <span>
+                {getTranslation(
+                  "booth",
+                  booth.booth_id?.toString() || id,
+                  "BoothLocation",
+                  booth.location_description
+                )}
+              </span>
             </div>
           </div>
 
@@ -159,7 +274,7 @@ export default function BoothDetail() {
                 className="w-5 h-5 transition-all duration-200"
               />
             </button>
-            <span className="text-[#52525B] text-sm font-semibold">
+            <span className="text-[#A1A1AA] text-sm font-semibold">
               {likesCount}
             </span>
           </div>
@@ -174,7 +289,14 @@ export default function BoothDetail() {
       >
         <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">부스 소개</h2>
         <p className="text-sm text-gray-700">
-          {booth.booth_description || "소개글이 없습니다."}
+          {booth.booth_description
+            ? getTranslation(
+                "booth",
+                booth.booth_id?.toString() || id,
+                "BoothDescription",
+                booth.booth_description
+              )
+            : "소개글이 없습니다."}
         </p>
       </div>
 
@@ -220,7 +342,14 @@ export default function BoothDetail() {
           {booth.corners?.length > 0 ? (
             <ul className="list-disc ml-5 text-sm">
               {booth.corners.map((c, i) => (
-                <li key={i}>{c.name}</li>
+                <li key={i}>
+                  {getTranslation(
+                    "booth",
+                    booth.booth_id?.toString() || id,
+                    `CornerName_${i}`,
+                    c.name
+                  )}
+                </li>
               ))}
             </ul>
           ) : (
@@ -230,7 +359,7 @@ export default function BoothDetail() {
       )}
 
       {/* 메뉴 */}
-      <MenuSection menus={booth.menus} />
+      <MenuSection menus={booth.menus} boothId={booth.booth_id || id} />
 
       {/* 디오더 안내문구 */}
       {booth.is_dorder && (

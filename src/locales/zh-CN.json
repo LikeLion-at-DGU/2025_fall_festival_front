@@ -5,5 +5,110 @@
     "timetable": "日程",
     "board": "公告栏",
     "game": "游戏"
+  },
+
+  "map": {
+    "campusMap": "校园地图",
+    "noDetailMap": "没有详细地图",
+    "locations": {
+      "manhaeLaw": "万海/法学馆",
+      "newEngineering": "新工学馆",
+      "library": "中央图书馆",
+      "stadium": "大运动场",
+      "myeongjin": "明进馆",
+      "paljeongdo": "八井堂",
+      "manhaeSquare": "万海广场",
+      "dahyang": "茶香馆",
+      "hakrim": "学林馆",
+      "infoCulture": "信息文化馆",
+      "business": "经营馆",
+      "hyehwa": "惠化馆",
+      "socialScience": "社会科学馆",
+      "academicCulture": "学术文化馆",
+      "mainBuilding": "本馆",
+      "science": "科学馆",
+      "wonheung": "元兴馆"
+    }
+  },
+  "notBooth": {
+    "unknownLocation": "当前位置未知",
+    "categories": {
+      "Toilet": "厕所",
+      "Drink": "饮料",
+      "Store": "便利店"
+    }
+  },
+  "search": {
+    "placeholder": "请输入院系/社团/展位名称",
+    "alt": "搜索"
+  },
+  "pullList": {
+    "noBooths": "没有可用的展位",
+    "noSearchResults": "没有搜索结果"
+  },
+
+  "board": {
+    "searchPlaceholder": "请输入关键词",
+    "tabs": {
+      "all": "全部",
+      "notice": "公告",
+      "event": "活动",
+      "lost": "失物招领"
+    },
+    "header": "帖子",
+    "empty": {
+      "noResult": "没有搜索结果。",
+      "noPosts": "暂无帖子。",
+      "noNotice": "当前没有公告。",
+      "noEvent": "当前没有正在进行的活动。",
+      "noLost": "幸运的是，目前还没有丢失物品。"
+    },
+    "loading": "加载中…",
+    "error": "无法加载帖子。",
+
+    "writer": "作者",
+    "lostLocation": "发现地点",
+    "boothLocation": "展位位置",
+    "eventTime": "活动时间",
+    "relatedPosts": "相关帖子",
+    "noRelatedPosts": "暂无相关帖子。",
+    "loadingBooth": "正在加载展位信息…",
+    "loadBoothError": "加载展位信息时出错。",
+
+    "toast": {
+      "endedEvent": "该活动已结束。"
+    }
+  },
+
+  "timetable": {
+    "celebrity": "明星",
+    "loading": "加载中...",
+    "noCelebrity": "没有明星演出",
+    "noStage": "当前没有进行中的演出",
+    "nextStage": "也请查看下一场演出"
+  },
+
+  "game": {
+    "start": "开始游戏",
+    "nextStep": "进入下一关",
+    "complete": "游戏完成",
+    "retry": "再试一次",
+    "default": "请找出不同的字符"
+  },
+
+  "gameCompleteModal": {
+    "congratsTitle": "恭喜！",
+    "congratsMessage": "你已成功完成所有关卡！\n你的专注力真的很棒 :)",
+    "retry": "再试一次"
+  },
+
+  "gameHeader": {
+    "step": "关卡"
+  },
+
+  "booth": {
+    "nightBooth": "夜间摊位",
+    "dayBooth": "日间摊位",
+    "preparingHours": "准备营业时间"
   }
 }

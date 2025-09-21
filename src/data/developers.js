@@ -103,7 +103,7 @@ export const developersData = [
     name: "PARK JIN HEE",
     roles: ["PM/DS"],
     roleDisplay: "디자인",
-    major: "미디터커뮤니케이션학과",
+    major: "미디어커뮤니케이션학과",
     image: parkjinhee,
   },
   {
@@ -127,7 +127,7 @@ export const developersData = [
     name: "PARK SU MIN",
     roles: ["PM/DS", "Corporate Affairs"],
     roleDisplay: "기획 / 대외협력",
-    major: "미디터커뮤니케이션학과",
+    major: "미디어커뮤니케이션학과",
     image: parksumin,
   },
   {
@@ -181,8 +181,8 @@ export const developersData = [
   {
     id: 20,
     name: "PARK JUN HONG",
-    roles: ["Front-End"],
-    roleDisplay: "프론트엔드 개발자",
+    roles: ["Back-End"],
+    roleDisplay: "백엔드",
     major: "컴퓨터공학전공",
     image: parkjunhong,
   },

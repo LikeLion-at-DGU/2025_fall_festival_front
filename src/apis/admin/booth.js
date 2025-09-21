@@ -37,3 +37,10 @@ export async function getBoothEvents() {
   const res = await instance.get("/board/events");
   return res.data;
 }
+
+//-------- 부스 이벤트 상세 페이지 조회 --------//
+
+export async function getBoothEventDetail(eventId) {
+  const res = await instance.get(`/board/events/${eventId}`);
+  return res.data;
+}

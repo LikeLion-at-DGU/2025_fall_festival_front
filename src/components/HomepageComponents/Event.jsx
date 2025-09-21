@@ -4,15 +4,20 @@ import BoothCard from "../MapComponents/BoothCard";
 import Skeleton from "../Skeleton/Skeleton";
 import { getEventBooths } from "../../apis/mainpage";
 import { formatTimeWithDay } from "../../utils/dateUtils";
+import { useBoothTranslation } from "../../hooks/useTranslation";
 
 const Event = ({ onDataChange }) => {
   const navigate = useNavigate();
   const [eventData, setEventData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+
+  // 번역 훅 사용
+  const { getTranslatedBooths } = useBoothTranslation(eventData);
 
   const handleBoothClick = (booth) => {
     navigate(`/board/${booth.id}`);
@@ -26,6 +31,13 @@ const Event = ({ onDataChange }) => {
         const data = response.results || [];
         setEventData(data);
         setError(null);
+
+        if (data.length > 1) {
+          setCurrentSlide(1);
+          setIsTransitioning(true);
+        } else {
+          setCurrentSlide(0);
+        }
 
         if (onDataChange) {
           onDataChange({
@@ -54,18 +66,40 @@ const Event = ({ onDataChange }) => {
     fetchEventBooths();
   }, [onDataChange]);
 
-  /* 자동 슬라이드 */
+  const extendedEventData =
+    eventData.length > 1
+      ? [eventData[eventData.length - 1], ...eventData, eventData[0]]
+      : eventData;
+
   useEffect(() => {
     if (eventData.length <= 1) return;
 
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % eventData.length);
+      setCurrentSlide((prev) => prev + 1);
     }, 3000);
 
     return () => clearInterval(timer);
   }, [eventData.length]);
 
-  /* 터치 이벤트 핸들러 */
+  useEffect(() => {
+    if (eventData.length <= 1) return;
+
+    if (currentSlide === extendedEventData.length - 1) {
+      const timer = setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentSlide(1);
+        setTimeout(() => setIsTransitioning(true), 50);
+      }, 500);
+      return () => clearTimeout(timer);
+    } else if (currentSlide === 0) {
+      const timer = setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentSlide(eventData.length);
+        setTimeout(() => setIsTransitioning(true), 50);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [currentSlide, eventData.length, extendedEventData.length]);
   const handleTouchStart = (e) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
@@ -83,13 +117,13 @@ const Event = ({ onDataChange }) => {
     const isRightSwipe = distance < -50;
 
     if (isLeftSwipe) {
-      setCurrentSlide((prev) => (prev + 1) % eventData.length);
+      setIsTransitioning(true);
+      setCurrentSlide((prev) => prev + 1);
     }
 
     if (isRightSwipe) {
-      setCurrentSlide(
-        (prev) => (prev - 1 + eventData.length) % eventData.length
-      );
+      setIsTransitioning(true);
+      setCurrentSlide((prev) => prev - 1);
     }
   };
 
@@ -117,7 +151,7 @@ const Event = ({ onDataChange }) => {
     <div className="mt-[27px]">
       <div className="flex items-center justify-between mb-4">
         <p className="text-[20px] font-semibold font-suite text-[#52525B]">
-          이벤트 진행 부스
+          이벤트 부스
         </p>
         <button
           onClick={() => navigate("/board", { state: { category: "Event" } })}
@@ -162,30 +196,48 @@ const Event = ({ onDataChange }) => {
             onTouchEnd={handleTouchEnd}
           >
             <div
-              className="flex transition-transform duration-500 ease-in-out"
+              className={`flex ${
+                isTransitioning
+                  ? "transition-transform duration-500 ease-in-out"
+                  : ""
+              }`}
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
-              {eventData.map((booth, index) => {
-                const formattedBooth = formatBoothData(booth);
-                return (
-                  <div
-                    key={booth.booth_id || `event-${index}`}
-                    onClick={() => handleBoothClick(formattedBooth)}
-                    className="cursor-pointer flex-shrink-0 w-full"
-                  >
-                    <BoothCard
-                      boothId={formattedBooth.id}
-                      title={formattedBooth.title}
-                      image={formattedBooth.image}
-                      location={formattedBooth.location}
-                      time={formattedBooth.time}
-                      isOperating={formattedBooth.isOperating}
-                      likesCount={formattedBooth.likeCount}
-                      badges={formattedBooth.badges}
-                    />
-                  </div>
-                );
-              })}
+              {(eventData.length > 1 ? extendedEventData : eventData).map(
+                (booth, index) => {
+                  const formattedBooth = formatBoothData(booth);
+                  // 번역된 부스 데이터 가져오기
+                  const translatedBooths = getTranslatedBooths();
+                  const translatedBooth =
+                    translatedBooths.find(
+                      (tb) => tb.booth_id === booth.booth_id
+                    ) || booth;
+
+                  return (
+                    <div
+                      key={`${booth.booth_id || `event-${index}`}-${index}`}
+                      onClick={() => handleBoothClick(formattedBooth)}
+                      className="cursor-pointer flex-shrink-0 w-full"
+                    >
+                      <BoothCard
+                        boothId={formattedBooth.id}
+                        title={
+                          translatedBooth.translatedName || formattedBooth.title
+                        }
+                        image={formattedBooth.image}
+                        location={
+                          translatedBooth.translatedLocation ||
+                          formattedBooth.location
+                        }
+                        time={formattedBooth.time}
+                        isOperating={formattedBooth.isOperating}
+                        likesCount={formattedBooth.likeCount}
+                        badges={formattedBooth.badges}
+                      />
+                    </div>
+                  );
+                }
+              )}
             </div>
           </div>
         ) : (

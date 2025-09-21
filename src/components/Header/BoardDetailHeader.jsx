@@ -7,7 +7,8 @@ const BoardDetailHeader = () => {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate(-1);
+    // ✅ 항상 /board 로 이동
+    navigate("/board");
   };
 
   return (
@@ -17,8 +18,11 @@ const BoardDetailHeader = () => {
     w-full max-w-[430px]
     bg-white 
     h-[65px] px-[5px] flex-shrink-0 flex-col justify-center"
+      style={{
+        boxShadow: "0 1px 5px 0 rgba(0, 0, 0, 0.05)",
+      }}
     >
-      <div className="flex items-center w-full mb-[6px]">
+      <div className="flex items-center w-full">
         <button
           onClick={handleBackClick}
           className="hover:opacity-70 transition-opacity"

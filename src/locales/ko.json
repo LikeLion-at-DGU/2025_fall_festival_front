@@ -5,5 +5,108 @@
     "timetable": "일정",
     "board": "게시판",
     "game": "게임"
+  },
+
+  "map": {
+    "campusMap": "캠퍼스 지도",
+    "noDetailMap": "상세지도 없음",
+    "locations": {
+      "manhaeLaw": "만해/법학관",
+      "newEngineering": "신공학관",
+      "library": "중앙도서관",
+      "stadium": "대운동장",
+      "myeongjin": "명진관",
+      "paljeongdo": "팔정도",
+      "manhaeSquare": "만해광장",
+      "dahyang": "다향관",
+      "hakrim": "학림관",
+      "infoCulture": "정보문화관",
+      "business": "경영관",
+      "hyehwa": "혜화관",
+      "socialScience": "사회과학관",
+      "academicCulture": "학술문화관",
+      "mainBuilding": "본관",
+      "science": "과학관",
+      "wonheung": "원흥관"
+    }
+  },
+  "notBooth": {
+    "unknownLocation": "현재 위치 알 수 없음",
+    "categories": {
+      "Toilet": "화장실",
+      "Drink": "음료",
+      "Store": "편의점"
+    }
+  },
+  "search": {
+    "placeholder": "학과/동아리/부스명을 입력하세요",
+    "alt": "검색"
+  },
+  "pullList": {
+    "noBooths": "부스가 없어요",
+    "noSearchResults": "검색 결과가 없어요"
+  },
+
+  "board": {
+    "searchPlaceholder": "검색어를 입력해주세요",
+    "tabs": {
+      "all": "전체",
+      "notice": "공지",
+      "event": "이벤트",
+      "lost": "분실물"
+    },
+    "header": "게시물",
+    "empty": {
+      "noResult": "검색 결과가 없습니다.",
+      "noPosts": "게시글이 없어요",
+      "noNotice": "현재 공지글이 없습니다.",
+      "noEvent": "현재 진행중인 이벤트가 없습니다.",
+      "noLost": "다행히 아직 분실물이 없어요."
+    },
+    "loading": "불러오는 중…",
+    "error": "게시글을 불러오지 못했습니다.",
+
+    "writer": "작성자",
+    "lostLocation": "발견 위치",
+    "boothLocation": "부스 위치",
+    "eventTime": "이벤트 시간",
+    "relatedPosts": "다른 게시물",
+    "noRelatedPosts": "관련 게시물이 없습니다.",
+    "loadingBooth": "부스 정보를 불러오는 중…",
+    "loadBoothError": "부스 정보를 불러오는 중 오류가 발생했습니다.",
+
+    "toast": {
+      "endedEvent": "종료된 이벤트입니다."
+    }
+  },
+
+  "timetable": {
+    "celebrity": "연예인",
+    "loading": "불러오는 중...",
+    "noCelebrity": "연예인 공연이 없습니다",
+    "noStage": "진행 중인 공연이 없어요",
+    "nextStage": "바로 다음 공연도 확인해보세요"
+  },
+
+  "game": {
+    "start": "게임 시작",
+    "nextStep": "다음 단계로",
+    "complete": "게임 완료",
+    "retry": "다시 도전하기",
+    "default": "다른 글자를 찾아보세요"
+  },
+  "gameCompleteModal": {
+    "congratsTitle": "축하합니다!",
+    "congratsMessage": "모든 단계를 성공적으로 완료했어요!\n정말 훌륭한 집중력이었습니다 :)",
+    "retry": "다시 도전하기"
+  },
+  "gameHeader": {
+    "step": "단계"
+  },
+
+  "booth": {
+    "nightBooth": "야간부스",
+    "dayBooth": "주간부스",
+    "preparingHours": "영업시간 준비중입니다"
   }
 }

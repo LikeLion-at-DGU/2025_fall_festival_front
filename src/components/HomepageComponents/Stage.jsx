@@ -7,12 +7,19 @@ import sole from "../../assets/images/banners/sole.png";
 import fromis9 from "../../assets/images/banners/fromis9.png";
 import haha from "../../assets/images/banners/haha.png";
 import changmo from "../../assets/images/banners/changmo.png";
+import {
+  getCurrentClubPerformance,
+  formatPerformanceTime,
+} from "../../data/clubPerformances";
+import { useTranslations } from "../../context/TranslationContext";
 
 const Stage = () => {
   const navigate = useNavigate();
+  const { getTranslation } = useTranslations();
   const [currentArtistIndex, setCurrentArtistIndex] = useState(0);
   const [isShowTime, setIsShowTime] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [currentClubPerformance, setCurrentClubPerformance] = useState(null);
 
   /* 9월 25일 연예인 */
   const artists25th = [
@@ -36,7 +43,7 @@ const Stage = () => {
 
     if (month === 9 && date === 25) {
       return artists25th;
-    } else if (month === 9 && date === 21) {
+    } else if (month === 9 && date === 26) {
       return artists26th;
     }
 
@@ -45,16 +52,19 @@ const Stage = () => {
 
   const currentArtists = getCurrentArtists();
 
-  /* 시간 체크 (오후 8시 이후인지 확인) */
+  /* 시간 체크 및 동아리 공연 확인 */
   useEffect(() => {
-    const checkTime = () => {
+    const checkTimeAndPerformance = () => {
       const now = new Date();
       const hour = now.getHours();
-      setIsShowTime(hour >= 10);
+      setIsShowTime(hour >= 20);
+
+      const clubPerformance = getCurrentClubPerformance();
+      setCurrentClubPerformance(clubPerformance);
     };
 
-    checkTime();
-    const interval = setInterval(checkTime, 60000);
+    checkTimeAndPerformance();
+    const interval = setInterval(checkTimeAndPerformance, 60000);
 
     return () => clearInterval(interval);
   }, []);
@@ -90,7 +100,39 @@ const Stage = () => {
         </p>
       </div>
       <div className="relative cursor-pointer" onClick={handleStageClick}>
-        {isShowTime && currentArtists ? (
+        {currentClubPerformance ? (
+          /* 동아리 공연 시간일 때: 동아리 정보 표시 */
+          <>
+            <img
+              src={currentClubPerformance.image}
+              alt={currentClubPerformance.name}
+              className="w-full h-[156px] rounded-[12px] object-cover"
+            />
+            <div
+              className="absolute inset-0 rounded-[12px]"
+              style={{
+                background:
+                  "linear-gradient(179.37deg, rgba(0, 0, 0, 0) 36.37%, rgba(0, 0, 0, 0.77) 99.45%)",
+              }}
+            />
+            <div className="absolute bottom-4 right-4 text-right">
+              <p className="text-sm font-medium font-suite text-white opacity-90">
+                {formatPerformanceTime(
+                  currentClubPerformance.startTime,
+                  currentClubPerformance.endTime
+                )}
+              </p>
+              <p className="text-2xl font-semibold font-suite text-white">
+                {getTranslation(
+                  "stage",
+                  "club",
+                  "StageName",
+                  currentClubPerformance.name
+                )}
+              </p>
+            </div>
+          </>
+        ) : isShowTime && currentArtists ? (
           /* 오후 8시 이후이고 해당 날짜의 연예인이 있을 때: 연예인 이미지 슬라이드 */
           <>
             <img
@@ -112,11 +154,16 @@ const Stage = () => {
                 isTransitioning ? "opacity-0" : "opacity-100"
               }`}
             >
-              {currentArtists[currentArtistIndex].name}
+              {getTranslation(
+                "stage",
+                currentArtists[currentArtistIndex].name.toLowerCase(),
+                "StageName",
+                currentArtists[currentArtistIndex].name
+              )}
             </p>
           </>
         ) : (
-          /* 오후 8시 이전: 공연 준비중 메시지 */
+          /* 공연이 없을 때: 공연 준비중 메시지 */
           <div
             className="w-full h-[156px] flex items-center justify-center"
             style={{

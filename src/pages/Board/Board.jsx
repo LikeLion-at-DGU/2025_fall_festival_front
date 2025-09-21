@@ -1,9 +1,13 @@
 // src/pages/Board/Board.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useBoardTranslation } from "../../hooks/useTranslation";
+import { useTranslations } from "../../context/TranslationContext";
 const EVENT_TIME_CACHE = new Map();
 import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
 import EmptyLogo from "../../assets/images/icons/logo/empty-logo.png";
+import dirvana from "../../assets/images/icons/Timetable-icons/DIRVANA.svg";
 
 /* =========================
    환경변수 기반 API 베이스
@@ -13,6 +17,7 @@ const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
 /* =========================
    카테고리 매핑
    ========================= */
+
 const CATEGORY_MAP = {
   ALL: "전체",
   Notice: "공지",
@@ -41,33 +46,35 @@ function isAbortError(err) {
    빈 상태 컴포넌트
    ========================= */
 function EmptyState({ hasSearchKeyword, activeTag }) {
+  const { t } = useTranslation();
+
   const getEmptyMessage = () => {
     if (hasSearchKeyword) {
-      return "검색 결과가 없습니다.";
+      return t("board.empty.noResult");
     }
 
     switch (activeTag) {
-      case "전체":
-        return "게시글이 없습니다.";
-      case "공지":
-        return "현재 공지글이 없습니다.";
-      case "이벤트":
-        return "현재 진행중인 이벤트가 없습니다.";
-      case "분실물":
-        return "다행히 아직 분실물이 없어요.";
+      case t("board.tabs.all"):
+        return t("board.empty.noPosts");
+      case t("board.tabs.notice"):
+        return t("board.empty.noNotice");
+      case t("board.tabs.event"):
+        return t("board.empty.noEvent");
+      case t("board.tabs.lost"):
+        return t("board.empty.noLost");
       default:
-        return "게시글이 없습니다.";
+        return t("board.empty.noPosts");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[350px] w-full">
+    <div className="flex flex-col items-center justify-center min-h-[350px] w-full gap-6">
       <img
-        src={EmptyLogo}
-        alt="빈 상태"
-        className="w-[224.556px] h-[43px] mb-4 opacity-60"
+        src={dirvana}
+        alt={t("board.empty.noPosts")}
+        className="w-[185px] h-[35px] mb-0"
       />
-      <p className="text-[#b6b6ba] text-center text-[18px] font-normal leading-[130%]">
+      <p className="text-center text-[#A1A1AA] text-[16px] font-[400]">
         {getEmptyMessage()}
       </p>
     </div>
@@ -85,8 +92,8 @@ function Tag({ label, active, onClick }) {
       className={[
         "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
         active
-          ? "bg-black text-white font-suite text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
-          : "bg-white text-[#2A2A2E] font-suite text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
+          ? "bg-black text-white font-suite text-[13px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
+          : "bg-white text-[#2A2A2E] font-suite text-[13px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
       ].join(" ")}
     >
       #{label}
@@ -95,19 +102,21 @@ function Tag({ label, active, onClick }) {
 }
 
 function SearchBar({ value, onChange }) {
+  const { t } = useTranslation();
+
   return (
     <div className="w-full">
       <div className="flex w-full items-center rounded-[10px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-3">
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="검색어를 입력해주세요"
-          className="flex-1 text-black placeholder:text-[#A1A1AA] font-suite text-[14px] not-italic font-normal leading-[150%] outline-none"
+          placeholder={t("board.searchPlaceholder")}
+          className="flex-1 text-black placeholder:text-[#A1A1AA] font-suite text-[16px] not-italic font-normal leading-[150%] outline-none"
         />
         <div className="flex items-center justify-center">
           <img
             src={SearchIcon}
-            alt="검색"
+            alt={t("board.searchPlaceholder")}
             className="w-[18px] h-[18px] flex-shrink-0"
           />
         </div>
@@ -119,18 +128,6 @@ function SearchBar({ value, onChange }) {
 /* =========================
    리스트 아이템
    ========================= */
-/*
-function Toast({ message }) {
-  return (
-    <div className="inline-flex w-[300px] h-[83px] pt-[29px] pr-[68px] pb-[28px] pl-[69px] justify-center items-center shrink-0 rounded-[16px] bg-white shadow-[0_3px_5px_0_rgba(0,0,0,0.10)]">
-      <div className="flex flex-col justify-center self-stretch text-black text-center font-[SUITE] text-[19px] not-italic font-normal leading-[130%]">
-        {message}
-      </div>
-    </div>
-  );
-}
-*/
-
 function Toast({ message }) {
   if (!message) return null;
   return (
@@ -146,17 +143,35 @@ function Toast({ message }) {
 }
 
 function BoardItem({ item }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { category, title } = item;
-  const displayWriter = item.writer || item.booth_name || "";
   const [toast, setToast] = useState("");
+  const { getTranslation } = useTranslations();
+
+  const displayWriter = item.writer
+    ? (() => {
+      const translatedName = getTranslation(
+        "writer",
+        item.id.toString(),
+        "WriterName",
+        item.writer
+      );
+      return translatedName.length > 20
+        ? translatedName.substring(0, 20) + "..."
+        : translatedName;
+    })()
+    : "";
+
+  // 번역된 제목 사용 (부모 컴포넌트에서 전달받음)
+  const translatedTitle = item.translatedTitle || title;
 
   const pillCls =
     category === "Notice"
       ? "bg-[#EF7063] text-white border border-[#EF7063] w-[42px]"
       : category === "Event"
-      ? "bg-white text-[#EF7063] border border-[#EF7063] w-[42px]"
-      : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
+        ? "bg-white text-[#EF7063] border border-[#EF7063] w-[42px]"
+        : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
 
   // 종료 여부 판단(목록엔 시간이 없으므로, 필요한 경우 상세 1회 조회)
   const isEnded = (endISO) => {
@@ -209,7 +224,7 @@ function BoardItem({ item }) {
 
     // 종료된 이벤트면 토스트 2초 + 접속 차단
     if (isEnded(endISO)) {
-      setToast("종료된 이벤트입니다.");
+      setToast(t("board.toast.endedEvent"));
       setTimeout(() => setToast(""), 2000);
       return;
     }
@@ -224,18 +239,24 @@ function BoardItem({ item }) {
         <Link
           to={`/board/${item.id}`}
           onClick={handleClick}
-          className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full"
+          className="flex py-[13px] px-[10px] rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] items-center justify-between gap-3 w-full"
         >
           <div className="flex items-center gap-3 min-w-0">
             <span
               className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillCls}`}
             >
-              {CATEGORY_MAP[category] ?? category}
+              {t(
+                category === "LostItem"
+                  ? "board.tabs.lost"
+                  : `board.tabs.${category.toLowerCase()}`
+              ) ??
+                CATEGORY_MAP[category] ??
+                category}
             </span>
           </div>
           <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
             <p className="truncate text-[#52525B] font-suite text-[14px] not-italic font-semibold leading-[150%]">
-              {title}
+              {translatedTitle}
             </p>
             {displayWriter && (
               <span className="text-[#52525B] font-suite text-[10px] not-italic font-normal leading-[150%] shrink-0">
@@ -339,10 +360,15 @@ function Pagination({ total, page, pageSize, onChange }) {
 /* =========================
    메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
    ========================= */
+/* =========================
+   메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
+   ========================= */
 export default function Board() {
+  const { t } = useTranslation();
   const location = useLocation();
+  const { getTranslation } = useTranslations();
   const [keyword, setKeyword] = useState("");
-  const [activeTag, setActiveTag] = useState("전체");
+  const [activeTag, setActiveTag] = useState(t("board.tabs.all"));
 
   const [page, setPage] = useState(1);
   const pageSize = 10;
@@ -352,6 +378,27 @@ export default function Board() {
   const [allItems, setAllItems] = useState([]);
   const [totalFromServer, setTotalFromServer] = useState(0);
 
+  // 번역 훅 사용
+  const { getTranslatedBoards } = useBoardTranslation(allItems);
+  const { requestSingleTranslation } = useTranslations();
+
+  // 작성자 이름 번역 요청
+  useEffect(() => {
+    if (!allItems || allItems.length === 0) return;
+
+    allItems.forEach((item) => {
+      if (item.writer) {
+        requestSingleTranslation({
+          entity_type: "writer",
+          entity_id: item.id.toString(),
+          field: "WriterName",
+          source_lang: "ko",
+          source_text: item.writer,
+        });
+      }
+    });
+  }, [allItems, requestSingleTranslation]);
+
   const BOARD_ENDPOINT = `${API_BASE}/board/`;
 
   useEffect(() => {
@@ -359,7 +406,7 @@ export default function Board() {
     const search = location.state?.search;
 
     if (category) {
-      const koreanCategory = CATEGORY_MAP[category] || "전체";
+      const koreanCategory = CATEGORY_MAP[category] || t("board.tabs.all");
       setActiveTag(koreanCategory);
     }
 
@@ -401,7 +448,7 @@ export default function Board() {
           console.debug("Fetch aborted");
         } else {
           console.error(e);
-          setError(e?.message || "게시글을 불러오지 못했습니다.");
+          setError(e?.message || t("board.error"));
         }
       } finally {
         setLoading(false);
@@ -437,24 +484,36 @@ export default function Board() {
     });
   }, [allItems, serverCategory, kw]);
 
-  // 검색/태그 변경 시 1페이지로
-  useEffect(() => {
-    setPage(1);
-  }, [keyword, activeTag]);
+  // ✅ "전체"일 때만 상단 4개 공지 고정
+  const reordered = useMemo(() => {
+    if (activeTag !== t("board.tabs.all")) return filtered;
 
-  const clickTag = (korLabel) => setActiveTag(korLabel);
+    const pinned = [];
+    const rest = [];
+    for (const it of filtered) {
+      if (it.category === "Notice" && pinned.length < 4) {
+        pinned.push(it);
+      } else {
+        rest.push(it);
+      }
+    }
+    return [...pinned, ...rest];
+  }, [filtered, activeTag]);
 
-  const totalForUI = filtered.length;
+  // 페이지네이션은 재정렬된 배열 기준
+  const totalForUI = reordered.length;
   const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
+
   const paged = useMemo(() => {
     const start = (page - 1) * pageSize;
-    return filtered.slice(start, start + pageSize);
-  }, [filtered, page, pageSize]);
+    return reordered.slice(start, start + pageSize);
+  }, [reordered, page, pageSize]);
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
   }, [totalPages, page]);
 
+  // ✅ 렌더링
   return (
     <div className="mx-auto max-w-screen-sm px-4 pb-4 flex flex-col">
       {/* 검색 */}
@@ -463,29 +522,36 @@ export default function Board() {
       </div>
 
       {/* 태그 */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        {["전체", "공지", "이벤트", "분실물"].map((lbl) => (
+      <div className="mt-4 flex flex-wrap gap-[10px]">
+        {[
+          t("board.tabs.all"),
+          t("board.tabs.notice"),
+          t("board.tabs.event"),
+          t("board.tabs.lost"),
+        ].map((lbl) => (
           <Tag
             key={lbl}
             label={lbl}
             active={activeTag === lbl}
-            onClick={() => clickTag(lbl)}
+            onClick={() => setActiveTag(lbl)}
           />
         ))}
       </div>
 
       {/* 리스트 헤더 */}
-      <div className="mt-6 mb-5">
-        <h2 className="text-[#2A2A2E] font-suite text-[16px] not-italic font-normal leading-normal">
-          게시물
+      <div className="mt-6 mb-3">
+        <h2 className="text-[#2A2A2E] font-suite text-[16px] ml-[2px] not-italic font-normal leading-normal">
+          {t("board.header")}
         </h2>
       </div>
 
-      {/* 리스트 영역을 flex-1로 */}
+      {/* 리스트 영역 */}
       <div className="flex-1 flex flex-col">
         <div className="flex-1">
           {loading && (
-            <div className="py-16 text-center text-gray-500">불러오는 중…</div>
+            <div className="py-16 text-center text-gray-500">
+              {t("board.loading")}
+            </div>
           )}
           {!loading && error && (
             <div className="py-16 text-center text-rose-600">{error}</div>
@@ -494,10 +560,14 @@ export default function Board() {
             <EmptyState hasSearchKeyword={!!keyword} activeTag={activeTag} />
           )}
           {!loading && !error && paged.length > 0 && (
-            <ul className="flex flex-col gap-[10px]">
-              {paged.map((item) => (
-                <BoardItem key={item.id} item={item} />
-              ))}
+            <ul className="flex flex-col gap-[12px]">
+              {paged.map((item) => {
+                // 번역된 데이터 가져오기
+                const translatedBoards = getTranslatedBoards();
+                const translatedItem =
+                  translatedBoards.find((board) => board.id === item.id) || item;
+                return <BoardItem key={item.id} item={translatedItem} />;
+              })}
             </ul>
           )}
         </div>

@@ -5,5 +5,110 @@
     "timetable": "スケジュール",
     "board": "掲示板",
     "game": "ゲーム"
+  },
+
+  "map": {
+    "campusMap": "キャンパスマップ",
+    "noDetailMap": "詳細地図はありません",
+    "locations": {
+      "manhaeLaw": "マンヘ/法学館",
+      "newEngineering": "新工学館",
+      "library": "中央図書館",
+      "stadium": "運動場",
+      "myeongjin": "明進館",
+      "paljeongdo": "八井堂",
+      "manhaeSquare": "マンヘ広場",
+      "dahyang": "多香館",
+      "hakrim": "学林館",
+      "infoCulture": "情報文化館",
+      "business": "経営館",
+      "hyehwa": "恵化館",
+      "socialScience": "社会科学館",
+      "academicCulture": "学術文化館",
+      "mainBuilding": "本館",
+      "science": "科学館",
+      "wonheung": "元興館"
+    }
+  },
+  "notBooth": {
+    "unknownLocation": "現在地が不明です",
+    "categories": {
+      "Toilet": "トイレ",
+      "Drink": "ドリンク",
+      "Store": "コンビニ"
+    }
+  },
+  "search": {
+    "placeholder": "学科/サークル/ブース名を入力してください",
+    "alt": "検索"
+  },
+  "pullList": {
+    "noBooths": "ブースがありません",
+    "noSearchResults": "検索結果がありません"
+  },
+
+  "board": {
+    "searchPlaceholder": "検索語を入力してください",
+    "tabs": {
+      "all": "全体",
+      "notice": "お知らせ",
+      "event": "イベント",
+      "lost": "遺失物"
+    },
+    "header": "投稿",
+    "empty": {
+      "noResult": "検索結果がありません。",
+      "noPosts": "投稿がありません。",
+      "noNotice": "現在お知らせはありません。",
+      "noEvent": "現在進行中のイベントはありません。",
+      "noLost": "幸いまだ遺失物はありません。"
+    },
+    "loading": "読み込み中…",
+    "error": "投稿を読み込めませんでした。",
+
+    "writer": "投稿者",
+    "lostLocation": "発見場所",
+    "boothLocation": "ブース位置",
+    "eventTime": "イベント時間",
+    "relatedPosts": "関連投稿",
+    "noRelatedPosts": "関連投稿はありません。",
+    "loadingBooth": "ブース情報を読み込み中…",
+    "loadBoothError": "ブース情報の読み込み中にエラーが発生しました。",
+
+    "toast": {
+      "endedEvent": "このイベントは終了しました。"
+    }
+  },
+
+  "timetable": {
+    "celebrity": "Celebrity",
+    "loading": "読み込み中...",
+    "noCelebrity": "有名人の公演はありません",
+    "noStage": "進行中の公演はありません",
+    "nextStage": "次の公演もチェックしてみてください"
+  },
+
+  "game": {
+    "start": "ゲーム開始",
+    "nextStep": "次のステージへ",
+    "complete": "ゲームクリア",
+    "retry": "もう一度挑戦",
+    "default": "違う文字を探してください"
+  },
+
+  "gameCompleteModal": {
+    "congratsTitle": "おめでとうございます！",
+    "congratsMessage": "すべてのステージを無事にクリアしました！\n本当に素晴らしい集中力でした :)",
+    "retry": "もう一度挑戦"
+  },
+
+  "gameHeader": {
+    "step": "ステージ"
+  },
+
+  "booth": {
+    "nightBooth": "夜間ブース",
+    "dayBooth": "日間ブース",
+    "preparingHours": "営業時間準備中"
   }
 }

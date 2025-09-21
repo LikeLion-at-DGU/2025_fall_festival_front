@@ -1,30 +1,32 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import dirvana from "../../assets/images/icons/logo/dirvanablack.svg";
-import dorder from "../../assets/images/icons/logo/dorder.svg";
-import likelion from "../../assets/images/icons/logo/likeliongray.svg";
-import instagram from "../../assets/images/icons/logo/instagram.svg";
+import dirvana from "../../assets/images/icons/logo/dirvanawhite.png";
+import dorder from "../../assets/images/icons/logo/dorder.png";
+import likelion from "../../assets/images/icons/logo/likelionwhite.png";
+import instagram from "../../assets/images/icons/logo/instagram.png";
+import line from "../../assets/images/icons/logo/line.svg";
 
 const Footer = () => {
   const fontClass = "text-center whitespace-nowrap font-normal";
   return (
     <footer
       className={`flex flex-col items-center justify-between
-      w-full max-h-[350px] gap-[32px]
-      px-[36px] py-[50px] 
-      bg-[#E4E4E7]`}
+      w-full max-h-[350px]
+      px-[36px] pb-[50px] 
+      bg-[#F3CDC9]`}
     >
-      <div className={`flex justify-between h-9 gap-10`}>
-        <img src={dirvana} alt="DIRVANA" className="w-[132px]" />
-        <img src={dorder} alt="Dorder" className="w-44" />
+      <img src={line} alt="Line" className="w-full mb-[42px]" />
+      <div className={`flex justify-between items-center h-9 gap-10 mb-[36px]`}>
+        <img src={dirvana} alt="DIRVANA" className="w-[93px] h-[18.12px]" />
+        <img src={dorder} alt="Dorder" className="w-[96px] h-[26.42px]" />
       </div>
 
       {/* 텍스트 영역 */}
-      <div className="flex flex-col items-center w-[156px] gap-2 ">
+      <div className="flex flex-col items-center gap-2 ">
         {/* 검정 */}
         <span
-          className={`${fontClass} font-pretendard font-normal text-[var(--Neutral-600,#2A2A2E)]`}
+          className={`${fontClass} font-suite font-normal text-white mb-[8px]`}
         >
           동국대학교 멋쟁이사자처럼
           <br />
@@ -33,7 +35,7 @@ const Footer = () => {
 
         {/* 회색 */}
         <span
-          className={`${fontClass} font-pretendard font-light text-[var(--Neutral-300,#A1A1AA)]`}
+          className={`${fontClass} font-suite font-light text-white mb-[27px]`}
         >
           @Data supported by 축제기획단
         </span>
@@ -41,13 +43,13 @@ const Footer = () => {
         {/* 로고 + 텍스트 */}
         <div className="flex justify-center items-center gap-6 mt-2">
           {/* likelion */}
-          <Link to="/developers">
-            <div className="flex flex-col justify-center items-center gap-1">
-              <img src={likelion} alt="LIKELION" />
+          <Link to="/admin/login">
+            <div className="flex justify-center items-center gap-1">
+              <img src={likelion} alt="LIKELION" className="w-[26px] h-[16px]" />
               <span
-                className={`${fontClass} font-pretendard font-normal text-[var(--Neutral-300,#A1A1AA)]`}
+                className={`${fontClass} font-suite font-normal text-[12px] text-white`}
               >
-                DEVELOPERS
+                Administrator
               </span>
             </div>
           </Link>
@@ -58,12 +60,12 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="flex flex-col justify-center items-center gap-1">
-              <img src={instagram} alt="Instagram" />
+            <div className="flex justify-center items-center gap-[6px]">
+              <img src={instagram} alt="Instagram" className="w-[20px] h-[20px]"/>
               <span
-                className={`${fontClass} font-pretendard font-normal text-[var(--Neutral-300,#A1A1AA)]`}
+                className={`${fontClass} font-suite font-normal text-[12px] text-white`}
               >
-                INSTAGRAM
+                Instagram
               </span>
             </div>
           </a>

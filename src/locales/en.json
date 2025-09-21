@@ -5,5 +5,110 @@
     "timetable": "Schedule",
     "board": "Board",
     "game": "Game"
+  },
+
+  "map": {
+    "campusMap": "Campus Map",
+    "noDetailMap": "No detailed map",
+    "locations": {
+      "manhaeLaw": "Manhae/Law Building",
+      "newEngineering": "New Engineering Building",
+      "library": "Central Library",
+      "stadium": "Main Stadium",
+      "myeongjin": "Myeongjin Hall",
+      "paljeongdo": "Paljeongdo",
+      "manhaeSquare": "Manhae Square",
+      "dahyang": "Dahyang Hall",
+      "hakrim": "Hakrim Hall",
+      "infoCulture": "Information & Culture Hall",
+      "business": "Business Hall",
+      "hyehwa": "Hyehwa Hall",
+      "socialScience": "Social Science Hall",
+      "academicCulture": "Academic & Culture Hall",
+      "mainBuilding": "Main Building",
+      "science": "Science Hall",
+      "wonheung": "Wonheung Hall"
+    }
+  },
+  "notBooth": {
+    "unknownLocation": "Location unknown",
+    "categories": {
+      "Toilet": "Toilet",
+      "Drink": "Drink",
+      "Store": "Store"
+    }
+  },
+  "search": {
+    "placeholder": "Enter department/club/booth name",
+    "alt": "Search"
+  },
+  "pullList": {
+    "noBooths": "No booths available",
+    "noSearchResults": "No search results"
+  },
+
+  "board": {
+    "searchPlaceholder": "Enter a keyword",
+    "tabs": {
+      "all": "All",
+      "notice": "Notice",
+      "event": "Event",
+      "lost": "Lost"
+    },
+    "header": "Posts",
+    "empty": {
+      "noResult": "No results found.",
+      "noPosts": "No posts available.",
+      "noNotice": "No notices at the moment.",
+      "noEvent": "No ongoing events right now.",
+      "noLost": "Luckily, no lost items yet."
+    },
+    "loading": "Loading…",
+    "error": "Failed to load posts.",
+
+    "writer": "Writer",
+    "lostLocation": "Found location",
+    "boothLocation": "Booth location",
+    "eventTime": "Event time",
+    "relatedPosts": "Related posts",
+    "noRelatedPosts": "No related posts available.",
+    "loadingBooth": "Loading booth information…",
+    "loadBoothError": "An error occurred while loading booth information.",
+
+    "toast": {
+      "endedEvent": "This event has ended."
+    }
+  },
+
+  "timetable": {
+    "celebrity": "Celebrity",
+    "loading": "Loading...",
+    "noCelebrity": "No celebrity performances",
+    "noStage": "No ongoing performances",
+    "nextStage": "Check out the next performance too"
+  },
+
+  "game": {
+    "start": "Start Game",
+    "nextStep": "Next Stage",
+    "complete": "Game Complete",
+    "retry": "Try Again",
+    "default": "Find the different character"
+  },
+
+  "gameCompleteModal": {
+    "congratsTitle": "Congratulations!",
+    "congratsMessage": "You have successfully completed all stages!\nYour focus was truly amazing :)",
+    "retry": "Try Again"
+  },
+
+  "gameHeader": {
+    "step": "Step"
+  },
+
+  "booth": {
+    "nightBooth": "Night Booth",
+    "dayBooth": "Day Booth",
+    "preparingHours": "Preparing business hours"
   }
 }

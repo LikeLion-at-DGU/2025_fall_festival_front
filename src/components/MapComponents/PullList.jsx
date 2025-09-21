@@ -9,6 +9,8 @@ import { useNavigate } from "react-router-dom";
 
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
+import { useBoothTranslation } from "../../hooks/useTranslation";
+import { useTranslation } from "react-i18next";
 
 function PullList({
   booths,
@@ -17,12 +19,16 @@ function PullList({
   selectedPin,
   selectedBooth,
 }) {
+  // 번역 훅 사용
+  const { getTranslatedBooths } = useBoothTranslation(booths);
+  const { t } = useTranslation();
+
   const minHeight = 150;
   const defaultHeight = 150;
 
   // ✅ maxHeight를 상태로 관리
   const [maxHeight, setMaxHeight] = useState(
-    Math.min(437, window.innerHeight - 100 - 82)
+    Math.min(410, window.innerHeight - 100 - 82)
   );
 
   useEffect(() => {
@@ -154,12 +160,15 @@ function PullList({
   ]);
 
   // ----------------------------
-  // 검색 및 필터링
+  // 검색 및 필터링 (번역된 데이터 사용)
   // ----------------------------
   const searchFilteredBooths = useMemo(() => {
-    return booths.filter((booth) => {
-      const boothName = booth.name;
-      const locationName = booth.location?.name ?? "";
+    const translatedBooths = getTranslatedBooths();
+
+    return translatedBooths.filter((booth) => {
+      const boothName = booth.translatedName || booth.name;
+      const locationName =
+        booth.translatedLocation || (booth.location?.name ?? "");
 
       const matchesSearch =
         searchTerm === "" ||
@@ -170,13 +179,13 @@ function PullList({
 
       return matchesSearch && matchesPin;
     });
-  }, [booths, searchTerm, selectedPin]);
+  }, [booths, searchTerm, selectedPin, getTranslatedBooths]);
 
   const sortedBooths = useMemo(() => {
     return [...searchFilteredBooths].sort((a, b) => {
       if (!searchTerm) return 0;
-      const aName = a.name;
-      const bName = b.name;
+      const aName = a.translatedName || a.name;
+      const bName = b.translatedName || b.name;
       const aMatch = aName.toLowerCase().includes(searchTerm.toLowerCase())
         ? 0
         : 1;
@@ -217,8 +226,7 @@ function PullList({
       </div>
 
       {/* 헤더 */}
-      <div className="px-[17px] pb-4">
-      </div>
+      <div className="px-[17px] pb-4"></div>
 
       {/* 스크롤 가능한 콘텐츠 */}
       <div className="flex-1 overflow-hidden">
@@ -227,17 +235,18 @@ function PullList({
             <div className="flex items-center justify-center h-32">
               <span className={`${textClass} text-[#8A8A8A]`}>
                 {selectedPin
-                  ? `부스가 없어요`
+                  ? t("pullList.noBooths")
                   : searchTerm
-                  ? "검색 결과가 없어요"
-                  : `부스가 없어요`}
+                  ? t("pullList.noSearchResults")
+                  : t("pullList.noBooths")}
               </span>
             </div>
           ) : (
-            <div className="w-full flex flex-col gap-2">
+            <div className="w-full flex flex-col gap-[12px]">
               {sortedBooths.map((booth) => {
-                const boothName = booth.name;
-                const locationName = booth.location?.name ?? "";
+                const boothName = booth.translatedName || booth.name;
+                const locationName =
+                  booth.translatedLocation || (booth.location?.name ?? "");
 
                 return booth.category === "Booth" ||
                   booth.category === "FoodTruck" ||
@@ -245,9 +254,9 @@ function PullList({
                   <BoothCard
                     key={booth.booth_id}
                     boothId={booth.booth_id}
-                    title={booth.name ?? ""}
+                    title={boothName}
                     image={booth.image_url || undefined}
-                    location={booth.location?.name ?? ""}
+                    location={locationName}
                     isSelected={selectedBooth === booth.name}
                     startTime={booth.start_time}
                     endTime={booth.end_time}
