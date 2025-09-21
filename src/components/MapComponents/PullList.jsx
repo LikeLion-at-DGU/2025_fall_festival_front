@@ -217,8 +217,7 @@ function PullList({
       </div>
 
       {/* 헤더 */}
-      <div className="px-[17px] pb-4">
-      </div>
+      <div className="px-[17px] pb-4"></div>
 
       {/* 스크롤 가능한 콘텐츠 */}
       <div className="flex-1 overflow-hidden">
@@ -252,6 +251,12 @@ function PullList({
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days[0]?.weekday}
+                    likesCount={booth.like_cnt || 0}
+                    isLiked={false}
+                    badges={{
+                      isEventActive: booth.is_event || false,
+                      isDOrderPartner: booth.is_dorder || false,
+                    }}
                     className="w-full"
                     onClick={() =>
                       navigate(

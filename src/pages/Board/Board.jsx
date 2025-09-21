@@ -490,8 +490,8 @@ export default function Board() {
       </div>
 
       {/* 리스트 헤더 */}
-      <div className="mt-6 mb-5">
-        <h2 className="text-[#2A2A2E] font-suite text-[16px] not-italic font-normal leading-normal">
+      <div className="mt-6 mb-3">
+        <h2 className="text-[#2A2A2E] font-suite text-[16px] ml-[2px] not-italic font-normal leading-normal">
           게시물
         </h2>
       </div>

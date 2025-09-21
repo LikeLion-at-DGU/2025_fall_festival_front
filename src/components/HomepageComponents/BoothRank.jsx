@@ -75,7 +75,7 @@ const BoothRank = ({ onDataChange }) => {
     <div className="mt-[27px] mb-[32px]">
       <div className="mb-4">
         <p className="text-[20px] font-semibold font-suite text-[#52525B]">
-          부스 랭킹
+          인기 부스
         </p>
       </div>
       <div className="space-y-4">

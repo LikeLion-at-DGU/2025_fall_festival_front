@@ -11,7 +11,10 @@ const useBoothLikes = (
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 처음 마운트될 때 로컬스토리지 값 반영
+  useEffect(() => {
+    setLikesCount(initialLikesCount);
+  }, [initialLikesCount]);
+
   useEffect(() => {
     if (!boothId) return;
 
@@ -20,7 +23,12 @@ const useBoothLikes = (
         localStorage.getItem("likedBooths") || "[]"
       );
       const isBoothLiked = likedBooths.includes(boothId.toString());
-      setIsLiked(isBoothLiked);
+
+      if (likedBooths.length > 0) {
+        setIsLiked(isBoothLiked);
+      } else {
+        setIsLiked(initialIsLiked);
+      }
     };
 
     loadLikesState();
@@ -67,7 +75,7 @@ const useBoothLikes = (
       setLikesCount(newLikesCount);
 
       const storedUserId = localStorage.getItem("user_id");
-      const userId = storedUserId ? parseInt(storedUserId) : null;
+      const userId = storedUserId; // 문자열 그대로 사용
 
       let response;
       try {
@@ -80,8 +88,8 @@ const useBoothLikes = (
           if (response.user_id && response.user_id !== userId) {
             localStorage.setItem("user_id", response.user_id.toString());
           } else if (!response.user_id && !userId) {
-            const tempUserId = Math.floor(Math.random() * 1000000);
-            localStorage.setItem("user_id", tempUserId.toString());
+            const tempUserId = Math.floor(Math.random() * 1000000).toString();
+            localStorage.setItem("user_id", tempUserId);
           }
         }
 
@@ -113,7 +121,11 @@ const useBoothLikes = (
         });
         window.dispatchEvent(event);
       } catch (apiError) {
-        console.error("좋아요 API 실패:", apiError);
+        console.error("❌ 좋아요 API 실패:", apiError);
+        console.error("❌ 에러 메시지:", apiError.message);
+        console.error("❌ 응답 상태:", apiError.response?.status);
+        console.error("❌ 응답 데이터:", apiError.response?.data);
+
         setIsLiked(isCurrentlyLiked);
         setLikesCount(likesCount);
         return;

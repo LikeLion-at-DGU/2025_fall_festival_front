@@ -46,25 +46,51 @@ export default function BoothDetail() {
   const { id } = useParams();
   const [booth, setBooth] = useState(null);
   const [initialLikesCount, setInitialLikesCount] = useState(0);
+  const [initialIsLiked, setInitialIsLiked] = useState(false);
 
   // 좋아요 훅
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
     id,
     initialLikesCount || 0,
-    false
+    initialIsLiked
   );
 
   useEffect(() => {
-    axios
-      .get(`${BASE_URL}/booths/detail/${id}/`)
-      .then((res) => {
-        setBooth(res.data);
-        setInitialLikesCount(res.data.likes_count || 0);
-      })
-      .catch((err) => {
+    const fetchBoothDetail = async () => {
+      try {
+        // 1. 부스 상세 정보 조회
+        const detailRes = await axios.get(`${BASE_URL}/booths/detail/${id}/`);
+        setBooth(detailRes.data);
+
+        // 2. 좋아요 정보를 위해 부스 목록에서 해당 부스 조회
+        try {
+          const listRes = await axios.post(`${BASE_URL}/booths/list/`, {
+            types: ["Booth"],
+          });
+
+          const targetBooth = listRes.data.results.find(
+            (booth) => booth.booth_id.toString() === id.toString()
+          );
+
+          if (targetBooth) {
+            setInitialLikesCount(targetBooth.like_cnt || 0);
+            setInitialIsLiked(targetBooth.is_liked || false);
+          } else {
+            setInitialLikesCount(0);
+            setInitialIsLiked(false);
+          }
+        } catch (listError) {
+          console.error("부스 목록 조회 실패:", listError);
+          setInitialLikesCount(0);
+          setInitialIsLiked(false);
+        }
+      } catch (err) {
         console.error("BoothDetail API 실패", err);
         setBooth(null);
-      });
+      }
+    };
+
+    fetchBoothDetail();
   }, [id]);
 
   if (!booth) return <div className="p-6">로딩 중...</div>;
@@ -159,7 +185,7 @@ export default function BoothDetail() {
                 className="w-5 h-5 transition-all duration-200"
               />
             </button>
-            <span className="text-[#52525B] text-sm font-semibold">
+            <span className="text-[#A1A1AA] text-sm font-semibold">
               {likesCount}
             </span>
           </div>
