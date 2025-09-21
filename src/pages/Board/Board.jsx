@@ -67,7 +67,7 @@ function EmptyState({ hasSearchKeyword, activeTag }) {
         alt="빈 상태"
         className="w-[224.556px] h-[43px] mb-4 opacity-60"
       />
-      <p className="text-[#b6b6ba] text-center text-[18px] font-normal leading-[130%]">
+      <p className="text-center text-[#71717A] text-xl font-medium">
         {getEmptyMessage()}
       </p>
     </div>
@@ -339,6 +339,9 @@ function Pagination({ total, page, pageSize, onChange }) {
 /* =========================
    메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
    ========================= */
+/* =========================
+   메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
+   ========================= */
 export default function Board() {
   const location = useLocation();
   const [keyword, setKeyword] = useState("");
@@ -437,24 +440,36 @@ export default function Board() {
     });
   }, [allItems, serverCategory, kw]);
 
-  // 검색/태그 변경 시 1페이지로
-  useEffect(() => {
-    setPage(1);
-  }, [keyword, activeTag]);
+  // ✅ "전체"일 때만 상단 4개 공지 고정
+  const reordered = useMemo(() => {
+    if (activeTag !== "전체") return filtered;
 
-  const clickTag = (korLabel) => setActiveTag(korLabel);
+    const pinned = [];
+    const rest = [];
+    for (const it of filtered) {
+      if (it.category === "Notice" && pinned.length < 4) {
+        pinned.push(it);
+      } else {
+        rest.push(it);
+      }
+    }
+    return [...pinned, ...rest];
+  }, [filtered, activeTag]);
 
-  const totalForUI = filtered.length;
+  // 페이지네이션은 재정렬된 배열 기준
+  const totalForUI = reordered.length;
   const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
+
   const paged = useMemo(() => {
     const start = (page - 1) * pageSize;
-    return filtered.slice(start, start + pageSize);
-  }, [filtered, page, pageSize]);
+    return reordered.slice(start, start + pageSize);
+  }, [reordered, page, pageSize]);
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
   }, [totalPages, page]);
 
+  // ✅ 렌더링
   return (
     <div className="mx-auto max-w-screen-sm px-4 pb-4 flex flex-col">
       {/* 검색 */}
@@ -469,7 +484,7 @@ export default function Board() {
             key={lbl}
             label={lbl}
             active={activeTag === lbl}
-            onClick={() => clickTag(lbl)}
+            onClick={() => setActiveTag(lbl)}
           />
         ))}
       </div>
@@ -481,7 +496,7 @@ export default function Board() {
         </h2>
       </div>
 
-      {/* 리스트 영역을 flex-1로 */}
+      {/* 리스트 영역 */}
       <div className="flex-1 flex flex-col">
         <div className="flex-1">
           {loading && (
@@ -515,3 +530,4 @@ export default function Board() {
     </div>
   );
 }
+

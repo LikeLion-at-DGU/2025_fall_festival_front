@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import top_left_logo from '../../assets/images/icons/game-icons/top-left-logo.png';
+import center_logo from '../../assets/images/icons/game-icons/middle_logo.png';
+import dorder_logo from '../../assets/images/icons/game-icons/KakaoTalk_Photo_2025-09-15-12-55-42 3.png';
+import likelion from '../../assets/images/icons/game-icons/likelion_logo.png';
 
 function GameIntro({ onStartGame }) {
   const [countdown, setCountdown] = useState(null);
@@ -41,13 +45,13 @@ function GameIntro({ onStartGame }) {
 
   // 인트로 화면 렌더링
   return (
-    <div className="w-96 h-[812px] relative bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden">
+    <div className="w-full bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden relative">
       {/* 배경 이미지들 */}
-      <img className="w-[461px] h-[476px] left-[-189px] top-[-124px] absolute" src="https://placehold.co/461x476" />
+      <img className="w-[461px] h-[476px] left-[-189px] top-[-124px] absolute" src={top_left_logo} />
       <div className="w-64 h-64 left-[61px] top-[316px] absolute bg-gradient-to-b from-primary-500/50 to-red-500/0 rounded-full"></div>
-      <img className="w-64 h-64 left-[63px] top-[320px] absolute" src="https://placehold.co/257x266" />
-      
-      {/* 상단 헤더 */}
+      <img className="w-64 h-64 left-[63px] top-[320px] absolute" src={center_logo} />
+
+      {/* 상단 헤더
       <div data-status="Home" className="w-96 h-14 p-4 left-0 top-0 absolute bg-neutral-000 shadow-[0px_1px_5px_0px_rgba(0,0,0,0.05)] inline-flex flex-col justify-start items-start gap-2.5">
         <div className="self-stretch h-5 inline-flex justify-between items-center">
           <div className="w-16 h-3 bg-black outline outline-[0.10px] outline-black"></div>
@@ -60,9 +64,9 @@ function GameIntro({ onStartGame }) {
           <div className="w-3 h-0.5 bg-primary-400"></div>
           <div className="w-3.5 h-3 bg-black"></div>
         </div>
-      </div>
+      </div> */}
       
-      {/* 하단 네비게이션 */}
+      {/* 하단 네비게이션
       <div className="w-96 px-4 pb-[3px] left-0 top-[750px] absolute bg-neutral-000 shadow-[0px_-1px_5px_0px_rgba(0,0,0,0.05)] inline-flex justify-between items-center">
         <div data-icon="Map" data-status="Unselected" className="w-14 px-3 pt-2 pb-1 inline-flex flex-col justify-start items-center gap-[5px]">
           <div className="w-6 h-6 relative overflow-hidden">
@@ -105,24 +109,19 @@ function GameIntro({ onStartGame }) {
           <div className="justify-start text-primary-500 text-xs font-semibold font-['SUITE'] leading-none">게임</div>
         </div>
       </div>
+      */}
       
       {/* 로고 요소들 */}
-      <div className="w-14 h-11 left-[116.50px] top-[261px] absolute bg-primary-050"></div>
-      <div className="w-14 h-11 left-[149.32px] top-[261px] absolute bg-primary-300"></div>
-      <div className="w-5 h-2 left-[136.61px] top-[296.89px] absolute bg-primary-300"></div>
-      <div className="w-9 h-6 left-[211.53px] top-[280.50px] absolute bg-primary-300"></div>
-      <div className="w-5 h-2 left-[168.39px] top-[261px] absolute bg-primary-300"></div>
-      <div className="w-10 h-2.5 left-[210.10px] top-[280.50px] absolute bg-primary-300"></div>
-      <div className="w-11 h-2 left-[224.40px] top-[261px] absolute bg-primary-300"></div>
-      <div className="w-14 h-11 left-[176.33px] top-[261px] absolute bg-primary-050"></div>
+      <img src={likelion} className="left-[116.50px] top-[261px] absolute bg-primary-050"></img>
+      
       <div className="left-[135.38px] top-[318.56px] absolute text-center justify-start text-primary-050 text-[8.25px] font-black font-['SUITE_Variable']">LIKELION DONGGUK UNIV.</div>
       
       {/* D'order 로고 이미지 */}
-      <img className="w-48 h-12 left-[99px] top-[512px] absolute" src="https://placehold.co/185x51" />
+      <img className="w-48 h-12 left-[99px] top-[512px] absolute" src={dorder_logo} />
       
       {/* 게임 시작 버튼 (클릭 가능한 영역) */}
       <div 
-        className="w-8 h-8 left-[172.50px] top-[409px] absolute overflow-hidden cursor-pointer"
+        className="w-8 h-8 left-[172.50px] top-[657px] absolute overflow-hidden cursor-pointer"
         onClick={onStartGame}
       >
         <div className="w-6 h-6 left-[3.54px] top-[3px] absolute outline outline-[5px] outline-offset-[-2.50px] outline-red-300"></div>

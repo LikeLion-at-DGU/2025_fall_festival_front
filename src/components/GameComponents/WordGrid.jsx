@@ -59,7 +59,7 @@ const WordGrid = ({ words, size, correctAnswer, onWordClick, gameStatus }) => {
   };
 
   return (
-    <div className="w-80 h-[453px] left-1/2 transform -translate-x-1/2 top-[178px] absolute inline-flex flex-col justify-start items-center gap-4">
+    <div className="w-[343px] h-[453px] left-1/2 transform -translate-x-1/2 top-[178px] absolute inline-flex flex-col justify-start items-center gap-4">
       {renderGrid()}
     </div>
   );
