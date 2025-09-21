@@ -117,7 +117,7 @@ const Event = ({ onDataChange }) => {
     <div className="mt-[27px]">
       <div className="flex items-center justify-between mb-4">
         <p className="text-[20px] font-semibold font-suite text-[#52525B]">
-          이벤트 진행 부스
+          이벤트 부스
         </p>
         <button
           onClick={() => navigate("/board", { state: { category: "Event" } })}

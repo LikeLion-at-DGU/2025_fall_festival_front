@@ -215,8 +215,8 @@ export default function Timetable() {
                   alt={s.name}
                   className="w-16 h-16 rounded-lg object-cover"
                 />
-                <div className="flex flex-col">
-                  <p className="text-lg font-semibold">{s.name}</p>
+                <div className="flex flex-row items-center gap-[10px]">
+                  <p className="text-5 font-semibold">{s.name}</p>
                   <p className="text-sm text-gray-600">{s.location_name}</p>
                   {/* ⛔ 연예인 모드에서는 시간 표시 안함 */}
                 </div>
@@ -246,7 +246,7 @@ export default function Timetable() {
                     {(s.end_time || "").slice(11, 16)}
                   </p>
                   <div className="flex items-center gap-[10px]">
-                    <p className="text-lg font-semibold">{s.name}</p>
+                    <p className="text-5 font-semibold">{s.name}</p>
                     <p className="text-sm text-gray-600">{s.location_name}</p>
                   </div>
                 </div>
@@ -282,7 +282,7 @@ export default function Timetable() {
                             </p>
                           )}
                           <div className="flex items-center gap-[10px]">
-                            <p className="text-lg font-semibold text-[#A1A1AA]">
+                            <p className="text-5 font-semibold text-[#A1A1AA]">
                               {s.name}
                             </p>
                             <p className="text-sm text-[#A1A1AA]">

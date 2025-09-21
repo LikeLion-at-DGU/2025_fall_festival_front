@@ -36,7 +36,7 @@ const Stage = () => {
 
     if (month === 9 && date === 25) {
       return artists25th;
-    } else if (month === 9 && date === 21) {
+    } else if (month === 9 && date === 26) {
       return artists26th;
     }
 
@@ -50,7 +50,7 @@ const Stage = () => {
     const checkTime = () => {
       const now = new Date();
       const hour = now.getHours();
-      setIsShowTime(hour >= 10);
+      setIsShowTime(hour >= 20);
     };
 
     checkTime();

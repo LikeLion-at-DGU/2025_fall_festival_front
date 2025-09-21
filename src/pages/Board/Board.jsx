@@ -67,7 +67,7 @@ function EmptyState({ hasSearchKeyword, activeTag }) {
         alt="빈 상태"
         className="w-[224.556px] h-[43px] mb-4 opacity-60"
       />
-      <p className="text-[#b6b6ba] text-center text-[18px] font-normal leading-[130%]">
+      <p className="text-center text-[#71717A] text-xl font-medium">
         {getEmptyMessage()}
       </p>
     </div>
@@ -85,8 +85,8 @@ function Tag({ label, active, onClick }) {
       className={[
         "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
         active
-          ? "bg-black text-white font-suite text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
-          : "bg-white text-[#2A2A2E] font-suite text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
+          ? "bg-black text-white font-suite text-[13px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
+          : "bg-white text-[#2A2A2E] font-suite text-[13px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
       ].join(" ")}
     >
       #{label}
@@ -102,7 +102,7 @@ function SearchBar({ value, onChange }) {
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="검색어를 입력해주세요"
-          className="flex-1 text-black placeholder:text-[#A1A1AA] font-suite text-[14px] not-italic font-normal leading-[150%] outline-none"
+          className="flex-1 text-black placeholder:text-[#A1A1AA] font-suite text-[16px] not-italic font-normal leading-[150%] outline-none"
         />
         <div className="flex items-center justify-center">
           <img
@@ -119,18 +119,6 @@ function SearchBar({ value, onChange }) {
 /* =========================
    리스트 아이템
    ========================= */
-/*
-function Toast({ message }) {
-  return (
-    <div className="inline-flex w-[300px] h-[83px] pt-[29px] pr-[68px] pb-[28px] pl-[69px] justify-center items-center shrink-0 rounded-[16px] bg-white shadow-[0_3px_5px_0_rgba(0,0,0,0.10)]">
-      <div className="flex flex-col justify-center self-stretch text-black text-center font-[SUITE] text-[19px] not-italic font-normal leading-[130%]">
-        {message}
-      </div>
-    </div>
-  );
-}
-*/
-
 function Toast({ message }) {
   if (!message) return null;
   return (
@@ -224,7 +212,7 @@ function BoardItem({ item }) {
         <Link
           to={`/board/${item.id}`}
           onClick={handleClick}
-          className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full"
+          className="flex py-[13px] px-[10px] rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] items-center justify-between gap-3 w-full"
         >
           <div className="flex items-center gap-3 min-w-0">
             <span
@@ -339,6 +327,9 @@ function Pagination({ total, page, pageSize, onChange }) {
 /* =========================
    메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
    ========================= */
+/* =========================
+   메인 페이지 (프론트에서 필터+검색+페이지네이션 처리)
+   ========================= */
 export default function Board() {
   const location = useLocation();
   const [keyword, setKeyword] = useState("");
@@ -437,24 +428,36 @@ export default function Board() {
     });
   }, [allItems, serverCategory, kw]);
 
-  // 검색/태그 변경 시 1페이지로
-  useEffect(() => {
-    setPage(1);
-  }, [keyword, activeTag]);
+  // ✅ "전체"일 때만 상단 4개 공지 고정
+  const reordered = useMemo(() => {
+    if (activeTag !== "전체") return filtered;
 
-  const clickTag = (korLabel) => setActiveTag(korLabel);
+    const pinned = [];
+    const rest = [];
+    for (const it of filtered) {
+      if (it.category === "Notice" && pinned.length < 4) {
+        pinned.push(it);
+      } else {
+        rest.push(it);
+      }
+    }
+    return [...pinned, ...rest];
+  }, [filtered, activeTag]);
 
-  const totalForUI = filtered.length;
+  // 페이지네이션은 재정렬된 배열 기준
+  const totalForUI = reordered.length;
   const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
+
   const paged = useMemo(() => {
     const start = (page - 1) * pageSize;
-    return filtered.slice(start, start + pageSize);
-  }, [filtered, page, pageSize]);
+    return reordered.slice(start, start + pageSize);
+  }, [reordered, page, pageSize]);
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
   }, [totalPages, page]);
 
+  // ✅ 렌더링
   return (
     <div className="mx-auto max-w-screen-sm px-4 pb-4 flex flex-col">
       {/* 검색 */}
@@ -463,25 +466,25 @@ export default function Board() {
       </div>
 
       {/* 태그 */}
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-4 flex flex-wrap gap-[10px]">
         {["전체", "공지", "이벤트", "분실물"].map((lbl) => (
           <Tag
             key={lbl}
             label={lbl}
             active={activeTag === lbl}
-            onClick={() => clickTag(lbl)}
+            onClick={() => setActiveTag(lbl)}
           />
         ))}
       </div>
 
       {/* 리스트 헤더 */}
-      <div className="mt-6 mb-5">
-        <h2 className="text-[#2A2A2E] font-suite text-[16px] not-italic font-normal leading-normal">
+      <div className="mt-6 mb-3">
+        <h2 className="text-[#2A2A2E] font-suite text-[16px] ml-[2px] not-italic font-normal leading-normal">
           게시물
         </h2>
       </div>
 
-      {/* 리스트 영역을 flex-1로 */}
+      {/* 리스트 영역 */}
       <div className="flex-1 flex flex-col">
         <div className="flex-1">
           {loading && (
@@ -494,7 +497,7 @@ export default function Board() {
             <EmptyState hasSearchKeyword={!!keyword} activeTag={activeTag} />
           )}
           {!loading && !error && paged.length > 0 && (
-            <ul className="flex flex-col gap-[10px]">
+            <ul className="flex flex-col gap-[12px]">
               {paged.map((item) => (
                 <BoardItem key={item.id} item={item} />
               ))}

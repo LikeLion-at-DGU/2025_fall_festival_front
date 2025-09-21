@@ -33,8 +33,8 @@ export default function NearbyBoothSection({ boothId }) {
     if (!nearby) return null;
 
     return (
-        <div className="mx-4 mt-4">
-            <h2 className="font-semibold mb-2 text-[#EF7063] text-xl">근처 운영 중인 부스 추천</h2>
+        <div className="mx-4 mt-8">
+            <h2 className="font-semibold mb-1 text-[#EF7063] text-xl">근처 운영 중인 부스 추천</h2>
 
             {/* 가로 스크롤 영역 */}
             <div className="flex gap-3 overflow-x-auto scrollbar-hidden pt-3">

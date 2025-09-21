@@ -24,7 +24,7 @@ const Banner = () => {
       alt: "축제 배너 2",
       hasButton: true,
       buttonText: "이벤트 참여",
-      buttonPosition: { top: "40%", left: "4%" },
+      buttonPosition: { top: "48%", left: "4%" },
     },
     {
       id: 3,
@@ -32,7 +32,7 @@ const Banner = () => {
       alt: "축제 배너 3",
       hasButton: true,
       buttonText: "게임하기",
-      buttonPosition: { top: "65%", left: "5%" },
+      buttonPosition: { top: "65%", left: "6%" },
     },
     {
       id: 4,
