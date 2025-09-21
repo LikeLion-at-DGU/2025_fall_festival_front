@@ -40,6 +40,14 @@
     }
   },
 
+  "timetable": {
+    "celebrity": "Celebrity",
+    "loading": "Loading...",
+    "noCelebrity": "No celebrity performances",
+    "noStage": "No ongoing performances",
+    "nextStage": "Check out the next performance too"
+  },
+
   "game": {
     "start": "Start Game",
     "nextStep": "Next Stage",
@@ -52,6 +60,10 @@
     "congratsTitle": "Congratulations!",
     "congratsMessage": "You have successfully completed all stages!\nYour focus was truly amazing :)",
     "retry": "Try Again"
+  },
+
+  "gameHeader": {
+    "step": "Step"
   },
 
   "booth": {

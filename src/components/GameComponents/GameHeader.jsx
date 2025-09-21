@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from "react-i18next";
 
 /**
  * 게임 헤더 컴포넌트
@@ -6,6 +7,8 @@ import React from 'react';
  * @param {number} currentStep - 현재 단계 (1-4)
  */
 const GameHeader = ({ round, currentStep }) => {
+  const { t } = useTranslation();
+
   return (
     <div 
       data-status={`Round ${round}`}
@@ -14,7 +17,7 @@ const GameHeader = ({ round, currentStep }) => {
       <div className="self-stretch w-full h-5 inline-flex justify-start items-center gap-3">
         <div className="w-6 h-6 relative"></div>
         <div className="justify-start text-neutral-600 text-sm font-semibold font-['SUITE'] leading-tight">
-          {round}단계 [{currentStep}/4]
+          {round}{t("gameHeader.step")} [{currentStep}/4]
         </div>
       </div>
     </div>

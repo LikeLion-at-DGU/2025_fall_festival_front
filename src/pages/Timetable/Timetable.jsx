@@ -6,10 +6,12 @@ import dot2 from "../../assets/images/icons/Timetable-icons/empty-dot.png"; // �
 import arrow from "../../assets/images/icons/Timetable-icons/arrow.png"; // 삼각형
 import dirvana from "../../assets/images/icons/Timetable-icons/DIRVANA.svg";
 import { useTranslations } from "../../context/TranslationContext";
+import { useTranslation } from "react-i18next";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Timetable() {
+  const { t } = useTranslation();
   const { getTranslation, requestSingleTranslation } = useTranslations();
   const [currentClubEvents, setCurrentClubEvents] = useState([]);
   const [remainingClubEvents, setRemainingClubEvents] = useState([]);
@@ -248,7 +250,7 @@ export default function Timetable() {
                 : "text-[#71717A]"
             }`}
           >
-            연예인
+            {t("timetable.celebrity")}
           </span>
 
           <button
@@ -275,7 +277,7 @@ export default function Timetable() {
       {/* 공연 리스트 */}
       <div className="flex flex-col gap-6">
         {loading ? (
-          <p className="text-center text-gray-400">불러오는 중...</p>
+          <p className="text-center text-gray-400">{t("timetable.loading")}</p>
         ) : isCelebrityMode ? (
           celebrityEvents.length > 0 ? (
             celebrityEvents.map((s) => (
@@ -312,7 +314,7 @@ export default function Timetable() {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-400">연예인 공연이 없습니다</p>
+            <p className="text-center text-gray-400">{t("timetable.noCelebrity")}</p>
           )
         ) : currentClubEvents.length > 0 ? (
           <>
@@ -360,7 +362,7 @@ export default function Timetable() {
             {(remainingClubEvents.length > 0 || celebrityEvents.length > 0) && (
               <div className="mt-4">
                 <p className="text-sm text-[#71717A] mb-5">
-                  바로 다음 공연도 확인해보세요
+                  {t("timetable.nextStage")}
                 </p>
                 <div className="flex flex-col gap-6">
                   {[...remainingClubEvents, ...celebrityEvents].map((s) => (
@@ -418,7 +420,7 @@ export default function Timetable() {
               className="mt-4 w-[224.556px] h-[43px]"
             />
             <p className="text-center text-[#71717A] text-xl font-medium">
-              진행 중인 공연이 없어요
+              {t("timetable.noStage")}
             </p>
           </div>
         )}
