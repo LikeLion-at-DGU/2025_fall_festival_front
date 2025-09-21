@@ -38,5 +38,15 @@
     "toast": {
       "endedEvent": "종료된 이벤트입니다."
     }
+  },
+
+  "game": {
+    "start": "게임 시작",
+    "nextStep": "다음 단계로",
+    "complete": "게임 완료",
+    "retry": "다시 도전하기",
+    "default": "다른 글자를 찾아보세요"
   }
+
+  
 }
