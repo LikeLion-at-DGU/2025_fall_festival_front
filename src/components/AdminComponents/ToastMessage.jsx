@@ -33,7 +33,7 @@ function ToastMessage({ text, duration = 2500, onClose }) {
                   shadow-[0_3px_5px_0_rgba(0,0,0,0.1)] 
                   flex-shrink-0 pointer-events-auto"
       >
-        <p className="text-[#000] text-[16px] font-normal leading-[130%] whitespace-pre-line">
+        <p className="text-[#000] text-[16px] font-normal leading-[130%] whitespace-pre-line text-center">
           {text}
         </p>
       </div>

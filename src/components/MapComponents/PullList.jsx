@@ -22,7 +22,7 @@ function PullList({
 
   // ✅ maxHeight를 상태로 관리
   const [maxHeight, setMaxHeight] = useState(
-    Math.min(424, window.innerHeight - 100 - 82)
+    Math.min(420, window.innerHeight - 100 - 82)
   );
 
   useEffect(() => {
@@ -228,10 +228,10 @@ function PullList({
             <div className="flex items-center justify-center h-32">
               <span className={`${textClass} text-[#8A8A8A]`}>
                 {selectedPin
-                  ? `${selectedPin}에 부스가 없어요`
+                  ? `부스가 없어요`
                   : searchTerm
                   ? "검색 결과가 없어요"
-                  : `${selectedFilter}에 부스가 없어요`}
+                  : `부스가 없어요`}
               </span>
             </div>
           ) : (
