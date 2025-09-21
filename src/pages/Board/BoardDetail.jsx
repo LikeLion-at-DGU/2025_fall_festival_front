@@ -1,6 +1,7 @@
 // src/pages/Board/BoardDetail.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import BoardDetailHeader from "../../components/Header/BoardDetailHeader";
 import BoothCard from "../../components/MapComponents/BoothCard";
 import { formatTimeWithDay } from "../../utils/dateUtils";
@@ -11,10 +12,10 @@ const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
 
 // 카테고리 맵
 const CATEGORY_MAP = {
-  ALL: "전체",
-  Notice: "공지",
-  Event: "이벤트",
-  LostItem: "분실물",
+  ALL: "board.tabs.all",
+  Notice: "board.tabs.notice",
+  Event: "board.tabs.event",
+  LostItem: "board.tabs.lost",
 };
 
 // 카테고리별 pill 스타일
@@ -27,16 +28,18 @@ const pillClsByCategory = (category) =>
 
 // 태그 컴포넌트
 function TagPill({ category }) {
+  const { t } = useTranslation();
   return (
     <span
       className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillClsByCategory(
         category
       )}`}
     >
-      {CATEGORY_MAP[category] ?? category}
+      {t(CATEGORY_MAP[category] ?? category)}
     </span>
   );
 }
+
 
 // AbortError 무시
 const isAbortError = (e) =>
@@ -62,6 +65,7 @@ function fmtDateTime(iso) {
 }
 
 export default function BoardDetail() {
+  const { t } = useTranslation();
   const { boardId } = useParams();
   const navigate = useNavigate();
   const { getTranslation, requestSingleTranslation } = useTranslations();
@@ -311,7 +315,7 @@ export default function BoardDetail() {
       <main className="">
         <div className="px-5 min-h-[calc(100vh)] flex flex-col">
           {loading && (
-            <div className="py-16 text-center text-gray-500">불러오는 중…</div>
+            <div className="py-16 text-center text-gray-500">{t("board.loading")}</div>
           )}
           {!loading && error && (
             <div className="py-16 text-center text-rose-600">{error}</div>
@@ -334,7 +338,7 @@ export default function BoardDetail() {
                 <div className="text-[#71717A] font-suite text-[14px] not-italic font-normal leading-[150%] mt-[4px]">
                   {displayWriter && (
                     <p>
-                      <span className="text-gray-400">작성자 : </span>
+                      <span className="text-gray-400">{t("board.writer")} : </span>
                       <span className="text-[#52525B]">
                         {post?.booth_name
                           ? getTranslation(
@@ -358,7 +362,7 @@ export default function BoardDetail() {
 
                   {isLost && post?.location && (
                     <p>
-                      <span className="text-gray-400">발견 위치 : </span>
+                      <span className="text-gray-400">{t("board.lostLocation")} : </span>
                       <span className="text-[#52525B]">{post.location}</span>
                     </p>
                   )}
@@ -367,7 +371,7 @@ export default function BoardDetail() {
                     <>
                       {boothLabel && (
                         <p>
-                          <span className="text-gray-400">부스 위치 : </span>
+                          <span className="text-gray-400">{t("board.boothLocation")} : </span>
                           <span className="text-[#52525B]">
                             {boothCardProps?.location ?? boothLabel}
                           </span>
@@ -375,7 +379,7 @@ export default function BoardDetail() {
                       )}
                       {eventTime && (
                         <p>
-                          <span className="text-gray-400">이벤트 시간 : </span>
+                          <span className="text-gray-400">{t("board.eventTime")} : </span>
                           <span className="text-[#52525B]">{eventTime}</span>
                         </p>
                       )}
@@ -422,7 +426,7 @@ export default function BoardDetail() {
                   <div className="mt-6">
                     {boothLoading && (
                       <div className="text-sm text-gray-500">
-                        부스 정보를 불러오는 중…
+                        {t("board.loadingBooth")}
                       </div>
                     )}
                     {boothError && (
@@ -451,7 +455,7 @@ export default function BoardDetail() {
               {/* --- 다른 게시물: 하단 고정 + 배경 #F4F4F5 --- */}
               <section className="-mx-5 mt-8 bg-[#F4F4F5] px-5 py-[32px]">
                 <div className="text-[#2A2A2E] font-suite text-[14px] not-italic font-semibold mb-[16px]">
-                  다른 게시물
+                  {t("board.relatedPosts")}
                 </div>
 
                 <ul className="mt-3 flex flex-col gap-[10px]">
@@ -468,7 +472,7 @@ export default function BoardDetail() {
                             <span
                               className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillCls}`}
                             >
-                              {CATEGORY_MAP[item.category] ?? item.category}
+                              {t(CATEGORY_MAP[item.category] ?? item.category)}
                             </span>
                           </div>
                           <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
@@ -514,7 +518,7 @@ export default function BoardDetail() {
                   })}
                   {related.length === 0 && (
                     <li className="py-10 text-center text-gray-400">
-                      관련 게시물이 없습니다.
+                      {t("board.noRelatedPosts")}
                     </li>
                   )}
                 </ul>

@@ -25,8 +25,33 @@
     },
     "loading": "Loading…",
     "error": "Failed to load posts.",
+
+    "writer": "Writer",
+    "lostLocation": "Found location",
+    "boothLocation": "Booth location",
+    "eventTime": "Event time",
+    "relatedPosts": "Related posts",
+    "noRelatedPosts": "No related posts available.",
+    "loadingBooth": "Loading booth information…",
+    "loadBoothError": "An error occurred while loading booth information.",
+
     "toast": {
       "endedEvent": "This event has ended."
     }
+  },
+
+  "game": {
+    "start": "Start Game",
+    "nextStep": "Next Stage",
+    "complete": "Game Complete",
+    "retry": "Try Again",
+    "default": "Find the different character"
+  },
+
+  "gameCompleteModal": {
+    "congratsTitle": "Congratulations!",
+    "congratsMessage": "You have successfully completed all stages!\nYour focus was truly amazing :)",
+    "retry": "Try Again"
   }
+  
 }

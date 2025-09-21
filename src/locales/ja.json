@@ -6,7 +6,7 @@
     "board": "掲示板",
     "game": "ゲーム"
   },
-  
+
   "board": {
     "searchPlaceholder": "検索語を入力してください",
     "tabs": {
@@ -25,8 +25,33 @@
     },
     "loading": "読み込み中…",
     "error": "投稿を読み込めませんでした。",
+
+    "writer": "投稿者",
+    "lostLocation": "発見場所",
+    "boothLocation": "ブース位置",
+    "eventTime": "イベント時間",
+    "relatedPosts": "関連投稿",
+    "noRelatedPosts": "関連投稿はありません。",
+    "loadingBooth": "ブース情報を読み込み中…",
+    "loadBoothError": "ブース情報の読み込み中にエラーが発生しました。",
+
     "toast": {
       "endedEvent": "このイベントは終了しました。"
     }
+  },
+
+  "game": {
+    "start": "ゲーム開始",
+    "nextStep": "次のステージへ",
+    "complete": "ゲームクリア",
+    "retry": "もう一度挑戦",
+    "default": "違う文字を探してください"
+  },
+
+  "gameCompleteModal": {
+    "congratsTitle": "おめでとうございます！",
+    "congratsMessage": "すべてのステージを無事にクリアしました！\n本当に素晴らしい集中力でした :)",
+    "retry": "もう一度挑戦"
   }
+  
 }

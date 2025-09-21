@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Author @곽도윤
@@ -11,17 +12,19 @@ import React from 'react';
  * @param {number} currentStage - 현재 단계 (1-4)
  */
 const ActionButton = ({ gameStatus, onNextStep, onRetry, onStartGame, currentStage }) => {
+  const { t } = useTranslation();
+
   const getButtonText = () => {
     switch (gameStatus) {
       case 'ready':
-        return '게임 시작';
+        return t('game.start');
       case 'correct':
-        return currentStage >= 4 ? '게임 완료' : '다음 단계로';
+        return currentStage >= 4 ? t('game.complete') : t('game.nextStep');
       case 'timeout':
       case 'wrong':
-        return '다시 도전하기';
+        return t('game.retry');
       default:
-        return '다른 글자를 찾아보세요';
+        return t('game.default');
     }
   };
 
