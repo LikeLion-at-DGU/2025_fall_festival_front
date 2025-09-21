@@ -224,7 +224,7 @@ function BoardItem({ item }) {
         <Link
           to={`/board/${item.id}`}
           onClick={handleClick}
-          className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full"
+          className="flex py-[13px] px-[10px] rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] items-center justify-between gap-3 w-full"
         >
           <div className="flex items-center gap-3 min-w-0">
             <span
