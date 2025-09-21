@@ -5,5 +5,28 @@
     "timetable": "日程",
     "board": "公告栏",
     "game": "游戏"
+  },
+  
+  "board": {
+    "searchPlaceholder": "请输入关键词",
+    "tabs": {
+      "all": "全部",
+      "notice": "公告",
+      "event": "活动",
+      "lost": "失物招领"
+    },
+    "header": "帖子",
+    "empty": {
+      "noResult": "没有搜索结果。",
+      "noPosts": "暂无帖子。",
+      "noNotice": "当前没有公告。",
+      "noEvent": "当前没有正在进行的活动。",
+      "noLost": "幸运的是，目前还没有丢失物品。"
+    },
+    "loading": "加载中…",
+    "error": "无法加载帖子。",
+    "toast": {
+      "endedEvent": "该活动已结束。"
+    }
   }
 }
