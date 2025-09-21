@@ -30,7 +30,7 @@ function useBooths(selectedFilter, userLocation = null) {
             ...(selectedFilter === "Booth" && { is_night: isNight }),
 
             // 🚀 Toilet 아닐 때만 user_location 추가
-            ...(selectedFilter !== "toilet" && {
+            ...(selectedFilter !== "Toilet" && {
               user_location: userLocation
                 ? { x: userLocation.x, y: userLocation.y }
                 : null,
