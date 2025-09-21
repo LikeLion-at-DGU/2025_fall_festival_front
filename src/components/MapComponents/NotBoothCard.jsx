@@ -60,7 +60,7 @@ const NotBoothCard = ({ title, distance_m, category, onClick }) => {
             <div>
               <Badge
                 text={distance_m ? `${distance_m}m` : "현재 위치 알 수 없음"}
-                backgroundColor="rgba(161, 161, 170, 0.90)"
+                backgroundColor="#EF7063"
               />
             </div>
           )}

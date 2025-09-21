@@ -18,7 +18,7 @@ export const gameStages = [
         title: '1단계 [1/4]',
         size: 'XL',
         gridSize: 4, // 2x2
-        gameTime: 5.5 // 5.5초
+        gameTime: 5 // 5.5초
     },
     { 
         id: 2,
@@ -26,7 +26,7 @@ export const gameStages = [
         title: '2단계 [2/4]',
         size: 'L',
         gridSize: 9, // 3x3
-        gameTime: 5.5
+        gameTime: 5
     },
     { 
         id: 3,
@@ -34,7 +34,7 @@ export const gameStages = [
         title: '3단계 [3/4]',
         size: 'M',
         gridSize: 16, // 4x4
-        gameTime: 5.5
+        gameTime: 5
     },
     { 
         id: 4,
@@ -42,7 +42,7 @@ export const gameStages = [
         title: '4단계 [4/4]',
         size: 'S',
         gridSize: 25, // 5x5
-        gameTime: 5.5
+        gameTime: 5
     }
 ];
 

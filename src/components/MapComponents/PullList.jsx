@@ -218,7 +218,6 @@ function PullList({
 
       {/* 헤더 */}
       <div className="px-[17px] pb-4">
-        <span className={`${textClass} text-[#2A2A2A]`}>미리보기</span>
       </div>
 
       {/* 스크롤 가능한 콘텐츠 */}
@@ -228,10 +227,10 @@ function PullList({
             <div className="flex items-center justify-center h-32">
               <span className={`${textClass} text-[#8A8A8A]`}>
                 {selectedPin
-                  ? `${selectedPin}에 부스가 없어요`
+                  ? `부스가 없어요`
                   : searchTerm
                   ? "검색 결과가 없어요"
-                  : `${selectedFilter}에 부스가 없어요`}
+                  : `부스가 없어요`}
               </span>
             </div>
           ) : (

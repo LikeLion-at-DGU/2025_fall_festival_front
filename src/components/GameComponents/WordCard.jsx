@@ -1,4 +1,8 @@
 import React from 'react';
+import AnswerS from '../../assets/images/icons/game-icons/Answer_S.svg';
+import AnswerM from '../../assets/images/icons/game-icons/Answer_M.svg';
+import AnswerL from '../../assets/images/icons/game-icons/Answer_L.svg';
+import AnswerXL from '../../assets/images/icons/game-icons/Answer_XL.svg';
 
 /**
  * Author: @곽도윤
@@ -27,9 +31,24 @@ const WordCard = ({ text, size, status = 'Normal', onClick, isCorrectAnswer = fa
     }
   };
 
+  const getAnswerBackground = () => {
+    switch (size) {
+      case 'XL':
+        return AnswerXL;
+      case 'L':
+        return AnswerL;
+      case 'M':
+        return AnswerM;
+      case 'S':
+        return AnswerS;
+      default:
+        return AnswerL;
+    }
+  };
+
   const getCardClasses = () => {
     if (status === 'Answer' || isCorrectAnswer) {
-      return 'bg-gradient-to-l from-primary-400 to-primary-300 rounded-2xl shadow-[0px_3px_5px_0px_rgba(0,0,0,0.10)] border-2 border-primary-50';
+      return 'rounded-2xl shadow-[0px_3px_5px_0px_rgba(0,0,0,0.10)]';
     }
     return 'bg-white rounded-2xl shadow-[0px_3px_5px_0px_rgba(0,0,0,0.10)]';
   };
@@ -66,13 +85,20 @@ const WordCard = ({ text, size, status = 'Normal', onClick, isCorrectAnswer = fa
       onClick={onClick}
     >
       {/* 카드 배경 */}
-      <div className={`${sizeClasses} absolute ${getCardClasses()}`}></div>
-      
-      {/* 정답일 때 이미지 표시 */}
-      {(status === 'Answer' || isCorrectAnswer) && (
-        <div className="w-28 h-28 absolute left-[-4.5px] top-[21px]">
-        </div>
-      )}
+      <div 
+        className={`${sizeClasses} absolute ${getCardClasses()}`}
+        style={
+          status === 'Answer' || isCorrectAnswer
+            ? {
+                backgroundImage: `url(${getAnswerBackground()})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
+              }
+            : {}
+        }
+      ></div>
+
       
       {/* 텍스트 - 피그마 디자인에 맞게 */}
       <div className={`text-center justify-center font-semibold font-['SUITE'] ${getTextClasses()} ${getTextSize()} relative z-10`}>

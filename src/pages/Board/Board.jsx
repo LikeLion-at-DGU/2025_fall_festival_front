@@ -1,6 +1,7 @@
 // src/pages/Board/Board.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+const EVENT_TIME_CACHE = new Map();
 import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
 import EmptyLogo from "../../assets/images/icons/logo/empty-logo.png";
 
@@ -84,8 +85,8 @@ function Tag({ label, active, onClick }) {
       className={[
         "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
         active
-          ? "bg-black text-white font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
-          : "bg-white text-[#2A2A2E] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
+          ? "bg-black text-white font-suite text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
+          : "bg-white text-[#2A2A2E] font-suite text-[12px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
       ].join(" ")}
     >
       #{label}
@@ -96,18 +97,18 @@ function Tag({ label, active, onClick }) {
 function SearchBar({ value, onChange }) {
   return (
     <div className="w-full">
-      <div className="flex w-full items-center rounded-[8px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-2">
+      <div className="flex w-full items-center rounded-[10px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-3">
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder="검색어를 입력해주세요"
-          className="flex-1 text-black placeholder:text-[#A1A1AA] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] outline-none"
+          className="flex-1 text-black placeholder:text-[#A1A1AA] font-suite text-[14px] not-italic font-normal leading-[150%] outline-none"
         />
         <div className="flex items-center justify-center">
           <img
             src={SearchIcon}
             alt="검색"
-            className="w-[13.875px] h-[14.219px] flex-shrink-0"
+            className="w-[18px] h-[18px] flex-shrink-0"
           />
         </div>
       </div>
@@ -118,9 +119,37 @@ function SearchBar({ value, onChange }) {
 /* =========================
    리스트 아이템
    ========================= */
+/*
+function Toast({ message }) {
+  return (
+    <div className="inline-flex w-[300px] h-[83px] pt-[29px] pr-[68px] pb-[28px] pl-[69px] justify-center items-center shrink-0 rounded-[16px] bg-white shadow-[0_3px_5px_0_rgba(0,0,0,0.10)]">
+      <div className="flex flex-col justify-center self-stretch text-black text-center font-[SUITE] text-[19px] not-italic font-normal leading-[130%]">
+        {message}
+      </div>
+    </div>
+  );
+}
+*/
+
+function Toast({ message }) {
+  if (!message) return null;
+  return (
+    // 레이아웃과 상호작용 완전 분리: fixed + z-index + pointer-events-none
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
+      <div className="inline-flex w-[300px] h-[83px] pt-[29px] pr-[68px] pb-[28px] pl-[69px] rounded-[16px] bg-white shadow-[0_3px_5px_0_rgba(0,0,0,0.10)]">
+        <div className="text-black text-center font-[SUITE] text-[19px] leading-[130%]">
+          {message}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function BoardItem({ item }) {
+  const navigate = useNavigate();
   const { category, title } = item;
   const displayWriter = item.writer || item.booth_name || "";
+  const [toast, setToast] = useState("");
 
   const pillCls =
     category === "Notice"
@@ -129,36 +158,102 @@ function BoardItem({ item }) {
       ? "bg-white text-[#EF7063] border border-[#EF7063] w-[42px]"
       : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
 
+  // 종료 여부 판단(목록엔 시간이 없으므로, 필요한 경우 상세 1회 조회)
+  const isEnded = (endISO) => {
+    if (!endISO) return false;
+    const endMs = Date.parse(endISO);
+    if (Number.isNaN(endMs)) return false;
+    return Date.now() > endMs;
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+
+    // 이벤트가 아니면 바로 이동
+    if (category !== "Event") {
+      navigate(`/board/${item.id}`);
+      return;
+    }
+
+    // 이벤트: 종료 여부 확인을 위해 상세 한 번 조회(캐시 사용)
+    let startISO = null;
+    let endISO = null;
+
+    if (EVENT_TIME_CACHE.has(item.id)) {
+      ({ start_time: startISO, end_time: endISO } = EVENT_TIME_CACHE.get(
+        item.id
+      ));
+    } else {
+      try {
+        const res = await fetch(`${API_BASE}/board/${item.id}`, {
+          headers: { Accept: "application/json" },
+        });
+        if (res.ok) {
+          const detail = await res.json();
+          startISO = detail?.start_time ?? null;
+          endISO = detail?.end_time ?? null;
+          EVENT_TIME_CACHE.set(item.id, {
+            start_time: startISO,
+            end_time: endISO,
+          });
+        } else {
+          // 상세를 못 받으면 차단 판단 불가 → 그냥 이동(정책에 따라 조정 가능)
+          navigate(`/board/${item.id}`);
+          return;
+        }
+      } catch {
+        navigate(`/board/${item.id}`);
+        return;
+      }
+    }
+
+    // 종료된 이벤트면 토스트 2초 + 접속 차단
+    if (isEnded(endISO)) {
+      setToast("종료된 이벤트입니다.");
+      setTimeout(() => setToast(""), 2000);
+      return;
+    }
+
+    // 시작 전/진행 중이면 접속 허용
+    navigate(`/board/${item.id}`);
+  };
+
   return (
-    <li className="rounded-[12px] bg-white">
-      <Link
-        to={`/board/${item.id}`}
-        className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full"
-      >
-        <div className="flex items-center gap-3 min-w-0">
-          <span
-            className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-[SUITE] font-normal leading-none ${pillCls}`}
-          >
-            {CATEGORY_MAP[category] ?? category}
-          </span>
-        </div>
-        <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
-          <p className="truncate text-[#52525B] font-[SUITE] text-[16px] not-italic font-semibold leading-[150%]">
-            {title}
-          </p>
-          {displayWriter && (
-            <span className="text-[#52525B] font-[SUITE] text-[12px] not-italic font-normal leading-[150%] shrink-0">
-              - {displayWriter}
+    <>
+      <li className="rounded-[12px] bg-white">
+        <Link
+          to={`/board/${item.id}`}
+          onClick={handleClick}
+          className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full"
+        >
+          <div className="flex items-center gap-3 min-w-0">
+            <span
+              className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillCls}`}
+            >
+              {CATEGORY_MAP[category] ?? category}
             </span>
-          )}
-        </div>
-      </Link>
-    </li>
+          </div>
+          <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
+            <p className="truncate text-[#52525B] font-suite text-[14px] not-italic font-semibold leading-[150%]">
+              {title}
+            </p>
+            {displayWriter && (
+              <span className="text-[#52525B] font-suite text-[10px] not-italic font-normal leading-[150%] shrink-0">
+                - {displayWriter}
+              </span>
+            )}
+          </div>
+        </Link>
+      </li>
+
+      {/* 독립적인 중앙 토스트 */}
+      <Toast message={toast} />
+    </>
   );
 }
 
 /* =========================
-   페이지네이션
+  페이지네이션
    ========================= */
 function Pagination({ total, page, pageSize, onChange }) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
@@ -361,7 +456,7 @@ export default function Board() {
   }, [totalPages, page]);
 
   return (
-    <div className="mx-auto max-w-screen-sm px-4 pb-4 min-h-screen flex flex-col">
+    <div className="mx-auto max-w-screen-sm px-4 pb-4 flex flex-col">
       {/* 검색 */}
       <div className="pt-4">
         <SearchBar value={keyword} onChange={setKeyword} />
@@ -381,14 +476,14 @@ export default function Board() {
 
       {/* 리스트 헤더 */}
       <div className="mt-6 mb-5">
-        <h2 className="text-[#2A2A2E] font-[SUITE] text-[16px] not-italic font-normal leading-normal">
+        <h2 className="text-[#2A2A2E] font-suite text-[16px] not-italic font-normal leading-normal">
           게시물
         </h2>
       </div>
 
       {/* 리스트 영역을 flex-1로 */}
       <div className="flex-1 flex flex-col">
-        <div className="flex-1 min-h-[320px]">
+        <div className="flex-1">
           {loading && (
             <div className="py-16 text-center text-gray-500">불러오는 중…</div>
           )}

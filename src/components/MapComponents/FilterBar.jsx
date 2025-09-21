@@ -17,19 +17,26 @@ function FilterBar({ selectedFilter, setSelectedFilter, onFilterClick }) {
 
   // 2) 버튼 클릭 시
  
-  const handleFilterClick = (filter) => {
-    const englishFilter = filterMap[filter];
-    console.log("선택된 필터(한글):", filter);
-    console.log("선택된 필터(영문):", englishFilter);
+const handleFilterClick = (filter) => {
+  const englishFilter = filterMap[filter];
 
-    // 부모 Map.jsx 상태 업데이트
-    setSelectedFilter(englishFilter);
-
-    // 추가 콜백 실행 (핀 초기화용)
-    if (onFilterClick) {
-      onFilterClick(englishFilter);
+  setSelectedFilter((prev) => {
+    // 같은 필터를 다시 누른 경우
+    if (prev === englishFilter) {
+      if (onFilterClick) {
+        onFilterClick(null); // DetailMap 닫기 (selectedPin 해제)
+      }
+      return prev; // 필터는 그대로 유지
     }
-  };
+
+    // 다른 필터를 누른 경우
+    if (onFilterClick) {
+      onFilterClick(null); // DetailMap 닫기 (새 필터로 바꿀 때도 해제해줄지 선택 가능)
+    }
+    return englishFilter;
+  });
+};
+
 
   return (
     <div className="flex mx-auto w-full flex-wrap gap-[10px]">
