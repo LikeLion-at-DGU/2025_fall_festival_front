@@ -20,7 +20,7 @@ import {
 function AdminMain() {
   const navigate = useNavigate();
 
-  // ⛔ 더미 (초기 데이터) → useEffect에서 실제 API로 대체됨
+  // ⛔ 폐기예정 ⛔ 더미 (초기 데이터) → useEffect에서 실제 API로 대체됨
   // 게시글 목록 (공지 + 분실물)
   const [notices, setNotices] = useState([
     { id: 1, title: "중요 공지입니다 !!!!!", writer: "총학" },
