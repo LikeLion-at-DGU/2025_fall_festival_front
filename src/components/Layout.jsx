@@ -95,7 +95,7 @@ const Layout = ({ children }) => {
           )}
         {/* 페이지의 실제 내용과 푸터가 이 안에서 스크롤됩니다. */}
         <main
-          className={`flex-grow${
+          className={`flex-grow pt-[52px] pb-[62px] ${
             isAdminScrollHidden
               ? "overflow-y-scroll hide-scrollbar" // 🎯 스크롤은 되지만 스크롤바 숨김
               : location.pathname === "/map"

@@ -86,7 +86,7 @@ export const clubPerformances = {
       name: "다락",
       startTime: "18:00",
       endTime: "18:30",
-      image: "/src/assets/images/performers/theater-club.png",
+      image: "/src/assets/images/performers/darack.png",
     },
     {
       id: 13,
