@@ -6,6 +6,8 @@ import UnheartIcon from "../../assets/images/icons/map-icons/emptyHeart.png";
 import Badge from "./BoothCardComponents/Badge";
 import useBoothLikes from "../../hooks/useBoothLikes";
 import defaultImg from "../../assets/images/banners/default-img.png";
+import drinkDefaultImg from "../../assets/images/icons/default-icons/drinkDefaultImg.svg"
+import foodtruckDefaultImg from "../../assets/images/icons/default-icons/drinkDefaultImg.svg"
 
 function BoothCard({
   boothId,
@@ -69,14 +71,23 @@ console.log("위치",{location})
         {/* 이미지 */}
         <div className="relative w-[68px] h-[68px] flex-shrink-0">
           <div className="w-[68px] h-[68px] bg-gray-100 rounded-lg overflow-hidden">
-            <img
-              src={image || defaultImg}
-              alt={title}
-              className="w-full h-full bg-[#C2C2C2] object-cover"
-              onError={(e) => {
-                e.currentTarget.src = defaultImg;
-              }}
-            />
+           <img
+  src={image || (category === "FoodTruck" 
+                   ? foodtruckDefaultImg 
+                   : category === "Drink" 
+                     ? drinkDefaultImg 
+                     : defaultImg)}
+  alt={title}
+  className="w-full h-full bg-[#C2C2C2] object-cover"
+  onError={(e) => {
+    e.currentTarget.src =
+      category === "FoodTruck"
+        ? foodtruckDefaultImg
+        : category === "Drink"
+        ? drinkDefaultImg
+        : defaultImg;
+  }}
+/>
           </div>
           {/* Badge 겹치기 */}
           {badges?.isEventActive || isEvent ? (
@@ -86,7 +97,7 @@ console.log("위치",{location})
           ) : null}
         </div>
         <div className="flex-1 relative min-w-0">
-          {category != "Drink" && (
+          {category !== "Drink" && category !== "FoodTruck"&& (
             <div className="absolute top-0 right-0 flex flex-col items-center">
               <button
                 onClick={(e) => {
