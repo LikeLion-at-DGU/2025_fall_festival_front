@@ -35,9 +35,9 @@ export const getEventBooths = async () => {
       types: ["Booth"],
       ordering: "-id",
       limit: 5,
+      is_event: true,
     });
-    const eventBooths = response.data.results.filter((booth) => booth.is_event);
-    return { results: eventBooths };
+    return response.data;
   } catch (error) {
     console.error("이벤트 진행 부스 조회 실패:", error);
     throw error;

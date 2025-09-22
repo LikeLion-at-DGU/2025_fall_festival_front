@@ -31,6 +31,14 @@ const Event = ({ onDataChange }) => {
         setLoading(true);
         const response = await getEventBooths();
         const data = response.results || [];
+        console.log("=== 이벤트 부스 데이터 ===");
+        console.log("전체 응답:", response);
+        console.log("이벤트 부스 배열:", data);
+        console.log("부스 개수:", data.length);
+        data.forEach((booth, index) => {
+          console.log(`부스 ${index + 1}:`, booth);
+        });
+        console.log("========================");
         setEventData(data);
         setError(null);
 
