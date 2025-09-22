@@ -195,7 +195,6 @@ function PullList({
       return aMatch - bMatch;
     });
   }, [searchFilteredBooths, searchTerm]);
-
   // ----------------------------
   // 렌더링
   // ----------------------------
@@ -257,7 +256,7 @@ function PullList({
                     title={boothName}
                     image={booth.image_url || undefined}
                     location={locationName}
-                    isSelected={selectedPin === booth.location.name}
+                    isSelected={selectedPin === locationName}
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days[0]?.weekday}
