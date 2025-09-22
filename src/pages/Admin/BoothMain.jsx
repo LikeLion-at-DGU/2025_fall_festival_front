@@ -52,7 +52,7 @@ function BoothMain() {
     <div className="flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6">
       <div className="flex flex-col w-full h-full mx-auto gap-5">
         <AdminTitle text="진행한 이벤트 목록" />
-        <div className="overflow-y-scroll h-[72vh] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="overflow-y-scroll h-[65vh] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex items-center flex-col w-full h-full mx-auto gap-2.5">
           {/* 이벤트 목록 렌더링 */}
           {events.map((event) => (

@@ -55,7 +55,7 @@
     }
   },
   "search": {
-    "placeholder": "Enter department/club/booth name",
+    "placeholder": "Enter booth name",
     "alt": "Search"
   },
   "pullList": {
@@ -158,6 +158,10 @@
     "now": "STAGE NOW",
     "preparing": "The performance is being prepared!",
     "comingSoon": "Coming Soon..."
+  },
+
+  "developers": {
+    "subtitle": "LikeLion 13th"
   },
 
   "footer": {

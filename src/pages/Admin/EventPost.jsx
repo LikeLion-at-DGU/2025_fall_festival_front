@@ -7,6 +7,21 @@ import AdminTitle from "../../components/AdminComponents/AdminTitle";
 import ToastMessage from "../../components/AdminComponents/ToastMessage";
 import { createEvent } from "../../apis/admin/booth";
 
+/*
+---------------------------------------
+ # 이벤트를 개최합니다.(POST)
+----------------------------------------
+ ### 접근권한
+ * 작성 허용 : role = Club || Major
+ * 접근 거부 트리거 : POST 시도 시 인증 만료 여부 판단 및 리다이렉트
+ * 
+ *  
+ ### POST 조건
+ * btn 활성화 : 전 필드 input, 시간 유효성 검사 통과
+ * 
+ * 
+ */
+
 function EventPost() {
   const [title, setTitle] = useState("");
   const [detail, setDetail] = useState("");
@@ -17,8 +32,8 @@ function EventPost() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
   const [timeError, setTimeError] = useState("");
-
   const navigate = useNavigate();
+
   const timeWrapper = "flex flex-row items-center w-1/2 gap-2";
 
   //------- 시간 필드 유효성 검사 로직 ------//
@@ -79,7 +94,7 @@ function EventPost() {
     if (endDate <= startDate) {
       return "종료 시간은 시작 시간보다 \n 이전일 수 없습니다. \n (24시간 단위를 사용해주세요)";
     }
-
+ 
     return null; // ✅ 모든 검증 통과
   };
 
