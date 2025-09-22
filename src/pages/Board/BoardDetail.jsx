@@ -541,11 +541,11 @@ export default function BoardDetail() {
 
               {/* --- 다른 게시물: 하단 고정 + 배경 #F4F4F5 --- */}
               <section className="-mx-5 mt-8 bg-[#F4F4F5] px-5 py-[32px]">
-                <div className="text-[#2A2A2E] font-suite text-[14px] not-italic font-semibold mb-[16px]">
+                <div className="text-[#2A2A2E] font-suite text-[20px] not-italic font-semibold mb-[16px]">
                   {t("board.relatedPosts")}
                 </div>
 
-                <ul className="mt-3 flex flex-col gap-[10px]">
+                <ul className="mt-3 flex flex-col gap-[12px]">
                   {related.slice(0, 3).map((item) => {
                     const pillCls = pillClsByCategory(item.category);
                     const writerOrBooth = item.writer || item.booth_name || "";
@@ -553,7 +553,7 @@ export default function BoardDetail() {
                       <li key={item.id} className="rounded-[12px] bg-white">
                         <Link
                           to={`/board/${item.id}`}
-                          className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full"
+                          className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
                         >
                           <div className="flex items-center gap-3 min-w-0">
                             <span
