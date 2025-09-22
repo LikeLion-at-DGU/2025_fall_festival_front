@@ -1,7 +1,24 @@
 import React from "react";
 import profileBack from "../../assets/images/banners/profile-backgroud.png";
+import { useTranslations } from "../../context/TranslationContext";
 
-function PersonCard({ name, role, major, image }) {
+function PersonCard({ name, role, major, image, developerId }) {
+  const { getTranslation } = useTranslations();
+
+  // 번역된 텍스트 가져오기
+  const translatedRole = getTranslation(
+    "developer",
+    developerId.toString(),
+    "DeveloperRole",
+    role
+  );
+  const translatedMajor = getTranslation(
+    "developer",
+    developerId.toString(),
+    "DeveloperMajor",
+    major
+  );
+
   return (
     <div
       className="relative w-full h-full overflow-hidden rounded-[23px]"
@@ -19,8 +36,12 @@ function PersonCard({ name, role, major, image }) {
           <br />
           {name.split(" ").slice(1).join(" ")}
         </h3>
-        <p className="text-[8px] font-normal mb-[3px] text-[#52525B]">{role}</p>
-        <p className="text-[9px] font-semibold text-[#52525B]">{major}</p>
+        <p className="text-[8px] font-normal mb-[3px] text-[#52525B]">
+          {translatedRole}
+        </p>
+        <p className="text-[9px] font-semibold text-[#52525B]">
+          {translatedMajor}
+        </p>
       </div>
 
       {/* 배경 이미지 */}

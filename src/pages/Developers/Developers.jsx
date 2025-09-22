@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PersonCard from "../../components/DevelopersComponents/PersonCard";
 import likelionIcon from "../../assets/images/icons/logo/likelion-filter.png";
 import { getDevelopersByRole } from "../../data/developers";
+import { useTranslations } from "../../context/TranslationContext";
+import { createDeveloperTranslationItems } from "../../utils/translationApi";
+import i18n from "i18next";
 
 function Developers() {
   const [selectedFilter, setSelectedFilter] = useState("Team Lead");
+  const { requestBatchTranslations } = useTranslations();
 
   const filters = [
     { id: "Team Lead", name: "Team Lead" },
@@ -13,6 +17,23 @@ function Developers() {
     { id: "Back-End", name: "Back-End" },
     { id: "Corporate Affairs", name: "Corporate Affairs" },
   ];
+
+  // 현재 선택된 필터에 따른 개발자 목록
+  const currentDevelopers = getDevelopersByRole(selectedFilter);
+
+  // 언어 변경 시 번역 요청
+  useEffect(() => {
+    if (i18n.language !== "ko" && currentDevelopers.length > 0) {
+      const translationItems =
+        createDeveloperTranslationItems(currentDevelopers);
+      requestBatchTranslations(translationItems);
+    }
+  }, [
+    selectedFilter,
+    i18n.language,
+    currentDevelopers,
+    requestBatchTranslations,
+  ]);
 
   return (
     <div className="bg-white min-h-screen pt-[30px] pb-[70px] px-4">
@@ -83,13 +104,14 @@ function Developers() {
 
       {/* 개발자 카드 */}
       <div className="grid grid-cols-2 gap-4 px-4">
-        {getDevelopersByRole(selectedFilter).map((developer) => (
+        {currentDevelopers.map((developer) => (
           <PersonCard
             key={developer.id}
             name={developer.name}
             role={developer.roleDisplay}
             major={developer.major}
             image={developer.image}
+            developerId={developer.id}
           />
         ))}
       </div>
