@@ -33,7 +33,11 @@
       "academicCulture": "学術文化館",
       "mainBuilding": "本館",
       "science": "科学館",
-      "wonheung": "元興館"
+      "wonheung": "元興館",
+      "hakrimConvinience": "学林館 コンビニ",
+      "gyosoo": "教授会館",
+      "moonhwaConvenience": "文化館 コンビニ"
+      
     },
     "filters": {
       "booth": "ブース",

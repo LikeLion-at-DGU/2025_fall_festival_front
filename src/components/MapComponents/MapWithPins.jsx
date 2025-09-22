@@ -29,6 +29,10 @@ const buildingLocations = [
   { id: "mainBuilding", ko: "본관", x: 60, y: 20 },
   { id: "science", ko: "과학관", x: 42, y: 26 },
   { id: "wonheung", ko: "원흥관", x: 41, y: 26 },
+  { id: "hakrimConvinience", ko: "학림관 편의점", x: 73, y: 52 },
+  { id: "gyosoo", ko: "교수회관", x: 41, y: 36 },
+  { id: "moonhwaConvenience", ko: "문화관 편의점", x: 21, y: 61 },
+  
 ];
 
 // 지도 위 아이콘 맵핑

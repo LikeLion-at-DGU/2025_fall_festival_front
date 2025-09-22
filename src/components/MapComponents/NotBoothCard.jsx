@@ -7,41 +7,43 @@ import defaultImg from "../../assets/images/banners/default-img.png";
 
 import { useTranslation } from "react-i18next";
 
-const NotBoothCard = ({ title, distance_m, category, onClick }) => {
+const NotBoothCard = ({
+  title,
+  distance_m,
+  category,
+  location,
+  isSelected,
+  onClick,
+}) => {
   const { t } = useTranslation();
 
   // 카테고리별 이미지 선택
-const getImageByCategory = (category) => {
-  switch (category) {
-    case "Toilet":
-      return MapToiletIcon;
-    case "Drink":
-      return MapBeerIcon;
-    case "Store":
-      return MapConvenienceIcon;
-    default:
-      return defaultImg; // 기본값
-  }
-};
-
+  const getImageByCategory = (category) => {
+    switch (category) {
+      case "Toilet":
+        return MapToiletIcon;
+      case "Drink":
+        return MapBeerIcon;
+      case "Store":
+        return MapConvenienceIcon;
+      default:
+        return defaultImg; // 기본값
+    }
+  };
 
   return (
     <div
-      className={`bg-white w-full h-[92px] rounded-2xl border border-neutral-200 p-[12px] "cursor-pointer" 
-    ${category === "Toilet" ? "cursor-pointer" : ""}`}
-      style={{
-        boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
-      }}
-      onClick={onClick}
+      className={`bg-white w-full h-[92px] rounded-2xl border border-neutral-200 p-[12px] cursor-pointer shadow-sm
+    ${isSelected ? "border-[#EF7063] bg-[#FDE3E1]" : ""}`}
     >
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
         <div className="relative w-[68px] h-[68px] flex-shrink-0">
-            <img
-              src={getImageByCategory(category)}
-              alt={title}
-              className="object-contain"
-            />
+          <img
+            src={getImageByCategory(category)}
+            alt={title}
+            className="object-contain"
+          />
         </div>
 
         {/* 글자 */}
@@ -53,17 +55,24 @@ const getImageByCategory = (category) => {
           {/* 제목 */}
           <h3
             className={`text-xl font-semibold text-black font-suite leading-[130%] truncate pr-16 ${
-              category === "Toilet" ? "" : "mb-2"
+              category === "Toilet" || category === "Store" ? "" : "mb-2"
             }`}
           >
             {title}
           </h3>
-
+          {/* 위치 */}
+          {category !== "Toilet" && (
+            <p className="text-sm text-[#2A2A2E] font-suite leading-[150%] font-normal">
+              {location}
+            </p>
+          )}
           {/* 거리 뱃지 (화장실 제외) */}
           {category !== "Toilet" && (
             <div>
               <Badge
-                text={distance_m ? `${distance_m}m` : t("notBooth.unknownLocation")}
+                text={
+                  distance_m ? `${distance_m}m` : t("notBooth.unknownLocation")
+                }
                 backgroundColor="#EF7063"
               />
             </div>
