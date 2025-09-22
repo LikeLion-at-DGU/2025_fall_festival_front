@@ -7,7 +7,7 @@ import React from 'react';
  */
 const ProgressBar = ({ timeProgress, isTimeOut = false }) => {
   return (
-    <div className="w-80 h-3 top-[95px] absolute bg-neutral-300 rounded-2xl overflow-hidden">
+    <div className="w-80 h-3 top-[95px] absolute left-1/2 transform -translate-x-1/2 bg-neutral-300 rounded-2xl overflow-hidden">
       <div 
         className="h-full left-0 top-0 absolute transition-all duration-100 ease-linear rounded-2xl"
         style={{ 

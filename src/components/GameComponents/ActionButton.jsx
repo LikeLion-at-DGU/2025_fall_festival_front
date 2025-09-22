@@ -31,12 +31,13 @@ const ActionButton = ({ gameStatus, onNextStep, onRetry, onStartGame, currentSta
   const getButtonClasses = () => {
     switch (gameStatus) {
       case 'ready':
+        return 'bg-black text-white cursor-pointer hover:bg-gray-800';
       case 'correct':
       case 'timeout':
       case 'wrong':
-        return 'bg-neutral-600 text-neutral-200 cursor-pointer hover:bg-neutral-700';
+        return 'bg-black text-white cursor-pointer hover:bg-gray-800';
       default:
-        return 'bg-neutral-200 text-neutral-300 cursor-not-allowed';
+        return 'bg-black text-gray-400 cursor-not-allowed';
     }
   };
 

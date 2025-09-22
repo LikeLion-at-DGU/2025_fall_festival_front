@@ -11,10 +11,11 @@ export const TranslationProvider = ({ children }) => {
 
   // 언어 변경 감지
   useEffect(() => {
-    const handleLanguageChange = () => {
-      // 언어가 변경되면 캐시 초기화
-      setTranslations({});
-      setPendingTranslations(new Set());
+    const handleLanguageChange = (newLanguage) => {
+      if (newLanguage !== "ko") {
+        setTranslations({});
+        setPendingTranslations(new Set());
+      }
     };
 
     i18n.on("languageChanged", handleLanguageChange);
@@ -70,16 +71,13 @@ export const TranslationProvider = ({ children }) => {
     }
   };
 
-  // 단일 번역 요청 함수 (상세 페이지용)
   const requestSingleTranslation = async (item) => {
     const key = `${item.entity_type}-${item.entity_id}-${item.field}`;
 
-    // 이미 번역 중이거나 캐시에 있으면 스킵
     if (pendingTranslations.has(key) || translations[key]) {
       return translations[key]?.text || item.source_text;
     }
 
-    // 한국어일 때는 번역하지 않음
     if (i18n.language === "ko") {
       return item.source_text;
     }
@@ -116,6 +114,10 @@ export const TranslationProvider = ({ children }) => {
 
   // 번역된 텍스트 가져오기 함수
   const getTranslation = (entityType, entityId, field, sourceText) => {
+    if (i18n.language === "ko") {
+      return sourceText;
+    }
+
     const key = `${entityType}-${entityId}-${field}`;
     const translation = translations[key];
 

@@ -3,6 +3,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Safe Area 지원 */
+@supports (padding: max(0px)) {
+  .safe-area-support {
+    padding-top: max(env(safe-area-inset-top), 0px);
+    padding-bottom: max(env(safe-area-inset-bottom), 0px);
+    padding-left: max(env(safe-area-inset-left), 0px);
+    padding-right: max(env(safe-area-inset-right), 0px);
+  }
+}
+
 @font-face {
   font-family: "SUITE";
   src: url("https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.woff2")
@@ -27,6 +37,19 @@
     Roboto, sans-serif;
 }
 
+
+/* Seven Segment */
+@font-face {
+  font-family: "SevenSegment";
+  src: url("../assets/fonts/7segment.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
+
 /* 스크롤바 숨기기 클래스 */
 .scrollbar-hidden::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge */
@@ -43,4 +66,15 @@
 }
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
+}
+
+/* ✅ 모든 페이지에서 스크롤바 숨기기 */
+html, body {
+  -ms-overflow-style: none; /* IE, Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+html::-webkit-scrollbar, 
+body::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
 }

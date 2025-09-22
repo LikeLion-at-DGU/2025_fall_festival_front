@@ -1,24 +1,25 @@
 import React from 'react';
-import { useTranslation } from "react-i18next";
+import { useNavigate } from 'react-router-dom';
 
 /**
- * 게임 헤더 컴포넌트
- * @param {number} round - 현재 라운드 (1-4)
- * @param {number} currentStep - 현재 단계 (1-4)
+ * 게임 헤더 컴포넌트 - X 버튼으로 메인페이지 이동
  */
-const GameHeader = ({ round, currentStep }) => {
-  const { t } = useTranslation();
+const GameHeader = () => {
+  const navigate = useNavigate();
+
+  const handleCloseClick = () => {
+    navigate('/'); // 메인페이지로 이동
+  };
 
   return (
-    <div 
-      data-status={`Round ${round}`}
-      className="w-full w-max-[430px] h-14 p-4 left-0 top-0 absolute bg-white shadow-[0px_1px_5px_0px_rgba(0,0,0,0.05)] inline-flex flex-col justify-start items-start"
-    >
-      <div className="self-stretch w-full h-5 inline-flex justify-start items-center gap-3">
-        <div className="w-6 h-6 relative"></div>
-        <div className="justify-start text-neutral-600 text-sm font-semibold font-['SUITE'] leading-tight">
-          {round}{t("gameHeader.step")} [{currentStep}/4]
-        </div>
+    <div className="fixed top-0 right-0 z-50 p-4">
+      <div 
+        className="w-10 h-10 cursor-pointer hover:bg-white hover:bg-opacity-20 rounded-full flex items-center justify-center transition-all duration-200 bg-black bg-opacity-10 backdrop-blur-sm"
+        onClick={handleCloseClick}
+        title="게임 종료하고 메인으로 이동"
+      >
+        {/* X 아이콘 */}
+        <div className="text-black text-xl font-bold">×</div>
       </div>
     </div>
   );

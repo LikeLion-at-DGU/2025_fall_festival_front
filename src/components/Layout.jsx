@@ -52,7 +52,7 @@ const Layout = ({ children }) => {
   const isMapDetail =
     /^\/booth\/[^/]+$/.test(location.pathname) ||
     /^\/toilet\/[^/]+$/.test(location.pathname) ||
-    /^\/drinnk\/[^/]+$/.test(location.pathname) ||
+    /^\/drink\/[^/]+$/.test(location.pathname) ||
     /^\/foodtruck\/[^/]+$/.test(location.pathname);
 
   // Event 페이지 판별
@@ -71,6 +71,7 @@ const Layout = ({ children }) => {
     : isMapDetail
     ? MapDetailHeader
     : Header;
+    
   return (
     <div className="flex justify-center">
       <div
