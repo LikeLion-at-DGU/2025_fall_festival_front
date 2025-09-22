@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";  // ✅ useState 추가
 import axios from "axios";
 
-function useBooths(selectedFilter, userLocation = null) {
+function useBooths(selectedFilter, userLocation = null, isNightToggle = null) {
   const [booths, setBooths] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // 위치 없으면 요청 안 보냄
-
     const fetchBooths = async () => {
       setLoading(true);
 
       try {
+        // 기본: 현재 시간 기준
         const now = new Date();
-        const isNight = now.getHours() >= 18 || now.getHours() < 6;
+        const autoIsNight = now.getHours() >= 18 || now.getHours() < 6;
 
+        // 토글값이 있으면 우선 반영
+        const isNight = isNightToggle !== null ? isNightToggle : autoIsNight;
+        console.log("밤일까요?",autoIsNight);
         const baseURL =
           import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
@@ -26,10 +28,8 @@ function useBooths(selectedFilter, userLocation = null) {
             limit: 50,
             ordering: "distance",
 
-            // 🚀 Booth일 때만 is_night 추가
             ...(selectedFilter === "Booth" && { is_night: isNight }),
 
-            // 🚀 Toilet 아닐 때만 user_location 추가
             ...(selectedFilter !== "Toilet" && {
               user_location: userLocation
                 ? { x: userLocation.x, y: userLocation.y }
@@ -53,7 +53,7 @@ function useBooths(selectedFilter, userLocation = null) {
     };
 
     fetchBooths();
-  }, [selectedFilter, userLocation]);
+  }, [selectedFilter, userLocation, isNightToggle]);
 
   return { booths, loading, error };
 }
