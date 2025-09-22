@@ -6,7 +6,7 @@ import { TranslationProvider } from "./context/TranslationContext";
 
 function AppContent() {
   const location = useLocation();
-  const isComingSoon = location.pathname === "/comingsoon"; // ComingSoon 여부 체크
+  const isComingSoon = location.pathname === "/"; // ComingSoon 여부 체크
 
   return (
     <TranslationProvider>
