@@ -32,7 +32,7 @@ const StatusMessage = ({ targetWord, gameStatus }) => {
   };
 
   return (
-    <div className={`top-[118px] absolute left-1/2 transform -translate-x-1/2 text-center flex items-center justify-center text-base font-semibold font-['SUITE'] leading-normal ${getStatusColor()}`}>
+    <div className={`top-[80px] absolute left-1/2 transform -translate-x-1/2 text-center flex items-center justify-center text-base font-semibold font-['SUITE'] leading-normal ${getStatusColor()}`}>
       {getStatusMessage()}
     </div>
   );

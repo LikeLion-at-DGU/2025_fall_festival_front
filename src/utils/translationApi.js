@@ -194,3 +194,22 @@ export function createNoticeTranslationItems(notice) {
     },
   ];
 }
+
+export function createDeveloperTranslationItems(developers) {
+  return developers.map((developer) => ({
+    entity_type: "developer",
+    entity_id: developer.id.toString(),
+    fields: [
+      {
+        field: "DeveloperRole",
+        source_lang: "ko",
+        source_text: developer.roleDisplay || "",
+      },
+      {
+        field: "DeveloperMajor",
+        source_lang: "ko",
+        source_text: developer.major || "",
+      },
+    ],
+  }));
+}

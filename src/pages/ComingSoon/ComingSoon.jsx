@@ -9,26 +9,31 @@ export default function ComingSoon() {
     const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
     function calculateTimeLeft() {
-        const now = new Date();
-        // 현재 시각을 한국시간(KST)으로 변환
-        const nowKST = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-        // 오늘 00:00:00 (KST)
+        // 1) D-Day 계산용: 현재 시각을 KST로 보정(+9h)해 '오늘 00:00 KST'를 만든다
+        const nowLocal = new Date();
+        const nowForDdayKST = new Date(nowLocal.getTime() + 9 * 60 * 60 * 1000);
         const todayKST = new Date(
-            nowKST.toISOString().split("T")[0] + "T00:00:00+09:00"
+            nowForDdayKST.toISOString().split("T")[0] + "T00:00:00+09:00"
         );
 
-        const diff = targetDate - nowKST;
+        // 2) 타이머(총 남은 시간) 계산용: 브라우저 로컬 시간을 그대로 사용
+        const nowForTimer = new Date();
 
+
+        // D-Day (자정 기준 일수)
+        const days = Math.floor((targetDate - todayKST) / (1000 * 60 * 60 * 24));
+
+        // 총 남은 시간(HH:MM:SS)
+        const diff = targetDate - nowForTimer;
         if (diff <= 0) {
             return { days: 0, hours: 0, minutes: 0, seconds: 0 };
         }
-
         const totalSeconds = Math.floor(diff / 1000);
-        const days = Math.floor((targetDate - todayKST) / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(totalSeconds / 3600);
+        const hours = Math.floor(totalSeconds / 3600);          // ← 총 시간 (일수 포함)
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         const seconds = totalSeconds % 60;
 
+        console.log("[Timer] left =>", `${hours}h ${minutes}m ${seconds}s`);
         return { days, hours, minutes, seconds };
     }
 
@@ -115,7 +120,7 @@ export default function ComingSoon() {
                     </div>
                 </div>
 
-                {/* 남은 시간 */}
+                {/* 남은 시간 (총 시간: HH:MM:SS) */}
                 <div className="flex items-center space-x-[4px]">
                     {String(timeLeft.hours).padStart(2, "0")
                         .split("")

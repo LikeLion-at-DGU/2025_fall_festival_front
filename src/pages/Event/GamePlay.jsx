@@ -112,14 +112,15 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
   // 다음 단계로 이동
   const handleNextStep = async () => {
-    if (currentStage < 4) {
+    // 개발 중: 3단계까지만 완료해도 성공 모달 표시
+    if (currentStage < 3) {
       console.log(`${currentStage}단계에서 ${currentStage + 1}단계로 이동`);
       setCurrentStage(currentStage + 1);
     } else {
-      // 게임 완료 - 백엔드에 성공 정보 전송 및 쿠폰 확인
+      // 게임 완료 (개발 중: 3단계 완료 시) - 백엔드에 성공 정보 전송 및 쿠폰 확인
       try {
-        const gameId = localStorage.getItem('gameId') || 'default_game_id';
-        const result = await postGameSuccess(gameId);
+        // user_id는 훅 내부에서 localStorage에서 자동으로 가져옴
+        const result = await postGameSuccess();
         
         console.log('게임 성공 결과:', result);
         setCouponResult(result);
@@ -180,30 +181,36 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
     );
 
   return (
-    <div className="w-full min-h-screen relative bg-neutral-100 overflow-hidden">
-      <div className="w-full max-w-[430px] mx-auto min-h-screen flex flex-col items-center px-4 py-safe">
+    <div className="w-full min-h-screen relative bg-neutral-100 overflow-hidden flex justify-center">
+      <div className="w-full max-w-[430px] min-h-screen flex flex-col items-center px-4 py-safe">
         {/* 게임 헤더 */}
-        <div className="w-full flex-shrink-0 mt-safe">
-          <GameHeader round={currentStage} currentStep={currentStage} />
+        <div className="w-full flex-shrink-0 mt-safe flex justify-center">
+          <div className="w-full max-w-sm">
+            <GameHeader round={currentStage} currentStep={currentStage} />
+          </div>
         </div>
 
         {/* 진행률 바 */}
-        <div className="w-full flex-shrink-0">
-          <ProgressBar timeProgress={timeProgress} isTimeOut={gameStatus === "timeout"} />
+        <div className="w-full flex-shrink-0 flex justify-center">
+          <div className="w-full max-w-sm">
+            <ProgressBar timeProgress={timeProgress} isTimeOut={gameStatus === "timeout"} />
+          </div>
         </div>
 
         {/* 상태 메시지 */}
-        <div className="w-full flex-shrink-0">
-          <StatusMessage
-            targetWord={currentWordSet.target}
-            gameStatus={gameStatus}
-          />
+        <div className="w-full flex-shrink-0 flex justify-center">
+          <div className="w-full max-w-sm">
+            <StatusMessage
+              targetWord={currentWordSet.target}
+              gameStatus={gameStatus}
+            />
+          </div>
         </div>
 
-        {/* 게임 영역 - 남은 공간을 차지하며 중앙 정렬 */}
-        <div className="flex-1 flex flex-col justify-center items-center w-full py-4 min-h-0 -mt-20">
-          {/* 단어 격자 */}
-          <div className="flex justify-center items-center">
+        {/* 게임 영역 - WordGrid와 ActionButton을 포함 */}
+        <div className="flex-1 flex flex-col justify-start items-center w-full pt-20 pb-8 min-h-0 overflow-hidden">
+          {/* 단어 격자 - 10px 아래로 이동 */}
+          <div className="flex justify-center items-center mb-6 flex-shrink-0 mt-2.5">
             <WordGrid
               words={words}
               size={getGameStage(currentStage).size}
@@ -212,19 +219,19 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
               gameStatus={gameStatus}
             />
           </div>
-        </div>
 
-        {/* 액션 버튼 - 피그마 디자인에 맞춰 고정 위치 */}
-        <div className="absolute w-full mt-[590px] px-4">
-          <div className="w-full max-w-80 mx-auto">
-            <ActionButton
-              gameStatus={gameStatus}
-              onNextStep={handleNextStep}
-              onRetry={handleRetry}
-              onStartGame={startGame}
-              currentStage={currentStage}
-              isLoading={isStartingGame || isSubmittingSuccess}
-            />
+          {/* 액션 버튼 - 30px 위로 이동 */}
+          <div className="w-full max-w-80 px-4 flex-shrink-0 -mt-5 flex justify-center">
+            <div className="w-full max-w-sm">
+              <ActionButton
+                gameStatus={gameStatus}
+                onNextStep={handleNextStep}
+                onRetry={handleRetry}
+                onStartGame={startGame}
+                currentStage={currentStage}
+                isLoading={isStartingGame || isSubmittingSuccess}
+              />
+            </div>
           </div>
         </div>
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axiosInstance from '../../utils/axiosInstance';
+import { postSuccessGame as postSuccessGameAPI } from '../../apis/GamePage/game';
 
 /**
  * 게임 성공 처리 훅
@@ -12,21 +12,24 @@ const usePostSuccessGame = () => {
 
   /**
    * 게임 성공 API 호출
-   * @param {string} gameId - 게임 ID
+   * @param {string} userId - 사용자 ID (기본적으로 localStorage에서 가져옴)
    * @returns {Promise<{isWon: boolean, couponBooths?: string[], message: string}>}
    */
-  const postGameSuccess = async (gameId) => {
+  const postGameSuccess = async (userId = null) => {
     setIsLoading(true);
     setError(null);
     setSuccessData(null);
 
     try {
+      // localStorage에서 user_id 가져오기
+      const gameUserId = userId || localStorage.getItem('game_user_id') || 'default_user_id';
+      
       // POST /game/games/success/
-      const response = await axiosInstance.post(`/game/games/success/`, {
-        game_id: gameId
+      const response = await postSuccessGameAPI({
+        user_id: gameUserId
       });
 
-      const { message, data } = response.data;
+      const { message, data } = response;
 
       // 쿠폰 당첨 여부 확인
       const isWon = message === "쿠폰 당첨";
