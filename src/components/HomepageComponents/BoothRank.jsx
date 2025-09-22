@@ -143,8 +143,8 @@ const BoothRank = ({ onDataChange }) => {
             );
           })
         ) : (
-          <div className="mb-[74px]">
-            <p className="text-[14px] text-center font-normal leading-[150%] font-suite text-[#52525B]">
+          <div className="flex items-center justify-center min-h-[70px] mb-[40px]">
+            <p className="text-[14px]  text-center font-normal leading-[150%] font-suite text-[#52525B]">
               {t("booth.rankPending")}
             </p>
           </div>
