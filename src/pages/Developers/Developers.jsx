@@ -3,12 +3,14 @@ import PersonCard from "../../components/DevelopersComponents/PersonCard";
 import likelionIcon from "../../assets/images/icons/logo/likelion-filter.png";
 import { getDevelopersByRole } from "../../data/developers";
 import { useTranslations } from "../../context/TranslationContext";
+import { useTranslation } from "react-i18next";
 import { createDeveloperTranslationItems } from "../../utils/translationApi";
 import i18n from "i18next";
 
 function Developers() {
   const [selectedFilter, setSelectedFilter] = useState("Team Lead");
   const { requestBatchTranslations } = useTranslations();
+  const { t } = useTranslation();
 
   const filters = [
     { id: "Team Lead", name: "Team Lead" },
@@ -38,7 +40,7 @@ function Developers() {
   return (
     <div className="bg-white min-h-screen px-4">
       <div className="flex flex-col items-center justify-center">
-        <p className="text-[12px] font-normal">멋쟁이사자처럼 13기</p>
+        <p className="text-[12px] font-normal">{t("developers.subtitle")}</p>
         <p className="text-[32px] font-semibold">Developers</p>
         <div className="w-[86px] h-[2px] bg-[#F8B0A9] mt-[16px] mb-[34px]"></div>
       </div>
