@@ -25,6 +25,8 @@ function BoothCard({
   badges,
   onClick,
   isSelected,
+  distance_m,
+  category,
 }) {
   const { t } = useTranslation();
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
@@ -53,7 +55,7 @@ function BoothCard({
       className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
   ${
     isSelected
-      ? "bg-red-50 border-red-500 shadow-md" // 선택됨
+      ? "bg-red-50 border-red-500 shadow-md " // 선택됨
       : "bg-white border-neutral-200" // 기본
   }
 `}
@@ -107,17 +109,32 @@ function BoothCard({
           </div>
 
           {/* 영업시간 */}
+          {category != "Drink" && (
+          
           <p className="text-[10px] text-[#52525B] mb-0.5 font-suite leading-[150%] font-normal">
             {time ||
               (startTime && endTime
                 ? `${translatedTodayLabel} ${startTime}~${endTime}`
                 : t("booth.preparingHours"))}
           </p>
+            )}
+
           <h3 className="text-xl font-semibold text-black mb-0.5 font-suite leading-[130%] truncate pr-[24px]">
             {title}
           </h3>
 
+          {/* 거리 뱃지 (주류만) */}
+          {category == "Drink" && (
+            <div>
+              <Badge
+                text={distance_m ? `${distance_m}m` : t("notBooth.unknownLocation")}
+                backgroundColor="#EF7063"
+              />
+            </div>
+          )}
           {/* 위치 */}
+          {category != "Drink" && (
+          
           <div className="flex items-center gap-[13px]">
             <p className="text-sm text-[#2A2A2E] font-suite leading-[150%] font-normal">
               {location}
@@ -127,6 +144,7 @@ function BoothCard({
               <Badge text="D-Order" />
             ) : null}
           </div>
+            )}
         </div>
       </div>
     </div>

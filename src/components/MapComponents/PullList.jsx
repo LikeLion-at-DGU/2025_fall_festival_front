@@ -267,6 +267,8 @@ function PullList({
                       isEventActive: booth.is_event || false,
                       isDOrderPartner: booth.is_dorder || false,
                     }}
+                     category={booth.category}
+                    distance_m={booth.distance_m}
                     className="w-full"
                     onClick={() =>
                       navigate(
@@ -284,6 +286,7 @@ function PullList({
                     title={boothName}
                     distance_m={booth.distance_m}
                     category={booth.category}
+                    location={locationName}
                     isSelected={selectedPin === locationName}
                     onClick={() => {
                       if (booth.category === "Toilet")

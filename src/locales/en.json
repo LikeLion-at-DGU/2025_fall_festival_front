@@ -33,7 +33,10 @@
       "academicCulture": "Academic & Culture Hall",
       "mainBuilding": "Main Building",
       "science": "Science Hall",
-      "wonheung": "Wonheung Hall"
+      "wonheung": "Wonheung Hall",
+      "hakrimConvinience" : "Hakrim Convenience Store",
+      "gyosoo":"Faculty Hall",
+      "moonhwaConvenience": "MoonHwa Convenience Store"
     },
     "filters": {
       "booth": "Booth",

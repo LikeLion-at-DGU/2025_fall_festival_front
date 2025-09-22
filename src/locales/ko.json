@@ -33,7 +33,10 @@
       "academicCulture": "학술문화관",
       "mainBuilding": "본관",
       "science": "과학관",
-      "wonheung": "원흥관"
+      "wonheung": "원흥관",
+      "hakrimConvinience" : "학림관 편의점",
+      "gyosoo":"교수회관",
+      "moonhwaConvenience": "문화관 편의점"
     },
     "filters": {
       "booth": "부스",
