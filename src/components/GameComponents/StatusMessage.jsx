@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 /**
  * 게임 상태 메시지 컴포넌트
@@ -8,12 +8,12 @@ import React from 'react';
 const StatusMessage = ({ targetWord, gameStatus }) => {
   const getStatusMessage = () => {
     switch (gameStatus) {
-      case 'correct':
-        return '정답입니다!';
-      case 'timeout':
-        return '시간 초과...';
-      case 'wrong':
-        return '틀렸습니다!';
+      case "correct":
+        return "정답입니다!";
+      case "timeout":
+        return "시간 초과...";
+      case "wrong":
+        return "틀렸습니다!";
       default:
         return targetWord;
     }
@@ -21,18 +21,20 @@ const StatusMessage = ({ targetWord, gameStatus }) => {
 
   const getStatusColor = () => {
     switch (gameStatus) {
-      case 'correct':
-        return 'text-green-600';
-      case 'timeout':
-      case 'wrong':
-        return 'text-red-600';
+      case "correct":
+        return "text-green-600";
+      case "timeout":
+      case "wrong":
+        return "text-red-600";
       default:
-        return 'text-neutral-500';
+        return "text-neutral-500";
     }
   };
 
   return (
-    <div className={`top-[80px] absolute left-1/2 transform -translate-x-1/2 text-center flex items-center justify-center text-base font-semibold font-['SUITE'] leading-normal ${getStatusColor()}`}>
+    <div
+      className={`top-[80px] absolute left-1/2 transform -translate-x-1/2 text-center flex items-center justify-center font-suite text-[16px] font-semibold leading-[150%] ${getStatusColor()}`}
+    >
       {getStatusMessage()}
     </div>
   );
