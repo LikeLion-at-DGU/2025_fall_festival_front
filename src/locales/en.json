@@ -147,7 +147,7 @@
     "rankPending": "Booth rankings are being calculated.",
     "event": "Event Booths",
     "eventError": "Unable to load event booths.",
-    "noEvent": "No event booths are currently available."
+    "noEvent": "Waiting for events..."
   },
   "common": {
     "more": "More"
