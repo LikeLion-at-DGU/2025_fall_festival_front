@@ -6,6 +6,7 @@ import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
 import ToastMessage from "../../components/AdminComponents/ToastMessage";
 import { createEvent } from "../../apis/admin/booth";
+import Tooltip from "../../components/AdminComponents/Tooltip";
 
 /*
 ---------------------------------------
@@ -46,7 +47,7 @@ function EventPost() {
       !isNaN(h) &&
       !isNaN(m) &&
       h >= 0 &&
-      h <= 24 &&
+      h < 24 &&
       m >= 0 &&
       m < 60
     );
@@ -58,43 +59,35 @@ function EventPost() {
     if (!startHour || !startMinute || !endHour || !endMinute) {
       return "시작/종료 시간을 모두 입력해주세요.";
     }
-
     // 오늘 날짜 구하기
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, "0");
     const dd = String(today.getDate()).padStart(2, "0");
-
     // 두 자리 인식으로 보정 완료
     const pad = (num) => String(num).padStart(2, "0");
     const startDate = new Date(`${yyyy}-${mm}-${dd}T${pad(startHour)}:${pad(startMinute)}:00`);
     const endDate = new Date(`${yyyy}-${mm}-${dd}T${pad(endHour)}:${pad(endMinute)}:00`);
-
-
     // Date 유효성 체크
     if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
       return "올바른 시간 형식이 아닙니다.";
     }
-
-    // (1) 숫자 범위 유효성 체크
-    if (!isValidTime(startHour, startMinute)) {
-      return "시작 시간이 올바르지 않습니다 (0~24시, 0~59분).";
-    }
-    if (!isValidTime(endHour, endMinute)) {
-      return "종료 시간이 올바르지 않습니다 (0~24시, 0~59분).";
-    }
-
-    // (2) 시작 시간이 현재보다 이전인지 체크
-    const now = new Date();
-    if (startDate < now) {
-      return "시작 시간은 현재보다 \n 이전일 수 없습니다. \n (24시간 단위를 사용해주세요)";
-    }
-
-    // (3) 종료 시간이 시작 시간보다 빠른지 체크
-    if (endDate <= startDate) {
-      return "종료 시간은 시작 시간보다 \n 이전일 수 없습니다. \n (24시간 단위를 사용해주세요)";
-    }
- 
+      // (1) 숫자 범위 유효성 체크
+      if (!isValidTime(startHour, startMinute)) {
+        return "유효하지 않은 숫자입니다 (00~23시, 00~59분).";
+      }
+      if (!isValidTime(endHour, endMinute)) {
+        return "유효하지 않은 숫자입니다 (00~23시, 00~59분).";
+      }
+      // (2) 시작 시간이 현재보다 이전인지 체크
+      const now = new Date();
+      if (startDate < now) {
+        return "시작 시간은 현재보다 이전일 수 없습니다.";
+      }
+      // (3) 종료 시간이 시작 시간보다 빠른지 체크
+      if (endDate <= startDate) {
+        return "종료 시간은 시작 시간보다 \n 이전일 수 없습니다.";
+      }
     return null; // ✅ 모든 검증 통과
   };
 
@@ -113,7 +106,7 @@ function EventPost() {
         field === "startMinute" ? value : startMinute
       )
     ) {
-      setTimeError("시작 시간이 올바르지 않습니다 (00~24시, 00~59분).");
+      setTimeError("유효하지 않은 숫자입니다 (00~23시, 00~59분).");
       return;
     }
     if (
@@ -122,10 +115,9 @@ function EventPost() {
         field === "endMinute" ? value : endMinute
       )
     ) {
-      setTimeError("종료 시간이 올바르지 않습니다 (00~24시, 00~59분).");
+      setTimeError("유효하지 않은 숫자입니다 (00~23시, 00~59분).");
       return;
     }
-
     // ✅ 모두 통과
     setTimeError("");
   };
@@ -208,11 +200,13 @@ function EventPost() {
       <AdminTitle text="이벤트 시작 시간" />
       <div className="flex flex-row justify-start items-start gap-2 w-full">
         <div className={timeWrapper}>
-          <PostInput
-            placeholder="ex) 10"
-            value={startHour}
-            onChange={(e) => handleTimeChange("startHour", e.target.value)}
-          />
+          <Tooltip text="24시간 형식으로 입력해주세요">
+            <PostInput
+              placeholder="ex) 10"
+              value={startHour}
+              onChange={(e) => handleTimeChange("startHour", e.target.value)}
+            />
+          </Tooltip>
           <AdminTitle text="시" />
         </div>
         <div className={timeWrapper}>
@@ -228,11 +222,13 @@ function EventPost() {
       <AdminTitle text="이벤트 종료 시간" />
       <div className="flex flex-row justify-start items-start gap-2 w-full">
         <div className={timeWrapper}>
-          <PostInput
-            placeholder="ex) 18"
-            value={endHour}
-            onChange={(e) => handleTimeChange("endHour", e.target.value)}
-          />
+          <Tooltip text="24시간 형식으로 입력해주세요">
+            <PostInput
+              placeholder="ex) 18"
+              value={endHour}
+              onChange={(e) => handleTimeChange("endHour", e.target.value)}
+            />
+          </Tooltip>
           <AdminTitle text="시" />
         </div>
         <div className={timeWrapper}>
