@@ -257,7 +257,7 @@ function PullList({
                     title={boothName}
                     image={booth.image_url || undefined}
                     location={locationName}
-                    isSelected={selectedBooth === booth.name}
+                    isSelected={selectedPin === booth.location.name}
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days[0]?.weekday}
@@ -287,6 +287,7 @@ function PullList({
                     distance_m={booth.distance_m}
                     category={booth.category}
                     location={locationName}
+                    boothId={booth.booth_id}
                     isSelected={selectedPin === locationName}
                     onClick={() => {
                       if (booth.category === "Toilet")

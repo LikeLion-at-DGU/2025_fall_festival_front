@@ -55,7 +55,7 @@
     }
   },
   "search": {
-    "placeholder": "학과/동아리/부스명을 입력하세요",
+    "placeholder": "부스명을 입력하세요",
     "alt": "검색"
   },
   "pullList": {
@@ -157,6 +157,10 @@
     "now": "STAGE NOW",
     "preparing": "공연 준비중이에요!",
     "comingSoon": "Coming Soon..."
+  },
+
+  "developers": {
+    "subtitle": "멋쟁이사자처럼 13기"
   },
 
   "footer": {

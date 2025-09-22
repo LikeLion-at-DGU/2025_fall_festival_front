@@ -55,7 +55,7 @@
     }
   },
   "search": {
-    "placeholder": "请输入院系/社团/展位名称",
+    "placeholder": "请输入展位名称",
     "alt": "搜索"
   },
   "pullList": {
@@ -159,6 +159,10 @@
     "now": "舞台进行中",
     "preparing": "演出准备中！",
     "comingSoon": "敬请期待..."
+  },
+
+  "developers": {
+    "subtitle": "狮子般的我们 第13期"
   },
 
   "footer": {

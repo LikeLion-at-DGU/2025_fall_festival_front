@@ -56,7 +56,7 @@
     }
   },
   "search": {
-    "placeholder": "学科/サークル/ブース名を入力してください",
+    "placeholder": "ブース名を入力してください",
     "alt": "検索"
   },
   "pullList": {
@@ -160,6 +160,10 @@
     "now": "ステージ ナウ",
     "preparing": "公演準備中です！",
     "comingSoon": "近日公開..."
+  },
+
+  "developers": {
+    "subtitle": "ライクラオン13期"
   },
 
   "footer": {
