@@ -73,8 +73,8 @@ function LostPost() {
         setToastMsg(res.message || "분실물이 등록되었습니다");
       }
 
-      // 성공 시 2.5초 후 목록으로 이동
-      setTimeout(() => navigate("/admin/festa"), 1500);
+      // 성공 시 1초 후 목록으로 이동
+      setTimeout(() => navigate("/admin/festa"), 1000);
     } catch (err) {
       console.error("에러 전체:", err);
 

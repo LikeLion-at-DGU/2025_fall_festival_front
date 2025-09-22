@@ -61,12 +61,12 @@ function NormalPost() {
       }
   };
 
-  // ✅ toastMsg가 성공 메시지일 때만 2초 후 이동
+  // ✅ toastMsg가 성공 메시지일 때만 1초 후 이동
   useEffect(() => {
     if (toastMsg && (toastMsg.includes("수정") || toastMsg.includes("완료"))) {
       const timer = setTimeout(() => {
         navigate("/admin/festa");
-      }, 1500);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [toastMsg, navigate]);
