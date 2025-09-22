@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 
-function GameSuccessModal({ isOpen, onClose }) {
+function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
   const [currentStep, setCurrentStep] = useState(1); // 1: 축하, 2: 상자열기, 3: 부스선택, 4: 쿠폰발급
   const [showBoothList, setShowBoothList] = useState(false);
   const [selectedBooth, setSelectedBooth] = useState("광고홍보학과");
 
-  // 부스/학과 리스트
-  const boothList = [
+  // 쿠폰 당첨 여부 확인
+  const isWinner = couponResult?.isWon || false;
+  const availableBooths = couponResult?.couponBooths || ["광고홍보학과", "경영학과", "컴퓨터공학과"];
+
+  // 부스/학과 리스트 - API 응답에서 받은 데이터 사용
+  const boothList = availableBooths.length > 0 ? availableBooths : [
     "광고홍보학과",
     "경영학과", 
     "컴퓨터공학과",
@@ -98,33 +102,55 @@ function GameSuccessModal({ isOpen, onClose }) {
         );
 
       case 2:
-        // 대박... 당첨! (부스 선택) 모달
-        return (
-          <div className="w-72 h-56 relative bg-neutral-000 rounded-2xl overflow-hidden">
-            <div className="left-[273px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-['SUITE'] leading-normal cursor-pointer" onClick={handleClose}>X</div>
-            <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-6">
-              <div className="flex flex-col justify-start items-center gap-1.5">
-                <div className="flex flex-col justify-start items-start gap-4">
-                  <div className="w-60 flex flex-col justify-start items-center">
-                    <div className="self-stretch text-center justify-start text-neutral-600 text-xl font-normal font-['SUITE'] leading-relaxed">대박... 당첨!</div>
+        // 쿠폰 당첨 결과에 따른 모달
+        if (isWinner) {
+          return (
+            <div className="w-72 h-56 relative bg-white rounded-2xl overflow-hidden shadow-xl">
+              <div className="left-[273px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-['SUITE'] leading-normal cursor-pointer" onClick={handleClose}>X</div>
+              <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-6">
+                <div className="flex flex-col justify-start items-center gap-1.5">
+                  <div className="flex flex-col justify-start items-start gap-4">
+                    <div className="w-60 flex flex-col justify-start items-center">
+                      <div className="self-stretch text-center justify-start text-neutral-600 text-xl font-normal font-['SUITE'] leading-relaxed">🎉 대박... 당첨!</div>
+                    </div>
+                    <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-['SUITE'] leading-none">쿠폰에 당첨되었어요! 사용할 주점을 골라주세요</div>
                   </div>
-                  <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-['SUITE'] leading-none">쿠폰에 당첨되었어요! 사용할 주점을 골라주세요</div>
-                </div>
-                <div className="w-64 bg-neutral-100 rounded-xl flex flex-col justify-start items-start overflow-hidden cursor-pointer" onClick={() => setShowBoothList(true)}>
-                  <div className="self-stretch h-7 p-4 flex flex-col justify-between items-center">
-                    <div className="self-stretch inline-flex justify-start items-center gap-2">
-                      <div className="flex-1 justify-start text-neutral-500 text-[10px] font-semibold font-['SUITE'] leading-none">{selectedBooth}</div>
-                      <div className="w-2 h-1 origin-top-left -rotate-90 rounded-sm outline outline-2 outline-offset-[-0.90px] outline-neutral-600"></div>
+                  <div className="w-64 bg-neutral-100 rounded-xl flex flex-col justify-start items-start overflow-hidden cursor-pointer" onClick={() => setShowBoothList(true)}>
+                    <div className="self-stretch h-7 p-4 flex flex-col justify-between items-center">
+                      <div className="self-stretch inline-flex justify-start items-center gap-2">
+                        <div className="flex-1 justify-start text-neutral-500 text-[10px] font-semibold font-['SUITE'] leading-none">{selectedBooth}</div>
+                        <div className="w-2 h-1 origin-top-left -rotate-90 rounded-sm outline outline-2 outline-offset-[-0.90px] outline-neutral-600"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div data-status="Header" className="self-stretch h-9 px-6 py-4 bg-primary-400 rounded-xl flex flex-col justify-between items-center cursor-pointer" onClick={handleNextStep}>
-                <div className="text-center justify-start text-neutral-100 text-sm font-semibold font-['SUITE'] leading-tight">쿠폰 발급받기</div>
+                <div data-status="Header" className="self-stretch h-9 px-6 py-4 bg-black rounded-xl flex flex-col justify-between items-center cursor-pointer hover:bg-gray-800" onClick={handleNextStep}>
+                  <div className="text-center justify-start text-white text-sm font-semibold font-['SUITE'] leading-tight">쿠폰 발급받기</div>
+                </div>
               </div>
             </div>
-          </div>
-        );
+          );
+        } else {
+          // 쿠폰 미당첨
+          return (
+            <div className="w-72 h-56 relative bg-white rounded-2xl overflow-hidden shadow-xl">
+              <div className="left-[273px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-['SUITE'] leading-normal cursor-pointer" onClick={handleClose}>X</div>
+              <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-6">
+                <div className="flex flex-col justify-start items-center gap-1.5">
+                  <div className="flex flex-col justify-start items-start gap-4">
+                    <div className="w-60 flex flex-col justify-start items-center">
+                      <div className="self-stretch text-center justify-start text-neutral-600 text-xl font-normal font-['SUITE'] leading-relaxed">😅 아쉽게도...</div>
+                    </div>
+                    <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-['SUITE'] leading-none">이번엔 쿠폰에 당첨되지 않았어요. 다음 기회에!</div>
+                  </div>
+                </div>
+                <div data-status="Header" className="self-stretch h-9 px-6 py-4 bg-black rounded-xl flex flex-col justify-between items-center cursor-pointer hover:bg-gray-800" onClick={handleClose}>
+                  <div className="text-center justify-start text-white text-sm font-semibold font-['SUITE'] leading-tight">확인</div>
+                </div>
+              </div>
+            </div>
+          );
+        }
 
       case 3:
         // 쿠폰 발급받기 (동일한 내용) 모달
@@ -158,10 +184,10 @@ function GameSuccessModal({ isOpen, onClose }) {
               </div>
               <div 
                 data-status="Header" 
-                className="self-stretch h-9 px-6 py-4 bg-primary-400 rounded-xl flex flex-col justify-between items-center cursor-pointer hover:bg-primary-500 transition-colors"
+                className="self-stretch h-9 px-6 py-4 bg-black rounded-xl flex flex-col justify-between items-center cursor-pointer hover:bg-gray-800 transition-colors"
                 onClick={handleNextStep}
               >
-                <div className="text-center justify-start text-neutral-100 text-sm font-semibold font-['SUITE'] leading-tight">쿠폰 발급받기</div>
+                <div className="text-center justify-start text-white text-sm font-semibold font-['SUITE'] leading-tight">쿠폰 발급받기</div>
               </div>
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import topLeftLogo from '../../assets/images/icons/game-icons/top-left-logo.png';
-import centerLogo from '../../assets/images/icons/game-icons/middle_logo.png';
+import GameLoadingSvg from '../../assets/images/icons/game-icons/GameLoading.svg';
 
 function GameIntroPage({ onStartGame }) {
   useEffect(() => {
@@ -15,11 +15,10 @@ function GameIntroPage({ onStartGame }) {
       {/* 배경 이미지 */}
       <img className="w-[461px] h-[476px] absolute left-1/2 transform -translate-x-1/2 -translate-y-1/4 top-0" src={topLeftLogo} />
       
-      {/* 원형 그라데이션 배경 */}
-      <div className="w-64 h-64 absolute left-1/2 transform -translate-x-1/2 top-[316px] bg-gradient-to-b from-primary-500/50 to-red-500/0 rounded-full"></div>
-      <img className="w-64 h-64 absolute left-1/2 transform -translate-x-1/2 top-[320px]" src={centerLogo} />
+      {/* GameLoading.svg로 교체 */}
+      <img className="w-full h-full absolute left-0 top-0 object-cover" src={GameLoadingSvg} alt="게임 로딩" />
 
-      {/* 상단 모바일 상태바 */}
+      {/* 상단 모바일 상태바
       <div data-status="Home" className="w-full h-14 p-4 absolute top-0 left-0 bg-neutral-000 shadow-[0px_1px_5px_0px_rgba(0,0,0,0.05)] inline-flex flex-col justify-start items-start gap-2.5">
         <div className="self-stretch h-5 inline-flex justify-between items-center">
           <div className="w-16 h-3 bg-black outline outline-[0.10px] outline-black"></div>
@@ -32,21 +31,7 @@ function GameIntroPage({ onStartGame }) {
           <div className="w-3 h-0.5 bg-primary-400"></div>
           <div className="w-3.5 h-3 bg-black"></div>
         </div>
-      </div>
-      
-      {/* 로고 요소들 */}
-      <div className="w-14 h-11 left-[116.50px] top-[261px] absolute bg-primary-050"></div>
-      <div className="w-14 h-11 left-[149.32px] top-[261px] absolute bg-primary-300"></div>
-      <div className="w-5 h-2 left-[136.61px] top-[296.89px] absolute bg-primary-300"></div>
-      <div className="w-9 h-6 left-[211.53px] top-[280.50px] absolute bg-primary-300"></div>
-      <div className="w-5 h-2 left-[168.39px] top-[261px] absolute bg-primary-300"></div>
-      <div className="w-10 h-2.5 left-[210.10px] top-[280.50px] absolute bg-primary-300"></div>
-      <div className="w-11 h-2 left-[224.40px] top-[261px] absolute bg-primary-300"></div>
-      <div className="w-14 h-11 left-[176.33px] top-[261px] absolute bg-primary-050"></div>
-      <div className="left-[135.38px] top-[318.56px] absolute text-center justify-start text-primary-050 text-[8.25px] font-black font-['SUITE_Variable']">LIKELION DONGGUK UNIV.</div>
-      
-      {/* D'order 로고 이미지 */}
-      <img className="w-48 h-12 left-[99px] top-[512px] absolute" src="https://placehold.co/185x51" />
+      </div> */}
       
       {/* 게임 시작 버튼 (클릭 가능한 영역) */}
       <div 

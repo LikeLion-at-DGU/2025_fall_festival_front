@@ -1,8 +1,5 @@
 import React from 'react';
-import AnswerS from '../../assets/images/icons/game-icons/Answer_S.svg';
-import AnswerM from '../../assets/images/icons/game-icons/Answer_M.svg';
-import AnswerL from '../../assets/images/icons/game-icons/Answer_L.svg';
-import AnswerXL from '../../assets/images/icons/game-icons/Answer_XL.svg';
+import middleLogo from '../../assets/images/icons/game-icons/middle_logo.png';
 
 /**
  * Author: @곽도윤
@@ -16,89 +13,81 @@ import AnswerXL from '../../assets/images/icons/game-icons/Answer_XL.svg';
  */
 
 const WordCard = ({ text, size, status = 'Normal', onClick, isCorrectAnswer = false }) => {
-  const getSizeClasses = () => {
+  // 피그마 CSS 스펙 그대로 적용
+  const renderCard = () => {
+    const isAnswer = status === 'Answer' || isCorrectAnswer;
+
     switch (size) {
       case 'XL':
-        return 'w-40 h-56';
+        return isAnswer ? (
+          <div className="w-40 h-56 relative cursor-pointer" onClick={onClick}>
+            <div className="w-40 h-56 bg-gradient-to-b from-primary-400 to-primary-300 rounded-2xl shadow-[0px_3px_5px_0px_rgba(0,0,0,0.10)] border-2 border-white"></div>
+            <div data-크기="Normal" className="w-44 h-48 left-[-9.50px] top-[26px] absolute">
+              <img className="w-44 h-48 left-0 top-0 absolute" src={middleLogo} alt="Logo" />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center text-white text-3xl font-semibold font-['SUITE'] z-10">{text}</div>
+          </div>
+        ) : (
+          <div className="w-40 h-56 relative cursor-pointer" onClick={onClick}>
+            <div className="w-40 h-56 left-0 top-0 absolute bg-white rounded-2xl"></div>
+            <div className="absolute inset-0 flex items-center justify-center text-gray-600 text-3xl font-semibold font-['SUITE']">{text}</div>
+          </div>
+        );
+
       case 'L':
-        return 'w-24 h-36';
+        return isAnswer ? (
+          <div className="w-24 h-36 relative cursor-pointer" onClick={onClick}>
+            <div className="w-24 h-36 bg-gradient-to-b from-primary-400 to-primary-300 rounded-2xl shadow-[0px_3px_5px_0px_rgba(0,0,0,0.10)] border-2 border-white"></div>
+            <div data-크기="Normal" className="w-28 h-28 left-[-4.50px] top-[21px] absolute">
+              <img className="w-28 h-28 left-0 top-0 absolute" src={middleLogo} alt="Logo" />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center text-white text-2xl font-semibold font-['SUITE'] z-10">{text}</div>
+          </div>
+        ) : (
+          <div className="w-24 h-36 relative cursor-pointer" onClick={onClick}>
+            <div className="w-24 h-36 left-0 top-0 absolute bg-white rounded-2xl"></div>
+            <div className="absolute inset-0 flex items-center justify-center text-gray-600 text-2xl font-semibold font-['SUITE']">{text}</div>
+          </div>
+        );
+
       case 'M':
-        return 'w-20 h-28';
+        return isAnswer ? (
+          <div className="w-20 h-28 relative cursor-pointer" onClick={onClick}>
+            <div className="w-20 h-28 bg-gradient-to-b from-primary-400 to-primary-300 rounded-2xl shadow-[0px_3px_5px_0px_rgba(0,0,0,0.10)] border-2 border-white"></div>
+            <div data-크기="Normal" className="w-20 h-20 left-[-0.50px] top-[22px] absolute">
+              <img className="w-20 h-20 left-0 top-0 absolute" src={middleLogo} alt="Logo" />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center text-white text-base font-semibold font-['SUITE'] z-10">{text}</div>
+          </div>
+        ) : (
+          <div className="w-20 h-28 relative cursor-pointer" onClick={onClick}>
+            <div className="w-20 h-28 left-0 top-0 absolute bg-white rounded-2xl"></div>
+            <div className="absolute inset-0 flex items-center justify-center text-gray-600 text-base font-semibold font-['SUITE']">{text}</div>
+          </div>
+        );
+
       case 'S':
-        return 'w-14 h-20';
+        return isAnswer ? (
+          <div className="w-14 h-20 relative cursor-pointer" onClick={onClick}>
+            <div className="w-14 h-20 bg-gradient-to-b from-primary-400 to-primary-300 rounded-2xl shadow-[0px_3px_5px_0px_rgba(0,0,0,0.10)] border-2 border-white"></div>
+            <div data-크기="Normal" className="w-14 h-14 left-[1.50px] top-[18px] absolute">
+              <img className="w-14 h-14 left-0 top-0 absolute" src={middleLogo} alt="Logo" />
+            </div>
+            <div className="absolute inset-0 flex items-center justify-center text-white text-sm font-semibold font-['SUITE'] z-10">{text}</div>
+          </div>
+        ) : (
+          <div className="w-14 h-20 relative cursor-pointer" onClick={onClick}>
+            <div className="w-14 h-20 left-0 top-0 absolute bg-white rounded-2xl"></div>
+            <div className="absolute inset-0 flex items-center justify-center text-gray-600 text-sm font-semibold font-['SUITE']">{text}</div>
+          </div>
+        );
+
       default:
-        return 'w-24 h-36';
+        return renderCard();
     }
   };
 
-  const getTextSizeClasses = () => {
-    switch (size) {
-      case 'XL':
-        return 'text-3xl leading-10';
-      case 'L':
-        return 'text-2xl leading-loose';
-      case 'M':
-        return 'text-base leading-normal';
-      case 'S':
-        return 'text-sm leading-tight';
-      default:
-        return 'text-2xl leading-loose';
-    }
-  };
-
-  const getAnswerBackground = () => {
-    switch (size) {
-      case 'XL':
-        return AnswerXL;
-      case 'L':
-        return AnswerXL;
-      case 'M':
-        return AnswerL;
-      case 'S':
-        return AnswerM;
-      default:
-        return AnswerL;
-    }
-  };
-
-  const getTextClasses = () => {
-    if (status === 'Answer' || isCorrectAnswer) {
-      return 'text-primary-50';
-    }
-    return 'text-neutral-600';
-  };
-
-  const sizeClasses = getSizeClasses();
-
-  return (
-    <div
-      data-size={size}
-      data-status={status}
-      className={`${sizeClasses} relative cursor-pointer hover:scale-105 transition-transform`}
-      onClick={onClick}
-    >
-      {/* 정답일 때 SVG 배경 */}
-      {(status === 'Answer' || isCorrectAnswer) && (
-        <img
-          src={getAnswerBackground()}
-          alt="정답 배경"
-          className={`${sizeClasses} absolute inset-0 w-full h-full rounded-2xl object-contain`}
-        />
-      )}
-
-      {/* 일반 카드 배경 */}
-      {!(status === 'Answer' || isCorrectAnswer) && (
-        <div
-          className={`${sizeClasses} absolute inset-0 rounded-2xl bg-white shadow-md`}
-        />
-      )}
-
-      {/* 텍스트 중앙 정렬 */}
-      <div className={`absolute inset-0 flex justify-center items-center font-semibold font-['SUITE'] ${getTextClasses()} ${getTextSizeClasses()} z-10 select-none`}>
-        {text || '텍스트 없음'}
-      </div>
-    </div>
-  );
+  return renderCard();
 };
 
 export default WordCard;

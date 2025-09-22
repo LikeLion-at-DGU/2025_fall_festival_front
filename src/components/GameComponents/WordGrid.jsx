@@ -28,15 +28,15 @@ const WordGrid = ({ words, size, correctAnswer, onWordClick, gameStatus }) => {
   const getGapSize = () => {
     switch (size) {
       case 'XL':
-        return 'gap-4'; // 1단계: 16px 간격
+        return 'gap-3'; // 1단계: 12px 간격 (90% of 16px ≈ 14px)
       case 'L':
-        return 'gap-4'; // 2단계: 16px 간격
+        return 'gap-3'; // 2단계: 12px 간격 (90% of 16px ≈ 14px)
       case 'M':
-        return 'gap-3'; // 3단계: 12px 간격
+        return 'gap-2.5'; // 3단계: 10px 간격 (90% of 12px ≈ 11px)
       case 'S':
-        return 'gap-3'; // 4단계: 12px 간격
+        return 'gap-2.5'; // 4단계: 10px 간격 (90% of 12px ≈ 11px)
       default:
-        return 'gap-4';
+        return 'gap-3';
     }
   };
 
@@ -74,7 +74,7 @@ const WordGrid = ({ words, size, correctAnswer, onWordClick, gameStatus }) => {
   };
 
   return (
-    <div className={`flex flex-col justify-center items-center ${getGapSize()}`}>
+    <div className={`flex flex-col justify-center items-center ${getGapSize()} scale-90 transform`}>
       {renderGrid()}
     </div>
   );

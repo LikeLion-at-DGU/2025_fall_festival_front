@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { usePostStartGame } from "../../hooks/GameHooks/usePostStartGame";
 
 function GameInstructionPage({ onStartChallenge }) {
   const [showModal, setShowModal] = useState(false);
+  const startGameMutation = usePostStartGame();
+
+  // 더미데이터
+  const data = { successcnt: 26 };
+
   return (
     <div className="w-full max-w-[430px] mx-auto h-screen relative bg-gradient-to-b from-[#FF8A80] to-[#F48FB1] overflow-hidden">
       {/* 상단 헤더 */}
@@ -27,7 +33,7 @@ function GameInstructionPage({ onStartChallenge }) {
               지금까지 단{" "}
             </span>
             <span className="text-primary-400 text-[10px] font-semibold font-['SUITE'] leading-none">
-              26명
+              {data.successcnt}
             </span>
             <span className="text-primary-400 text-[10px] font-normal font-['SUITE'] leading-none">
               만이 성공했습니다
@@ -59,14 +65,33 @@ function GameInstructionPage({ onStartChallenge }) {
       {/* 도전하기 버튼 */}
       <div className="w-full h-[155px] flex justify-center items-center">
         <div
-          className="w-[311px] h-[52px] bg-white rounded-[999px] flex justify-center items-center cursor-pointer hover:bg-gray-100 transition-colors"
+          className={`w-[311px] h-[52px] bg-white rounded-[999px] flex justify-center items-center cursor-pointer transition-colors ${
+            startGameMutation.isPending 
+              ? 'opacity-50 cursor-not-allowed' 
+              : 'hover:bg-gray-100'
+          }`}
           onClick={() => {
+            if (startGameMutation.isPending) return;
+            
             console.log("도전하기 버튼 클릭됨!");
-            onStartChallenge();
+            
+            // // 게임 시작 API 호출
+            startGameMutation.mutate(undefined, {
+              onSuccess: (response) => {
+                console.log("게임 시작 API 성공:", response);
+                // API 호출 성공 후 기존 onStartChallenge 함수 실행
+                onStartChallenge();
+              },
+              onError: (error) => {
+                console.error("게임 시작 API 실패:", error);
+                alert("게임 시작 중 오류가 발생했습니다. 다시 시도해 주세요.");
+              }
+            });
+            // onStartChallenge();
           }}
         >
           <span className="text-black text-[16px] font-semibold font-['SUITE']">
-            도전하기
+            {startGameMutation.isPending ? "게임 시작 중..." : "도전하기"}
           </span>
         </div>
       </div>
