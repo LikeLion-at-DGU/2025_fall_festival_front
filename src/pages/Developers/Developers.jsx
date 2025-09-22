@@ -38,7 +38,7 @@ function Developers() {
   ]);
 
   return (
-    <div className="bg-white min-h-screen px-4">
+    <div className="bg-white min-h-screen px-4 pt-[32px] pb-[70px]">
       <div className="flex flex-col items-center justify-center">
         <p className="text-[12px] font-normal">{t("developers.subtitle")}</p>
         <p className="text-[32px] font-semibold">Developers</p>
