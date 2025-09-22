@@ -4,14 +4,17 @@ import profileBack from "../../assets/images/banners/profile-backgroud.png";
 function PersonCard({ name, role, major, image }) {
   return (
     <div
-      className="relative w-full h-full overflow-hidden rounded-[25px]"
+      className="relative w-full h-full overflow-hidden rounded-[23px]"
       style={{
         boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.15)",
       }}
     >
       {/* 정보 영역 */}
       <div className="absolute top-[38px] left-[13px]">
-        <h3 className="text-xl font-bold mb-[5px] text-[#2A2A2E]">
+        <h3
+          className="text-xl font-bold mb-[5px] text-[#2A2A2E]"
+          style={name === "SON YOUNG CHAE" ? { letterSpacing: "-0.05em" } : {}}
+        >
           {name.split(" ")[0]}
           <br />
           {name.split(" ").slice(1).join(" ")}
