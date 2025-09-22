@@ -30,12 +30,24 @@ import ToiletDetail from "../pages/Map/DetailSections/ToiletDetail";
 
 import ComingSoon from "../pages/ComingSoon/ComingSoon";
 
+// 오픈 전
+// 
+// 
+import { useLocation } from "react-router-dom";
+
+
 const Router = () => {
+const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const secret = params.get("secret");
+
+  const isDevUnlocked = secret === "1031";
   return (
     <>
       <ScrollToTop />
+        {isDevUnlocked ? (
       <Routes>
-        <Route path="/" element={<ComingSoon />} />
+        <Route path="/" element={<Home />} />
         <Route path="/map" element={<Map />} />
         <Route path="/mapold" element={<MapOld />} />
         <Route path="/timetable" element={<Timetable />} />
@@ -43,9 +55,6 @@ const Router = () => {
         <Route path="/board/:boardId" element={<BoardDetail />} />
         <Route path="/event" element={<Event />} />
 
-        {/* ComingSoon 개발 확인용 경로 */}
-        <Route path="/comingsoon" element={<Home />} />
-        
         {/* 지도 상세페이지 라우트 추가 */}
         <Route path="/booth/:id" element={<BoothDetail />} />
         <Route path="/drink/:id" element={<DrinkDetail />} />
@@ -83,7 +92,11 @@ const Router = () => {
         <Route path="/admin/booth/event" element={<EventPost />} />{" "}
         {/*이벤트 작성*/}
         <Route path="/developers" element={<Developers />} />
-      </Routes>
+      </Routes> 
+       ):(
+         <ComingSoon/>
+        
+        )}
     </>
   );
 };
