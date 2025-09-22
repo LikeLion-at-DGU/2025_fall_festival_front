@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import imageCompression from "browser-image-compression";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
@@ -36,12 +37,6 @@ function LostPost() {
       if (!uid) {
         setToastMsg("세션이 만료되었습니다. 다시 로그인해주세요");
         setTimeout(() => navigate("/admin/login"), 2000);
-        return;
-      }
-
-      // ✅ 작성 모드일 때는 이미지 필수 체크 (방어로직입니다)
-      if (!editingData && !image) {
-        setToastMsg("이미지를 등록해주세요.");
         return;
       }
 
@@ -88,7 +83,7 @@ function LostPost() {
       }// ⚠️ 여기서 빠져나오는 로직! 
 
       // 그 외 에러 처리 (⛔ 점검 후 삭제 예정)
-      let msg = "이미지 용량 초과입니다";
+      let msg = "세션이 만료되었습니다";
 
       // 서버에서 내려주는 에러 메시지 처리
       if (err.response) {
@@ -110,15 +105,43 @@ function LostPost() {
         msg.includes("로그인") ||
         err.response?.status === 401
       ) {
-        // setTimeout(() => navigate("/admin/login"), 2000);
+         setTimeout(() => navigate("/admin/login"), 2000);
       }
     }
   };
 
   /* ---- 이미지 업로드 시 미리보기 갱신 ---- */
-  const handleImageChange = (file) => {
+  const handleImageChange = async (file) => {
+    try {
+    const options = {
+      maxSizeMB: 1,            // 1MB 이하
+      maxWidthOrHeight: 1024,  // 최대 가로/세로 1024px
+      useWebWorker: true,
+    };
+
+    // 압축 실행
+    const compressedFile = await imageCompression(file, options);
+
+    // 원본 확장자 유지
+    const ext = file.name.split(".").pop(); // jpg, png 등
+    const newFile = new File([compressedFile], `compressed.${ext}`, {
+      type: file.type,
+    });
+    
+    // ⛔ 삭제 예정
+    console.log("압축 전:", (file.size / 1024 / 1024).toFixed(2), "MB");
+    console.log("압축 후:", (compressedFile.size / 1024 / 1024).toFixed(2), "MB");
+    console.log("압축 전+확장자:", file.name, file.size);
+    console.log("압축 후+확장자:", newFile.name, newFile.size);
+
+    // 상태 반영 (압축된 파일 저장)
+    setImage(newFile); // ✅ 서버로 보낼 파일은 확장자 포함된 newFile
+    setPreviewImage(URL.createObjectURL(newFile));
+  } catch (error) {
+    console.error("이미지 압축 실패:", error);
     setImage(file);
-    setPreviewImage(URL.createObjectURL(file)); // 새 파일 업로드 시 기존 미리보기 교체
+    setPreviewImage(URL.createObjectURL(file));
+  }
   };
 
   /* ---- 버튼 비활성화 조건 ----
@@ -139,8 +162,8 @@ function LostPost() {
         // ✅ 작성 모드
         !title.trim() ||
         !content.trim() ||
-        !locationText.trim() ||
-        !image // 작성할 때는 이미지 필수
+        !locationText.trim()
+        //!image // 작성할 때는 이미지 필수
       );
 
 

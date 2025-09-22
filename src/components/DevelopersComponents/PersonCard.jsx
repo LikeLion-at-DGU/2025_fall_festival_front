@@ -39,7 +39,7 @@ function PersonCard({ name, role, major, image, developerId }) {
         <p className="text-[8px] font-normal mb-[3px] text-[#52525B]">
           {translatedRole}
         </p>
-        <p className="text-[9px] font-semibold text-[#52525B]">
+        <p className="text-[9px] font-semibold text-[#52525B] mr-3">
           {translatedMajor}
         </p>
       </div>

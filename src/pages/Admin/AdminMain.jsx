@@ -20,28 +20,22 @@ import {
 function AdminMain() {
   const navigate = useNavigate();
 
-  // ⛔ 폐기예정 ⛔ 더미 (초기 데이터) → useEffect에서 실제 API로 대체됨
   // 게시글 목록 (공지 + 분실물)
   const [notices, setNotices] = useState([]);
-
   // 긴급공지 입력 필드 값
   const [notice, setNotice] = useState("");
-
   // 입력 필드가 수정되었는지 여부 → 버튼 활성화 제어
   const [isEdited, setIsEdited] = useState(false);
-
   // 검색어 상태
   const [searchTerm, setSearchTerm] = useState("");
-  
-  // ✅ 토스트 메시지 상태
+  // 토스트 메시지 상태
   const [toast, setToast] = useState(null);
-
 
   const bigWrapperClass =
     "flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6";
   const wrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-4";
   const noticeWrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-0";
-  const postWrapperClass = "flex flex-col items-center w-full h-[37vh] mx-auto gap-2 overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden";
+  const postWrapperClass = "flex flex-col items-center w-full h-[30vh] mx-auto gap-2 overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden";
   const bottomWrapperClass = "flex flex-col w-full";
   
 
