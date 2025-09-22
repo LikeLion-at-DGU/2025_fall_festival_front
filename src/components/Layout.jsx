@@ -58,10 +58,8 @@ const Layout = ({ children }) => {
   // Event 페이지 판별
   const isEventPage = location.pathname === "/event";
   
-  // Event 페이지에서 게임 단계 확인
-  const searchParams = new URLSearchParams(location.search);
-  const gamePhase = searchParams.get('phase');
-  const shouldHideNavigation = isEventPage && (gamePhase === 'countdown' || gamePhase === 'playing');
+  // Event 페이지에서는 네비게이션을 완전히 숨김 (게임 집중 환경 제공)
+  const shouldHideNavigation = isEventPage;
 
   // 3) 헤더 선택 로직: 관리자 > 게시판상세 > 기본
   const HeaderComponent = isAdminPage

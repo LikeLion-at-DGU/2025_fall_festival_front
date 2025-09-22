@@ -18,6 +18,8 @@ const ActionButton = ({ gameStatus, onNextStep, onRetry, onStartGame, currentSta
     switch (gameStatus) {
       case 'ready':
         return t('game.start');
+      case 'playing':
+        return '다른 글자를 찾아보세요';
       case 'correct':
         return currentStage >= 4 ? t('game.complete') : t('game.nextStep');
       case 'timeout':
@@ -32,6 +34,8 @@ const ActionButton = ({ gameStatus, onNextStep, onRetry, onStartGame, currentSta
     switch (gameStatus) {
       case 'ready':
         return 'bg-black text-white cursor-pointer hover:bg-gray-800';
+      case 'playing':
+        return 'bg-neutral-200 text-neutral-300 cursor-not-allowed';
       case 'correct':
       case 'timeout':
       case 'wrong':
@@ -54,9 +58,8 @@ const ActionButton = ({ gameStatus, onNextStep, onRetry, onStartGame, currentSta
   return (
     <div 
       data-status={gameStatus === 'playing' ? 'Disabled' : 'Black'}
-      className={`w-full py-4 rounded-full font-bold text-lg transition-colors duration-200 shadow-lg ${getButtonClasses()}`}
+      className={`w-full py-4 rounded-xl font-bold text-lg transition-colors duration-200 shadow-lg ${getButtonClasses()}`}
       onClick={gameStatus !== 'playing' ? handleClick : undefined}
-      style={{ minHeight: '56px' }}
     >
       <div className="w-full flex-1 text-center justify-start text-base font-semibold font-['SUITE'] leading-normal">
         {getButtonText()}
