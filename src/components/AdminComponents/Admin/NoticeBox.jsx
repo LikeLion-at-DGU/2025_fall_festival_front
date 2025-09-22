@@ -24,37 +24,38 @@ function NoticeBox({ id, category, title, writer }) {
       onClick={handleClick}
       className="
         flex items-center justify-between 
-        w-full h-[48px] 
-        px-3 py-2
-        rounded-2xl cursor-pointer
+        w-full h-[41px] 
+        px-2 py-2
+        rounded-[13px] cursor-pointer
         border-[#f1f1f1] bg-[#ffffff]
         hover:bg-gray-100 transition
       "
     >
       {/* 왼쪽: 태그 + 텍스트 */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center">
         <span
             className={`
-              px-1 py-1 text-[11px] font-medium
-              rounded-[10px] w-[45px] h-[26px] flex items-center justify-center
+              px-2 py-1 text-[11px] font-normal
+              rounded-[10px] w-[55px] h-[26px] flex items-center
               ${
                 category === "Notice"
-                  ? "bg-[#EF7063] text-white"                // 공지 → 빨간 배경, 흰 글씨
+                  ? "text-[#D33E2F]" // 공지 → 빨간 배경, 흰 글씨
                   : category === "Event"
-                  ? "border border-[#EF7063] text-[#EF7063]" // 이벤트 → 빨간 테두리, 빨간 글씨
+                  ? "text-[#EF7063]" // 이벤트 → 빨간 테두리, 빨간 글씨
                   : category === "LostItem"
-                  ? "border border-[#71717A] text-[#71717A]"   // 분실물 → 회색 테두리, 회색 글씨
+                  ? "text-[#71717A]"   // 분실물 → 회색 테두리, 회색 글씨
                   : "bg-gray-200 text-gray-700"              // 기본값
               }
             `}
           >
-          {category === "Notice"
+          #{category === "Notice"
             ? "공지"
             : category === "LostItem"
             ? "분실물"
             : category}
         </span>
         <p className="text-sm text-gray-800 truncate max-w-[180px]">
+          <span className="text-[#e3e3e3] mr-3">|</span>
           {title}
         </p>
       </div>
