@@ -82,11 +82,11 @@ const Layout = ({ children }) => {
           bg-gray"
       >
         {/* 조건부 Header (카운트다운/게임플레이 단계가 아닐 때만 표시) */}
-        {!shouldHideNavigation && <HeaderComponent />}
+        {(!shouldHideNavigation || location.pathname === "/event") && <HeaderComponent />}
 
         {/* 페이지의 실제 내용과 푸터가 이 안에서 스크롤됩니다. */}
         <main
-          className={`flex-grow ${!isEventPage ? "pt-[54px] pb-[62px]" : ""} ${
+          className={`flex-grow${
             isAdminScrollHidden
               ? "overflow-y-scroll hide-scrollbar" // 🎯 스크롤은 되지만 스크롤바 숨김
               : location.pathname === "/map"
@@ -102,7 +102,7 @@ const Layout = ({ children }) => {
         </main>
 
         {/* 관리자 페이지와 네비게이션 숨김 페이지가 아니면 BottomNav 표시 */}
-        {!isAdminPage && !shouldHideNavigation && <BottomNav />}
+        {!isAdminPage && (!shouldHideNavigation || location.pathname === "/event")&& <BottomNav />}
       </div>
     </div>
   );

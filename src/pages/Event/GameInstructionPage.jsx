@@ -23,7 +23,9 @@ function GameInstructionPage({ onStartChallenge }) {
 
 
   return (
-    <div className="w-full max-w-[430px] mx-auto h-screen relative bg-gradient-to-b from-[#FF8A80] to-[#F48FB1] overflow-hidden">
+    <div className="flex flex-col justify-between
+    w-full max-w-[430px] mx-auto h-screen pt-[80px] pb-[99px]
+    bg-[linear-gradient(352deg,var(--Primary-400,#EF7063)_26.61%,var(--Primary-300,#F8B0A9)_83.71%)] overflow-hidden">
       {/* 상단 헤더
       <div className="w-full bg-white px-4 py-3 flex justify-between items-center">
         <div className="text-black text-lg font-bold font-['SUITE']">
@@ -43,15 +45,16 @@ function GameInstructionPage({ onStartChallenge }) {
       <div className="w-full h-[102px] flex justify-center items-center">
         {!isLimitExceeded && (
           <div className="px-2 py-1 bg-red-50/80 rounded-[999px] inline-flex justify-center items-center gap-2.5">
-            <div className="justify-start">
-              <span className="text-primary-400 text-[10px] font-normal font-['SUITE'] leading-none">
+            <div className="justify-center items-center
+            text-primary-400 text-[10px] font-normal font-['SUITE'] leading-none">
+              <span>
                 지금까지 단{" "}
               </span>
-              <span className="text-primary-400 text-[10px] font-semibold font-['SUITE'] leading-none">
+              <span className="font-semibold ">
                 {data.successcnt}
               </span>
-              <span className="text-primary-400 text-[10px] font-normal font-['SUITE'] leading-none">
-                만이 성공했습니다
+              <span>
+                명 만이 성공했습니다
               </span>
             </div>
           </div>
@@ -97,7 +100,7 @@ function GameInstructionPage({ onStartChallenge }) {
       {/* 도전하기 버튼 */}
       <div className="w-full h-[155px] flex justify-center items-center">
         <div
-          className={`w-[311px] h-[52px] rounded-[999px] flex justify-center items-center transition-colors ${
+          className={`w-[311px] h-[52px] rounded-[12px] flex justify-center items-center transition-colors ${
             isLimitExceeded 
               ? 'bg-neutral-200 cursor-not-allowed'
               : startGameMutation.isPending 
