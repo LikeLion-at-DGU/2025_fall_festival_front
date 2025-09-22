@@ -28,6 +28,8 @@ import DrinkDetail from "../pages/Map/DetailSections/DrinkDetail";
 import FoodTruckDetail from "../pages/Map/DetailSections/FoodTruckDetail";
 import ToiletDetail from "../pages/Map/DetailSections/ToiletDetail";
 
+import ComingSoon from "../pages/ComingSoon/ComingSoon";
+
 const Router = () => {
   return (
     <>
@@ -40,6 +42,10 @@ const Router = () => {
         <Route path="/board" element={<Board />} />
         <Route path="/board/:boardId" element={<BoardDetail />} />
         <Route path="/event" element={<Event />} />
+
+        {/* ComingSoon 개발 확인용 경로 */}
+        <Route path="/comingsoon" element={<ComingSoon />} />
+        
         {/* 지도 상세페이지 라우트 추가 */}
         <Route path="/booth/:id" element={<BoothDetail />} />
         <Route path="/drink/:id" element={<DrinkDetail />} />
