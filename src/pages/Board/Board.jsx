@@ -165,11 +165,13 @@ const BoardItem = ({ item, currentCategory }) => {
   const translatedTitle = item.translatedTitle || title;
 
   const pillCls =
-    category === "Notice"
-      ? "bg-[#EF7063] text-white border border-[#EF7063] w-[42px]"
-      : category === "Event"
-        ? "bg-white text-[#EF7063] border border-[#EF7063] w-[42px]"
-        : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
+    category === "Notice"
+      ? "bg-white text-[#D33E2F] w-[42px]"
+      : category === "Event" || category === "LostItem"
+      ? "bg-white text-[#A1A1AA] w-[42px]" 
+      : "bg-white text-[#71717A] w-[42px]"; 
+
+  const separatorCls = "w-[1px] h-[12px] bg-[#D1D5DB] mx-2"; 
 
   const isEnded = (endISO) => {
     if (!endISO) return false;
@@ -231,22 +233,23 @@ const BoardItem = ({ item, currentCategory }) => {
         <Link
           to={`/board/${item.id}`}
           onClick={handleClick}
-          className="flex py-[13px] px-[10px] rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] items-center justify-between gap-3 w-full"
+          className="flex py-[13px] px-[8px] rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] items-center justify-between gap-1.5 w-full"
         >
-          <div className="flex items-center gap-3 min-w-0">
-            <span
-              className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillCls}`}
-            >
-              {t(
-                category === "LostItem"
-                  ? "board.tabs.lost"
-                  : category
-                  ? `board.tabs.${category.toLowerCase()}`
-                  : "board.tabs.lost"
-              ) ?? CATEGORY_MAP[category] ?? category}
-            </span>
-          </div>
-          <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
+          <div className="flex items-center min-w-0">
+            <span
+              className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[11px] font-suite font-normal leading-none ${pillCls}`}
+            >
+              #{t(
+                category === "LostItem"
+                  ? "board.tabs.lost"
+                  : category
+                  ? `board.tabs.${category.toLowerCase()}`
+                  : "board.tabs.lost"
+              ) ?? CATEGORY_MAP[category] ?? category}
+            </span>
+            <div className={separatorCls}></div>
+          </div>
+          <div className="flex items-center min-w-0 flex-1 justify-between">
             <p className="truncate text-[#52525B] font-suite text-[14px] not-italic font-semibold leading-[150%]">
               {translatedTitle}
             </p>
@@ -305,7 +308,7 @@ function Pagination({ total, page, pageSize, onChange }) {
 
       {withGaps.map((item) =>
         typeof item === "string" ? (
-          <span key={item} className="text-gray-400 mr-[-7px] ml-[-8px]">
+          <span key={item} className="text-gray-400 mr-[-8px] ml-[-8px]">
             …
           </span>
         ) : (
