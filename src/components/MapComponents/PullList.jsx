@@ -261,6 +261,12 @@ function PullList({
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days[0]?.weekday}
+                    likesCount={booth.like_cnt || 0}
+                    isLiked={booth.is_liked || false}
+                    badges={{
+                      isEventActive: booth.is_event || false,
+                      isDOrderPartner: booth.is_dorder || false,
+                    }}
                     className="w-full"
                     onClick={() =>
                       navigate(
