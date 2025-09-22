@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 import Header from "./Header/Header";
 import AdminHeader from "./Header/AdminHeader";
@@ -8,9 +8,10 @@ import MapDetailHeader from "./Header/MapDetailHeader";
 import BottomNav from "./BottomNav/BottomNav";
 import Footer from "./Footer/Footer";
 
+
 const Layout = ({ children }) => {
   const location = useLocation();
-
+  const [searchParams] = useSearchParams();
   // 1) 관리자 경로 판별 (정확히 일치)
   const adminPaths = [
     "/admin",
@@ -56,10 +57,12 @@ const Layout = ({ children }) => {
     /^\/foodtruck\/[^/]+$/.test(location.pathname);
 
   // Event 페이지 판별
+   const phase = searchParams.get("phase"); // intro, instruction, countdown, playing
   const isEventPage = location.pathname === "/event";
-  
-  // Event 페이지에서는 네비게이션을 완전히 숨김 (게임 집중 환경 제공)
-  const shouldHideNavigation = isEventPage;
+ 
+   // Event 페이지에서는 네비게이션을 완전히 숨김 (게임 집중 환경 제공)
+  const shouldHideNavigation = isEventPage && phase !== "intro" && phase !== "instruction";
+
 
   // 3) 헤더 선택 로직: 관리자 > 게시판상세 > 기본
   const HeaderComponent = isAdminPage
