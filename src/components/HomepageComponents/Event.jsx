@@ -22,7 +22,11 @@ const Event = ({ onDataChange }) => {
   const { t } = useTranslation();
 
   const handleBoothClick = (booth) => {
-    navigate(`/board/${booth.id}`);
+    if (booth.event_id) {
+      navigate(`/board/${booth.event_id}`);
+    } else {
+      navigate(`/booth/${booth.id}`);
+    }
   };
 
   useEffect(() => {
@@ -31,14 +35,6 @@ const Event = ({ onDataChange }) => {
         setLoading(true);
         const response = await getEventBooths();
         const data = response.results || [];
-        console.log("=== 이벤트 부스 데이터 ===");
-        console.log("전체 응답:", response);
-        console.log("이벤트 부스 배열:", data);
-        console.log("부스 개수:", data.length);
-        data.forEach((booth, index) => {
-          console.log(`부스 ${index + 1}:`, booth);
-        });
-        console.log("========================");
         setEventData(data);
         setError(null);
 
@@ -140,6 +136,7 @@ const Event = ({ onDataChange }) => {
   const formatBoothData = (booth) => {
     return {
       id: booth.booth_id,
+      event_id: booth.event_id,
       title: booth.name,
       image: booth.image_url,
       location: booth.location.name,
@@ -176,10 +173,7 @@ const Event = ({ onDataChange }) => {
             {[1, 2, 3].map((index) => (
               <div
                 key={index}
-                className="flex-shrink-0 bg-white w-[330px] h-[92px] rounded-2xl border border-gray-200 p-4"
-                style={{
-                  boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
-                }}
+                className="flex-shrink-0 bg-white w-[330px] h-[92px] rounded-2xl border border-gray-200 p-4 shadow-sm"
               >
                 <div className="flex gap-4">
                   <Skeleton width={64} height={64} className="rounded-lg" />

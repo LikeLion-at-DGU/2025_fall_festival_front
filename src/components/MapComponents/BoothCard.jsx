@@ -50,7 +50,7 @@ function BoothCard({
   const translatedTodayLabel = getLocalizedWeekday();
   return (
     <div
-      className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-[0_3px_5px_0_rgba(0,0,0,0.10)]
+      className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
   ${
     isSelected
       ? "bg-red-50 border-red-500 shadow-md" // 선택됨
