@@ -35,7 +35,7 @@ const Router = () => {
     <>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<ComingSoon />} />
         <Route path="/map" element={<Map />} />
         <Route path="/mapold" element={<MapOld />} />
         <Route path="/timetable" element={<Timetable />} />
@@ -44,7 +44,7 @@ const Router = () => {
         <Route path="/event" element={<Event />} />
 
         {/* ComingSoon 개발 확인용 경로 */}
-        <Route path="/comingsoon" element={<ComingSoon />} />
+        <Route path="/comingsoon" element={<Home />} />
         
         {/* 지도 상세페이지 라우트 추가 */}
         <Route path="/booth/:id" element={<BoothDetail />} />
