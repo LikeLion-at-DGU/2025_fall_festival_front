@@ -100,10 +100,10 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
               {/* 버튼 */}
               <div
                 data-status="Header"
-                className="w-[254px] h-9 bg-primary-400 rounded-xl flex items-center justify-center cursor-pointer hover:bg-primary-500 transition-colors"
+                className="w-[254px] h-9 bg-primary-400 rounded-[12px] flex items-center justify-center cursor-pointer hover:bg-primary-500 transition-colors"
                 onClick={handleNextStep}
               >
-                <div className="text-neutral-100 text-sm font-semibold font-['SUITE'] leading-tight">
+                <div className="text-neutral-100 text-[14px] font-normal font-['SUITE'] leading-tight">
                   상자 열어보기
                 </div>
               </div>
