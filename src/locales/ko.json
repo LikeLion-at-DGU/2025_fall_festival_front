@@ -55,7 +55,7 @@
     }
   },
   "search": {
-    "placeholder": "학과/동아리/부스명을 입력하세요",
+    "placeholder": "부스명을 입력하세요",
     "alt": "검색"
   },
   "pullList": {

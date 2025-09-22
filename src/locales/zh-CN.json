@@ -55,7 +55,7 @@
     }
   },
   "search": {
-    "placeholder": "请输入院系/社团/展位名称",
+    "placeholder": "请输入展位名称",
     "alt": "搜索"
   },
   "pullList": {

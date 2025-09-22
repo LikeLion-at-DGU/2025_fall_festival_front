@@ -55,7 +55,7 @@
     }
   },
   "search": {
-    "placeholder": "Enter department/club/booth name",
+    "placeholder": "Enter booth name",
     "alt": "Search"
   },
   "pullList": {
