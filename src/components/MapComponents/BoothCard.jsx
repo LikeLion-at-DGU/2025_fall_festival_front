@@ -48,7 +48,7 @@ function BoothCard({
     const locale = languageMap[i18n.language] || "ko-KR";
     return today.toLocaleDateString(locale, { weekday: "short" });
   };
-
+console.log({isSelected});
   const translatedTodayLabel = getLocalizedWeekday();
   return (
     <div
