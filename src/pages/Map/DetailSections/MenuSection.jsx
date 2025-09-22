@@ -37,16 +37,15 @@ export default function MenuSection({ menus, boothId }) {
           // 카드 래퍼
           <div key={i} className="relative flex-shrink-0 w-32">
             {/* 카드 본체 */}
-            <div className="bg-white shadow-md rounded-2xl p-3 flex flex-col items-start mb-2">
+            <div className="bg-white shadow-md rounded-2xl p-3 flex flex-col items-start mb-2 h-[215px]">
               {/* 이미지 박스 */}
-              <div className="relative [107px] h-[107px] flex items-center justify-center bg-gray-200 rounded-[16px]">
+              <div className="relative w-[107px] h-[107px] flex items-center justify-center bg-gray-200 rounded-[16px]">
                 {m.image_url && (
                   <img
                     src={m.image_url}
                     alt={m.name}
-                    className={`w-full h-full object-cover rounded-xl ${
-                      m.is_soldout ? "opacity-60" : "opacity-100"
-                    }`}
+                    className={`w-full h-full object-cover rounded-xl ${m.is_soldout ? "opacity-60" : "opacity-100"
+                      }`}
                   />
                 )}
                 {/* 품절 배지 */}
@@ -66,11 +65,15 @@ export default function MenuSection({ menus, boothId }) {
                   m.name
                 )}
               </p>
-              <p className="text-xs text-gray-500 text-left">{m.price}{t("booth.currency")}</p>
+              <p className="text-xs text-gray-500 text-left">
+                {m.price}
+                {t("booth.currency")}
+              </p>
             </div>
           </div>
         ))}
       </div>
+
     </div>
   );
 }
