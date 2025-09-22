@@ -8,10 +8,16 @@ import MapDetailHeader from "./Header/MapDetailHeader";
 import BottomNav from "./BottomNav/BottomNav";
 import Footer from "./Footer/Footer";
 
-
 const Layout = ({ children }) => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
+
+  // 축제 전 삭제
+  const hasSecret = searchParams.get("secret") === "1031";
+  //
+  //
+  //
+
   // 1) 관리자 경로 판별 (정확히 일치)
   const adminPaths = [
     "/admin",
@@ -39,7 +45,7 @@ const Layout = ({ children }) => {
     adminEditRegex.test(location.pathname) ||
     adminLostEditRegex.test(location.pathname) ||
     boothDetailRegex.test(location.pathname);
-  
+
   // 🎯 스크롤바 숨길 admin 경로 판별
   const isAdminScrollHidden =
     location.pathname === "/admin/festa" ||
@@ -57,12 +63,12 @@ const Layout = ({ children }) => {
     /^\/foodtruck\/[^/]+$/.test(location.pathname);
 
   // Event 페이지 판별
-   const phase = searchParams.get("phase"); // intro, instruction, countdown, playing
+  const phase = searchParams.get("phase"); // intro, instruction, countdown, playing
   const isEventPage = location.pathname === "/event";
- 
-   // Event 페이지에서는 네비게이션을 완전히 숨김 (게임 집중 환경 제공)
-  const shouldHideNavigation = isEventPage && phase !== "intro" && phase !== "instruction";
 
+  // Event 페이지에서는 네비게이션을 완전히 숨김 (게임 집중 환경 제공)
+  const shouldHideNavigation =
+    isEventPage && phase !== "intro" && phase !== "instruction";
 
   // 3) 헤더 선택 로직: 관리자 > 게시판상세 > 기본
   const HeaderComponent = isAdminPage
@@ -72,7 +78,7 @@ const Layout = ({ children }) => {
     : isMapDetail
     ? MapDetailHeader
     : Header;
-    
+
   return (
     <div className="flex justify-center">
       <div
@@ -82,8 +88,11 @@ const Layout = ({ children }) => {
           bg-gray"
       >
         {/* 조건부 Header (카운트다운/게임플레이 단계가 아닐 때만 표시) */}
-        {(!shouldHideNavigation || location.pathname === "/event") && <HeaderComponent />}
-
+        {/* ✅ secret=1031 있을 때만 헤더 */}
+        {hasSecret &&
+          (!shouldHideNavigation || location.pathname === "/event") && (
+            <HeaderComponent />
+          )}
         {/* 페이지의 실제 내용과 푸터가 이 안에서 스크롤됩니다. */}
         <main
           className={`flex-grow${
@@ -97,12 +106,16 @@ const Layout = ({ children }) => {
           {/* 1. 페이지의 실제 내용 */}
           {children}
 
-          {/* 2. 홈에서만 정보성 푸터 */}
-          {location.pathname === "/" && <Footer />}
+          {/* ✅ secret=1031 있을 때만 Footer */}
+          {hasSecret && location.pathname === "/" && <Footer />}
         </main>
 
-        {/* 관리자 페이지와 네비게이션 숨김 페이지가 아니면 BottomNav 표시 */}
-        {!isAdminPage && (!shouldHideNavigation || location.pathname === "/event")&& <BottomNav />}
+        {/* ✅ secret=1031 있을 때만 BottomNav */}
+        {hasSecret &&
+          !isAdminPage &&
+          (!shouldHideNavigation || location.pathname === "/event") && (
+            <BottomNav />
+          )}
       </div>
     </div>
   );
