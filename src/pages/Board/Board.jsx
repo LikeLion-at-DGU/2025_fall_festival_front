@@ -368,7 +368,7 @@ export default function Board() {
   const location = useLocation();
   const { getTranslation } = useTranslations();
   const [keyword, setKeyword] = useState("");
-  const [activeTag, setActiveTag] = useState(t("board.tabs.all"));
+  const [activeTag, setActiveTag] = useState("ALL"); // 서버 카테고리 값으로 유지
 
   const [page, setPage] = useState(1);
   const pageSize = 10;
@@ -459,7 +459,7 @@ export default function Board() {
   }, []);
 
   // ✅ keyword 바로 사용해서 필터링
-  const serverCategory = KOR_TO_SERVER[activeTag];
+  const serverCategory = activeTag; // 이미 서버 값이므로 매핑 불필요
   const kw = keyword.trim().toLowerCase();
 
   const filtered = useMemo(() => {
@@ -485,20 +485,22 @@ export default function Board() {
   }, [allItems, serverCategory, kw]);
 
   // ✅ "전체"일 때만 상단 4개 공지 고정
-  const reordered = useMemo(() => {
-    if (activeTag !== t("board.tabs.all")) return filtered;
+// ✅ "전체"일 때만 최근 4개 공지 고정
+const reordered = useMemo(() => {
+  if (activeTag !== "ALL") return filtered;
 
-    const pinned = [];
-    const rest = [];
-    for (const it of filtered) {
-      if (it.category === "Notice" && pinned.length < 4) {
-        pinned.push(it);
-      } else {
-        rest.push(it);
-      }
-    }
-    return [...pinned, ...rest];
-  }, [filtered, activeTag]);
+  // 공지만 따로 모아서 최신순 정렬
+  const notices = filtered
+    .filter((it) => it.category === "Notice")
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, 4);
+
+  // 나머지 (공지 제외)
+  const rest = filtered.filter((it) => it.category !== "Notice");
+
+  return [...notices, ...rest];
+}, [filtered, activeTag]);
+
 
   // 페이지네이션은 재정렬된 배열 기준
   const totalForUI = reordered.length;
@@ -523,19 +525,21 @@ export default function Board() {
 
       {/* 태그 */}
       <div className="mt-4 flex flex-wrap gap-[10px]">
-        {[
-          t("board.tabs.all"),
-          t("board.tabs.notice"),
-          t("board.tabs.event"),
-          t("board.tabs.lost"),
-        ].map((lbl) => (
-          <Tag
-            key={lbl}
-            label={lbl}
-            active={activeTag === lbl}
-            onClick={() => setActiveTag(lbl)}
-          />
-        ))}
+        {["ALL", "Notice", "Event", "LostItem"].map((cat) => {
+    // LostItem은 예외적으로 lost 키와 매핑
+    const key =
+      cat === "LostItem"
+        ? "lost"
+        : cat.toLowerCase();
+    return (
+      <Tag
+        key={cat}
+        label={t(`board.tabs.${key}`)}
+        active={activeTag === cat}
+        onClick={() => setActiveTag(cat)}
+      />
+    );
+  })}
       </div>
 
       {/* 리스트 헤더 */}
