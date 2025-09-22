@@ -205,7 +205,7 @@ function PullList({
       className={`
         fixed flex flex-col
         left-0 right-0
-        max-w-md mx-auto
+        max-w-[430px] mx-auto
         rounded-t-[20px] shadow-[0_-1px_5px_rgba(0,0,0,0.10)] bg-[#FFF]
         ${isDragging ? "" : "transition-all duration-300 ease-out"}
       `}

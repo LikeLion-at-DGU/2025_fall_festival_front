@@ -27,7 +27,7 @@ function useBooths(selectedFilter, userLocation = null) {
             ordering: "distance",
 
             // 🚀 Booth일 때만 is_night 추가
-            ...(selectedFilter === "Booth" && { is_night: isNight }),
+            ...(selectedFilter === "Booth" && { is_night: !isNight }),
 
             // 🚀 Toilet 아닐 때만 user_location 추가
             ...(selectedFilter !== "Toilet" && {
