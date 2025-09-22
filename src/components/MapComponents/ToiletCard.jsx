@@ -1,5 +1,5 @@
 import React from "react";
-import ToiletIcon from "../../assets/images/icons/map-icons/Toilet.png";
+import ToiletIcon from "../../assets/images/icons/map-icons/Toilet.svg";
 
 const ToiletCard = ({
   name,
