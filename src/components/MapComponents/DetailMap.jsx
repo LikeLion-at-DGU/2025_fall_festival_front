@@ -12,19 +12,6 @@ const DetailMap = ({ buildingId, onClose, onSelectBooth }) => {
     return null;
   }
 
-  // 현재 시간 기준으로 schedules key 결정
-  const now = new Date();
-  const today = now.toISOString().split("T")[0];
-  const currentTime = now.getHours() < 17 ? "day" : "night"; // 오후 5시 기준
-  const scheduleKey = `${today}:${currentTime}`;
-
-  // 오늘 해당 시간대 버튼 불러오기
-  const buttons = config.schedules?.[scheduleKey] || [];
-
-  console.log("buildingId:", buildingId);
-  console.log("config:", config);
-  console.log("scheduleKey:", scheduleKey);
-  console.log("buttons:", buttons);
 
   return (
     <div className="relative w-full h-full rounded-[16px] border border-[#E4E4E7]">
