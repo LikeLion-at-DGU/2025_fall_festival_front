@@ -25,6 +25,21 @@ const WordGrid = ({ words, size, correctAnswer, onWordClick, gameStatus }) => {
     }
   };
 
+  const getGapSize = () => {
+    switch (size) {
+      case 'XL':
+        return 'gap-3'; // 1단계: 12px 간격 (90% of 16px ≈ 14px)
+      case 'L':
+        return 'gap-3'; // 2단계: 12px 간격 (90% of 16px ≈ 14px)
+      case 'M':
+        return 'gap-2.5'; // 3단계: 10px 간격 (90% of 12px ≈ 11px)
+      case 'S':
+        return 'gap-2.5'; // 4단계: 10px 간격 (90% of 12px ≈ 11px)
+      default:
+        return 'gap-3';
+    }
+  };
+
   const renderGrid = () => {
     const { rows, cols } = getGridLayout();
     const grid = [];
@@ -49,7 +64,7 @@ const WordGrid = ({ words, size, correctAnswer, onWordClick, gameStatus }) => {
       }
       
       grid.push(
-        <div key={row} className="self-stretch flex-1 inline-flex justify-center items-center gap-4">
+        <div key={row} className={`flex justify-center items-center ${getGapSize()}`}>
           {rowCards}
         </div>
       );
@@ -59,7 +74,7 @@ const WordGrid = ({ words, size, correctAnswer, onWordClick, gameStatus }) => {
   };
 
   return (
-    <div className="w-[343px] h-[453px] left-1/2 transform -translate-x-1/2 top-[178px] absolute inline-flex flex-col justify-start items-center gap-4">
+    <div className={`flex flex-col justify-center items-center ${getGapSize()} scale-90 transform`}>
       {renderGrid()}
     </div>
   );

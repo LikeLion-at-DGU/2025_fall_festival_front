@@ -5,7 +5,13 @@ export const wordSets = [
     { target: '동국멋사', distractor: '동곡멋사' },
     { target: '디오더', distractor: '다오더' },
     { target: '디르바나', distractor: '디르비나' },
-    { target: '동국대', distractor: '동곡대' }
+    { target: '동국대', distractor: '동곡대' },
+    { target: '문과대학', distractor: '문괴대학' },
+    { target: '철학과', distractor: '철헉과' },
+    { target: '문예창', distractor: '문에창' },
+    { target: '푸름누리', distractor: '푸롬누리' },
+    { target: '프론티어', distractor: '프른티어' },
+    { target: '철학과', distractor: '칠학과' }
 ];
 
 /**
