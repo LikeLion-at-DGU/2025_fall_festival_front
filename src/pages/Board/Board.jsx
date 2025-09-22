@@ -446,15 +446,26 @@ export default function Board() {
     });
   }, [allItems, serverCategory, kw]);
 
-  const reordered = useMemo(() => {
-    if (activeTag !== "ALL") return filtered;
-    const notices = filtered
-      .filter((it) => it.category === "Notice")
-      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-      .slice(0, 4);
-    const rest = filtered.filter((it) => it.category !== "Notice");
-    return [...notices, ...rest];
-  }, [filtered, activeTag]);
+  const reordered = useMemo(() => {
+    if (activeTag !== "ALL") return filtered;
+  
+    // 공지 항목을 먼저 필터링하고 4개만 가져오기
+    const notices = filtered
+      .filter((it) => it.category === "Notice")
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      .slice(0, 4); // 상위 4개 공지
+  
+    // 나머지 항목 (공지 제외) 가져오기
+    const rest = filtered.filter((it) => it.category !== "Notice");
+  
+    // 상위 4개의 공지를 먼저 배치하고, 나머지 게시물(rest) 그대로 추가
+    const remainingNotices = filtered.filter(
+      (it) => it.category === "Notice" && !notices.includes(it)
+    );
+  
+    // 나머지 공지를 이어서 추가하고, 나머지 게시물은 백엔드 순서대로 추가
+    return [...notices, ...rest, ...remainingNotices];
+  }, [filtered, activeTag]);
 
   const totalForUI = reordered.length;
   const totalPages = Math.max(1, Math.ceil(totalForUI / pageSize));
