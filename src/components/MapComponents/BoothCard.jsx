@@ -34,6 +34,7 @@ function BoothCard({
     initialLikesCount || 0,
     initialIsLiked || false
   );
+console.log("위치",{location})
 
   const getLocalizedWeekday = () => {
     const today = new Date();
@@ -48,7 +49,7 @@ function BoothCard({
     const locale = languageMap[i18n.language] || "ko-KR";
     return today.toLocaleDateString(locale, { weekday: "short" });
   };
-console.log({isSelected});
+  console.log({ isSelected });
   const translatedTodayLabel = getLocalizedWeekday();
   return (
     <div

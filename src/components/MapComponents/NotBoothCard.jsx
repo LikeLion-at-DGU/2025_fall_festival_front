@@ -30,7 +30,6 @@ const NotBoothCard = ({
         return defaultImg; // 기본값
     }
   };
-console.log({isSelected})
 
   return (
     <div
