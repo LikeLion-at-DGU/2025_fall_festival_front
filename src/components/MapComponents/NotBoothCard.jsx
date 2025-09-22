@@ -3,28 +3,31 @@ import MapToiletIcon from "../../assets/images/icons/map-icons/Toilet.png";
 import MapBeerIcon from "../../assets/images/icons/map-icons/Beer.png";
 import MapConvenienceIcon from "../../assets/images/icons/map-icons/Convenience.png";
 import Badge from "./BoothCardComponents/Badge";
+import defaultImg from "../../assets/images/banners/default-img.png";
+
 import { useTranslation } from "react-i18next";
 
 const NotBoothCard = ({ title, distance_m, category, onClick }) => {
   const { t } = useTranslation();
 
   // 카테고리별 이미지 선택
-  const getImageByCategory = (category) => {
-    switch (category) {
-      case t("notBooth.categories.[Toilet]"):
-        return MapToiletIcon;
-      case t("notBooth.categories.[Drink]"):
-        return MapBeerIcon;
-      case t("notBooth.categories.[Store]"):
-        return MapConvenienceIcon;
-      default:
-        return MapToiletIcon; // 기본값
-    }
-  };
+const getImageByCategory = (category) => {
+  switch (category) {
+    case "Toilet":
+      return MapToiletIcon;
+    case "Drink":
+      return MapBeerIcon;
+    case "Store":
+      return MapConvenienceIcon;
+    default:
+      return defaultImg; // 기본값
+  }
+};
+
 
   return (
     <div
-      className={`bg-white w-full h-[92px] rounded-2xl border border-neutral-200 p-4 
+      className={`bg-white w-full h-[92px] rounded-2xl border border-neutral-200 p-[12px] "cursor-pointer" 
     ${category === "Toilet" ? "cursor-pointer" : ""}`}
       style={{
         boxShadow: "0 3px 5px 0 rgba(0, 0, 0, 0.10)",
@@ -33,14 +36,12 @@ const NotBoothCard = ({ title, distance_m, category, onClick }) => {
     >
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
-        <div className="relative w-16 h-16 flex-shrink-0">
-          <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+        <div className="relative w-[68px] h-[68px] flex-shrink-0">
             <img
               src={getImageByCategory(category)}
               alt={title}
-              className="w-full h-full object-contain"
+              className="object-contain"
             />
-          </div>
         </div>
 
         {/* 글자 */}
