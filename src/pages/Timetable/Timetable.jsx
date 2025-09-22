@@ -5,6 +5,7 @@ import dot from "../../assets/images/icons/Timetable-icons/dot.png"; // 선택�
 import dot2 from "../../assets/images/icons/Timetable-icons/empty-dot.png"; // 미선택 동그라미
 import arrow from "../../assets/images/icons/Timetable-icons/arrow.png"; // 삼각형
 import dirvana from "../../assets/images/icons/Timetable-icons/DIRVANA.svg";
+import base from "../../assets/images/icons/Timetable-icons/base.svg";
 import { useTranslations } from "../../context/TranslationContext";
 import { useTranslation } from "react-i18next";
 
@@ -184,8 +185,8 @@ export default function Timetable() {
               setSelectedHour(null);
             }}
             className={`pb-2 text-xl font-medium ${selectedDay === d.value
-                ? "text-red-500 border-b-2 border-red-500"
-                : "text-black"
+              ? "text-red-500 border-b-2 border-red-500"
+              : "text-black"
               }`}
           >
             {d.label}
@@ -205,8 +206,8 @@ export default function Timetable() {
           <div key={time} className="flex flex-col items-center">
             <span
               className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${selectedHour === time && !isCelebrityMode
-                  ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
-                  : "text-[#71717A]"
+                ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
+                : "text-[#71717A]"
                 }`}
             >
               {time}
@@ -240,8 +241,8 @@ export default function Timetable() {
         <div className="flex flex-col items-center">
           <span
             className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${isCelebrityMode
-                ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
-                : "text-[#71717A]"
+              ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
+              : "text-[#71717A]"
               }`}
           >
             {t("timetable.celebrity")}
@@ -272,17 +273,29 @@ export default function Timetable() {
       <div className="flex flex-col gap-6">
         {loading ? (
           <p className="text-center text-gray-400">{t("timetable.loading")}</p>
+        ) : selectedDay === "2025-09-24" ? (
+          // Day1은 무조건 "오늘은 공연이 없어요"
+          <div className="flex flex-col items-center gap-6 pt-20">
+            <img
+              src={dirvana}
+              alt="no timetable"
+              className="mt-4 w-[185px] h-[35px]"
+            />
+            <p className="text-center text-[#A1A1AA] text-[16px] font-[400]">
+              {t("timetable.noEventToday")}
+            </p>
+          </div>
         ) : isCelebrityMode ? (
           celebrityEvents.length > 0 ? (
             celebrityEvents.map((s) => (
               <div
                 key={s.id}
                 className={`flex items-center gap-[13px] px-[14px] py-[18px] rounded-[16px] 
-                  border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
-                  ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
+            border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
+            ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
               >
                 <img
-                  src={s.image_url}
+                  src={s.image_url || base}
                   alt={s.name}
                   className="w-16 h-16 rounded-lg object-cover"
                 />
@@ -303,7 +316,7 @@ export default function Timetable() {
                       s.location_name
                     )}
                   </p>
-                  {/* ⛔ 연예인 모드에서는 시간 표시 안함 */}
+                  {/*  연예인 모드에서는 시간 표시 안함 */}
                 </div>
               </div>
             ))
@@ -319,11 +332,11 @@ export default function Timetable() {
               <div
                 key={s.id}
                 className={`flex items-center gap-[13px] px-[14px] pr-[75px] py-[18px] rounded-[16px] 
-                  border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
-                  ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
+            border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
+            ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
               >
                 <img
-                  src={s.image_url || "/images/placeholder.jpg"}
+                  src={s.image_url || base}
                   alt={s.name}
                   className="w-16 h-16 rounded-lg object-cover"
                 />
@@ -365,17 +378,16 @@ export default function Timetable() {
                     <div
                       key={s.id}
                       className={`flex items-center gap-[13px] px-[14px] pr-[75px] py-[18px] rounded-[16px] 
-                        border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
-                        ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"
-                        }`}
+                  border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
+                  ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
                     >
                       <img
-                        src={s.image_url || "/images/placeholder.jpg"}
+                        src={s.image_url || base}
                         alt={s.name}
                         className="w-16 h-16 rounded-lg object-cover"
                       />
                       <div className="flex flex-col">
-                        {/* ⛔ 연예인 공연은 시간 표시하지 않음 */}
+                        {/* 연예인 공연은 시간 표시하지 않음 */}
                         {remainingClubEvents.some((c) => c.id === s.id) && (
                           <p className="text-sm text-[#A1A1AA]">
                             {(s.start_time || "").slice(11, 16)} -{" "}
@@ -420,6 +432,7 @@ export default function Timetable() {
           </div>
         )}
       </div>
+
     </div>
   );
 }
