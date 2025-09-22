@@ -64,9 +64,9 @@ console.log({isSelected})
         >
           {/* 제목 */}
           <h3
-            className={`text-xl font-semibold text-black font-suite leading-[130%] truncate pr-16 ${
-              category === "Toilet" || category === "Store" ? "" : "mb-2"
-            }`}
+            className={`text-xl font-semibold text-black font-suite leading-[130%] truncate ${
+              category === "Toilet" ? "" : "pr-16"
+            } ${category === "Toilet" || category === "Store" ? "" : "mb-2"}`}
           >
             {title}
           </h3>
