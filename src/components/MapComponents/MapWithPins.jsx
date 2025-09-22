@@ -9,30 +9,29 @@ import FoodtruckBadge from "../../assets/images/icons/map-icons/MapFoodTruck.png
 import { mapConfigs } from "../../config/mapConfigs";
 import { useTranslation } from "react-i18next";
 
-// 로컬 좌표 정보 (API 데이터에 맞게 수정)
-// id 추가해서 번역 키와 연결, ko는 매핑 기준
-const buildingLocations = [
-  { id: "manhaeLaw", ko: "만해/법학관", x: 44, y: 39 },
-  { id: "newEngineering", ko: "신공학관", x: 61.5, y: 27 },
-  { id: "library", ko: "중앙도서관", x: 55, y: 28 },
-  { id: "stadium", ko: "대운동장", x: 32, y: 29 },
-  { id: "myeongjin", ko: "명진관", x: 45, y: 29 },
-  { id: "paljeongdo", ko: "팔정도", x: 48, y: 31 },
-  { id: "manhaeSquare", ko: "만해광장", x: 66, y: 31 },
-  { id: "dahyang", ko: "다향관", x: 55, y: 32 },
-  { id: "hakrim", ko: "학림관", x: 70, y: 60 },
-  { id: "infoCulture", ko: "정보문화관", x: 80, y: 50 },
-  { id: "business", ko: "경영관", x: 23, y: 36 },
-  { id: "hyehwa", ko: "혜화관", x: 35.7, y: 35 },
-  { id: "socialScience", ko: "사회과학관", x: 27, y: 39 },
-  { id: "academicCulture", ko: "학술문화관", x: 50, y: 70 },
-  { id: "mainBuilding", ko: "본관", x: 60, y: 20 },
-  { id: "science", ko: "과학관", x: 42, y: 26 },
-  { id: "wonheung", ko: "원흥관", x: 41, y: 26 },
-  { id: "hakrimConvinience", ko: "학림관 편의점", x: 73, y: 52 },
-  { id: "gyosoo", ko: "교수회관", x: 41, y: 36 },
-  { id: "moonhwaConvenience", ko: "문화관 편의점", x: 21, y: 61 },
-  
+// 로컬 좌표 정보 (API location.id = 숫자와 매핑됨)
+// id는 API와 동일하게 숫자로, ko는 번역/표시용 라벨
+export const buildingLocations = [
+  { id: 3,  ko: "다향관", x: 55,   y: 32 },
+  { id: 4,  ko: "만해/법학관", x: 44,   y: 39 },
+  { id: 5,  ko: "명진관", x: 45,   y: 29 },
+  { id: 6,  ko: "혜화별관", x: 35,   y: 27 },
+  { id: 7,  ko: "팔정도", x: 48,   y: 31 },
+  { id: 8,  ko: "사회과학관", x: 27,   y: 39 },
+  { id: 11, ko: "만해광장", x: 66,   y: 31 },
+  { id: 12, ko: "원흥관", x: 41,   y: 26 },
+  { id: 13, ko: "문화관 편의점", x: 21,   y: 61 },
+  { id: 14, ko: "학림관 편의점", x: 73,   y: 52 },
+  { id: 15, ko: "교수회관", x: 41,   y: 36 },
+  { id: 16, ko: "본관", x: 60,   y: 20 },
+  { id: 17, ko: "혜화관", x: 35.7, y: 35 },
+  { id: 18, ko: "경영관", x: 23,   y: 36 },
+  { id: 19, ko: "학술문화관", x: 50,   y: 70 },
+  { id: 20, ko: "학림관", x: 70,   y: 60 },
+  { id: 21, ko: "학생회관", x: 30,   y: 40 },   // 좌표 추정 필요
+  { id: 22, ko: "정보문화관Q", x: 80,   y: 50 }, // 좌표 보정 필요
+  { id: 23, ko: "정보문화관P", x: 82,   y: 52 }, // 좌표 보정 필요
+  { id: 24, ko: "신공학관", x: 61.5, y: 27 },
 ];
 
 // 지도 위 아이콘 맵핑
