@@ -244,7 +244,7 @@ const Event = ({ onDataChange }) => {
             </div>
           </div>
         ) : (
-          <div className="mb-[74px]">
+          <div className="flex items-center justify-center min-h-[70px] mb-[10px]">
             <p className="text-[14px] text-center font-normal leading-[150%] font-suite text-[#52525B]">
               {t("booth.noEvent")}
             </p>
