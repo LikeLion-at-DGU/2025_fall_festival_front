@@ -27,11 +27,8 @@ export default function Timetable() {
     { label: "Day3", value: "2025-09-26" },
   ];
 
-  // 10:00 ~ 24:00 한시간 단위 배열
-  const hours = Array.from({ length: 15 }, (_, i) => {
-    const hour = i + 10;
-    return `${hour.toString().padStart(2, "0")}:00`;
-  });
+  // 15:00 ~ 19:00 한시간 단위 배열
+  const hours = ["15:00", "16:00", "17:00", "18:00", "19:00"];
 
   // 초기 자동 선택 로직
   useEffect(() => {
@@ -45,15 +42,15 @@ export default function Timetable() {
     // days 배열에서 오늘이 있는지 확인
     const availableDays = days.map((d) => d.value);
 
-    if (availableDays.includes(todayStr) && hour >= 10 && hour <= 24) {
+    if (availableDays.includes(todayStr) && hour >= 15 && hour <= 19) {
       // 현재 시간을 hh:00 형태로 맞춤
       const currentHourStr = `${hour.toString().padStart(2, "0")}:00`;
       setSelectedDay(todayStr);
       setSelectedHour(currentHourStr);
     } else {
-      // 기본값: Day1 10:00
+      // 기본값: Day1 15:00
       setSelectedDay("2025-09-24");
-      setSelectedHour("10:00");
+      setSelectedHour("15:00");
     }
   }, []);
 
@@ -84,11 +81,11 @@ export default function Timetable() {
       .finally(() => setLoading(false));
   }, [selectedDay, selectedHour, isCelebrityMode]);
 
-  // 연예인 공연 모드 → 10:00 고정으로 조회 후 celebrity만 뽑기
+  // 연예인 공연 모드 → 15:00 고정으로 조회 후 celebrity만 뽑기
   const fetchCelebrityEvents = () => {
     setLoading(true);
     axios
-      .get(`${BASE_URL}/stage/days/${selectedDay}/schedules/10:00`)
+      .get(`${BASE_URL}/stage/days/${selectedDay}/schedules/15:00`)
       .then((res) => {
         const data = res?.data ?? {};
         setCelebrityEvents(data.celebrity ?? []);
@@ -186,11 +183,10 @@ export default function Timetable() {
               setIsCelebrityMode(false);
               setSelectedHour(null);
             }}
-            className={`pb-2 text-xl font-medium ${
-              selectedDay === d.value
+            className={`pb-2 text-xl font-medium ${selectedDay === d.value
                 ? "text-red-500 border-b-2 border-red-500"
                 : "text-black"
-            }`}
+              }`}
           >
             {d.label}
           </button>
@@ -208,11 +204,10 @@ export default function Timetable() {
         {hours.map((time) => (
           <div key={time} className="flex flex-col items-center">
             <span
-              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${
-                selectedHour === time && !isCelebrityMode
+              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${selectedHour === time && !isCelebrityMode
                   ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
                   : "text-[#71717A]"
-              }`}
+                }`}
             >
               {time}
             </span>
@@ -244,11 +239,10 @@ export default function Timetable() {
         {/* 연예인 버튼 */}
         <div className="flex flex-col items-center">
           <span
-            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${
-              isCelebrityMode
+            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${isCelebrityMode
                 ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
                 : "text-[#71717A]"
-            }`}
+              }`}
           >
             {t("timetable.celebrity")}
           </span>
@@ -314,7 +308,9 @@ export default function Timetable() {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-400">{t("timetable.noCelebrity")}</p>
+            <p className="text-center text-gray-400">
+              {t("timetable.noCelebrity")}
+            </p>
           )
         ) : currentClubEvents.length > 0 ? (
           <>
@@ -370,8 +366,7 @@ export default function Timetable() {
                       key={s.id}
                       className={`flex items-center gap-[13px] px-[14px] pr-[75px] py-[18px] rounded-[16px] 
                         border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
-                        ${
-                          s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"
+                        ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"
                         }`}
                     >
                       <img
