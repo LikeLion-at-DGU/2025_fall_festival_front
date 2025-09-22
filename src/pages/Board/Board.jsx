@@ -458,11 +458,12 @@ export default function Board() {
     // 나머지 항목 (공지 제외) 가져오기
     const rest = filtered.filter((it) => it.category !== "Notice");
   
-    // 공지 4개를 먼저 배치하고, 나머지 게시물(rest) 그대로 추가 후, 뒤에 나머지 공지들을 추가
+    // 상위 4개의 공지를 먼저 배치하고, 나머지 게시물(rest) 그대로 추가
     const remainingNotices = filtered.filter(
       (it) => it.category === "Notice" && !notices.includes(it)
     );
   
+    // 나머지 공지를 이어서 추가하고, 나머지 게시물은 백엔드 순서대로 추가
     return [...notices, ...rest, ...remainingNotices];
   }, [filtered, activeTag]);
 
