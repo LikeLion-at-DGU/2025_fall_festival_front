@@ -145,9 +145,9 @@ export function createStageTranslationItems(stages) {
 
 // 게시판 데이터 번역용 헬퍼 함수
 export function createBoardTranslationItems(boards) {
-  return boards.map((board) => ({
+  return boards.map((board, idx) => ({
     entity_type: "board",
-    entity_id: board.id.toString(),
+    entity_id: board?.id?.toString() || `temp-${idx}`, // ⛔ 안전 처리
     fields: [
       {
         field: "BoardTitle",

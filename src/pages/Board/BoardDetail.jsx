@@ -411,7 +411,7 @@ export default function BoardDetail() {
                           ? getTranslation(
                               "booth",
                               post.booth_id?.toString() ||
-                                post.booth_name.toLowerCase(),
+                                post.booth_name?.toLowerCase() || "",
                               "BoothName",
                               post.booth_name
                             )
@@ -577,8 +577,7 @@ export default function BoardDetail() {
                                 {item?.booth_name
                                   ? getTranslation(
                                       "booth",
-                                      item.booth_id?.toString() ||
-                                        item.booth_name.toLowerCase(),
+                                      item.booth_id?.toString() || item.booth_name?.toLowerCase() || "", // ✅ 안전 처리
                                       "BoothName",
                                       item.booth_name
                                     )
