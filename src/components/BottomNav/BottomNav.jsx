@@ -21,11 +21,11 @@ const BottomNav = () => {
 
   // name → i18n key 로 교체
   const navItems = [
-    { key: "nav.map", path: "/map", icon: map, activeIcon: mapActive },
-    { key: "nav.timetable", path: "/timetable", icon: timetable, activeIcon: timetableActive },
-    { key: "nav.home", path: "/", icon: home, activeIcon: homeActive },
-    { key: "nav.board", path: "/board", icon: document, activeIcon: documentActive },
-    { key: "nav.game", path: "/event", icon: game, activeIcon: gameActive }
+    { key: "nav.map", path: "/map/?secret=1031", icon: map, activeIcon: mapActive },
+    { key: "nav.timetable", path: "/timetable/?secret=1031", icon: timetable, activeIcon: timetableActive },
+    { key: "nav.home", path: "/?secret=1031", icon: home, activeIcon: homeActive },
+    { key: "nav.board", path: "/board/?secret=1031", icon: document, activeIcon: documentActive },
+    { key: "nav.game", path: "/event/?secret=1031", icon: game, activeIcon: gameActive }
   ];
 
   const linkClassName = (active) => `
