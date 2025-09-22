@@ -85,39 +85,40 @@ function BoothCard({
           ) : null}
         </div>
         <div className="flex-1 relative min-w-0">
-          <div className="absolute top-0 right-0 flex flex-col items-center">
-            <button
-              onClick={(e) => {
-                e.stopPropagation(); // 카드 onClick으로 전파 차단
-                e.preventDefault(); // (카드가 <Link>로 감싸졌다면 이동 차단)
-                if (!loading) toggleLike();
-              }}
-              disabled={loading}
-              className="w-6 h-6 flex items-center justify-center mb-1 hover:scale-110 transition-transform duration-200 disabled:opacity-50"
-              aria-pressed={isLiked}
-              aria-label={isLiked ? "좋아요 취소" : "좋아요"}
-            >
-              <img
-                src={isLiked ? HeartIcon : UnheartIcon}
-                alt="좋아요"
-                className="w-5 h-5 transition-all duration-200"
-              />
-            </button>
-            <span className="text-xs text-[#A1A1AA] font-suite">
-              {likesCount}
-            </span>
-          </div>
+          {category != "Drink" && (
+            <div className="absolute top-0 right-0 flex flex-col items-center">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // 카드 onClick으로 전파 차단
+                  e.preventDefault(); // (카드가 <Link>로 감싸졌다면 이동 차단)
+                  if (!loading) toggleLike();
+                }}
+                disabled={loading}
+                className="w-6 h-6 flex items-center justify-center mb-1 hover:scale-110 transition-transform duration-200 disabled:opacity-50"
+                aria-pressed={isLiked}
+                aria-label={isLiked ? "좋아요 취소" : "좋아요"}
+              >
+                <img
+                  src={isLiked ? HeartIcon : UnheartIcon}
+                  alt="좋아요"
+                  className="w-5 h-5 transition-all duration-200"
+                />
+              </button>
+              <span className="text-xs text-[#A1A1AA] font-suite">
+                {likesCount}
+              </span>
+            </div>
+          )}
 
           {/* 영업시간 */}
           {category != "Drink" && (
-          
-          <p className="text-[10px] text-[#52525B] mb-0.5 font-suite leading-[150%] font-normal">
-            {time ||
-              (startTime && endTime
-                ? `${translatedTodayLabel} ${startTime}~${endTime}`
-                : t("booth.preparingHours"))}
-          </p>
-            )}
+            <p className="text-[10px] text-[#52525B] mb-0.5 font-suite leading-[150%] font-normal">
+              {time ||
+                (startTime && endTime
+                  ? `${translatedTodayLabel} ${startTime}~${endTime}`
+                  : t("booth.preparingHours"))}
+            </p>
+          )}
 
           <h3 className="text-xl font-semibold text-black mb-0.5 font-suite leading-[130%] truncate pr-[24px]">
             {title}
@@ -127,24 +128,25 @@ function BoothCard({
           {category == "Drink" && (
             <div>
               <Badge
-                text={distance_m ? `${distance_m}m` : t("notBooth.unknownLocation")}
+                text={
+                  distance_m ? `${distance_m}m` : t("notBooth.unknownLocation")
+                }
                 backgroundColor="#EF7063"
               />
             </div>
           )}
           {/* 위치 */}
           {category != "Drink" && (
-          
-          <div className="flex items-center gap-[13px]">
-            <p className="text-sm text-[#2A2A2E] font-suite leading-[150%] font-normal">
-              {location}
-            </p>
-            {/* 디오더 뱃지 */}
-            {badges?.isDOrderPartner || isDorder ? (
-              <Badge text="D-Order" />
-            ) : null}
-          </div>
-            )}
+            <div className="flex items-center gap-[13px]">
+              <p className="text-sm text-[#2A2A2E] font-suite leading-[150%] font-normal">
+                {location}
+              </p>
+              {/* 디오더 뱃지 */}
+              {badges?.isDOrderPartner || isDorder ? (
+                <Badge text="D-Order" />
+              ) : null}
+            </div>
+          )}
         </div>
       </div>
     </div>
