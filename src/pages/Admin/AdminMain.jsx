@@ -22,12 +22,7 @@ function AdminMain() {
 
   // ⛔ 폐기예정 ⛔ 더미 (초기 데이터) → useEffect에서 실제 API로 대체됨
   // 게시글 목록 (공지 + 분실물)
-  const [notices, setNotices] = useState([
-    { id: 1, title: "중요 공지입니다 !!!!!", writer: "총학" },
-    { id: 2, title: "분실물 공지 안내", writer: "총학" },
-    { id: 3, title: "축제 일정 변경", writer: "총학" },
-    { id: 4, title: "일반 공지입니다", writer: "총학" },
-  ]);
+  const [notices, setNotices] = useState([]);
 
   // 긴급공지 입력 필드 값
   const [notice, setNotice] = useState("");
@@ -159,23 +154,39 @@ function AdminMain() {
       {/* 긴급공지 */}
       <div className={wrapperClass}>
         <AdminTitle text="긴급 공지" />
-  
-        <div className={noticeWrapperClass}>
-        <PostInput
-          placeholder="긴급하게 올릴 공지를 입력해주세요"
-          value={notice}
-          onChange={(e) => {
-            setNotice(e.target.value);
-            setIsEdited(true); // 입력값이 변경되면 버튼 활성화
-          }}
-        />
-        <Submitbtn
-          text="긴급 공지 수정하기"
-          onClick={handlePatchEvent}
-          disabled={!isEdited || !notice.trim()} // 값 없거나 수정 안 됐으면 비활성화
-        />
+
+        <div className={noticeWrapperClass} style={{ position: "relative" }}>
+          <PostInput
+            placeholder="긴급하게 올릴 공지를 입력해주세요"
+            value={notice}
+            onChange={(e) => {
+              setNotice(e.target.value);
+              setIsEdited(true); // 입력값이 변경되면 버튼 활성화
+            }}
+          />
+
+          {/* X 버튼: 필드 내부 오른쪽 */}
+          {notice && (
+            <button
+              type="button"
+              onClick={() => {
+                setNotice("");
+                setIsEdited(true); // 지워도 수정된 걸로 인식
+              }}
+              className="absolute right-[20px] top-[25px] -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              ✕
+            </button>
+          )}
+
+          <Submitbtn
+            text="긴급 공지 수정하기"
+            onClick={handlePatchEvent}
+            disabled={!isEdited || !notice.trim()} // 값 없거나 수정 안 됐으면 비활성화
+          />
         </div>
       </div>
+
 
       {/* 게시글 목록 */}
       <div className={wrapperClass}>
