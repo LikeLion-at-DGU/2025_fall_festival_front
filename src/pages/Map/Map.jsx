@@ -4,8 +4,8 @@ import SearchBar from "../../components/MapComponents/SearchBar";
 import FilterBar from "../../components/MapComponents/FilterBar";
 import PullList from "../../components/MapComponents/PullList";
 import MapWithPins from "../../components/MapComponents/MapWithPins";
-import sun from "../../assets/images/icons/toggle-icons/isMorning.svg";
-import moon from "../../assets/images/icons/toggle-icons/isNight.svg";
+import sun from "../../assets/images/icons/toggle-icons/morningIcon.svg";
+import moon from "../../assets/images/icons/toggle-icons/nightIcon.svg";
 
 import useBooths from "../../hooks/MapHooks/useBooths";
 // import useFilteredBooths from "../../hooks/MapHooks/useFilteredBooths";
