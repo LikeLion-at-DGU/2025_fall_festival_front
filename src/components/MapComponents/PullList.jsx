@@ -285,6 +285,7 @@ function PullList({
                   <NotBoothCard
                     key={booth.booth_id}
                     title={boothName}
+                    image={booth.image_url || undefined}
                     distance_m={booth.distance_m}
                     category={booth.category}
                     location={locationName}
