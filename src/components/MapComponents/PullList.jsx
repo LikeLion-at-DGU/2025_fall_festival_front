@@ -287,6 +287,7 @@ function PullList({
                     distance_m={booth.distance_m}
                     category={booth.category}
                     location={locationName}
+                    boothId={booth.booth_id}
                     isSelected={selectedPin === locationName}
                     onClick={() => {
                       if (booth.category === "Toilet")

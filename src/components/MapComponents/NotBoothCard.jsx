@@ -1,5 +1,5 @@
 import React from "react";
-import MapToiletIcon from "../../assets/images/icons/map-icons/Toilet.png";
+import MapToiletIcon from "../../assets/images/icons/map-icons/Toilet.svg";
 import MapBeerIcon from "../../assets/images/icons/map-icons/Beer.png";
 import MapConvenienceIcon from "../../assets/images/icons/map-icons/Convenience.png";
 import Badge from "./BoothCardComponents/Badge";
@@ -35,6 +35,7 @@ const NotBoothCard = ({
     <div
       className={`bg-white w-full h-[92px] rounded-2xl border border-neutral-200 p-[12px] cursor-pointer shadow-sm
     ${isSelected ? "border-[#EF7063] bg-[#FDE3E1]" : ""}`}
+    onClick={onClick}
     >
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
