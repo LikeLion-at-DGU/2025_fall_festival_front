@@ -257,7 +257,7 @@ function PullList({
                     title={boothName}
                     image={booth.image_url || undefined}
                     location={locationName}
-                    isSelected={selectedBooth === booth.name}
+                    isSelected={selectedPin === booth.location.name}
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days[0]?.weekday}
