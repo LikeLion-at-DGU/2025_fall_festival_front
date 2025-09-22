@@ -148,7 +148,7 @@ function EventPost() {
 
       setToastMsg("이벤트가 등록되었습니다");
       setIsPopupOpen(false);
-      setTimeout(() => navigate("/admin/booth"), 1500);
+      setTimeout(() => navigate("/admin/booth"), 1000);
     } catch (err) {
       console.error(err);
 
