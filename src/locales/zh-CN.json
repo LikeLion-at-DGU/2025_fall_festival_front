@@ -7,6 +7,50 @@
     "game": "游戏"
   },
 
+  "banner": {
+    "joinEvent": "参加活动",
+    "playGame": "玩游戏",
+    "checkLost": "查看失物"
+  },
+
+  "map": {
+    "campusMap": "校园地图",
+    "noDetailMap": "没有详细地图",
+    "locations": {
+      "manhaeLaw": "万海/法学馆",
+      "newEngineering": "新工学馆",
+      "library": "中央图书馆",
+      "stadium": "大运动场",
+      "myeongjin": "明进馆",
+      "paljeongdo": "八井堂",
+      "manhaeSquare": "万海广场",
+      "dahyang": "茶香馆",
+      "hakrim": "学林馆",
+      "infoCulture": "信息文化馆",
+      "business": "经营馆",
+      "hyehwa": "惠化馆",
+      "socialScience": "社会科学馆",
+      "academicCulture": "学术文化馆",
+      "mainBuilding": "本馆",
+      "science": "科学馆",
+      "wonheung": "元兴馆"
+    },
+    "filters": {
+      "booth": "展位",
+      "toilet": "厕所",
+      "drink": "酒水销售",
+      "store": "便利店",
+      "foodTruck": "餐车"
+    }
+  },
+  "notBooth": {
+    "unknownLocation": "当前位置未知",
+    "categories": {
+      "Toilet": "厕所",
+      "Drink": "饮料",
+      "Store": "便利店"
+    }
+  },
   "search": {
     "placeholder": "请输入院系/社团/展位名称",
     "alt": "搜索"
@@ -17,6 +61,7 @@
   },
 
   "board": {
+    "title": "公告板",
     "searchPlaceholder": "请输入关键词",
     "tabs": {
       "all": "全部",
@@ -78,6 +123,46 @@
   "booth": {
     "nightBooth": "夜间摊位",
     "dayBooth": "日间摊位",
-    "preparingHours": "准备营业时间"
+    "preparingHours": "准备营业时间",
+    "loading": "加载中...",
+    "drinkImagePlaceholder": "酒水展位照片",
+    "tailAlt": "气泡尾巴",
+    "dorderAvailable": "支持Dorder的展位",
+    "locationAlt": "位置图标",
+    "like": "点赞",
+    "unlike": "取消点赞",
+    "introduction": "展位介绍",
+    "noDescription": "暂无介绍。",
+    "dorderAvailableNow": "现在可以直接入场！",
+    "dorderFull": "目前已满。",
+    "corners": "运营角落",
+    "noCorners": "没有运营角落。",
+    "dorderNotice": "此数据由Dorder官方提供。",
+    "menu": "菜单",
+    "lowStock": "售罄",
+    "currency": "韩元",
+    "nearbyRecommendation": "附近推荐的展位",
+    "popular": "人气展位",
+    "rankError": "无法加载展位排名。",
+    "rankPending": "展位排名统计中。",
+    "event": "活动展位",
+    "eventError": "无法加载活动展位。",
+    "noEvent": "当前没有正在进行的活动展位。"
+  },
+  "common": {
+    "more": "查看更多"
+  },
+  "stage": {
+    "now": "舞台进行中",
+    "preparing": "演出准备中！",
+    "comingSoon": "敬请期待..."
+  },
+
+  "footer": {
+    "team": "东国大学 LIKE LION",
+    "copyright": "@LIKELION DGU. All rights Reserved",
+    "dataSupport": "@数据支持：庆典企划团",
+    "admin": "管理员",
+    "instagram": "Instagram"
   }
 }

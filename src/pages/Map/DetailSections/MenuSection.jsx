@@ -66,7 +66,7 @@ export default function MenuSection({ menus, boothId }) {
                   m.name
                 )}
               </p>
-              <p className="text-xs text-gray-500 text-left">{m.price}원</p>
+              <p className="text-xs text-gray-500 text-left">{m.price}{t("booth.currency")}</p>
             </div>
           </div>
         ))}

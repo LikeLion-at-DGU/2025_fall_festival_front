@@ -6,12 +6,11 @@ import React, {
   useMemo,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import i18n from "i18next";
 
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
 import { useBoothTranslation } from "../../hooks/useTranslation";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 function PullList({
   booths,
@@ -24,19 +23,6 @@ function PullList({
   const { getTranslatedBooths } = useBoothTranslation(booths);
   const { t } = useTranslation();
 
-  // 언어 변경 감지 로그
-  useEffect(() => {
-    console.log("PullList - 현재 언어:", i18n.language);
-    if (booths && booths.length > 0) {
-      const translatedBooths = getTranslatedBooths();
-      console.log("PullList - 번역된 부스 데이터:", {
-        원본: booths[0]?.name,
-        번역: translatedBooths[0]?.translatedName,
-        위치원본: booths[0]?.location?.name,
-        위치번역: translatedBooths[0]?.translatedLocation,
-      });
-    }
-  }, [i18n.language, booths, getTranslatedBooths]);
   const minHeight = 150;
   const defaultHeight = 150;
 
@@ -219,7 +205,7 @@ function PullList({
       className={`
         fixed flex flex-col
         left-0 right-0
-        max-w-md mx-auto
+        max-w-[430px] mx-auto
         rounded-t-[20px] shadow-[0_-1px_5px_rgba(0,0,0,0.10)] bg-[#FFF]
         ${isDragging ? "" : "transition-all duration-300 ease-out"}
       `}
@@ -240,8 +226,7 @@ function PullList({
       </div>
 
       {/* 헤더 */}
-      <div className="px-[17px] pb-4">
-      </div>
+      <div className="px-[17px] pb-4"></div>
 
       {/* 스크롤 가능한 콘텐츠 */}
       <div className="flex-1 overflow-hidden">

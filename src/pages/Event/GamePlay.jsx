@@ -6,6 +6,8 @@ import WordGrid from "../../components/GameComponents/WordGrid";
 import ActionButton from "../../components/GameComponents/ActionButton";
 import GameSuccessModal from "../../components/GameComponents/GameSuccessModal";
 import { getRandomWordSet, getGameStage } from "../../utils/gameData";
+import usePostSuccessGame from "../../hooks/GameHooks/usePostSuccessGame";
+import usePostStartGame from "../../hooks/GameHooks/usePostStartGame";
 
 function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   const [currentStage, setCurrentStage] = useState(1); // 현재 단계 (1-4)
@@ -16,6 +18,13 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   const [currentWordSet, setCurrentWordSet] = useState(null);
   const [correctAnswer, setCorrectAnswer] = useState(""); // distractor가 정답
   const [showCompleteModal, setShowCompleteModal] = useState(false);
+  const [couponResult, setCouponResult] = useState(null); // 쿠폰 결과 저장
+
+  // 게임 성공 API 훅
+  const { postGameSuccess, isLoading: isSubmittingSuccess } = usePostSuccessGame();
+  
+  // 게임 시작 API 훅
+  const { mutate: startGameAPI, isLoading: isStartingGame } = usePostStartGame();
 
   // 게임 초기화
   useEffect(() => {
@@ -69,9 +78,25 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
   // 게임 시작
   const startGame = () => {
-    setGameStatus("playing");
-    setTimeLeft(5.5);
-    setTimeProgress(0);
+    // 백엔드에 게임 시작 정보 전송
+    startGameAPI({}, {
+      onSuccess: (response) => {
+        console.log('게임 시작 성공:', response);
+        
+        // 게임 상태 업데이트
+        setGameStatus("playing");
+        setTimeLeft(5.5);
+        setTimeProgress(0);
+      },
+      onError: (error) => {
+        console.error('게임 시작 실패:', error);
+        
+        // 에러가 있어도 게임은 시작 (오프라인 동작)
+        setGameStatus("playing");
+        setTimeLeft(5.5);
+        setTimeProgress(0);
+      }
+    });
   };
 
   // 단어 클릭 처리
@@ -86,24 +111,55 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   };
 
   // 다음 단계로 이동
-  const handleNextStep = () => {
+  const handleNextStep = async () => {
     if (currentStage < 4) {
       console.log(`${currentStage}단계에서 ${currentStage + 1}단계로 이동`);
       setCurrentStage(currentStage + 1);
     } else {
-      // 게임 완료 - 성공 모달 표시
-      setShowCompleteModal(true);
+      // 게임 완료 - 백엔드에 성공 정보 전송 및 쿠폰 확인
+      try {
+        const gameId = localStorage.getItem('gameId') || 'default_game_id';
+        const result = await postGameSuccess(gameId);
+        
+        console.log('게임 성공 결과:', result);
+        setCouponResult(result);
+        
+        // 성공 모달 표시
+        setShowCompleteModal(true);
+      } catch (error) {
+        console.error('게임 성공 처리 중 오류:', error);
+        // 오류가 있어도 모달은 표시
+        setShowCompleteModal(true);
+      }
     }
   };
 
   // 다시 도전하기 (카운트다운부터 재시작)
   const handleRetry = () => {
-    if (onRetryFromCountdown) {
-      onRetryFromCountdown();
-    } else {
-      // fallback: 현재 스테이지 재시작
-      prepareStage(currentStage);
-    }
+    // 게임 재시작 시 백엔드에 시작 정보 전송
+    startGameAPI({}, {
+      onSuccess: (response) => {
+        console.log('게임 재시작 성공:', response);
+        
+        // 카운트다운부터 재시작하거나 현재 스테이지 재시작
+        if (onRetryFromCountdown) {
+          onRetryFromCountdown();
+        } else {
+          // fallback: 현재 스테이지 재시작
+          prepareStage(currentStage);
+        }
+      },
+      onError: (error) => {
+        console.error('게임 재시작 실패:', error);
+        
+        // 에러가 있어도 게임은 재시작 (오프라인 동작)
+        if (onRetryFromCountdown) {
+          onRetryFromCountdown();
+        } else {
+          prepareStage(currentStage);
+        }
+      }
+    });
   };
 
   // 모달 닫기
@@ -124,53 +180,62 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
     );
 
   return (
-    <div className="w-full max-w-[430px] mx-auto h-screen relative bg-neutral-100 overflow-hidden flex flex-col items-center px-4">
-      {/* 게임 헤더 */}
-      <GameHeader round={currentStage} currentStep={currentStage} />
-
-      {/* 진행률 바 */}
-      <ProgressBar timeProgress={timeProgress} isTimeOut={gameStatus === "timeout"} />
-
-      {/* 상태 메시지 */}
-      <StatusMessage
-        targetWord={currentWordSet.target}
-        gameStatus={gameStatus}
-      />
-
-      {/* 타이머 (개발용 - 필요시 제거)
-      {gameStatus === "playing" && (
-        <div className="absolute top-[140px] left-[16px] text-sm text-neutral-500">
-          남은 시간: {timeLeft.toFixed(1)}초
+    <div className="w-full min-h-screen relative bg-neutral-100 overflow-hidden">
+      <div className="w-full max-w-[430px] mx-auto min-h-screen flex flex-col items-center px-4 py-safe">
+        {/* 게임 헤더 */}
+        <div className="w-full flex-shrink-0 mt-safe">
+          <GameHeader round={currentStage} currentStep={currentStage} />
         </div>
-      )} */}
 
-      {/* 단어 격자 */}
-      <div className="mt-[178px] flex flex-col items-center">
-        <WordGrid
-          words={words}
-          size={getGameStage(currentStage).size}
-          correctAnswer={correctAnswer}
-          onWordClick={handleWordClick}
-          gameStatus={gameStatus}
-        />
+        {/* 진행률 바 */}
+        <div className="w-full flex-shrink-0">
+          <ProgressBar timeProgress={timeProgress} isTimeOut={gameStatus === "timeout"} />
+        </div>
 
-        {/* 액션 버튼 - 고정 위치 */}
-        <div className="mt-[521px] w-80 px-4">
-          <ActionButton
+        {/* 상태 메시지 */}
+        <div className="w-full flex-shrink-0">
+          <StatusMessage
+            targetWord={currentWordSet.target}
             gameStatus={gameStatus}
-            onNextStep={handleNextStep}
-            onRetry={handleRetry}
-            onStartGame={startGame}
-            currentStage={currentStage}
           />
         </div>
-      </div>
 
-      {/* 게임 완료 모달 (성공 시만) */}
-      <GameSuccessModal
-        isOpen={showCompleteModal}
-        onClose={handleModalClose}
-      />
+        {/* 게임 영역 - 남은 공간을 차지하며 중앙 정렬 */}
+        <div className="flex-1 flex flex-col justify-center items-center w-full py-4 min-h-0 -mt-20">
+          {/* 단어 격자 */}
+          <div className="flex justify-center items-center">
+            <WordGrid
+              words={words}
+              size={getGameStage(currentStage).size}
+              correctAnswer={correctAnswer}
+              onWordClick={handleWordClick}
+              gameStatus={gameStatus}
+            />
+          </div>
+        </div>
+
+        {/* 액션 버튼 - 피그마 디자인에 맞춰 고정 위치 */}
+        <div className="absolute w-full mt-[590px] px-4">
+          <div className="w-full max-w-80 mx-auto">
+            <ActionButton
+              gameStatus={gameStatus}
+              onNextStep={handleNextStep}
+              onRetry={handleRetry}
+              onStartGame={startGame}
+              currentStage={currentStage}
+              isLoading={isStartingGame || isSubmittingSuccess}
+            />
+          </div>
+        </div>
+
+        {/* 게임 완료 모달 (성공 시만) */}
+        <GameSuccessModal
+          isOpen={showCompleteModal}
+          onClose={handleModalClose}
+          couponResult={couponResult}
+          isLoading={isSubmittingSuccess}
+        />
+      </div>
     </div>
   );
 }

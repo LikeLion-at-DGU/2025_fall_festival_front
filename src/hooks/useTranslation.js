@@ -5,7 +5,17 @@ import {
   createBoothTranslationItems,
   createStageTranslationItems,
   createBoardTranslationItems,
+  createNoticeTranslationItems,
 } from "../utils/translationApi";
+
+// 카테고리 영어-한글 매핑
+const categoryMapping = {
+  FoodTruck: "푸드트럭",
+  Toilet: "화장실",
+  Drink: "주류판매",
+  Store: "편의점",
+  Booth: "부스",
+};
 
 // 부스 데이터 번역 훅
 export const useBoothTranslation = (booths) => {
@@ -30,6 +40,14 @@ export const useBoothTranslation = (booths) => {
         "BoothName",
         booth.name
       ),
+      translatedCategory: booth.category
+        ? getTranslation(
+            "booth",
+            booth.booth_id,
+            "BoothCategory",
+            categoryMapping[booth.category] || booth.category
+          )
+        : booth.category,
       translatedLocation: booth.location?.name
         ? getTranslation(
             "booth",
@@ -107,6 +125,42 @@ export const useBoardTranslation = (boards) => {
   };
 
   return { getTranslatedBoards };
+};
+
+// 긴급공지 번역 훅
+export const useNoticeTranslation = (notice) => {
+  const { requestBatchTranslations, getTranslation } = useTranslations();
+
+  useEffect(() => {
+    if (notice) {
+      const translationItems = createNoticeTranslationItems(notice);
+      if (translationItems.length > 0) {
+        requestBatchTranslations(translationItems);
+      }
+    }
+  }, [notice, requestBatchTranslations]);
+
+  // 번역된 공지사항 데이터 반환
+  const getTranslatedNotice = () => {
+    if (!notice) return null;
+
+    const entityId = notice.id ? notice.id.toString() : "emergency";
+
+    return {
+      ...notice,
+      translatedTitle: getTranslation(
+        "notice",
+        entityId,
+        "NoticeTitle",
+        notice.title
+      ),
+      translatedContent: notice.content
+        ? getTranslation("notice", entityId, "NoticeContent", notice.content)
+        : notice.content,
+    };
+  };
+
+  return { getTranslatedNotice };
 };
 
 // 단일 아이템 번역 훅 (상세 페이지용)

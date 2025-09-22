@@ -5,6 +5,7 @@ import Skeleton from "../Skeleton/Skeleton";
 import { getEventBooths } from "../../apis/mainpage";
 import { formatTimeWithDay } from "../../utils/dateUtils";
 import { useBoothTranslation } from "../../hooks/useTranslation";
+import { useTranslation } from "react-i18next";
 
 const Event = ({ onDataChange }) => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const Event = ({ onDataChange }) => {
 
   // 번역 훅 사용
   const { getTranslatedBooths } = useBoothTranslation(eventData);
+  const { t } = useTranslation();
 
   const handleBoothClick = (booth) => {
     navigate(`/board/${booth.id}`);
@@ -151,13 +153,13 @@ const Event = ({ onDataChange }) => {
     <div className="mt-[27px]">
       <div className="flex items-center justify-between mb-4">
         <p className="text-[20px] font-semibold font-suite text-[#52525B]">
-          이벤트 부스
+          {t("booth.event")}
         </p>
         <button
           onClick={() => navigate("/board", { state: { category: "Event" } })}
           className="text-[14px] font-semibold font-suite text-[#52525B] hover:underline"
         >
-          더보기 &gt;
+          {t("common.more")} &gt;
         </button>
       </div>
       <div className="overflow-x-auto">
@@ -185,7 +187,7 @@ const Event = ({ onDataChange }) => {
         ) : error ? (
           <div className="mb-[74px]">
             <p className="text-[12px] font-normal leading-[150%] font-suite text-[#52525B]">
-              이벤트 진행 부스를 불러올 수 없습니다.
+              {t("booth.eventError")}
             </p>
           </div>
         ) : eventData.length > 0 ? (
@@ -243,7 +245,7 @@ const Event = ({ onDataChange }) => {
         ) : (
           <div className="mb-[74px]">
             <p className="text-[12px] font-normal leading-[150%] font-suite text-[#52525B]">
-              현재 이벤트 진행 중인 부스가 없습니다.
+              {t("booth.noEvent")}
             </p>
           </div>
         )}

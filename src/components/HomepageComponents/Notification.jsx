@@ -30,6 +30,9 @@ const Notification = ({ notice, loading, error }) => {
     );
   }
 
+  // 번역된 제목이 있으면 사용, 없으면 원본 제목 사용
+  const displayTitle = notice.translatedTitle || notice.title;
+
   return (
     <div
       className="flex items-center gap-2 px-4 py-[13px] rounded-[12px] bg-lightgray mt-[27px] overflow-hidden cursor-pointer"
@@ -42,7 +45,7 @@ const Notification = ({ notice, loading, error }) => {
       />
       <div className="flex-1 overflow-hidden">
         <p className="text-sm font-semibold font-suite text-[#52525B] whitespace-nowrap animate-marquee">
-          {notice.title}
+          {displayTitle}
         </p>
       </div>
     </div>
