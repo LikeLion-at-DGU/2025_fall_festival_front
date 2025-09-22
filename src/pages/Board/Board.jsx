@@ -305,7 +305,7 @@ function Pagination({ total, page, pageSize, onChange }) {
 
       {withGaps.map((item) =>
         typeof item === "string" ? (
-          <span key={item} className="px-1 text-gray-400">
+          <span key={item} className="text-gray-400 mr-[-7px] ml-[-8px]">
             …
           </span>
         ) : (
