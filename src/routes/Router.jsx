@@ -93,9 +93,9 @@ const location = useLocation();
         {/*이벤트 작성*/}
         <Route path="/developers" element={<Developers />} />
       </Routes> 
-       ):(
-         <ComingSoon/>
-        
+       ):(<Routes>
+           <Route path="*" element={<ComingSoon />} />
+        </Routes>
         )}
     </>
   );
