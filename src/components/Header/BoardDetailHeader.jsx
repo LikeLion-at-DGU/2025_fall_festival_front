@@ -1,5 +1,6 @@
+// src/components/Header/BoardDetailHeader.jsx
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import backBtn from "../../assets/images/icons/header-icons/left.png";
@@ -7,10 +8,11 @@ import backBtn from "../../assets/images/icons/header-icons/left.png";
 const BoardDetailHeader = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleBackClick = () => {
-    // ✅ 항상 /board 로 이동
-    navigate("/board");
+    const category = location.state?.category || "ALL";
+    navigate("/board", { state: { category } });
   };
 
   return (
@@ -25,7 +27,9 @@ const BoardDetailHeader = () => {
       }}
     >
       <div className="flex items-center w-full">
+        {/* ✅ CHANGED: Added type="button" to prevent page reloads */}
         <button
+          type="button" 
           onClick={handleBackClick}
           className="hover:opacity-70 transition-opacity"
         >
