@@ -153,7 +153,7 @@ function BoardItem({ item }) {
     ? (() => {
       const translatedName = getTranslation(
         "writer",
-        item.id.toString(),
+        item?.id?.toString() || `temp-${Math.random()}`,
         "WriterName",
         item.writer
       );
@@ -248,10 +248,10 @@ function BoardItem({ item }) {
               {t(
                 category === "LostItem"
                   ? "board.tabs.lost"
-                  : `board.tabs.${category.toLowerCase()}`
-              ) ??
-                CATEGORY_MAP[category] ??
-                category}
+                  : category
+                  ? `board.tabs.${category.toLowerCase()}`
+                  : "board.tabs.lost"
+              ) ?? CATEGORY_MAP[category] ?? category}
             </span>
           </div>
           <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
@@ -389,12 +389,12 @@ export default function Board() {
     allItems.forEach((item) => {
       if (item.writer) {
         requestSingleTranslation({
-          entity_type: "writer",
-          entity_id: item.id.toString(),
-          field: "WriterName",
-          source_lang: "ko",
-          source_text: item.writer,
-        });
+     entity_type: "writer",
+     entity_id: item?.id?.toString() || `temp-${Math.random()}`, // ✅ 안전 처리
+     field: "WriterName",
+     source_lang: "ko",
+     source_text: item.writer,
+   });
       }
     });
   }, [allItems, requestSingleTranslation]);
@@ -566,7 +566,12 @@ export default function Board() {
                 const translatedBoards = getTranslatedBoards();
                 const translatedItem =
                   translatedBoards.find((board) => board.id === item.id) || item;
-                return <BoardItem key={item.id} item={translatedItem} />;
+                return (
+                <BoardItem
+                  key={item.id || `board-${Math.random()}`} // ✅ fallback key
+                  item={translatedItem}
+                />
+              );
               })}
             </ul>
           )}
