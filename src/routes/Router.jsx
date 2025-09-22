@@ -31,72 +31,79 @@ import ToiletDetail from "../pages/Map/DetailSections/ToiletDetail";
 import ComingSoon from "../pages/ComingSoon/ComingSoon";
 
 // 오픈 전
-// 
-// 
+//
+//
 import { useLocation } from "react-router-dom";
 
-
 const Router = () => {
-const location = useLocation();
+  const location = useLocation();
   const params = new URLSearchParams(location.search);
   const secret = params.get("secret");
 
   const isDevUnlocked = secret === "1031";
+  const isEventPage = location.pathname === "/event";
+
   return (
     <>
       <ScrollToTop />
-        {isDevUnlocked ? (
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/map" element={<Map />} />
-        <Route path="/mapold" element={<MapOld />} />
-        <Route path="/timetable" element={<Timetable />} />
-        <Route path="/board" element={<Board />} />
-        <Route path="/board/:boardId" element={<BoardDetail />} />
-        <Route path="/event" element={<Event />} />
-
-        {/* 지도 상세페이지 라우트 추가 */}
-        <Route path="/booth/:id" element={<BoothDetail />} />
-        <Route path="/drink/:id" element={<DrinkDetail />} />
-        <Route path="/foodtruck/:id" element={<FoodTruckDetail />} />
-        <Route path="/toilet/:id" element={<ToiletDetail />} />
-        <Route path="/admin" element={<Admin />} /> {/*미사용예정*/}
-        {/*공통로그인*/}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        {/*총학/축기단*/}
-        <Route path="/admin/festa" element={<AdminMain />} /> {/*메인(게시글)*/}
-        <Route
-          path="/admin/festa/notice/normal"
-          element={<NormalPost />}
-        />{" "}
-        {/*일반공지 작성*/}
-        <Route path="/admin/festa/notice/lost" element={<LostPost />} />{" "}
-        {/*분실물 작성*/}
-        {/*<Route path="/admin/stuco/notice/normal" element={<NormalPost mode="create" />} /> {/*일반공지 작성*/}
-        {/*<Route path="/admin/stuco/notice/lost" element={<LostPost mode="create" />} /> {/*분실물 작성*/}
-        <Route path="/admin/festa/notice/:boardId" element={<PostDetail />} />{" "}
-        <Route path="/admin/booth/notice/event/:id" element={<EventDetail />} />{" "}
-        {/*공지 상세*/}
-        <Route
-          path="/admin/festa/notice/edit/:id"
-          element={<NormalPost mode="edit" />}
-        />{" "}
-        {/*일반공지 수정*/}
-        <Route
-          path="/admin/festa/lost/edit/:id"
-          element={<LostPost mode="edit" />}
-        />{" "}
-        {/*분실물 수정*/}
-        {/*부스관리자*/}
-        <Route path="/admin/booth" element={<BoothMain />} /> {/*메인(게시글)*/}
-        <Route path="/admin/booth/event" element={<EventPost />} />{" "}
-        {/*이벤트 작성*/}
-        <Route path="/developers" element={<Developers />} />
-      </Routes> 
-       ):(<Routes>
-           <Route path="*" element={<ComingSoon />} />
+      {isDevUnlocked ||
+      (isEventPage && process.env.NODE_ENV === "development") ? (
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/map" element={<Map />} />
+          <Route path="/mapold" element={<MapOld />} />
+          <Route path="/timetable" element={<Timetable />} />
+          <Route path="/board" element={<Board />} />
+          <Route path="/board/:boardId" element={<BoardDetail />} />
+          <Route path="/event" element={<Event />} />
+          {/* 지도 상세페이지 라우트 추가 */}
+          <Route path="/booth/:id" element={<BoothDetail />} />
+          <Route path="/drink/:id" element={<DrinkDetail />} />
+          <Route path="/foodtruck/:id" element={<FoodTruckDetail />} />
+          <Route path="/toilet/:id" element={<ToiletDetail />} />
+          <Route path="/admin" element={<Admin />} /> {/*미사용예정*/}
+          {/*공통로그인*/}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          {/*총학/축기단*/}
+          <Route path="/admin/festa" element={<AdminMain />} />{" "}
+          {/*메인(게시글)*/}
+          <Route
+            path="/admin/festa/notice/normal"
+            element={<NormalPost />}
+          />{" "}
+          {/*일반공지 작성*/}
+          <Route path="/admin/festa/notice/lost" element={<LostPost />} />{" "}
+          {/*분실물 작성*/}
+          {/*<Route path="/admin/stuco/notice/normal" element={<NormalPost mode="create" />} /> {/*일반공지 작성*/}
+          {/*<Route path="/admin/stuco/notice/lost" element={<LostPost mode="create" />} /> {/*분실물 작성*/}
+          <Route path="/admin/festa/notice/:boardId" element={<PostDetail />} />{" "}
+          <Route
+            path="/admin/booth/notice/event/:id"
+            element={<EventDetail />}
+          />{" "}
+          {/*공지 상세*/}
+          <Route
+            path="/admin/festa/notice/edit/:id"
+            element={<NormalPost mode="edit" />}
+          />{" "}
+          {/*일반공지 수정*/}
+          <Route
+            path="/admin/festa/lost/edit/:id"
+            element={<LostPost mode="edit" />}
+          />{" "}
+          {/*분실물 수정*/}
+          {/*부스관리자*/}
+          <Route path="/admin/booth" element={<BoothMain />} />{" "}
+          {/*메인(게시글)*/}
+          <Route path="/admin/booth/event" element={<EventPost />} />{" "}
+          {/*이벤트 작성*/}
+          <Route path="/developers" element={<Developers />} />
         </Routes>
-        )}
+      ) : (
+        <Routes>
+          <Route path="*" element={<ComingSoon />} />
+        </Routes>
+      )}
     </>
   );
 };

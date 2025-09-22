@@ -21,10 +21,12 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   const [couponResult, setCouponResult] = useState(null); // 쿠폰 결과 저장
 
   // 게임 성공 API 훅
-  const { postGameSuccess, isLoading: isSubmittingSuccess } = usePostSuccessGame();
-  
+  const { postGameSuccess, isLoading: isSubmittingSuccess } =
+    usePostSuccessGame();
+
   // 게임 시작 API 훅
-  const { mutate: startGameAPI, isLoading: isStartingGame } = usePostStartGame();
+  const { mutate: startGameAPI, isLoading: isStartingGame } =
+    usePostStartGame();
 
   // 게임 초기화
   useEffect(() => {
@@ -58,18 +60,18 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
     const wordSet = getRandomWordSet();
     setCurrentWordSet(wordSet);
     setCorrectAnswer(wordSet.distractor);
-    
+
     const stageConfig = getGameStage(stage);
     const totalWords = stageConfig.gridSize;
     const normalWords = Array(totalWords - 1).fill(wordSet.target);
     const allWords = [...normalWords, wordSet.distractor];
-    
+
     // Fisher-Yates 알고리즘으로 셔플
     for (let i = allWords.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [allWords[i], allWords[j]] = [allWords[j], allWords[i]];
     }
-    
+
     setWords(allWords);
     setGameStatus("playing");
     setTimeLeft(5.5);
@@ -79,24 +81,27 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   // 게임 시작
   const startGame = () => {
     // 백엔드에 게임 시작 정보 전송
-    startGameAPI({}, {
-      onSuccess: (response) => {
-        console.log('게임 시작 성공:', response);
-        
-        // 게임 상태 업데이트
-        setGameStatus("playing");
-        setTimeLeft(5.5);
-        setTimeProgress(0);
-      },
-      onError: (error) => {
-        console.error('게임 시작 실패:', error);
-        
-        // 에러가 있어도 게임은 시작 (오프라인 동작)
-        setGameStatus("playing");
-        setTimeLeft(5.5);
-        setTimeProgress(0);
+    startGameAPI(
+      {},
+      {
+        onSuccess: (response) => {
+          console.log("게임 시작 성공:", response);
+
+          // 게임 상태 업데이트
+          setGameStatus("playing");
+          setTimeLeft(5.5);
+          setTimeProgress(0);
+        },
+        onError: (error) => {
+          console.error("게임 시작 실패:", error);
+
+          // 에러가 있어도 게임은 시작 (오프라인 동작)
+          setGameStatus("playing");
+          setTimeLeft(5.5);
+          setTimeProgress(0);
+        },
       }
-    });
+    );
   };
 
   // 단어 클릭 처리
@@ -121,14 +126,14 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
       try {
         // user_id는 훅 내부에서 localStorage에서 자동으로 가져옴
         const result = await postGameSuccess();
-        
-        console.log('게임 성공 결과:', result);
+
+        console.log("게임 성공 결과:", result);
         setCouponResult(result);
-        
+
         // 성공 모달 표시
         setShowCompleteModal(true);
       } catch (error) {
-        console.error('게임 성공 처리 중 오류:', error);
+        console.error("게임 성공 처리 중 오류:", error);
         // 오류가 있어도 모달은 표시
         setShowCompleteModal(true);
       }
@@ -138,29 +143,32 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   // 다시 도전하기 (카운트다운부터 재시작)
   const handleRetry = () => {
     // 게임 재시작 시 백엔드에 시작 정보 전송
-    startGameAPI({}, {
-      onSuccess: (response) => {
-        console.log('게임 재시작 성공:', response);
-        
-        // 카운트다운부터 재시작하거나 현재 스테이지 재시작
-        if (onRetryFromCountdown) {
-          onRetryFromCountdown();
-        } else {
-          // fallback: 현재 스테이지 재시작
-          prepareStage(currentStage);
-        }
-      },
-      onError: (error) => {
-        console.error('게임 재시작 실패:', error);
-        
-        // 에러가 있어도 게임은 재시작 (오프라인 동작)
-        if (onRetryFromCountdown) {
-          onRetryFromCountdown();
-        } else {
-          prepareStage(currentStage);
-        }
+    startGameAPI(
+      {},
+      {
+        onSuccess: (response) => {
+          console.log("게임 재시작 성공:", response);
+
+          // 카운트다운부터 재시작하거나 현재 스테이지 재시작
+          if (onRetryFromCountdown) {
+            onRetryFromCountdown();
+          } else {
+            // fallback: 현재 스테이지 재시작
+            prepareStage(currentStage);
+          }
+        },
+        onError: (error) => {
+          console.error("게임 재시작 실패:", error);
+
+          // 에러가 있어도 게임은 재시작 (오프라인 동작)
+          if (onRetryFromCountdown) {
+            onRetryFromCountdown();
+          } else {
+            prepareStage(currentStage);
+          }
+        },
       }
-    });
+    );
   };
 
   // 모달 닫기
@@ -170,8 +178,6 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
       onGameEnd(); // 게임 종료 후 intro로 돌아가기
     }
   };
-
-
 
   if (!currentWordSet)
     return (
@@ -193,7 +199,10 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
         {/* 진행률 바 */}
         <div className="w-full flex-shrink-0 flex justify-center">
           <div className="w-full max-w-sm">
-            <ProgressBar timeProgress={timeProgress} isTimeOut={gameStatus === "timeout"} />
+            <ProgressBar
+              timeProgress={timeProgress}
+              isTimeOut={gameStatus === "timeout"}
+            />
           </div>
         </div>
 
@@ -221,17 +230,15 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
           </div>
 
           {/* 액션 버튼 - 30px 위로 이동 */}
-          <div className="w-full max-w-80 px-4 flex-shrink-0 -mt-5 flex justify-center">
-            <div className="w-full max-w-sm">
-              <ActionButton
-                gameStatus={gameStatus}
-                onNextStep={handleNextStep}
-                onRetry={handleRetry}
-                onStartGame={startGame}
-                currentStage={currentStage}
-                isLoading={isStartingGame || isSubmittingSuccess}
-              />
-            </div>
+          <div className="w-full flex-shrink-0 -mt-5 flex justify-center">
+            <ActionButton
+              gameStatus={gameStatus}
+              onNextStep={handleNextStep}
+              onRetry={handleRetry}
+              onStartGame={startGame}
+              currentStage={currentStage}
+              isLoading={isStartingGame || isSubmittingSuccess}
+            />
           </div>
         </div>
 
