@@ -89,13 +89,13 @@ export default function FoodTruckDetail() {
     }
 
     // 푸드트럭 위치 번역 요청
-    if (truck.location_description) {
+    if (truck.location_name) {
       requestSingleTranslation({
         entity_type: "booth",
         entity_id: truck.id?.toString() || id,
         field: "BoothLocation",
         source_lang: "ko",
-        source_text: truck.location_description,
+        source_text: truck.location_name,
       });
     }
   }, [truck, id, requestSingleTranslation]);
@@ -159,7 +159,7 @@ export default function FoodTruckDetail() {
               "booth",
               truck.id?.toString() || id,
               "BoothLocation",
-              truck.location_description
+              truck.location_name
             )}
           </span>
         </div>
