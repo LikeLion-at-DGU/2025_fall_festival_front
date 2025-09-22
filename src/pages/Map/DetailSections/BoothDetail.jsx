@@ -198,10 +198,15 @@ export default function BoothDetail() {
           <div className="flex-1">
             {/* 부스 타입 + 이름 */}
             <div className="flex items-center gap-2 !mb-4">
-              <span className="bg-[#EF7063] text-white px-2 py-1 rounded-full text-xs">
+              <span className="bg-[#EF7063] text-white px-2 py-1 rounded-full text-xs whitespace-nowrap">
                 {booth.is_night ? t("booth.nightBooth") : t("booth.dayBooth")}
               </span>
-              <h1 className="text-lg font-bold">
+              <h1
+                className={`font-bold ${booth.name.length > 16
+                    ? "text-[14.5px]"   
+                    : "text-lg"    // 기본 크기
+                  }`}
+              >
                 {getTranslation(
                   "booth",
                   booth.booth_id?.toString() || id,
@@ -209,6 +214,7 @@ export default function BoothDetail() {
                   booth.name
                 )}
               </h1>
+
             </div>
 
             {/* 야간 부스 & 디오더 가능 표시 */}
