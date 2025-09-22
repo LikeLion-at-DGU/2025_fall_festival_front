@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { usePostStartGame } from "../../hooks/GameHooks/usePostStartGame";
 
 function GameInstructionPage({ onStartChallenge }) {
   const [showModal, setShowModal] = useState(false);
+  const [attemptCount, setAttemptCount] = useState(0); // 게임 시도 횟수
   const startGameMutation = usePostStartGame();
 
   // 더미데이터
   const data = { successcnt: 26 };
 
+  // 컴포넌트 마운트 시 백엔드에서 받은 시도 횟수 확인
+  useEffect(() => {
+    const storedTryTimes = localStorage.getItem('game_try_times');
+    if (storedTryTimes) {
+      setAttemptCount(parseInt(storedTryTimes));
+    }
+  }, []);
+
+  // 시도 횟수가 3회를 초과했는지 확인
+  const isLimitExceeded = attemptCount >= 3;
+
+
+
   return (
     <div className="w-full max-w-[430px] mx-auto h-screen relative bg-gradient-to-b from-[#FF8A80] to-[#F48FB1] overflow-hidden">
-      {/* 상단 헤더 */}
+      {/* 상단 헤더
       <div className="w-full bg-white px-4 py-3 flex justify-between items-center">
         <div className="text-black text-lg font-bold font-['SUITE']">
           DIRKWAMA
@@ -23,62 +37,89 @@ function GameInstructionPage({ onStartChallenge }) {
             <div className="w-4 h-0.5 bg-black"></div>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {/* 상단 성공자 수 표시 */}
+      {/* 상단 성공자 수 표시 - 시도 횟수 3회 미만일 때만 내용 표시 */}
       <div className="w-full h-[102px] flex justify-center items-center">
-        <div className="px-2 py-1 bg-red-50/80 rounded-[999px] inline-flex justify-center items-center gap-2.5">
-          <div className="justify-start">
-            <span className="text-primary-400 text-[10px] font-normal font-['SUITE'] leading-none">
-              지금까지 단{" "}
-            </span>
-            <span className="text-primary-400 text-[10px] font-semibold font-['SUITE'] leading-none">
-              {data.successcnt}
-            </span>
-            <span className="text-primary-400 text-[10px] font-normal font-['SUITE'] leading-none">
-              만이 성공했습니다
-            </span>
+        {!isLimitExceeded && (
+          <div className="px-2 py-1 bg-red-50/80 rounded-[999px] inline-flex justify-center items-center gap-2.5">
+            <div className="justify-start">
+              <span className="text-primary-400 text-[10px] font-normal font-['SUITE'] leading-none">
+                지금까지 단{" "}
+              </span>
+              <span className="text-primary-400 text-[10px] font-semibold font-['SUITE'] leading-none">
+                {data.successcnt}
+              </span>
+              <span className="text-primary-400 text-[10px] font-normal font-['SUITE'] leading-none">
+                만이 성공했습니다
+              </span>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* 메인 타이틀 텍스트 */}
       <div className="w-full h-[256px] flex flex-col justify-center items-center text-center">
-        <div className="text-white text-[36px] font-bold font-['SUITE'] leading-[43px] mb-6">
-          다르게 적힌 글자를
-          <br />
-          찾아주세요
-        </div>
+        {isLimitExceeded ? (
+          <div className="text-white text-[36px] font-bold font-['SUITE'] leading-[43px] mb-6">
+            참여해주셔서 감사합니다
+            <br />
+            즐거운 축제 되세요 !
+          </div>
+        ) : (
+          <div className="text-white text-[36px] font-bold font-['SUITE'] leading-[43px] mb-6">
+            다르게 적힌 글자를
+            <br />
+            찾아주세요
+          </div>
+        )}
         <div className="flex items-center gap-1">
-          <div className="text-white text-[12px] font-semibold font-['SUITE'] opacity-80">
-            제한 시간 내 모든 단계 클리어 시 선물상자를 드립니다.
-          </div>
-          <div
-            className="w-4 h-4 bg-white rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors"
-            onClick={() => setShowModal(true)}
-          >
-            <div className="text-[#FF8A80] text-xs font-bold">i</div>
-          </div>
+          {isLimitExceeded ? (
+            <div className="text-white text-[12px] font-semibold font-['SUITE'] opacity-80">
+              12시간 23분 뒤에 플레이 횟수 충전
+            </div>
+          ) : (
+            <>
+              <div className="text-white text-[12px] font-semibold font-['SUITE'] opacity-80">
+                제한 시간 내 모든 단계 클리어 시 선물상자를 드립니다.
+              </div>
+              <div
+                className="w-4 h-4 bg-white rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors"
+                onClick={() => setShowModal(true)}
+              >
+                <div className="text-[#FF8A80] text-xs font-bold">i</div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* 도전하기 버튼 */}
       <div className="w-full h-[155px] flex justify-center items-center">
         <div
-          className={`w-[311px] h-[52px] bg-white rounded-[999px] flex justify-center items-center cursor-pointer transition-colors ${
-            startGameMutation.isPending 
-              ? 'opacity-50 cursor-not-allowed' 
-              : 'hover:bg-gray-100'
+          className={`w-[311px] h-[52px] rounded-[999px] flex justify-center items-center transition-colors ${
+            isLimitExceeded 
+              ? 'bg-neutral-200 cursor-not-allowed'
+              : startGameMutation.isPending 
+                ? 'bg-white opacity-50 cursor-not-allowed' 
+                : 'bg-white cursor-pointer hover:bg-gray-100'
           }`}
           onClick={() => {
-            if (startGameMutation.isPending) return;
+            if (isLimitExceeded || startGameMutation.isPending) return;
             
             console.log("도전하기 버튼 클릭됨!");
             
-            // // 게임 시작 API 호출
+            // 게임 시작 API 호출
             startGameMutation.mutate(undefined, {
               onSuccess: (response) => {
                 console.log("게임 시작 API 성공:", response);
+                
+                // API 응답에서 업데이트된 시도 횟수를 받아서 localStorage 업데이트
+                if (response?.game_try_times !== undefined) {
+                  setAttemptCount(response.game_try_times);
+                  localStorage.setItem('game_try_times', response.game_try_times.toString());
+                }
+                
                 // API 호출 성공 후 기존 onStartChallenge 함수 실행
                 onStartChallenge();
               },
@@ -87,11 +128,17 @@ function GameInstructionPage({ onStartChallenge }) {
                 alert("게임 시작 중 오류가 발생했습니다. 다시 시도해 주세요.");
               }
             });
-            // onStartChallenge();
           }}
         >
-          <span className="text-black text-[16px] font-semibold font-['SUITE']">
-            {startGameMutation.isPending ? "게임 시작 중..." : "도전하기"}
+          <span className={`text-[16px] font-semibold font-['SUITE'] ${
+            isLimitExceeded ? 'text-neutral-300' : 'text-black'
+          }`}>
+            {isLimitExceeded 
+              ? "오늘 참여횟수가 모두 소진되었습니다."
+              : startGameMutation.isPending 
+                ? "게임 시작 중..." 
+                : "도전하기"
+            }
           </span>
         </div>
       </div>
