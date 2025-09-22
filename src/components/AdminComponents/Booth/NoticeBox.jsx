@@ -14,11 +14,12 @@ function NoticeBox({ id, noticeText = "공지", content, org }) {
       onClick={handleClick}
       className="
         flex items-center justify-between 
-        w-full h-[41px] 
+        w-[99%] h-[48px]
         px-2 py-2
-        rounded-[15px] cursor-pointer
-        border-b border-[#A1A1AA]/50 bg-[#F4F4F5]
+        rounded-[13px] cursor-pointer
+        border-[#f1f1f1] bg-[#ffffff]
         hover:bg-gray-100 transition
+        shadow-[0_3px_5px_0_rgba(0,0,0,0.10)]
       "
     >
       {/* 왼쪽: 태그 + 텍스트 */}
@@ -26,15 +27,13 @@ function NoticeBox({ id, noticeText = "공지", content, org }) {
         <span
           className="
             inline-flex items-center justify-center 
-            w-[40px] h-[25px] 
+            w-[auto] h-[25px] 
             px-[1px] py-[4px]
-            rounded-[20px] 
             text-xs
-            bg-[#FFA6A6] 
-            text-white text-sm font-medium flex-shrink-0
+            text-[#A1A1AA] text-sm font-light flex-shrink-0
           "
         >
-          {noticeText}
+          #{noticeText}<span className="text-[#e3e3e3] ml-2">|</span>
         </span>
         <p className="text-sm text-black truncate max-w-[200px]">
           {content}

@@ -24,6 +24,9 @@ const AdminHeader = () => {
       w-full max-w-[430px]
       bg-white 
       h-[54px] px-[5px]"
+      style={{
+        boxShadow: "0 1px 5px 0 rgba(0, 0, 0, 0.05)"
+      }}
     >
       <button onClick={handleBack}>
         <img src={backBtn} alt="back" className="m-[10px]" width={24} height={24} />
