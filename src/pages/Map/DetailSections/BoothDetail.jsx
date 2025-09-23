@@ -310,37 +310,39 @@ export default function BoothDetail() {
       </div>
 
       {/* 디오더 상태 */}
-      {booth.is_dorder && (
-        <div className="w-full bg-white shadow rounded-[13px] p-3 text-sm text-gray-700 !mt-4 !mb-2">
-          {booth.booth_can_usage === "True" ? (
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                fill="none"
-              >
-                <circle cx="5" cy="5" r="5" fill="#E65B4D" />
-              </svg>
-              <span>{t("booth.dorderAvailableNow")}</span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                fill="none"
-              >
-                <circle cx="5" cy="5" r="5" fill="#A1A1AA" />
-              </svg>
-              <span>{t("booth.dorderFull")}</span>
-            </div>
-          )}
-        </div>
-      )}
+      {booth.is_dorder &&
+        (booth.booth_can_usage === "True" || booth.booth_can_usage === "False") && (
+          <div className="w-full bg-white shadow rounded-[13px] p-3 text-sm text-gray-700 !mt-4 !mb-2">
+            {booth.booth_can_usage === "True" ? (
+              <div className="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                >
+                  <circle cx="5" cy="5" r="5" fill="#E65B4D" />
+                </svg>
+                <span>{t("booth.dorderAvailableNow")}</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                >
+                  <circle cx="5" cy="5" r="5" fill="#A1A1AA" />
+                </svg>
+                <span>{t("booth.dorderFull")}</span>
+              </div>
+            )}
+          </div>
+        )}
+
 
       {/* 운영 코너 */}
       {!booth.is_night && (
