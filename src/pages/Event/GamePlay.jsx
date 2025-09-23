@@ -22,6 +22,7 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   const [couponResult, setCouponResult] = useState(null); // 쿠폰 결과 저장
   const [playCount, setPlayCount] = useState(0); // 플레이 횟수
   const [successCount, setSuccessCount] = useState(0); // 실제 성공 횟수
+  const [modalStageInfo, setModalStageInfo] = useState({ completedStages: 0, totalStages: 0 });
 
   // 게임 성공 API 훅
   const { postGameSuccess, isLoading: isSubmittingSuccess } =
@@ -145,7 +146,7 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   // 다음 단계로 이동
   const handleNextStep = async () => {
     // 4단계까지 완료해야 성공 모달 표시
-    if (currentStage < 2) {
+    if (currentStage < 4) {
       setCurrentStage(currentStage + 1);
     } else {
       // 게임 완료 (4단계 완료 시) - 백엔드에 성공 정보 전송 및 쿠폰 확인
@@ -159,7 +160,11 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
         setSuccessCount(prevCount => prevCount + 1);
 
         // 성공 모달 표시
+        // 전달할 완료 단계/전체 단계 정보를 설정
+        const totalStages = 4; // GamePlay 로직상 currentStage < 4 -> 완료 처리라 전체 단계는 4로 취급
+        const completedStages = Math.min(currentStage, totalStages);
         setShowCompleteModal(true);
+        setModalStageInfo({ completedStages, totalStages });
       } catch (error) {
         console.error("게임 성공 처리 중 오류:", error);
         // 오류가 있어도 모달은 표시
@@ -211,7 +216,7 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
   // 모달 닫기
   const handleModalClose = () => {
-    setShowCompleteModal(false);
+      setShowCompleteModal(false);
     if (onGameEnd) {
       onGameEnd(); // 게임 종료 후 intro로 돌아가기
     }
@@ -289,6 +294,8 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
           onClose={handleModalClose}
           couponResult={couponResult}
           isLoading={isSubmittingSuccess}
+          completedStages={modalStageInfo.completedStages}
+          totalStages={modalStageInfo.totalStages}
         />
       </div>
     </div>

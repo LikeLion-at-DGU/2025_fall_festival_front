@@ -1,11 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { usePrefixedNavigate } from '../../hooks/usePrefixedNavigate';
 
 /**
  * 게임 헤더 컴포넌트 - X 버튼으로 메인페이지 이동
  */
 const GameHeader = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const handleCloseClick = () => {
     navigate('/'); // 메인페이지로 이동

@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import boxOpenWebm from "../../assets/videos/gamepage/output.webm";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import usePostSuccessGame from "../../hooks/GameHooks/usePostSuccessGame";
 import { usePostGameCoupon } from "../../hooks/GameHooks/usePostGameCoupon";
 import downIcon from "../../assets/images/icons/game-icons/Down.png";
 
-function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
+function GameSuccessModal({ isOpen, onClose, couponResult, completedStages: completedStagesProp, totalStages: totalStagesProp }) {
   const [currentStep, setCurrentStep] = useState(1); // 1: 축하, 2: 상자열기, 3: 부스선택, 4: 쿠폰발급
   const [showBoothList, setShowBoothList] = useState(false);
   const [selectedBooth, setSelectedBooth] = useState("프론티어");
   const [gameResult, setGameResult] = useState(null);
   const [couponData, setCouponData] = useState(null);
+  const [isPlayingVideo, setIsPlayingVideo] = useState(false);
+  const videoRef = useRef(null);
 
-  const navigate = useNavigate();
-  const { postGameSuccess, isLoading: isSubmitting } = usePostSuccessGame();
+  const navigate = usePrefixedNavigate();
+  const { postGameSuccess } = usePostSuccessGame();
   const couponMutation = usePostGameCoupon();
 
-  // 쿠폰 당첨 여부 확인
-  // const isWinner = gameResult?.isWon || couponResult?.isWon || false;
-  const isWinner = true;
   const availableBooths = gameResult?.couponBooths ||
     couponResult?.couponBooths || [
       "프론티어",
@@ -40,19 +40,48 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
           "---------------26일(금)---------------",
         ];
 
-  const percentage = 12; // 상위 퍼센트 단계별로 하드코딩 하는 게 나아보임... stage 관리가 불가능
+  // 퍼센트는 디자인용 하드코딩 값
+  // 단계 기반으로 상위 몇 %를 계산
+  const totalStages =
+    totalStagesProp ?? gameResult?.totalStages ?? couponResult?.totalStages ?? 4;
+
+  const completedStages =
+    typeof completedStagesProp === "number"
+      ? completedStagesProp
+      : gameResult?.completedStages ?? couponResult?.completedStages ?? totalStages;
+
+  // 하드코딩된 단계->퍼센트 매핑 (프론트에서 고정으로 보여줄 값)
+  const stagePercentMap = {
+    1: 94,
+    2: 87,
+    3: 45,
+    4: 21,
+  };
+
+  let percent = stagePercentMap[completedStages];
+  // 매핑이 없으면 기존 비율 계산으로 폴백
+  if (typeof percent !== "number") {
+    percent = 0;
+    if (totalStages > 0) {
+      percent = Math.round((completedStages / totalStages) * 100);
+      percent = Math.max(0, Math.min(100, percent));
+    }
+  }
 
   if (!isOpen) return null;
 
   const handleNextStep = async () => {
     if (currentStep === 1) {
-      // 상자 열어보기 - API 호출
+      // 상자 열어보기 - 부모가 이미 API 결과(couponResult)를 전달했으면 재호출하지 않고 사용
+      let data = gameResult || couponResult;
       try {
-        const data = await postGameSuccess();
-        console.log("게임 성공 API 응답:", data);
-        setGameResult(data);
+        if (!data) {
+          data = await postGameSuccess();
+          setGameResult(data);
+        }
 
-        const iswon = true;
+        // backend may return is_coupon or isWon
+        const iswon = Boolean(data?.is_coupon ?? data?.isWon ?? false);
 
         if (iswon) {
           setCurrentStep(3); // 당첨된 경우 기존 플로우
@@ -80,18 +109,29 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
     onClose();
   };
 
+  // 먼저 모달 스크린샷을 시도하고, 실패하면 쿠폰 코드를 클립보드에 복사
+  const handleCaptureConfirm = async () => {
+    const code = couponData?.coupon_code || "AT81UC";
+    try {
+      await navigator.clipboard.writeText(code);
+      alert("쿠폰 코드가 클립보드에 복사되었습니다: " + code);
+    } catch (err) {
+      console.error("클립보드 복사 실패:", err);
+      alert("쿠폰 코드를 직접 복사해 주세요: " + code);
+    }
+    handleClose();
+  };
+
   const handleGetCoupon = async () => {
     try {
       const result = await couponMutation.mutateAsync({
         booth_name: selectedBooth,
       });
 
-      console.log("쿠폰 발급 성공:", result);
       setCouponData(result.data);
       setCurrentStep(4); // 쿠폰 발급 완료 단계로 이동
     } catch (error) {
       console.error("쿠폰 발급 실패:", error);
-      // 에러 처리 - 쿠폰이 없는 경우 등
       alert(
         "쿠폰 발급에 실패했습니다. 해당 부스의 쿠폰이 소진되었을 수 있습니다."
       );
@@ -117,7 +157,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
                     축하드립니다!
                   </div>
                   <div className="text-center text-neutral-300 text-[12px] font-normal font-suite leading-[150%]">
-                    기록 : 상위 12%
+                기록 : 상위 {percent}%
                   </div>
                 </div>
                 <div className="w-60 text-center text-neutral-600 text-[12px] font-normal font-suite leading-[150%] mt-[6px]">
@@ -128,14 +168,42 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
               </div>
 
               {/* 버튼 */}
-              <div
-                data-status="Header"
-                className="flex h-[38px] flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
-                onClick={handleNextStep}
-              >
-                <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
-                  상자 열어보기
-                </div>
+              <div className="relative w-full flex flex-col items-center">
+                {!isPlayingVideo && (
+                  <div
+                    data-status="Header"
+                    className="flex h-[38px] flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
+                    onClick={() => {
+                      // 재생 상태로 전환하고 비디오를 재생
+                      setIsPlayingVideo(true);
+                      // play는 다음 tick에서 실행되도록 setTimeout으로 보장
+                      setTimeout(() => {
+                        videoRef.current?.play();
+                      }, 0);
+                    }}
+                  >
+                    <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
+                      상자 열어보기
+                    </div>
+                  </div>
+                )}
+
+                {/* 비디오 플레이어: 재생 중일 때만 보이고, 끝나면 handleNextStep 호출 */}
+                {isPlayingVideo && (
+                  <video
+                    ref={videoRef}
+                    className="w-[250px] mt-3 rounded-lg"
+                    src={boxOpenWebm}
+                    onEnded={() => {
+                      setIsPlayingVideo(false);
+                      // 비디오가 끝나면 기존의 다음 단계 로직을 수행
+                      handleNextStep();
+                    }}
+                    playsInline
+                    controls={false}
+                    muted={false}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -279,7 +347,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
               <div
                 data-status="Header"
                 className="flex h-[38px] flex-col justify-center items-center mt-4 w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
-                onClick={handleNextStep}
+                onClick={handleGetCoupon}
               >
                 <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
                   {couponMutation.isPending ? "발급 중..." : "쿠폰 발급받기"}
@@ -318,10 +386,10 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
               <div
                 data-status="Header"
                 className="flex h-[38px] px-6 py-4 flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
-                onClick={handleClose}
+                onClick={handleCaptureConfirm}
               >
                 <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
-                  캡쳐 확인
+                  코드 복사
                 </div>
               </div>
             </div>
@@ -343,7 +411,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
                 <div className="flex flex-col items-center justify-center gap-6">
                   <div className="flex flex-col items-center justify-center">
                     <div className="text-center text-neutral-600 text-xl font-normal font-suite leading-relaxed">
-                      다음 기회에 다시 ㅠ.ㅠ
+                      다음 기회에 ㅠ.ㅠ
                     </div>
                   </div>
                   <div className="text-center text-black text-xs font-normal font-suite leading-relaxed">
@@ -388,23 +456,37 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
         <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-8">
           <div className="w-64 max-h-[250px] bg-white rounded-xl shadow-lg border border-neutral-200 overflow-hidden">
             <div className="max-h-[250px] overflow-y-auto">
-              {boothList.map((booth, index) => (
-                <div
-                  key={index}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleBoothSelect(booth);
-                  }}
-                  className="px-4 py-3 hover:bg-neutral-50 cursor-pointer flex justify-between items-center border-b border-neutral-100 last:border-b-0"
-                >
-                  <span className="text-neutral-700 text-sm font-medium">
-                    {booth}
-                  </span>
-                  {selectedBooth === booth && (
-                    <span className="text-primary-500 font-semibold">✓</span>
-                  )}
-                </div>
-              ))}
+              {boothList.map((booth, index) => {
+                const isSeparator = typeof booth === "string" && /-{3,}/.test(booth);
+                if (isSeparator) {
+                  return (
+                    <div
+                      key={`sep-${index}`}
+                      className="px-4 py-2 bg-neutral-50 text-center text-neutral-400 text-xs font-medium border-b border-neutral-100"
+                    >
+                      {booth.replace(/^-+|-+$/g, "").trim()}
+                    </div>
+                  );
+                }
+
+                return (
+                  <div
+                    key={index}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleBoothSelect(booth);
+                    }}
+                    className="px-4 py-3 hover:bg-neutral-50 cursor-pointer flex justify-between items-center border-b border-neutral-100 last:border-b-0"
+                  >
+                    <span className="text-neutral-700 text-sm font-medium">
+                      {booth}
+                    </span>
+                    {selectedBooth === booth && (
+                      <span className="text-primary-500 font-semibold">✓</span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
