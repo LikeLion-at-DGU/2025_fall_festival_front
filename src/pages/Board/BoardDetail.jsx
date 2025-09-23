@@ -25,7 +25,7 @@ const pillClsByCategory = (category) =>
   category === "Notice"
     ? "bg-white text-[#A1A1AA]"
     : category === "Event" || category === "LostItem"
-    ? "bg-white text-[#A1A1AA]" 
+    ? "bg-white text-[#A1A1AA]"
     : "bg-white text-[#A1A1AA]";
 
 // TagPill Component
@@ -41,7 +41,6 @@ function TagPill({ category }) {
     </span>
   );
 }
-
 
 // AbortError 무시
 const isAbortError = (e) =>
@@ -167,8 +166,9 @@ export default function BoardDetail() {
       source_text: post.title,
     });
 
-    if (post.content) {
-      const contentLines = String(post.content).split(/\n+/);
+    const rawBody = post.content ?? post.detail;
+    if (rawBody) {
+      const contentLines = String(rawBody).split(/\n+/);
       contentLines.forEach((line, index) => {
         if (line.trim()) {
           requestSingleTranslation({
@@ -373,7 +373,7 @@ export default function BoardDetail() {
     navigate(`/booth/${boothCardProps.boothId}`);
   };
 
-  const separatorCls = "w-[1px] h-[12px] bg-[#D1D5DB] ml-[12px] mr-[12px]"; 
+  const separatorCls = "w-[1px] h-[12px] bg-[#D1D5DB] ml-[12px] mr-[12px]";
 
   return (
     <div className="mx-auto w-full max-w-[430px] bg-white">
@@ -416,7 +416,8 @@ export default function BoardDetail() {
                           ? getTranslation(
                               "booth",
                               post.booth_id?.toString() ||
-                                post.booth_name?.toLowerCase() || "",
+                                post.booth_name?.toLowerCase() ||
+                                "",
                               "BoothName",
                               post.booth_name
                             )
@@ -479,10 +480,19 @@ export default function BoardDetail() {
                   )}
                 </div>
 
-                {/* 본문 텍스트 */}
+                {/* 본문 텍스트 (줄 단위 번역) */}
                 {contentText && (
-                  <section className="text-[#2A2A2E] text-[14px] not-italic font-normal leading-[150%] mt-[24px] whitespace-pre-line">
-                    {getTranslation("board", post.id, "BoardContent", contentText)}
+                  <section className="text-[#2A2A2E] text-[14px] not-italic font-normal leading-[150%] mt-[24px]">
+                    {paragraphs.map((line, idx) => (
+                      <p key={idx} className="whitespace-pre-line">
+                        {getTranslation(
+                          "board",
+                          post.id.toString(),
+                          `BoardContent_${idx}`,
+                          line
+                        )}
+                      </p>
+                    ))}
                   </section>
                 )}
 
@@ -540,64 +550,70 @@ export default function BoardDetail() {
                 <div className="text-[#2A2A2E] font-suite text-[20px] not-italic font-semibold mb-[16px]">
                   {t("board.relatedPosts")}
                 </div>
-              
+
                 <ul className="mt-3 flex flex-col gap-[12px]">
-                {related.slice(0, 3).map((item) => {
-                  const basePillCls = pillClsByCategory(item.category); // 기존 pillCls
-                  const pillTextColor =
-                    item.category === "Notice" ? "text-[#D33E2F]" : ""; // #공지일 때만 빨간색
-                  const writerOrBooth = item.writer || item.booth_name || "";
-                
-                  return (
-                    <li key={item.id} className="rounded-[12px] bg-white">
-                      <PrefixedLink
-                        to={`/board/${item.id}`}
-                        className="flex py-[13px] px-[10px] items-center justify-between w-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
-                      >
-                        <div className="flex items-center min-w-0">
-                          <span
-                            className={`inline-flex h-[23px] shrink-0 items-center justify-center rounded-[8px] text-[11px] font-suite font-normal leading-none ${basePillCls} ${pillTextColor}`}
-                          >
-                            #{t(CATEGORY_MAP[item.category] ?? item.category)}
-                          </span>
-                        </div>
-                        <div className={separatorCls}></div>
-                        <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
-                          <p className="truncate text-[#52525B] font-suite text-[16px] not-italic font-semibold leading-[150%]">
-                            {getTranslation("board", item.id, "BoardTitle", item.title)}
-                          </p>
-                          {writerOrBooth && (
-                            <span className="text-[#52525B] font-suite text-[12px] not-italic font-normal leading-[150%] shrink-0">
-                              -{" "}
-                              {item?.booth_name
-                                ? getTranslation(
-                                    "booth",
-                                    item.booth_id?.toString() ||
-                                      item.booth_name?.toLowerCase() ||
-                                      "",
-                                    "BoothName",
-                                    item.booth_name
-                                  )
-                                : item?.writer
-                                ? (() => {
-                                    const translatedName = getTranslation(
-                                      "writer",
-                                      item.id.toString(),
-                                      "WriterName",
-                                      item.writer
-                                    );
-                                    return translatedName.length > 20
-                                      ? translatedName.substring(0, 20) + "..."
-                                      : translatedName;
-                                  })()
-                                : writerOrBooth}
+                  {related.slice(0, 3).map((item) => {
+                    const basePillCls = pillClsByCategory(item.category); // 기존 pillCls
+                    const pillTextColor =
+                      item.category === "Notice" ? "text-[#D33E2F]" : ""; // #공지일 때만 빨간색
+                    const writerOrBooth = item.writer || item.booth_name || "";
+
+                    return (
+                      <li key={item.id} className="rounded-[12px] bg-white">
+                        <PrefixedLink
+                          to={`/board/${item.id}`}
+                          className="flex py-[13px] px-[10px] items-center justify-between w-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
+                        >
+                          <div className="flex items-center min-w-0">
+                            <span
+                              className={`inline-flex h-[23px] shrink-0 items-center justify-center rounded-[8px] text-[11px] font-suite font-normal leading-none ${basePillCls} ${pillTextColor}`}
+                            >
+                              #{t(CATEGORY_MAP[item.category] ?? item.category)}
                             </span>
-                          )}
-                        </div>
-                      </PrefixedLink>
-                    </li>
-                  );
-                })}
+                          </div>
+                          <div className={separatorCls}></div>
+                          <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
+                            <p className="truncate text-[#52525B] font-suite text-[16px] not-italic font-semibold leading-[150%]">
+                              {getTranslation(
+                                "board",
+                                item.id,
+                                "BoardTitle",
+                                item.title
+                              )}
+                            </p>
+                            {writerOrBooth && (
+                              <span className="text-[#52525B] font-suite text-[12px] not-italic font-normal leading-[150%] shrink-0">
+                                -{" "}
+                                {item?.booth_name
+                                  ? getTranslation(
+                                      "booth",
+                                      item.booth_id?.toString() ||
+                                        item.booth_name?.toLowerCase() ||
+                                        "",
+                                      "BoothName",
+                                      item.booth_name
+                                    )
+                                  : item?.writer
+                                  ? (() => {
+                                      const translatedName = getTranslation(
+                                        "writer",
+                                        item.id.toString(),
+                                        "WriterName",
+                                        item.writer
+                                      );
+                                      return translatedName.length > 20
+                                        ? translatedName.substring(0, 20) +
+                                            "..."
+                                        : translatedName;
+                                    })()
+                                  : writerOrBooth}
+                              </span>
+                            )}
+                          </div>
+                        </PrefixedLink>
+                      </li>
+                    );
+                  })}
                   {related.length === 0 && (
                     <li className="py-10 text-center text-gray-400">
                       {t("board.noRelatedPosts")}
@@ -605,7 +621,6 @@ export default function BoardDetail() {
                   )}
                 </ul>
               </section>
-
             </>
           )}
         </div>
