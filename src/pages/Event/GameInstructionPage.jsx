@@ -95,7 +95,7 @@ function GameInstructionPage({ onStartChallenge }) {
         )}
       </div>
 
-      <div className="w-full h-[256px] flex flex-col justify-center items-center text-center">
+      <div className="w-full flex flex-col justify-center items-center text-center">
         {isLimitExceeded ? (
           <div className="text-white text-center font-suite text-[32px] font-black leading-[160%] mb-6">
             참여해주셔서 감사합니다
@@ -127,7 +127,7 @@ function GameInstructionPage({ onStartChallenge }) {
           )}
         </div>
       </div>
-      <div className="w-full h-[155px] flex justify-center items-center">
+      <div className="w-full flex justify-center items-center mb-[70px]">
         <button
           type="button"
           className={`w-[343px] h-[56px] px-6 py-4 rounded-[12px] text-white bg-[#2A2A2E] flex flex-col justify-between items-center shrink-0 transition-colors ${
