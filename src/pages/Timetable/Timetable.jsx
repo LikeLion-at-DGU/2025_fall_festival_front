@@ -284,7 +284,7 @@ export default function Timetable() {
               className="mt-4 w-[185px] h-[35px]"
             />
             <p className="text-center text-[#A1A1AA] text-[16px] font-[400]">
-              {t("timetable.noStage")}
+              {t("timetable.noEventToday")}
             </p>
           </div>
         ) : isCelebrityMode ? (
