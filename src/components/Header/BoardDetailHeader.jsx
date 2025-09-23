@@ -3,7 +3,6 @@ import React from "react";
 import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 
 import backBtn from "../../assets/images/icons/header-icons/left.png";
 
