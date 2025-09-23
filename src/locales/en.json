@@ -155,10 +155,14 @@
     "rankPending": "Booth rankings are being calculated.",
     "event": "Event Booths",
     "eventError": "Unable to load event booths.",
-    "noEvent": "Waiting for events..."
+    "noEvent": "Waiting for events...",
+    "notFound": "This booth does not exist."
   },
   "common": {
-    "more": "More"
+    "more": "More",
+    "notFound": "Page Not Found",
+    "notFoundDescription": "The page you requested does not exist or has been deleted.",
+    "goBack": "Go Back"
   },
   "stage": {
     "now": "STAGE NOW",
