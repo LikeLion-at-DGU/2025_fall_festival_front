@@ -173,9 +173,9 @@ export default function Timetable() {
   ]);
 
   return (
-    <div className="font-sans flex flex-col gap-4 p-6 pt-3">
+    <div className="font-sans flex flex-col gap-4 p-6 pt-6">
       {/* 날짜 탭 */}
-      <div className="flex justify-between">
+      <div className="flex justify-around">
         {days.map((d) => (
           <button
             key={d.value}
@@ -184,7 +184,7 @@ export default function Timetable() {
               setIsCelebrityMode(false);
               setSelectedHour(null);
             }}
-            className={`pb-2 text-xl font-medium ${selectedDay === d.value
+            className={`px-[16px] pt-[4px] pb-[8px] text-xl font-medium ${selectedDay === d.value
               ? "text-red-500 border-b-2 border-red-500"
               : "text-black"
               }`}

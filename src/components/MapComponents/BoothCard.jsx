@@ -6,8 +6,8 @@ import UnheartIcon from "../../assets/images/icons/map-icons/emptyHeart.png";
 import Badge from "./BoothCardComponents/Badge";
 import useBoothLikes from "../../hooks/useBoothLikes";
 import defaultImg from "../../assets/images/banners/default-img.png";
-import drinkDefaultImg from "../../assets/images/icons/default-icons/drinkDefaultImg.svg"
-import foodtruckDefaultImg from "../../assets/images/icons/default-icons/drinkDefaultImg.svg"
+import drinkDefaultImg from "../../assets/images/icons/default-icons/drinkDefaultImg.svg";
+import foodtruckDefaultImg from "../../assets/images/icons/default-icons/foodtruckDefaultImg.svg";
 
 function BoothCard({
   boothId,
@@ -36,23 +36,34 @@ function BoothCard({
     initialLikesCount || 0,
     initialIsLiked || false
   );
-// console.log("위치",{location})
-
-  const getLocalizedWeekday = () => {
-    const today = new Date();
-
+  // console.log("위치",{location})
+  // 날짜 맵핑
+  const getWeekdayFromDate = (dateString) => {
+    const date = new Date(dateString);
     const languageMap = {
       ko: "ko-KR",
       en: "en-US",
       ja: "ja-JP",
       "zh-CN": "zh-CN",
     };
-
     const locale = languageMap[i18n.language] || "ko-KR";
-    return today.toLocaleDateString(locale, { weekday: "short" });
+    return date.toLocaleDateString(locale, { weekday: "short" });
   };
+  // const getLocalizedWeekday = () => {
+  //   const today = new Date();
+
+  //   const languageMap = {
+  //     ko: "ko-KR",
+  //     en: "en-US",
+  //     ja: "ja-JP",
+  //     "zh-CN": "zh-CN",
+  //   };
+
+  //   const locale = languageMap[i18n.language] || "ko-KR";
+  //   return today.toLocaleDateString(locale, { weekday: "short" });
+  // };
   // console.log({ isSelected });
-  const translatedTodayLabel = getLocalizedWeekday();
+  // const translatedTodayLabel = getLocalizedWeekday();
   return (
     <div
       className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
@@ -71,23 +82,26 @@ function BoothCard({
         {/* 이미지 */}
         <div className="relative w-[68px] h-[68px] flex-shrink-0">
           <div className="w-[68px] h-[68px] bg-gray-100 rounded-lg overflow-hidden">
-           <img
-  src={image || (category === "FoodTruck" 
-                   ? foodtruckDefaultImg 
-                   : category === "Drink" 
-                     ? drinkDefaultImg 
-                     : defaultImg)}
-  alt={title}
-  className="w-full h-full bg-[#C2C2C2] object-cover"
-  onError={(e) => {
-    e.currentTarget.src =
-      category === "FoodTruck"
-        ? foodtruckDefaultImg
-        : category === "Drink"
-        ? drinkDefaultImg
-        : defaultImg;
-  }}
-/>
+            <img
+              src={
+                image ||
+                (category === "FoodTruck"
+                  ? foodtruckDefaultImg
+                  : category === "Drink"
+                  ? drinkDefaultImg
+                  : defaultImg)
+              }
+              alt={title}
+              className="w-full h-full bg-[#C2C2C2] object-cover"
+              onError={(e) => {
+                e.currentTarget.src =
+                  category === "FoodTruck"
+                    ? foodtruckDefaultImg
+                    : category === "Drink"
+                    ? drinkDefaultImg
+                    : defaultImg;
+              }}
+            />
           </div>
           {/* Badge 겹치기 */}
           {badges?.isEventActive || isEvent ? (
@@ -97,7 +111,7 @@ function BoothCard({
           ) : null}
         </div>
         <div className="flex-1 relative min-w-0">
-          {category !== "Drink" && category !== "FoodTruck"&& (
+          {category !== "Drink" && category !== "FoodTruck" && (
             <div className="absolute top-0 right-0 flex flex-col items-center">
               <button
                 onClick={(e) => {
@@ -122,13 +136,31 @@ function BoothCard({
             </div>
           )}
 
-          {/* 영업시간 */}
           {category != "Drink" && (
             <p className="text-[10px] text-[#52525B] mb-0.5 font-suite leading-[150%] font-normal">
-              {time ||
-                (startTime && endTime
-                  ? `${translatedTodayLabel} ${startTime}~${endTime}`
-                  : t("booth.preparingHours"))}
+              {businessDays && businessDays.length > 0
+                ? // ✅ 요일/시간 묶어서 출력
+                  (() => {
+                    const grouped = {};
+
+                    businessDays.forEach((day) => {
+                      const weekday = getWeekdayFromDate(day.day); // 요일 변환
+                      const timeRange = `${day.start_time}~${day.end_time}`;
+                      if (!grouped[timeRange]) grouped[timeRange] = [];
+                      grouped[timeRange].push(weekday);
+                    });
+
+                    return Object.entries(grouped).map(
+                      ([timeRange, weekdays], idx) => (
+                        <span key={idx} className="block">
+                          {weekdays.join(", ")} {timeRange}
+                        </span>
+                      )
+                    );
+                  })()
+                : startTime && endTime
+                ? `${startTime}~${endTime}`
+                : t("booth.preparingHours")}
             </p>
           )}
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";  // ✅ useState 추가
 import axios from "axios";
 
-function useBooths(selectedFilter, userLocation = null, isNightToggle = null) {
+function useBooths(selectedFilter, userLocation = null, isNightToggle = null, selectedDate=null) {
   const [booths, setBooths] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -35,6 +35,7 @@ function useBooths(selectedFilter, userLocation = null, isNightToggle = null) {
                 ? { x: userLocation.x, y: userLocation.y }
                 : null,
             }),
+             ...(selectedDate && { date: selectedDate }), 
           },
           {
             headers: { "Content-Type": "application/json" },
@@ -42,7 +43,23 @@ function useBooths(selectedFilter, userLocation = null, isNightToggle = null) {
         );
 
         const results = response.data.results || response.data.booths || [];
-        setBooths(results);
+        //  날짜 필터링 추가
+     const filtered = selectedDate
+  ? results.filter((booth) => {
+      if (booth.category === "Booth") {
+        return booth.business_days?.some((d) => {
+          const boothDate = new Date(d.day).toISOString().split("T")[0];
+          return boothDate === selectedDate;
+        });
+      }
+      // 🚀 Booth가 아닌 건 무조건 그대로 보여줌
+      return true;
+    })
+  : results;
+
+
+
+        setBooths(filtered);
       } catch (err) {
         console.error("부스 조회 실패:", err);
         setError(err);
@@ -53,7 +70,7 @@ function useBooths(selectedFilter, userLocation = null, isNightToggle = null) {
     };
 
     fetchBooths();
-  }, [selectedFilter, userLocation, isNightToggle]);
+  }, [selectedFilter, userLocation, isNightToggle, selectedDate]);
 
   return { booths, loading, error };
 }
