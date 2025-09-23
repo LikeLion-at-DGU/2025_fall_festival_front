@@ -332,7 +332,7 @@ export default function BoothDetail() {
       {booth.is_dorder &&
         (booth.booth_can_usage === true || booth.booth_can_usage === false) && (
           <div className="w-full bg-white shadow rounded-[13px] p-3 text-sm text-gray-700 !mt-4 !mb-2">
-            {booth.booth_can_usage === "True" ? (
+            {booth.booth_can_usage === true ? (
               <div className="flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
