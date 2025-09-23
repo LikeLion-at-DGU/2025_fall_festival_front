@@ -17,11 +17,27 @@ import MapContainer from "../../components/MapComponents/MapContainer";
 function Map() {
   const [selectedFilter, setSelectedFilter] = useState("Booth");
   const { location: userLocation, getCurrentLocation } = useUserLocation();
+ // 축제 시작일
+  const festivalStart = new Date("2025-09-24T00:00:00");
 
-  // 낮/밤 토글 상태 (null이면 자동, true=밤, false=낮)
-  const [isNightToggle, setIsNightToggle] = useState(null);
-  // 날짜 상태 추가
-  const [selectedDate, setSelectedDate] = useState("");
+  // 오늘 날짜
+  const now = new Date();
+  const todayStr = now.toISOString().split("T")[0]; // YYYY-MM-DD
+
+  // 디폴트 날짜
+  const defaultDate =
+    now < festivalStart ? "2025-09-24" : todayStr;
+
+  // 디폴트 낮/밤
+  const defaultIsNight =
+    now < festivalStart
+      ? false // 축제 전이면 낮 고정
+      : now.getHours() >= 18 || now.getHours() < 6;
+
+  // ✅ 상태 초기화
+  const [isNightToggle, setIsNightToggle] = useState(defaultIsNight);
+  const [selectedDate, setSelectedDate] = useState(defaultDate);
+
   const { booths, loading, error } = useBooths(
     selectedFilter,
     userLocation,
@@ -65,7 +81,7 @@ function Map() {
     );
     return [...new Set(dates)]; // 중복 제거
   }, [booths]);
-  console.log("가능한 날짜아아아", availableDates);
+  // console.log("가능한 날짜아아아", availableDates);
 
   return (
     <div className="relative flex flex-col h-screen overflow-hidden">
@@ -95,13 +111,11 @@ function Map() {
             />
 
             {/* 맵 위 스위치 */}
-            {selectedFilter === "Booth" && (
+            {selectedFilter === "Booth" && !selectedPin&& (
               <div className="absolute top-[11px] right-[11px] z-10 ">
                 {/* ✅ 날짜 드롭다운 추가 */}
                 <div className="flex flex-row gap-2">
                 <DateDropdown selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-
-
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"

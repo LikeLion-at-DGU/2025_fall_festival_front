@@ -1,14 +1,13 @@
 // src/components/Header/BoardDetailHeader.jsx
 import React from "react";
-import { useLocation } from "react-router-dom";
-import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import backBtn from "../../assets/images/icons/header-icons/left.png";
 
 const BoardDetailHeader = () => {
   const { t } = useTranslation();
-  const navigate = usePrefixedNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const handleBackClick = () => {
@@ -22,7 +21,7 @@ const BoardDetailHeader = () => {
     fixed top-0 
     w-full max-w-[430px]
     bg-white 
-    h-[65px] px-[5px] flex-shrink-0 flex-col justify-center"
+    h-[65px] px-[5px] flex-shrink-0 flex-col justify-center z-50"
       style={{
         boxShadow: "0 1px 5px 0 rgba(0, 0, 0, 0.05)",
       }}

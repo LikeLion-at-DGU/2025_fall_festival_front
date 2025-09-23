@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useBoardTranslation } from "../../hooks/useTranslation";
 import { useTranslations } from "../../context/TranslationContext";
 const EVENT_TIME_CACHE = new Map();
-import SearchIcon from "../../assets/images/icons/board-icons/Search.svg";
+import SearchIcon from "../../assets/images/icons/map-icons/Search.svg";
 import EmptyLogo from "../../assets/images/icons/logo/empty-logo.png";
 import dirvana from "../../assets/images/icons/Timetable-icons/DIRVANA.svg";
 
@@ -93,7 +93,7 @@ function Tag({ label, active, onClick }) {
       className={[
         "flex py-[4px] px-[8px] justify-center items-center gap-[10px] rounded-[12px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
         active
-          ? "bg-black text-white font-suite text-[13px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
+          ? "bg-[#E65B4D] text-white font-suite text-[13px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
           : "bg-white text-[#2A2A2E] font-suite text-[13px] not-italic font-normal leading-[150%] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]",
       ].join(" ")}
     >
@@ -107,7 +107,7 @@ function SearchBar({ value, onChange }) {
 
   return (
     <div className="w-full">
-      <div className="flex w-full items-center rounded-[10px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] px-4 py-3">
+      <div className="flex w-full items-center rounded-[10px] bg-white shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] py-[8px] px-[16px]">
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
@@ -118,7 +118,7 @@ function SearchBar({ value, onChange }) {
           <img
             src={SearchIcon}
             alt={t("board.searchPlaceholder")}
-            className="w-[18px] h-[18px] flex-shrink-0"
+            className="w-[16px] h-[16px] flex-shrink-0 opacity-60"
           />
         </div>
       </div>
@@ -134,7 +134,7 @@ function Toast({ message }) {
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
       <div className="inline-flex w-[300px] h-[83px] pt-[29px] pr-[68px] pb-[28px] pl-[69px] rounded-[16px] bg-white shadow-[0_3px_5px_0_rgba(0,0,0,0.10)]">
-        <div className="text-black text-center font-[SUITE] text-[19px] leading-[130%]">
+        <div className="text-black text-center font-suite text-[19px] leading-[130%]">
           {message}
         </div>
       </div>
@@ -234,7 +234,7 @@ const BoardItem = ({ item, currentCategory }) => {
         <Link
           to={`/board/${item.id}`}
           onClick={handleClick}
-          className="flex py-[13px] px-[8px] rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] items-center justify-between gap-1.5 w-full"
+          className="flex py-[10px] pl-[8.5px] pr-[13px] rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)] items-center justify-between gap-1.5 w-full"
         >
           <div className="flex items-center min-w-0">
             <span
@@ -255,7 +255,7 @@ const BoardItem = ({ item, currentCategory }) => {
               {translatedTitle}
             </p>
             {displayWriter && (
-              <span className="text-[#52525B] font-suite text-[10px] not-italic font-normal leading-[150%] shrink-0">
+              <span className="text-[#52525B] font-suite text-[12px] not-italic font-normal leading-[150%] shrink-0">
                 - {displayWriter}
               </span>
             )}
@@ -481,8 +481,8 @@ export default function Board() {
   }, [totalPages, page]);
 
   return (
-    <div className="mx-auto max-w-screen-sm px-4 pb-4 flex flex-col">
-      <div className="pt-4">
+    <div className="mx-auto max-w-screen-sm px-[19px] pb-4 flex flex-col">
+      <div className="pt-[24px]">
         <SearchBar value={keyword} onChange={setKeyword} />
       </div>
       <div className="mt-4 flex flex-wrap gap-[10px]">
@@ -498,8 +498,8 @@ export default function Board() {
           );
         })}
       </div>
-      <div className="mt-7 mb-2">
-        <h2 className="text-[#2A2A2E] font-[SUITE] text-[20px] not-italic font-semibold leading-[130%]">
+      <div className="mt-7 mb-3">
+        <h2 className="text-[#2A2A2E] font-suite text-[16px] not-italic font-normal leading-[130%]">
           {t("board.header")}
         </h2>
       </div>

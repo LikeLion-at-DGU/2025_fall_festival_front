@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useTranslations } from "../../../context/TranslationContext";
-import base from "../../../assets/images/icons/Timetable-icons/base.svg";
+import defaultImg from "../../../assets/images/banners/default-img.png";
 
 export default function MenuSection({ menus, boothId }) {
   const { t } = useTranslation();
@@ -27,8 +27,8 @@ export default function MenuSection({ menus, boothId }) {
   }, [menus, boothId, requestSingleTranslation]);
 
   return (
-    <div className="w-full mx-4 mt-4">
-      <h2 className="font-semibold mb-[12px] text-[#EF7063] text-xl">
+    <div className="w-full pt-[16px]">
+      <h2 className="font-semibold mb-[5px] text-[#EF7063] text-xl">
         {t("booth.menu")}
       </h2>
 
@@ -39,12 +39,17 @@ export default function MenuSection({ menus, boothId }) {
             {/* 카드 본체 - 높이를 자동으로 조절 */}
             <div className="bg-white shadow-md rounded-2xl p-3 flex flex-col items-start mb-2 min-h-[215px]">
               {/* 이미지 박스 */}
-              <div className="relative w-[107px] h-[107px] flex items-center justify-center bg-gray-200 rounded-[16px]">
+              <div className="relative w-[100px] h-[100px] flex items-center justify-center bg-gray-200 rounded-[16px]">
                 <img
-                  src={m.image_url || base}
+                  src={m.image_url || defaultImg}
                   alt={m.name}
-                  className={`w-full h-full object-cover rounded-[8px] ${m.is_soldout ? "opacity-60" : "opacity-100"
-                    }`}
+                  className={`w-full h-full object-cover rounded-[8px] ${
+                    m.is_soldout ? "opacity-60" : "opacity-100"
+                  }`}
+                  onError={(e) => {
+                    e.currentTarget.src = defaultImg;
+                  }}
+
                 />
                 {/* 품절 배지 */}
                 {m.is_soldout && (
@@ -64,7 +69,7 @@ export default function MenuSection({ menus, boothId }) {
                     m.name
                   )}
                 </p>
-                <p className="text-xs text-gray-500 text-left mt-1">
+                <p className="text-xs text-gray-500 text-right ">
                   {m.price}
                   {t("booth.currency")}
                 </p>

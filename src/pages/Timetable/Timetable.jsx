@@ -184,10 +184,11 @@ export default function Timetable() {
               setIsCelebrityMode(false);
               setSelectedHour(null);
             }}
-            className={`px-[16px] pt-[4px] pb-[8px] text-xl font-medium ${selectedDay === d.value
-              ? "text-red-500 border-b-2 border-red-500"
-              : "text-black"
-              }`}
+            className={`px-[16px] pt-[4px] pb-[8px] text-xl font-medium ${
+              selectedDay === d.value
+                ? "text-red-500 border-b-2 border-red-500"
+                : "text-black"
+            }`}
           >
             {d.label}
           </button>
@@ -205,10 +206,11 @@ export default function Timetable() {
         {hours.map((time) => (
           <div key={time} className="flex flex-col items-center">
             <span
-              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${selectedHour === time && !isCelebrityMode
-                ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
-                : "text-[#71717A]"
-                }`}
+              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${
+                selectedHour === time && !isCelebrityMode
+                  ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
+                  : "text-[#71717A]"
+              }`}
             >
               {time}
             </span>
@@ -240,10 +242,11 @@ export default function Timetable() {
         {/* 연예인 버튼 */}
         <div className="flex flex-col items-center">
           <span
-            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${isCelebrityMode
-              ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
-              : "text-[#71717A]"
-              }`}
+            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${
+              isCelebrityMode
+                ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
+                : "text-[#71717A]"
+            }`}
           >
             {t("timetable.celebrity")}
           </span>
@@ -270,11 +273,10 @@ export default function Timetable() {
       </div>
 
       {/* 공연 리스트 */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
         {loading ? (
           <p className="text-center text-gray-400">{t("timetable.loading")}</p>
         ) : selectedDay === "2025-09-24" ? (
-          // Day1은 무조건 "오늘은 공연이 없어요"
           <div className="flex flex-col items-center gap-6 pt-20">
             <img
               src={dirvana}
@@ -282,7 +284,7 @@ export default function Timetable() {
               className="mt-4 w-[185px] h-[35px]"
             />
             <p className="text-center text-[#A1A1AA] text-[16px] font-[400]">
-              {t("timetable.noEventToday")}
+              {t("timetable.noStage")}
             </p>
           </div>
         ) : isCelebrityMode ? (
@@ -290,7 +292,7 @@ export default function Timetable() {
             celebrityEvents.map((s) => (
               <div
                 key={s.id}
-                className={`flex items-center gap-[13px] px-[14px] py-[18px] rounded-[16px] 
+                className={`flex items-center gap-[13px] p-[16px] rounded-[16px] 
             border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
             ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
               >
@@ -331,7 +333,7 @@ export default function Timetable() {
             {currentClubEvents.map((s) => (
               <div
                 key={s.id}
-                className={`flex items-center gap-[13px] px-[14px] pr-[75px] py-[18px] rounded-[16px] 
+                className={`flex items-center gap-[13px] p-[16px] pr-[75px] rounded-[16px] 
             border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
             ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
               >
@@ -370,14 +372,14 @@ export default function Timetable() {
             {/* 바로 다음 공연 (동아리 remaining + 연예인) */}
             {(remainingClubEvents.length > 0 || celebrityEvents.length > 0) && (
               <div className="mt-4">
-                <p className="text-sm text-[#71717A] mb-5">
+                <p className="text-sm text-[#71717A] mb-3 ml-1">
                   {t("timetable.nextStage")}
                 </p>
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-4">
                   {[...remainingClubEvents, ...celebrityEvents].map((s) => (
                     <div
                       key={s.id}
-                      className={`flex items-center gap-[13px] px-[14px] pr-[75px] py-[18px] rounded-[16px] 
+                      className={`flex items-center gap-[13px] p-[16px] pr-[75px] rounded-[16px] 
                   border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
                   ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
                     >
@@ -432,7 +434,6 @@ export default function Timetable() {
           </div>
         )}
       </div>
-
     </div>
   );
 }
