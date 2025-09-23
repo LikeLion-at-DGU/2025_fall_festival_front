@@ -6,6 +6,7 @@ import { useBoothTranslation } from "../../../hooks/useTranslation";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import defaultImg from "../../../assets/images/banners/default-img.png";
+import { BASE_PATH } from "../../../config/routes"; // 경로 맞춰 import
 
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -53,13 +54,19 @@ export default function NearbyBoothSection({ boothId }) {
 
   // 현재 시간대 계산
   const now = new Date();
+
+  // 한국 날짜 (yyyy-MM-dd)
+  const today = now.toLocaleDateString("sv-SE", { timeZone: "Asia/Seoul" });
+
+  // 한국 시각 (0~23시)
   const hour = now.getHours();
   const isNight = hour >= 17; // 17~23시는 야간
 
-  const today = new Date().toISOString().split("T")[0];
-  console.log("오늘 날짜:", today);
-  console.log("현재 시간대:", isNight ? "야간" : "주간");
-  
+
+  // console.log("오늘 날짜:", today);
+  // console.log("현재 시간:", hour);
+  // console.log("현재 시간대:", isNight ? "야간" : "주간");
+
 
   const filteredBooths = translatedBooths.filter(
     (b) =>
@@ -82,7 +89,7 @@ export default function NearbyBoothSection({ boothId }) {
         {limitedBooths.map((b) => (
           <div
             key={b.booth_id}
-            onClick={() => navigate(`/comingsoon/booth/${b.booth_id}`)}
+            onClick={() => navigate(`${BASE_PATH}/booth/${b.booth_id}`)}
             className="relative bg-white shadow-md rounded-2xl p-3 flex-shrink-0 w-32 flex flex-col items-start mb-2"
           >
             {/* 이미지 */}
