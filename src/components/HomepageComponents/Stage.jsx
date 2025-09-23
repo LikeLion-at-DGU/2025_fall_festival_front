@@ -12,8 +12,6 @@ import {
   formatPerformanceTime,
 } from "../../data/clubPerformances";
 import { useTranslations } from "../../context/TranslationContext";
-import { useTranslation } from "react-i18next";
-
 
 const Stage = () => {
   const navigate = usePrefixedNavigate();
@@ -23,8 +21,6 @@ const Stage = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [currentClubPerformance, setCurrentClubPerformance] = useState(null);
 
-  const { t } = useTranslation();
-  
   /* 9월 25일 연예인 */
   const artists25th = [
     { name: "FTISLAND", image: ftisland },
@@ -39,19 +35,23 @@ const Stage = () => {
     { name: "창모", image: changmo },
   ];
 
+  const allArtists = [...artists25th, ...artists26th];
+
   /* 현재 날짜에 맞는 연예인들 선택 */
   const getCurrentArtists = () => {
     const today = new Date();
     const month = today.getMonth() + 1;
     const date = today.getDate();
 
-    if (month === 9 && date === 25) {
+    if (month === 9 && date === 24) {
+      return allArtists;
+    } else if (month === 9 && date === 25) {
       return artists25th;
     } else if (month === 9 && date === 26) {
       return artists26th;
     }
 
-    return null;
+    return allArtists;
   };
 
   const currentArtists = getCurrentArtists();
@@ -74,7 +74,7 @@ const Stage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isShowTime || !currentArtists || currentArtists.length <= 1) return;
+    if (!currentArtists || currentArtists.length <= 1) return;
 
     const interval = setInterval(() => {
       setIsTransitioning(true);
@@ -86,7 +86,7 @@ const Stage = () => {
     }, 2000);
 
     return () => clearInterval(interval);
-  }, [isShowTime, currentArtists]);
+  }, [currentArtists]);
 
   const handleStageClick = () => {
     navigate("/timetable");
@@ -100,7 +100,7 @@ const Stage = () => {
       >
         <img src={stage} alt="stage" className="w-6 h-6" />
         <p className="text-xl font-semibold font-suite text-[#52525B]">
-          STAGE NOW
+          LINE-UP
         </p>
       </div>
       <div className="relative cursor-pointer" onClick={handleStageClick}>
@@ -136,8 +136,8 @@ const Stage = () => {
               </p>
             </div>
           </>
-        ) : isShowTime && currentArtists ? (
-          /* 오후 8시 이후이고 해당 날짜의 연예인이 있을 때: 연예인 이미지 슬라이드 */
+        ) : (
+          /* 연예인 이미지 슬라이드 (항상 표시) */
           <>
             <img
               src={currentArtists[currentArtistIndex].image}
@@ -166,25 +166,6 @@ const Stage = () => {
               )}
             </p>
           </>
-        ) : (
-          /* 공연이 없을 때: 공연 준비중 메시지 */
-          <div
-            className="w-full h-[156px] flex items-center justify-center"
-            style={{
-              borderRadius: "16px",
-              background:
-                "linear-gradient(102deg, #F8B0A9 -12.13%, #FDF4F3 111.05%)",
-            }}
-          >
-            <div className="text-center">
-              <p className="text-[18px] font-semibold text-[#52525B] mb-[15px]">
-                {t("stage.preparing")}
-              </p>
-              <p className="text-[18px] font-medium text-[#52525B]">
-                Coming Soon...
-              </p>
-            </div>
-          </div>
         )}
       </div>
     </div>

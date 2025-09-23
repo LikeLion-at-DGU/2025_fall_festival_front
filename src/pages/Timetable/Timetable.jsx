@@ -273,7 +273,7 @@ export default function Timetable() {
       </div>
 
       {/* 공연 리스트 */}
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4">
         {loading ? (
           <p className="text-center text-gray-400">{t("timetable.loading")}</p>
         ) : selectedDay === "2025-09-24" ? (
@@ -292,7 +292,7 @@ export default function Timetable() {
             celebrityEvents.map((s) => (
               <div
                 key={s.id}
-                className={`flex items-center gap-[13px] px-[14px] py-[18px] rounded-[16px] 
+                className={`flex items-center gap-[13px] p-[16px] rounded-[16px] 
             border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
             ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
               >
@@ -333,7 +333,7 @@ export default function Timetable() {
             {currentClubEvents.map((s) => (
               <div
                 key={s.id}
-                className={`flex items-center gap-[13px] px-[14px] pr-[75px] py-[18px] rounded-[16px] 
+                className={`flex items-center gap-[13px] p-[16px] pr-[75px] rounded-[16px] 
             border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
             ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
               >
@@ -372,14 +372,14 @@ export default function Timetable() {
             {/* 바로 다음 공연 (동아리 remaining + 연예인) */}
             {(remainingClubEvents.length > 0 || celebrityEvents.length > 0) && (
               <div className="mt-4">
-                <p className="text-sm text-[#71717A] mb-5">
+                <p className="text-sm text-[#71717A] mb-3 ml-1">
                   {t("timetable.nextStage")}
                 </p>
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-4">
                   {[...remainingClubEvents, ...celebrityEvents].map((s) => (
                     <div
                       key={s.id}
-                      className={`flex items-center gap-[13px] px-[14px] pr-[75px] py-[18px] rounded-[16px] 
+                      className={`flex items-center gap-[13px] p-[16px] pr-[75px] rounded-[16px] 
                   border bg-white shadow-[0_3px_5px_rgba(0,0,0,0.10)] 
                   ${s.is_active ? "border-[#EF7063]" : "border-[#E4E4E7]"}`}
                     >
