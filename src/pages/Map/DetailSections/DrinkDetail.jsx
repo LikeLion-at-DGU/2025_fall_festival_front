@@ -5,6 +5,7 @@ import i18n from "i18next";
 
 import MenuSection from "./MenuSection";
 import NearbyBoothSection from "./NearbyBoothSection";
+import defaultImg from "../../../assets/images/banners/default-img.png";
 
 import TimeCircleIcon from "../../../assets/images/icons/map-icons/TimeCircle.svg";
 import LocationIcon from "../../../assets/images/icons/map-icons/Location.svg";
@@ -106,18 +107,14 @@ export default function DrinkDetail() {
     <div className="pt-6 pb-8">
       {/* 상단 이미지 */}
       <div className="w-[343px] h-[232px] mx-auto bg-gray-200 flex items-center justify-center text-gray-500 rounded-[16px] overflow-hidden">
-        {drink.image_url ? (
-          <img
-            src={drink.image_url}
-            alt={drink.name}
-            className="w-[343px] h-[232px] object-cover"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
-          />
-        ) : (
-          t("booth.drinkImagePlaceholder")
-        )}
+        <img
+          src={drink.image_url || defaultImg} // ✅ image_url 없으면 defaultImg
+          alt={drink.name}
+          className="w-[343px] h-[232px] object-cover"
+          onError={(e) => {
+            e.currentTarget.src = defaultImg; // ✅ 에러나면 defaultImg로 대체
+          }}
+        />
       </div>
 
       {/* 카드 */}

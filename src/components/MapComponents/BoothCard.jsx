@@ -145,7 +145,10 @@ function BoothCard({
 
                     businessDays.forEach((day) => {
                       const weekday = getWeekdayFromDate(day.day); // 요일 변환
-                      const timeRange = `${day.start_time}~${day.end_time}`;
+                      // ✅ 초 제거: HH:MM만 추출
+                      const start = day.start_time.slice(0, 5);
+                      const end = day.end_time.slice(0, 5);
+                      const timeRange = `${start}~${end}`;
                       if (!grouped[timeRange]) grouped[timeRange] = [];
                       grouped[timeRange].push(weekday);
                     });
