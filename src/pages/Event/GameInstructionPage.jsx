@@ -138,13 +138,9 @@ function GameInstructionPage({ onStartChallenge }) {
           onClick={() => {
             if (isLimitExceeded || startGameMutation.isPending) return;
 
-            console.log("도전하기 버튼 클릭됨!");
-
             // 게임 시작 API 호출
             startGameMutation.mutate(undefined, {
               onSuccess: (response) => {
-                console.log("게임 시작 API 성공:", response);
-
                 // API 응답에서 업데이트된 시도 횟수를 받아서 localStorage 업데이트
                 if (response?.game_try_times !== undefined) {
                   setAttemptCount(response.game_try_times);
