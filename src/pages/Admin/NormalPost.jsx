@@ -10,14 +10,12 @@ import { createNormalPost, updateNormalPost } from "../../apis/admin/festa";
 /*
  ### 접근권한
  * 접근 : 축제관리자 [축기단, 총학 UID]
- * 작성 허용 : role = Staff && Stuco
+ * 작성 허용 : role = Staff || Stuco
  * 접근 거부 트리거 : "POST 시도 시" 인증 만료 여부 판단 및 로그인 리다이렉트
- * 
- *  
+  
  ### POST 조건
- * btn 활성화 : 전 필드 input, 시간 유효성 검사 통과
- * 
- * 
+ * 전 필드 input
+ * submitBtn 활성화
  */
 
 function NormalPost() {

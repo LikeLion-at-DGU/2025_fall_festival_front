@@ -11,31 +11,20 @@ import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import { adminLogin } from "../../apis/admin/admin";
 
 /* ------- 관리자 로그인 구현 플로우 -------- */
-
+/*
 // CodeInput에 입력하는 값을 state로 연결합니다. (value, onChange)
 // SubmitBtn 클릭 시 handleSubmit을 실행합니다.
 // adminLogin API 호출 후 uid/role/name을 저장하고, 이후 게시글목록 페이지로 이동합니다.
 
+/* -------------- 인증 방식 --------------- */
 /*
- ### 접근권한
- * 접근 : 부스관리자 [동아리, 학과 UID]
- * 작성 허용 : role = Club && Major
- * 접근 거부 트리거 : "POST 시도 시" 인증 만료 여부 판단 및 로그인 리다이렉트
- * 로그인 방식 : 
- * 인증 만료 판단 기준 : uid_value === false
- *  
- ### POST 조건
- * 전 필드 input
- * 시간 유효성 검사 통과
- * submitBtn 활성화
- * 
+ * 로그인 방식 : 부여받은 관리자 코드로 로그인 시, 일회성 uid 발급 => 세션스토리지에 role, uid, name 저장
+ * 접근 : role을 기준으로 페이지 분기 접근
+ * 게시글 작성 허용 : (1) role이 허용 되었을 경우 + (2) uid가 유효할 경우
+ * 작성 및 접근 거부 트리거 : POST 시도 시 >> 로그인(인증) 만료 여부 판단 및 로그인 리다이렉트
+ * 로그인(인증) 만료 판단 기준 : uid_value === false
+ * ++ uid 만료 기준 : 1시간 후 db에서 해당 uid 자동 삭제 => uid_value === false 반환 => 유효하지 않음 판단
  */
-
-/*----관리자 임의 생성 코드----*/
-// 총학: stuco
-// 축기단: staff
-// 동아리: club
-// 학과: major
 
 function AdminLogin() {
   
@@ -51,9 +40,9 @@ function AdminLogin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
+
     // ✅ 로그인 전에 세션스토리지 비우기 (꼬인 uid 방지)
     sessionStorage.clear();
-    
 
     try {
       const data = await adminLogin({ admin_code: code });
@@ -73,7 +62,7 @@ function AdminLogin() {
         name: sessionStorage.getItem("name"),
       });
       
-      alert("로그인 성공"); // ⛔ alert 창 최종 확인 후 제거 예정
+      alert("로그인 성공");
 
       // role에 따라서 라우팅 분기
       if (data.role === "Staff" || data.role === "Stuco") {
@@ -87,8 +76,10 @@ function AdminLogin() {
       }
 
     } catch (err) {
-      //showToast(setErrorMsg, err.response?.data?.error || "로그인 실패");
       showToast(setErrorMsg, "관리자 코드를 확인해주세요");
+      //showToast(setErrorMsg, err.response?.data?.error || "로그인 실패");
+      // 1. 관리자 코드가 존재하지 않을 경우
+      // 2. 필드에 입력값이 없을 경우
     }
   };
 

@@ -13,14 +13,12 @@ import { createLostPost, updateLostPost } from "../../apis/admin/festa";
 /*
  ### 접근권한
  * 접근 : 축제관리자 [축기단, 총학 UID]
- * 작성 허용 : role = Staff && Stuco
+ * 작성 허용 : role = Staff || Stuco
  * 접근 거부 트리거 : "POST 시도 시" 인증 만료 여부 판단 및 로그인 리다이렉트
- * 
- * 
+
  ### POST 조건
- * btn 활성화 : 전 필드 input, 시간 유효성 검사 통과
- * 
- * 
+ * 전 필드 input (이미지 제외)
+ * submitBtn 활성화
  */
 
 function LostPost() {
@@ -87,6 +85,7 @@ function LostPost() {
       setTimeout(() => navigate("/admin/festa"), 1000);
     } catch (err) {
       console.error("에러 전체:", err);
+      
 
       // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
       if (err.response?.data?.uid_valid === false) {
