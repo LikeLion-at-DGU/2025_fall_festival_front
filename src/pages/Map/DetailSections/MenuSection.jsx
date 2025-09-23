@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useTranslations } from "../../../context/TranslationContext";
+import base from "../../../assets/images/icons/Timetable-icons/base.svg";
 
 export default function MenuSection({ menus, boothId }) {
   const { t } = useTranslation();
@@ -39,15 +40,12 @@ export default function MenuSection({ menus, boothId }) {
             <div className="bg-white shadow-md rounded-2xl p-3 flex flex-col items-start mb-2 min-h-[215px]">
               {/* 이미지 박스 */}
               <div className="relative w-[107px] h-[107px] flex items-center justify-center bg-gray-200 rounded-[16px]">
-                {m.image_url && (
-                  <img
-                    src={m.image_url}
-                    alt={m.name}
-                    className={`w-full h-full object-cover rounded-xl ${
-                      m.is_soldout ? "opacity-60" : "opacity-100"
+                <img
+                  src={m.image_url || base}
+                  alt={m.name}
+                  className={`w-full h-full object-cover rounded-[8px] ${m.is_soldout ? "opacity-60" : "opacity-100"
                     }`}
-                  />
-                )}
+                />
                 {/* 품절 배지 */}
                 {m.is_soldout && (
                   <span className="whitespace-nowrap absolute top-1 left-8 text-[10px] bg-[#2A2A2ECC] text-[#E65B4D] font-normal px-[6px] py-[3px] rounded-[16px] z-10">
@@ -57,7 +55,7 @@ export default function MenuSection({ menus, boothId }) {
               </div>
 
               {/* 텍스트 영역 - flex-grow로 남은 공간 차지 */}
-              <div className="mt-2 flex-1 flex flex-col justify-start w-full">
+              <div className="mt-2 flex-1 flex flex-col justify-between w-full">
                 <p className="text-sm font-semibold text-left break-words leading-tight">
                   {getTranslation(
                     "booth",
