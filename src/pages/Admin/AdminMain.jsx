@@ -89,25 +89,24 @@ function AdminMain() {
   );
 
   // 제출 로직: 긴급 공지 수정 field의 수정 사항 반영
-  const handlePatchEvent = async () => {
-    try {
-      const result = await patchEmergencyNotice(143, {
-        title: notice,
-        content: notice,
-      });
+const handlePatchEvent = async () => {
+  try {
+    const result = await patchEmergencyNotice({
+      title: notice,
+      content: notice,
+    });
 
-      setToast(result.message);
+    setToast(result.message);
 
-      // 🔥 PATCH 후 최신 긴급공지 다시 불러오기
-      const updated = await getEmergencyNotice();
-      if (updated) setNotice(updated.title);
+    // PATCH 후 최신 긴급공지 다시 불러오기
+    const updated = await getEmergencyNotice();
+    if (updated) setNotice(updated.title);
 
-      setIsEdited(false);
-    } catch (err) {
-      setToast(err.error || "수정 실패");
-    }
-  };
-
+    setIsEdited(false);
+  } catch (err) {
+    setToast(err.error || "수정 실패");
+  }
+};
 
   // 제출 로직: 유저 정보 확인 후, 분실물 페이지로 연결
   const handleAddLostItem = () => {
