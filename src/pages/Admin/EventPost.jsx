@@ -12,15 +12,13 @@ import Tooltip from "../../components/AdminComponents/Tooltip";
 /*
  ### 접근권한
  * 접근 : 부스관리자 [동아리, 학과 UID]
- * 작성 허용 : role = Club && Major
+ * 작성 허용 : role = Club || Major
  * 접근 거부 트리거 : "POST 시도 시" 인증 만료 여부 판단 및 로그인 리다이렉트
- * 
- *  
+ 
  ### POST 조건
  * 전 필드 input
  * 시간 유효성 검사 통과
  * submitBtn 활성화
- * 
  */
 
 function EventPost() {
@@ -37,7 +35,7 @@ function EventPost() {
 
   const timeWrapper = "flex flex-row items-center w-1/2 gap-2";
 
-  //------- 시간 필드 유효성 검사 로직 ------//
+  //------------------ 시간 필드 유효성 검사 로직 ------------------//
 
   // 1. 올바른 시각 형태 여부 검사
   const isValidTime = (hour, minute) => {
@@ -122,49 +120,50 @@ function EventPost() {
     setTimeError("");
   };
 
-  //------- 이벤트 개최 폼 제출 로직 ------//
-
+  //-------------------- 이벤트 개최 폼 제출 로직 -------------------//
   // 제출 로직: 이벤트 등록 후 부스관리자 메인으로 이동합니다.
+  // 조건 1 : uid 존재 + 유효(uid_value === false 가 아님)
+  // 조건 2 : 시간 유효성 검사 통과
+  // 조건 3 : 전 필드 입력값 존재
+
   const handleSubmit = async () => {
-    try {
+
+    // 1. uid 존재 여부 판별 ⛔
       const uid = sessionStorage.getItem("uid");
       if (!uid) {
-        setToastMsg("세션이 만료되었습니다. \n 다시 로그인해주세요."); // ⛔ 폐기 예정
-        setTimeout(() => navigate("/admin/login"), 2000);
+        setToastMsg("로그인이 필요합니다.");
+        setTimeout(() => navigate("/admin/login"), 1500);
         return;
       }
 
-      // 시작/종료/현재시간 비교
+    try {
+      // 2. 시작/종료/현재시간 비교
       const validationError = validateTimes(startHour, startMinute, endHour, endMinute);
       if (validationError) {
-        setToastMsg(validationError); // 🔥 토스트로 에러 표시
+        setToastMsg(validationError);
         return;
       }
-
       // 오늘 날짜 구하기
       const today = new Date();
       const yyyy = today.getFullYear();
       const mm = String(today.getMonth() + 1).padStart(2, "0");
       const dd = String(today.getDate()).padStart(2, "0");
-
       // 최종 request body용 start/end_time
       const start_time = `${yyyy}-${mm}-${dd}T${startHour}:${startMinute}:00`;
       const end_time = `${yyyy}-${mm}-${dd}T${endHour}:${endMinute}:00`;
 
+      // 이벤트 생성 요청
       await createEvent({ title, detail, start_time, end_time });
-
       setToastMsg("이벤트가 등록되었습니다");
       setIsPopupOpen(false);
       setTimeout(() => navigate("/admin/booth"), 1000);
     } catch (err) {
       console.error(err);
 
-      // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
+      // 3. uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
       if (err.response?.data?.uid_valid === false) {
         setToastMsg("세션이 만료되었습니다.\n 다시 로그인해주세요");
-        setTimeout(() => {
-          navigate("/admin/login");
-        }, 1500);
+        setTimeout(() => {navigate("/admin/login");}, 1500);
         return;
       }
 
@@ -177,7 +176,8 @@ function EventPost() {
     }
   };
 
-  //------------- UI --------------//
+  
+  //============================== UI ==================================//
 
   return (
     <div className="flex flex-col items-center w-full px-4 py-8 mx-auto gap-4">
