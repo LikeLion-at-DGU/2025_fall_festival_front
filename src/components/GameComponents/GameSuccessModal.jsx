@@ -235,9 +235,9 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
             >
               X
             </div>
-            <div className="w-72 pt-[40px] pb-[25px] relativeoverflow-hidden flex flex-col items-center justify-center">
+            <div className="w-72  relativeoverflow-hidden flex flex-col items-center justify-center">
               <div className="flex flex-col justify-start items-center gap-1.5">
-                <div className="flex flex-col justify-start items-start gap-4">
+                <div className="flex flex-col justify-start items-start gap-3">
                   <div className="w-60 flex flex-col justify-start items-center">
                     <div className="self-stretch text-center justify-start text-neutral-600 text-xl font-normal font-suite leading-relaxed">
                       대박... 당첨!
@@ -248,22 +248,26 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
                   </div>
                 </div>
                 <div
-                  className="w-64 bg-neutral-100 rounded-xl flex flex-col justify-start items-start overflow-hidden cursor-pointer hover:bg-neutral-200 transition-colors"
+                  className="mt-3 w-64 bg-neutral-100 rounded-xl flex flex-col justify-start items-start overflow-hidden cursor-pointer hover:bg-neutral-200 transition-colors"
                   onClick={() => setShowBoothList(true)}
                 >
-                  <div className="self-stretch h-7 p-4 flex flex-col justify-between items-center">
+                  <div className="self-stretch py-[8px] px-4 flex flex-col justify-between items-center">
                     <div className="self-stretch inline-flex justify-start items-center gap-2">
                       <div className="flex-1 justify-start text-neutral-500 text-[10px] font-semibold font-suite leading-none">
                         {selectedBooth}
                       </div>
-                      <div className="w-2 h-1 origin-top-left -rotate-90 rounded-sm outline outline-2 outline-offset-[-0.90px] outline-neutral-600"></div>
+                      <img
+                        src={downIcon}
+                        alt="dropdown"
+                        className="w-4 h-4 cursor-pointer"
+                      />
                     </div>
                   </div>
                 </div>
               </div>
               <div
                 data-status="Header"
-                className="flex h-[38px] flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
+                className="flex h-[38px] flex-col justify-center items-center mt-4 w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
                 onClick={handleNextStep}
               >
                 <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
@@ -284,9 +288,9 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
             >
               X
             </div>
-            <div className="w-72 pt-[40px] pb-[25px] relative overflow-hidden flex flex-col items-center justify-center">
-              <div className="flex flex-col justify-start items-start gap-1.5">
-                <div className="w-60 flex flex-col justify-start items-center">
+            <div className="w-72 gap-5 relative overflow-hidden flex flex-col items-center justify-center">
+              <div className="flex flex-col justify-start items-start gap-2">
+                <div className="w-60 gap-1 flex flex-col justify-start items-center">
                   <div className="self-stretch text-center justify-start text-primary-500 text-xl font-semibold font-suite leading-relaxed">
                     "{couponData?.coupon_code || "AT81UC"}"
                   </div>
@@ -294,7 +298,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
                     5% 할인 쿠폰
                   </div>
                 </div>
-                <div className="w-60 text-center justify-start text-black text-xs font-normal font-suite leading-none">
+                <div className="w-60 text-center justify-start text-black text-xs font-normal font-suite leading-none mt-1">
                   선택한 주점에서 사용 가능한 할인 쿠폰입니다.
                   <br />
                   캡쳐 후 방문하여 사용해주시길 바랍니다.
