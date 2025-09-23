@@ -9,7 +9,7 @@ const MapContainer = ({ apiData, selectedFilter, onSelectBooth, selectedPin, han
     <div className="w-full mx-auto relative">
       {selectedFilter === "Booth" && selectedPin ? (
         <DetailMap
-          buildingName={selectedPin}
+           buildingId={selectedPin} 
           onClose={() => handlePinClick(null)}   // 뒤로가기 → 핀 해제
           onSelectBooth={onSelectBooth}
         />

@@ -21,24 +21,25 @@ const CATEGORY_MAP = {
 // 카테고리별 pill 스타일
 const pillClsByCategory = (category) =>
   category === "Notice"
-    ? "bg-[#EF7063] text-white border border-[#EF7063] w-[42px]"
-    : category === "Event"
-    ? "bg-white text-[#EF7063] border border-[#EF7063] w-[42px]"
-    : "bg-white text-[#71717A] border border-[#71717A] w-[42px]";
+    ? "bg-white text-[#A1A1AA] w-[42px]"
+    : category === "Event" || category === "LostItem"
+    ? "bg-white text-[#A1A1AA] w-[42px]" 
+    : "bg-white text-[#A1A1AA] w-[42px]";
 
-// 태그 컴포넌트
+// TagPill Component
 function TagPill({ category }) {
   const { t } = useTranslation();
   return (
     <span
-      className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillClsByCategory(
+      className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[16px] font-suite font-normal leading-none ${pillClsByCategory(
         category
       )}`}
     >
-      {t(CATEGORY_MAP[category] ?? category)}
+      #{t(CATEGORY_MAP[category] ?? category)}
     </span>
   );
 }
+
 
 // AbortError 무시
 const isAbortError = (e) =>
@@ -370,6 +371,8 @@ export default function BoardDetail() {
     navigate(`/booth/${boothCardProps.boothId}`);
   };
 
+  const separatorCls = "w-[1px] h-[12px] bg-[#D1D5DB] ml-[5px] mr-[12px]"; 
+
   return (
     <div className="mx-auto w-full max-w-[430px] bg-white">
       {/* 상단 고정 헤더 */}
@@ -544,64 +547,64 @@ export default function BoardDetail() {
                 <div className="text-[#2A2A2E] font-suite text-[20px] not-italic font-semibold mb-[16px]">
                   {t("board.relatedPosts")}
                 </div>
-
+              
                 <ul className="mt-3 flex flex-col gap-[12px]">
-                  {related.slice(0, 3).map((item) => {
-                    const pillCls = pillClsByCategory(item.category);
-                    const writerOrBooth = item.writer || item.booth_name || "";
-                    return (
-                      <li key={item.id} className="rounded-[12px] bg-white">
-                        <Link
-                          to={`/board/${item.id}`}
-                          className="flex py-[13px] px-[10px] items-center justify-between gap-3 w-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
-                        >
-                          <div className="flex items-center gap-3 min-w-0">
-                            <span
-                              className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[10px] font-suite font-normal leading-none ${pillCls}`}
-                            >
-                              {t(CATEGORY_MAP[item.category] ?? item.category)}
+                {related.slice(0, 3).map((item) => {
+                  const basePillCls = pillClsByCategory(item.category); // 기존 pillCls
+                  const pillTextColor =
+                    item.category === "Notice" ? "text-[#D33E2F]" : ""; // #공지일 때만 빨간색
+                  const writerOrBooth = item.writer || item.booth_name || "";
+                
+                  return (
+                    <li key={item.id} className="rounded-[12px] bg-white">
+                      <Link
+                        to={`/board/${item.id}`}
+                        className="flex py-[13px] px-[10px] items-center justify-between w-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
+                      >
+                        <div className="flex items-center min-w-0">
+                          <span
+                            className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[11px] font-suite font-normal leading-none ${basePillCls} ${pillTextColor}`}
+                          >
+                            #{t(CATEGORY_MAP[item.category] ?? item.category)}
+                          </span>
+                        </div>
+                        <div className={separatorCls}></div>
+                        <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
+                          <p className="truncate text-[#52525B] font-suite text-[16px] not-italic font-semibold leading-[150%]">
+                            {getTranslation("board", item.id, "BoardTitle", item.title)}
+                          </p>
+                          {writerOrBooth && (
+                            <span className="text-[#52525B] font-suite text-[12px] not-italic font-normal leading-[150%] shrink-0">
+                              -{" "}
+                              {item?.booth_name
+                                ? getTranslation(
+                                    "booth",
+                                    item.booth_id?.toString() ||
+                                      item.booth_name?.toLowerCase() ||
+                                      "",
+                                    "BoothName",
+                                    item.booth_name
+                                  )
+                                : item?.writer
+                                ? (() => {
+                                    const translatedName = getTranslation(
+                                      "writer",
+                                      item.id.toString(),
+                                      "WriterName",
+                                      item.writer
+                                    );
+                                    return translatedName.length > 20
+                                      ? translatedName.substring(0, 20) + "..."
+                                      : translatedName;
+                                  })()
+                                : writerOrBooth}
                             </span>
-                          </div>
-                          <div className="flex items-center gap-3 min-w-0 flex-1 justify-between">
-                            <p className="truncate text-[#52525B] font-suite text-[16px] not-italic font-semibold leading-[150%]">
-                              {getTranslation(
-                                "board",
-                                item.id,
-                                "BoardTitle",
-                                item.title
-                              )}
-                            </p>
-                            {writerOrBooth && (
-                              <span className="text-[#52525B] font-suite text-[12px] not-italic font-normal leading-[150%] shrink-0">
-                                -{" "}
-                                {item?.booth_name
-                                  ? getTranslation(
-                                      "booth",
-                                      item.booth_id?.toString() || item.booth_name?.toLowerCase() || "", // ✅ 안전 처리
-                                      "BoothName",
-                                      item.booth_name
-                                    )
-                                  : item?.writer
-                                  ? (() => {
-                                      const translatedName = getTranslation(
-                                        "writer",
-                                        item.id.toString(),
-                                        "WriterName",
-                                        item.writer
-                                      );
-                                      return translatedName.length > 20
-                                        ? translatedName.substring(0, 20) +
-                                            "..."
-                                        : translatedName;
-                                    })()
-                                  : writerOrBooth}
-                              </span>
-                            )}
-                          </div>
-                        </Link>
-                      </li>
-                    );
-                  })}
+                          )}
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
                   {related.length === 0 && (
                     <li className="py-10 text-center text-gray-400">
                       {t("board.noRelatedPosts")}
@@ -609,6 +612,7 @@ export default function BoardDetail() {
                   )}
                 </ul>
               </section>
+
             </>
           )}
         </div>

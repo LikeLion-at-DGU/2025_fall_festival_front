@@ -6,6 +6,8 @@ import UnheartIcon from "../../assets/images/icons/map-icons/emptyHeart.png";
 import Badge from "./BoothCardComponents/Badge";
 import useBoothLikes from "../../hooks/useBoothLikes";
 import defaultImg from "../../assets/images/banners/default-img.png";
+import drinkDefaultImg from "../../assets/images/icons/default-icons/drinkDefaultImg.svg";
+import foodtruckDefaultImg from "../../assets/images/icons/default-icons/foodtruckDefaultImg.svg";
 
 function BoothCard({
   boothId,
@@ -34,6 +36,7 @@ function BoothCard({
     initialLikesCount || 0,
     initialIsLiked || false
   );
+  // console.log("위치",{location})
 
   const getLocalizedWeekday = () => {
     const today = new Date();
@@ -48,7 +51,7 @@ function BoothCard({
     const locale = languageMap[i18n.language] || "ko-KR";
     return today.toLocaleDateString(locale, { weekday: "short" });
   };
-console.log({isSelected});
+  // console.log({ isSelected });
   const translatedTodayLabel = getLocalizedWeekday();
   return (
     <div
@@ -69,11 +72,23 @@ console.log({isSelected});
         <div className="relative w-[68px] h-[68px] flex-shrink-0">
           <div className="w-[68px] h-[68px] bg-gray-100 rounded-lg overflow-hidden">
             <img
-              src={image || defaultImg}
+              src={
+                image ||
+                (category === "FoodTruck"
+                  ? foodtruckDefaultImg
+                  : category === "Drink"
+                  ? drinkDefaultImg
+                  : defaultImg)
+              }
               alt={title}
               className="w-full h-full bg-[#C2C2C2] object-cover"
               onError={(e) => {
-                e.currentTarget.src = defaultImg;
+                e.currentTarget.src =
+                  category === "FoodTruck"
+                    ? foodtruckDefaultImg
+                    : category === "Drink"
+                    ? drinkDefaultImg
+                    : defaultImg;
               }}
             />
           </div>
@@ -85,7 +100,7 @@ console.log({isSelected});
           ) : null}
         </div>
         <div className="flex-1 relative min-w-0">
-          {category != "Drink" && (
+          {category !== "Drink" && category !== "FoodTruck" && (
             <div className="absolute top-0 right-0 flex flex-col items-center">
               <button
                 onClick={(e) => {

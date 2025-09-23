@@ -185,22 +185,28 @@ export default function BoothDetail() {
       </div>
 
       {/* 카드 */}
-      <div className="relative w-full bg-white shadow-md rounded-[16px] px-4 py-3 z-10">
+      <div className="relative w-full bg-white shadow-md rounded-[16px] px-4 py-3 z-1000">
         {/* tail 이미지 */}
         <img
           src={tail}
-          className="absolute -top-6 left-10 -translate-x-1/2"
+          className="absolute -top-6 left-10 -translate-x-1/2 filter z-0"
           alt={t("booth.tailAlt")}
         />
-        <div className="flex justify-between items-start">
+
+        <div className="flex justify-between items-start relative">
           {/* 왼쪽 영역 */}
           <div className="flex-1">
             {/* 부스 타입 + 이름 */}
             <div className="flex items-center gap-2 !mb-4">
-              <span className="bg-[#EF7063] text-white px-2 py-1 rounded-full text-xs">
+              <span className="bg-[#EF7063] text-white px-2 py-1 rounded-full text-xs whitespace-nowrap">
                 {booth.is_night ? t("booth.nightBooth") : t("booth.dayBooth")}
               </span>
-              <h1 className="text-lg font-bold">
+              <h1
+                className={`font-bold ${booth.name.length > 16
+                    ? "text-[14.5px]"   
+                    : "text-lg"    // 기본 크기
+                  }`}
+              >
                 {getTranslation(
                   "booth",
                   booth.booth_id?.toString() || id,
@@ -208,6 +214,7 @@ export default function BoothDetail() {
                   booth.name
                 )}
               </h1>
+
             </div>
 
             {/* 야간 부스 & 디오더 가능 표시 */}
@@ -253,7 +260,7 @@ export default function BoothDetail() {
                   "booth",
                   booth.booth_id?.toString() || id,
                   "BoothLocation",
-                  booth.location_description
+                  booth.location_name
                 )}
               </span>
             </div>
@@ -283,19 +290,18 @@ export default function BoothDetail() {
 
       {/* 소개 */}
       <div
-        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${
-          booth.is_night ? "!mt-4" : "!mt-10"
-        }`}
+        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${booth.is_night ? "!mt-4" : "!mt-10"
+          }`}
       >
         <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">{t("booth.introduction")}</h2>
         <p className="text-sm text-gray-700">
           {booth.booth_description
             ? getTranslation(
-                "booth",
-                booth.booth_id?.toString() || id,
-                "BoothDescription",
-                booth.booth_description
-              )
+              "booth",
+              booth.booth_id?.toString() || id,
+              "BoothDescription",
+              booth.booth_description
+            )
             : t("booth.noDescription")}
         </p>
       </div>

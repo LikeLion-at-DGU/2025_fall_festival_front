@@ -1,34 +1,24 @@
 import React from "react";
 import { mapConfigs } from "../../config/mapConfigs";
 import backbtn from "../../assets/images/icons/header-icons/left.png";
+import { useTranslation } from "react-i18next";
 
-const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
-  const config = mapConfigs[buildingName];
+const DetailMap = ({ buildingId, onClose, onSelectBooth }) => {
+  const { t } = useTranslation();
+
+  const config = mapConfigs[buildingId]; // buildingId 기반 조회
 
   if (!config) {
     return null;
   }
 
-  // 현재 시간 기준으로 schedules key 결정
-  const now = new Date();
-  const today = now.toISOString().split("T")[0];
-  const currentTime = now.getHours() < 17 ? "day" : "night"; // 오후 5시 기준
-  const scheduleKey = `${today}:${currentTime}`;
-
-  // 오늘 해당 시간대 버튼 불러오기
-  const buttons = config.schedules?.[scheduleKey] || [];
-
-  console.log("buildingName:", buildingName);
-  console.log("config:", config);
-  console.log("scheduleKey:", scheduleKey);
-  console.log("buttons:", buttons);
-
+ const { buttons = [] } = config;
   return (
     <div className="relative w-full h-full rounded-[16px] border border-[#E4E4E7]">
       {/* 상세지도 이미지 */}
       <img
         src={config.img}
-        alt={`${buildingName} 상세지도`}
+        alt={`${t(`map.locations.${buildingId}`)} 상세지도`}
         className="w-full h-full object-contain"
       />
 
@@ -65,7 +55,7 @@ const DetailMap = ({ buildingName, onClose, onSelectBooth }) => {
           <img src={backbtn} alt="뒤로가기" width={24} height={24} />
         </button>
         <div className="rounded-[10px] h-[18px] text-[#fff] bg-[rgba(42,42,46,0.60)] text-[12px] font-semibold leading-[18px] flex px-[6px] items-center">
-          {buildingName}
+          {t(`map.locations.${buildingId}`)}
         </div>
       </div>
     </div>

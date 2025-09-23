@@ -4,6 +4,8 @@ import SearchBar from "../../components/MapComponents/SearchBar";
 import FilterBar from "../../components/MapComponents/FilterBar";
 import PullList from "../../components/MapComponents/PullList";
 import MapWithPins from "../../components/MapComponents/MapWithPins";
+import sun from "../../assets/images/icons/toggle-icons/morningIcon.svg";
+import moon from "../../assets/images/icons/toggle-icons/nightIcon.svg";
 
 import useBooths from "../../hooks/MapHooks/useBooths";
 // import useFilteredBooths from "../../hooks/MapHooks/useFilteredBooths";
@@ -14,7 +16,16 @@ import MapContainer from "../../components/MapComponents/MapContainer";
 function Map() {
   const [selectedFilter, setSelectedFilter] = useState("Booth");
   const { location: userLocation, getCurrentLocation } = useUserLocation();
-  const { booths, loading, error } = useBooths(selectedFilter, userLocation);
+
+  // 낮/밤 토글 상태 (null이면 자동, true=밤, false=낮)
+  const [isNightToggle, setIsNightToggle] = useState(null);
+
+  const { booths, loading, error } = useBooths(
+    selectedFilter,
+    userLocation,
+    isNightToggle
+  );
+
   // const filteredBooths = useFilteredBooths(booths, selectedFilter);
   const { selectedPin, handlePinClick, handleFilterClick } =
     usePinSelection(selectedFilter);
@@ -51,20 +62,52 @@ function Map() {
         <div className="flex flex-col gap-[26px] h-full">
           <div className="flex flex-col gap-[20px]">
             <SearchBar searchTerm={searchText} setSearchTerm={setSearchText} />
-          <FilterBar
-  selectedFilter={selectedFilter}
-  setSelectedFilter={setSelectedFilter}
-  onFilterClick={handlePinClick}   // 여기서 selectedPin을 null로 만듦
-/>
-
+            <FilterBar
+              selectedFilter={selectedFilter}
+              setSelectedFilter={setSelectedFilter}
+              onFilterClick={handlePinClick} // 여기서 selectedPin을 null로 만듦
+            />
           </div>
-          <MapContainer
-            apiData={booths}
-            selectedFilter={selectedFilter}
-            onSelectBooth={setSelectedBooth} // ✅ 추가
-            selectedPin={selectedPin}
-            handlePinClick={handlePinClick}
-          />
+          <div className="relative flex-1">
+            {/* 맵 */}
+            <MapContainer
+              className="absolute inset-0"
+              apiData={booths}
+              selectedFilter={selectedFilter}
+              onSelectBooth={setSelectedBooth}
+              selectedPin={selectedPin}
+              handlePinClick={handlePinClick}
+            />
+
+            {/* 맵 위 스위치 */}
+            {selectedFilter === "Booth" && (
+              <div className="absolute top-[11px] right-[11px] z-10 ">
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
+                    checked={isNightToggle === true}
+                    onChange={(e) => setIsNightToggle(e.target.checked)}
+                  />
+                  {/* 스위치 바탕 */}
+                  <div className=" w-[44px] p-[2px] h-6 bg-[#F58F84] rounded-full transition-colors peer-checked:bg-[#8894FF] flex items-center justify-around px-[4px]">
+                    {/* 🌙 아이콘 (왼쪽) */}
+                    <img src={sun} alt="moon" className="w-[13px] h-[13px]" />
+                    {/* 🌞 아이콘 (오른쪽) */}
+                    <img src={moon} alt="sun" className="w-[9px] h-[9px]" />
+
+                    {/* 동그라미 */}
+                    <span
+                      className={
+                        "absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform duration-300 " +
+                        (!isNightToggle ? "translate-x-[20px]" : "translate-x-0")
+                      }
+                    ></span>
+                  </div>
+                </label>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

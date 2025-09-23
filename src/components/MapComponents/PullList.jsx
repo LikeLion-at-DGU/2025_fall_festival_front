@@ -162,24 +162,26 @@ function PullList({
   // ----------------------------
   // 검색 및 필터링 (번역된 데이터 사용)
   // ----------------------------
-  const searchFilteredBooths = useMemo(() => {
-    const translatedBooths = getTranslatedBooths();
+ const searchFilteredBooths = useMemo(() => {
+  const translatedBooths = getTranslatedBooths();
 
-    return translatedBooths.filter((booth) => {
-      const boothName = booth.translatedName || booth.name;
-      const locationName =
-        booth.translatedLocation || (booth.location?.name ?? "");
+  return translatedBooths.filter((booth) => {
+    const boothName = booth.translatedName || booth.name;
+    const locationName =
+      booth.translatedLocation || (booth.location?.name ?? "");
 
-      const matchesSearch =
-        searchTerm === "" ||
-        boothName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        locationName.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      searchTerm === "" ||
+      boothName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      locationName.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesPin = selectedPin === null || locationName === selectedPin;
+    //  숫자 변환해서 비교
+    const matchesPin =
+      selectedPin === null || Number(booth.location?.id) === Number(selectedPin);
 
-      return matchesSearch && matchesPin;
-    });
-  }, [booths, searchTerm, selectedPin, getTranslatedBooths]);
+    return matchesSearch && matchesPin;
+  });
+}, [booths, searchTerm, selectedPin, getTranslatedBooths]);
 
   const sortedBooths = useMemo(() => {
     return [...searchFilteredBooths].sort((a, b) => {
@@ -195,7 +197,6 @@ function PullList({
       return aMatch - bMatch;
     });
   }, [searchFilteredBooths, searchTerm]);
-
   // ----------------------------
   // 렌더링
   // ----------------------------
@@ -257,7 +258,7 @@ function PullList({
                     title={boothName}
                     image={booth.image_url || undefined}
                     location={locationName}
-                    isSelected={selectedPin === booth.location.name}
+                    isSelected={selectedPin === booth.location?.id}
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days[0]?.weekday}
@@ -284,11 +285,12 @@ function PullList({
                   <NotBoothCard
                     key={booth.booth_id}
                     title={boothName}
+                    image={booth.image_url || undefined}
                     distance_m={booth.distance_m}
                     category={booth.category}
                     location={locationName}
                     boothId={booth.booth_id}
-                    isSelected={selectedPin === locationName}
+                    isSelected={Number(selectedPin) === Number(booth.location?.id)}
                     onClick={() => {
                       if (booth.category === "Toilet")
                         navigate(`/toilet/${booth.booth_id}`);

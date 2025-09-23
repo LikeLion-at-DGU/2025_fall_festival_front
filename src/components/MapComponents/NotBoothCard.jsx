@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 
 const NotBoothCard = ({
   title,
+  image,
   distance_m,
   category,
   location,
@@ -30,7 +31,6 @@ const NotBoothCard = ({
         return defaultImg; // 기본값
     }
   };
-console.log({isSelected})
 
   return (
     <div
@@ -50,9 +50,9 @@ console.log({isSelected})
         {/* 이미지 */}
         <div className="relative w-[68px] h-[68px] flex-shrink-0">
           <img
-            src={getImageByCategory(category)}
+            src={image || getImageByCategory(category)}
             alt={title}
-            className="object-contain"
+            className="object-cover w-full h-full rounded-lg"
           />
         </div>
 

@@ -26,8 +26,8 @@ const LocationPin = ({
       {/* 말풍선 라벨 */}
       <div className="relative flex flex-col items-center">
         <div
-          className={`
-            inline-flex px-2 py-1 text-xs font-semibold font-suite
+          className={` 
+            inline-flex px-1 text-xs font-semibold font-suite
             whitespace-nowrap transition-all duration-200
             group-hover:scale-105 group-hover:shadow-lg
             ${isSelected ? "text-white" : "text-[#EF7063]"}
@@ -52,11 +52,11 @@ const LocationPin = ({
         </div>
 
         {/* 삼각형 핀 */}
-        <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[4.5px]">
+        <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-[3px]">
           <img
             src={isSelected ? OrangePolygon : WhitePolygon}
             alt="핀"
-            className="w-4 h-4"
+            className="w-[11px] h-[11px]"
           />
         </div>
       </div>

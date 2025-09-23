@@ -52,7 +52,12 @@ function Event() {
   }
 
   if (gamePhase === "playing") {
-    return <GamePlay onGameEnd={handleGameEnd} onRetryFromCountdown={handleRetryFromCountdown} />;
+    return (
+      <GamePlay
+        onGameEnd={handleGameEnd}
+        onRetryFromCountdown={handleRetryFromCountdown}
+      />
+    );
   }
 
   return null;

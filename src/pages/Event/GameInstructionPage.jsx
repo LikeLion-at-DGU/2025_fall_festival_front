@@ -11,7 +11,7 @@ function GameInstructionPage({ onStartChallenge }) {
 
   // 컴포넌트 마운트 시 백엔드에서 받은 시도 횟수 확인
   useEffect(() => {
-    const storedTryTimes = localStorage.getItem('game_try_times');
+    const storedTryTimes = localStorage.getItem("game_try_times");
     if (storedTryTimes) {
       setAttemptCount(parseInt(storedTryTimes));
     }
@@ -20,15 +20,15 @@ function GameInstructionPage({ onStartChallenge }) {
   // 시도 횟수가 3회를 초과했는지 확인
   const isLimitExceeded = attemptCount >= 3;
 
-
-
   return (
-    <div className="flex flex-col justify-between
+    <div
+      className="flex flex-col justify-between
     w-full max-w-[430px] mx-auto h-screen pt-[80px] pb-[99px]
-    bg-[linear-gradient(352deg,var(--Primary-400,#EF7063)_26.61%,var(--Primary-300,#F8B0A9)_83.71%)] overflow-hidden">
+    bg-[linear-gradient(352deg,var(--Primary-400,#EF7063)_26.61%,var(--Primary-300,#F8B0A9)_83.71%)] overflow-hidden"
+    >
       {/* 상단 헤더
       <div className="w-full bg-white px-4 py-3 flex justify-between items-center">
-        <div className="text-black text-lg font-bold font-['SUITE']">
+        <div className="text-black text-lg font-bold font-suite">
           DIRKWAMA
         </div>
         <div className="flex items-center gap-2">
@@ -45,17 +45,13 @@ function GameInstructionPage({ onStartChallenge }) {
       <div className="w-full h-[102px] flex justify-center items-center">
         {!isLimitExceeded && (
           <div className="px-2 py-1 bg-red-50/80 rounded-[999px] inline-flex justify-center items-center gap-2.5">
-            <div className="justify-center items-center
-            text-primary-400 text-[10px] font-normal font-['SUITE'] leading-none">
-              <span>
-                지금까지 단{" "}
-              </span>
-              <span className="font-semibold ">
-                {data.successcnt}
-              </span>
-              <span>
-                명 만이 성공했습니다
-              </span>
+            <div
+              className="justify-center items-center
+            text-primary-400 text-[10px] font-normal font-suite leading-none"
+            >
+              <span>지금까지 단 </span>
+              <span className="font-semibold ">{data.successcnt}</span>
+              <span>명 만이 성공했습니다</span>
             </div>
           </div>
         )}
@@ -64,13 +60,13 @@ function GameInstructionPage({ onStartChallenge }) {
       {/* 메인 타이틀 텍스트 */}
       <div className="w-full h-[256px] flex flex-col justify-center items-center text-center">
         {isLimitExceeded ? (
-          <div className="text-white text-[36px] font-bold font-['SUITE'] leading-[43px] mb-6">
+          <div className="text-white text-center font-suite text-[32px] font-black leading-[160%] mb-6">
             참여해주셔서 감사합니다
             <br />
             즐거운 축제 되세요 !
           </div>
         ) : (
-          <div className="text-white text-[36px] font-bold font-['SUITE'] leading-[43px] mb-6">
+          <div className="text-white text-center font-suite text-[32px] font-black leading-[160%] mb-6">
             다르게 적힌 글자를
             <br />
             찾아주세요
@@ -78,12 +74,12 @@ function GameInstructionPage({ onStartChallenge }) {
         )}
         <div className="flex items-center gap-1">
           {isLimitExceeded ? (
-            <div className="text-white text-[12px] font-semibold font-['SUITE'] opacity-80">
+            <div className="text-white text-[12px] font-semibold font-suite opacity-80">
               12시간 23분 뒤에 플레이 횟수 충전
             </div>
           ) : (
             <>
-              <div className="text-white text-[12px] font-semibold font-['SUITE'] opacity-80">
+              <div className="text-white text-[12px] font-semibold font-suite opacity-80">
                 제한 시간 내 모든 단계 클리어 시 선물상자를 드립니다.
               </div>
               <div
@@ -100,48 +96,46 @@ function GameInstructionPage({ onStartChallenge }) {
       {/* 도전하기 버튼 */}
       <div className="w-full h-[155px] flex justify-center items-center">
         <div
-          className={`w-[311px] h-[52px] rounded-[12px] flex justify-center items-center transition-colors ${
-            isLimitExceeded 
-              ? 'bg-neutral-200 cursor-not-allowed'
-              : startGameMutation.isPending 
-                ? 'bg-white opacity-50 cursor-not-allowed' 
-                : 'bg-white cursor-pointer hover:bg-gray-100'
+          className={`w-[343px] h-[56px] px-6 py-4 rounded-[12px] bg-neutral-600 flex flex-col justify-between items-center shrink-0 transition-colors ${
+            isLimitExceeded || startGameMutation.isPending
+              ? "opacity-50 cursor-not-allowed"
+              : "opacity-100 cursor-pointer"
           }`}
           onClick={() => {
             if (isLimitExceeded || startGameMutation.isPending) return;
-            
+
             console.log("도전하기 버튼 클릭됨!");
-            
+
             // 게임 시작 API 호출
             startGameMutation.mutate(undefined, {
               onSuccess: (response) => {
                 console.log("게임 시작 API 성공:", response);
-                
+
                 // API 응답에서 업데이트된 시도 횟수를 받아서 localStorage 업데이트
                 if (response?.game_try_times !== undefined) {
                   setAttemptCount(response.game_try_times);
-                  localStorage.setItem('game_try_times', response.game_try_times.toString());
+                  localStorage.setItem(
+                    "game_try_times",
+                    response.game_try_times.toString()
+                  );
                 }
-                
+
                 // API 호출 성공 후 기존 onStartChallenge 함수 실행
                 onStartChallenge();
               },
               onError: (error) => {
                 console.error("게임 시작 API 실패:", error);
                 alert("게임 시작 중 오류가 발생했습니다. 다시 시도해 주세요.");
-              }
+              },
             });
           }}
         >
-          <span className={`text-[16px] font-semibold font-['SUITE'] ${
-            isLimitExceeded ? 'text-neutral-300' : 'text-black'
-          }`}>
-            {isLimitExceeded 
+          <span className={`text-[16px] font-semibold font-suite text-white`}>
+            {isLimitExceeded
               ? "오늘 참여횟수가 모두 소진되었습니다."
-              : startGameMutation.isPending 
-                ? "게임 시작 중..." 
-                : "도전하기"
-            }
+              : startGameMutation.isPending
+              ? "게임 시작 중..."
+              : "도전하기"}
           </span>
         </div>
       </div>
@@ -155,7 +149,7 @@ function GameInstructionPage({ onStartChallenge }) {
               <circle cx="12" cy="10" r="3"/>
             </svg>
           </div>
-          <span className="text-xs text-gray-500 font-['SUITE']">지도</span>
+          <span className="text-xs text-gray-500 font-suite">지도</span>
         </div>
         
         <div className="flex flex-col items-center gap-1">
@@ -167,7 +161,7 @@ function GameInstructionPage({ onStartChallenge }) {
               <line x1="3" y1="10" x2="21" y2="10"/>
             </svg>
           </div>
-          <span className="text-xs text-gray-500 font-['SUITE']">일정</span>
+          <span className="text-xs text-gray-500 font-suite">일정</span>
         </div>
         
         <div className="flex flex-col items-center gap-1">
@@ -177,7 +171,7 @@ function GameInstructionPage({ onStartChallenge }) {
               <polyline points="9,22 9,12 15,12 15,22"/>
             </svg>
           </div>
-          <span className="text-xs text-gray-500 font-['SUITE']">홈</span>
+          <span className="text-xs text-gray-500 font-suite">홈</span>
         </div>
         
         <div className="flex flex-col items-center gap-1">
@@ -190,7 +184,7 @@ function GameInstructionPage({ onStartChallenge }) {
               <polyline points="10,9 9,9 8,9"/>
             </svg>
           </div>
-          <span className="text-xs text-gray-500 font-['SUITE']">게시판</span>
+          <span className="text-xs text-gray-500 font-suite">게시판</span>
         </div>
         
         <div className="flex flex-col items-center gap-1 border-t-2 border-[#FF8A80] pt-1">
@@ -201,7 +195,7 @@ function GameInstructionPage({ onStartChallenge }) {
               <polyline points="22,8.5 12,15.5 2,8.5"/>
             </svg>
           </div>
-          <span className="text-xs text-[#FF8A80] font-semibold font-['SUITE']">게임</span>
+          <span className="text-xs text-[#FF8A80] font-semibold font-suite">게임</span>
         </div>
       </div>
         */}
@@ -235,12 +229,12 @@ function GameInstructionPage({ onStartChallenge }) {
             </button>
 
             <div className="text-center mb-4 sm:mb-6">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-800 font-['SUITE']">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-800 font-suite">
                 게임 관련 유의사항
               </h2>
             </div>
 
-            <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-gray-600 font-['SUITE'] leading-relaxed">
+            <div className="space-y-3 sm:space-y-4 text-xs sm:text-sm text-gray-600 font-suite leading-relaxed">
               <div className="text-left">
                 '멋쟁이사자처럼'에서 2025 가을 축제를 위해 제작된 게임입니다.
               </div>
@@ -280,7 +274,7 @@ function GameInstructionPage({ onStartChallenge }) {
 
             <div className="mt-6 sm:mt-8">
               <button
-                className="w-full bg-gray-800 text-white py-3 sm:py-4 rounded-lg font-medium sm:font-semibold font-['SUITE'] hover:bg-gray-700 transition-colors text-sm sm:text-base"
+                className="w-full bg-gray-800 text-white py-3 sm:py-4 rounded-lg font-medium sm:font-semibold font-suite hover:bg-gray-700 transition-colors text-sm sm:text-base"
                 onClick={() => setShowModal(false)}
               >
                 확인
