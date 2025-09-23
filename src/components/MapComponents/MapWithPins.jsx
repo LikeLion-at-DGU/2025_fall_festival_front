@@ -71,8 +71,8 @@ const MapWithPins = ({
     (loc, index, self) =>
       index === self.findIndex((l) => Number(l.id) === Number(loc.id))
   );
+  
 
-  console.log("현재 selectedPin:", selectedPin);
 
   // 핀 렌더링
   const renderPins = () =>

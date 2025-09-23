@@ -19,6 +19,7 @@ function PullList({
   selectedPin,
   selectedBooth,
 }) {
+  console.log("바텀시트 핀 확인:", selectedPin)
   // 번역 훅 사용
   const { getTranslatedBooths } = useBoothTranslation(booths);
   const { t } = useTranslation();
@@ -200,6 +201,8 @@ function PullList({
       return aMatch - bMatch;
     });
   }, [searchFilteredBooths, searchTerm]);
+
+  
   // ----------------------------
   // 렌더링
   // ----------------------------
@@ -279,34 +282,34 @@ function PullList({
                     category={booth.category}
                     distance_m={booth.distance_m}
                     className="w-full"
-                  onClick={() => {
-  const path =
-    booth.category === "FoodTruck"
-      ? `/foodtruck/${booth.booth_id}`
-      : booth.category === "Drink"
-      ? `/drink/${booth.booth_id}`
-      : `/booth/${booth.booth_id}`;
+                    onClick={() => {
+                      const path =
+                        booth.category === "FoodTruck"
+                          ? `/foodtruck/${booth.booth_id}`
+                          : booth.category === "Drink"
+                          ? `/drink/${booth.booth_id}`
+                          : `/booth/${booth.booth_id}`;
 
-  const pinId = booth.location?.id;  // ✅ location.id 확보
+                      const pinId = booth.location?.id; // ✅ location.id 확보
 
-  const state =
-    booth.category === "FoodTruck" || booth.category === "Drink" || booth.category === "Toilet"
-      ? { filter: selectedFilter }
-      : {
-          pin: pinId,
-          filter: selectedFilter,
-        };
+                      const state =
+                        booth.category === "FoodTruck" ||
+                        booth.category === "Drink" ||
+                        booth.category === "Toilet"
+                          ? { filter: selectedFilter }
+                          : {
+                              pin: pinId,
+                              filter: selectedFilter,
+                            };
 
-  if (selectedFilter) sessionStorage.setItem("lastFilter", selectedFilter);
-  if (booth.category === "Booth" && pinId) {
-    sessionStorage.setItem("lastPin", pinId);
-  }
+                      if (selectedFilter)
+                        sessionStorage.setItem("lastFilter", selectedFilter);
+                      if (booth.category === "Booth" && pinId) {
+                        sessionStorage.setItem("lastPin", pinId);
+                      }
 
-  console.log("➡️ navigate state:", state); // ✅ 로그로 확인
-  navigate(path, { state });
-}}
-
-
+                      navigate(path, { state });
+                    }}
                   />
                 ) : (
                   <NotBoothCard
