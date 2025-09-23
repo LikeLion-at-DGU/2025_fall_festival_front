@@ -16,6 +16,7 @@ import useSearch from "../../hooks/MapHooks/useSearch";
 import MapContainer from "../../components/MapComponents/MapContainer";
 function Map() {
   const [selectedFilter, setSelectedFilter] = useState("Booth");
+  
   const { location: userLocation, getCurrentLocation } = useUserLocation();
   // 축제 시작일
   const festivalStart = new Date("2025-09-24T00:00:00");
