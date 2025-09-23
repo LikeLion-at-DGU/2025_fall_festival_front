@@ -47,7 +47,7 @@ return (
         key={filter}
         isActive={filterMap[filter] === selectedFilter}
         onClick={() => handleFilterClick(filter)}
-        className="py-[4px] px-[8px] rounded-[12px] text-[15px]"
+        className="py-[4px] px-[8px] rounded-[12px] "
       >
         {t(`map.filters.${filter}`)}
       </FilterButton>
