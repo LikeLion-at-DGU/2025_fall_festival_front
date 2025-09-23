@@ -95,13 +95,11 @@ function Map() {
             />
 
             {/* 맵 위 스위치 */}
-            {selectedFilter === "Booth" && (
+            {selectedFilter === "Booth" && !selectedPin&& (
               <div className="absolute top-[11px] right-[11px] z-10 ">
                 {/* ✅ 날짜 드롭다운 추가 */}
                 <div className="flex flex-row gap-2">
                 <DateDropdown selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-
-
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
