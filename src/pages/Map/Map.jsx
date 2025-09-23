@@ -92,15 +92,13 @@ function Map() {
   }, []);
 
   // 선택 필터 콘솔 확인
+  console.log("현재 선택된 필터:", selectedFilter);
   useEffect(() => {
     console.log("Map.jsx에서 selectedFilter 변경 확인:", selectedFilter);
   }, [selectedFilter]);
-  // 선택 핀 콘솔 확인
-  useEffect(() => {
-    console.log("Map.jsx에서 selectedPin 변경 확인:", selectedPin);
-  }, [selectedPin]);
+
   // 콘솔 확인
-  // console.log("booths 데이터:", booths);
+  console.log("booths 데이터:", booths);
   // console.log("filteredbooths 데이터:", filteredBooths);
 
   // 컴포넌트 마운트 시 body 스크롤 방지
