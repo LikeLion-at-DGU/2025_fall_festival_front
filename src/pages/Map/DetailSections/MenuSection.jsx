@@ -34,18 +34,18 @@ export default function MenuSection({ menus, boothId }) {
       {/* 가로 스크롤: 위로 튀는 뱃지 안 잘리게 pt 추가 + 스크롤바 숨김 */}
       <div className="flex gap-3 overflow-x-auto scrollbar-hidden pt-1">
         {menus.map((m, i) => (
-          // 카드 래퍼
           <div key={i} className="relative flex-shrink-0 w-32">
-            {/* 카드 본체 */}
-            <div className="bg-white shadow-md rounded-2xl p-3 flex flex-col items-start mb-2 h-[215px]">
+            {/* 카드 본체 - 높이를 자동으로 조절 */}
+            <div className="bg-white shadow-md rounded-2xl p-3 flex flex-col items-start mb-2 min-h-[215px]">
               {/* 이미지 박스 */}
               <div className="relative w-[107px] h-[107px] flex items-center justify-center bg-gray-200 rounded-[16px]">
                 {m.image_url && (
                   <img
                     src={m.image_url}
                     alt={m.name}
-                    className={`w-full h-full object-cover rounded-xl ${m.is_soldout ? "opacity-60" : "opacity-100"
-                      }`}
+                    className={`w-full h-full object-cover rounded-xl ${
+                      m.is_soldout ? "opacity-60" : "opacity-100"
+                    }`}
                   />
                 )}
                 {/* 품절 배지 */}
@@ -56,24 +56,25 @@ export default function MenuSection({ menus, boothId }) {
                 )}
               </div>
 
-              {/* 텍스트 */}
-              <p className="mt-2 text-sm font-semibold text-left">
-                {getTranslation(
-                  "booth",
-                  boothId.toString(),
-                  `MenuName_${i}`,
-                  m.name
-                )}
-              </p>
-              <p className="text-xs text-gray-500 text-left">
-                {m.price}
-                {t("booth.currency")}
-              </p>
+              {/* 텍스트 영역 - flex-grow로 남은 공간 차지 */}
+              <div className="mt-2 flex-1 flex flex-col justify-start w-full">
+                <p className="text-sm font-semibold text-left break-words leading-tight">
+                  {getTranslation(
+                    "booth",
+                    boothId.toString(),
+                    `MenuName_${i}`,
+                    m.name
+                  )}
+                </p>
+                <p className="text-xs text-gray-500 text-left mt-1">
+                  {m.price}
+                  {t("booth.currency")}
+                </p>
+              </div>
             </div>
           </div>
         ))}
       </div>
-
     </div>
   );
 }
