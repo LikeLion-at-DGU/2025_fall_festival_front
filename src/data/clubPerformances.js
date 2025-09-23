@@ -42,7 +42,7 @@ export const clubPerformances = {
       name: "목멱성",
       startTime: "18:20",
       endTime: "18:50",
-      image: "/src/assets/images/performers/theater-club.png",
+      image: "/src/assets/images/banners/default-img.png",
     },
   ],
   "2025-09-26": [
@@ -65,7 +65,7 @@ export const clubPerformances = {
       name: "피어리스던",
       startTime: "16:30",
       endTime: "17:00",
-      image: "/src/assets/images/performers/fusion-band.png",
+      image: "/src/assets/images/banners/default-img.png",
     },
     {
       id: 10,
@@ -93,7 +93,7 @@ export const clubPerformances = {
       name: "백상 응원단",
       startTime: "18:30",
       endTime: "19:50",
-      image: "/src/assets/images/performers/theater-club.png",
+      image: "/src/assets/images/performers/baeksang.png",
     },
   ],
 };
