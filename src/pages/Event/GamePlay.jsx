@@ -12,7 +12,7 @@ import usePostStartGame from "../../hooks/GameHooks/usePostStartGame";
 function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   const [currentStage, setCurrentStage] = useState(1); // 현재 단계 (1-4)
   const [gameStatus, setGameStatus] = useState("playing"); // 'ready', 'playing', 'correct', 'timeout', 'wrong'
-  const [timeLeft, setTimeLeft] = useState(5.5); // 5.5초 제한
+  const [timeLeft, setTimeLeft] = useState(5.0); // 5.5초 제한
   const [timeProgress, setTimeProgress] = useState(0); // 시간 진행률 (0-100)
   const [words, setWords] = useState([]);
   const [currentWordSet, setCurrentWordSet] = useState(null);
@@ -74,7 +74,7 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
     setWords(allWords);
     setGameStatus("playing");
-    setTimeLeft(5.5);
+    setTimeLeft(5.0);
     setTimeProgress(0);
   };
 
@@ -89,7 +89,7 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
           // 게임 상태 업데이트
           setGameStatus("playing");
-          setTimeLeft(5.5);
+          setTimeLeft(5.0);
           setTimeProgress(0);
         },
         onError: (error) => {
@@ -97,7 +97,7 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
           // 에러가 있어도 게임은 시작 (오프라인 동작)
           setGameStatus("playing");
-          setTimeLeft(5.5);
+          setTimeLeft(5.0);
           setTimeProgress(0);
         },
       }
@@ -117,12 +117,12 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
   // 다음 단계로 이동
   const handleNextStep = async () => {
-    // 개발 중: 3단계까지만 완료해도 성공 모달 표시
-    if (currentStage < 3) {
+    // 4단계까지 완료해야 성공 모달 표시
+    if (currentStage < 4) {
       console.log(`${currentStage}단계에서 ${currentStage + 1}단계로 이동`);
       setCurrentStage(currentStage + 1);
     } else {
-      // 게임 완료 (개발 중: 3단계 완료 시) - 백엔드에 성공 정보 전송 및 쿠폰 확인
+      // 게임 완료 (4단계 완료 시) - 백엔드에 성공 정보 전송 및 쿠폰 확인
       try {
         // user_id는 훅 내부에서 localStorage에서 자동으로 가져옴
         const result = await postGameSuccess();
