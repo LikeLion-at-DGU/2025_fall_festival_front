@@ -64,8 +64,6 @@ export const TranslationProvider = ({ children }) => {
       });
 
       setTranslations((prev) => ({ ...prev, ...newTranslations }));
-      console.log("번역 완료:", newTranslations);
-      console.log("전체 번역 캐시:", translations);
     } catch (error) {
       console.error("배치 번역 실패:", error);
     }
