@@ -9,6 +9,7 @@ import moon from "../../assets/images/icons/toggle-icons/nightIcon.svg";
 import { useMemo } from "react";
 import useBooths from "../../hooks/MapHooks/useBooths";
 // import useFilteredBooths from "../../hooks/MapHooks/useFilteredBooths";
+import DateDropdown from "../../components/MapComponents/DateDropdown";
 import useUserLocation from "../../hooks/MapHooks/useUserLocation";
 import usePinSelection from "../../hooks/MapHooks/usePinSelection";
 import useSearch from "../../hooks/MapHooks/useSearch";
@@ -98,15 +99,8 @@ function Map() {
               <div className="absolute top-[11px] right-[11px] z-10 ">
                 {/* ✅ 날짜 드롭다운 추가 */}
                 <div className="flex flex-row gap-2">
-                  <select
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="h-[24px] px-3 rounded-full border border-[#F58F84] text-sm bg-white shadow-sm focus:outline-none cursor-pointer"
-                  >
-                    <option value="2025-09-24">24일 수요일</option>
-                    <option value="2025-09-25">25일 목요일</option>
-                    <option value="2025-09-26">26일 금요일</option>
-                  </select>
+                <DateDropdown selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+
 
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -116,7 +110,7 @@ function Map() {
                       onChange={(e) => setIsNightToggle(e.target.checked)}
                     />
                     {/* 스위치 바탕 */}
-                    <div className=" w-[44px] p-[2px] h-6 bg-[#F58F84] rounded-full transition-colors peer-checked:bg-[#8894FF] flex items-center justify-around px-[4px]">
+                    <div className=" w-[44px] p-[2px] h-6 bg-[#FBD1CD] rounded-full transition-colors peer-checked:bg-[#F58F84] flex items-center justify-around px-[4px]">
                       {/* 🌙 아이콘 (왼쪽) */}
                       <img src={sun} alt="moon" className="w-[13px] h-[13px]" />
                       {/* 🌞 아이콘 (오른쪽) */}
@@ -125,12 +119,12 @@ function Map() {
                       {/* 동그라미 */}
                       <span
                         className={
-                          "absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform duration-300 " +
+                          "absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform duration-300 shadow-[0_3px_7.1px_0_rgba(0,0,0,0.25)] " +
                           (!isNightToggle
                             ? "translate-x-[20px]"
                             : "translate-x-0")
                         }
-                      ></span>
+                      />
                     </div>
                   </label>
                 </div>
