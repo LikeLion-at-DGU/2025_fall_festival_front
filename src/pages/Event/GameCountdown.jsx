@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 function GameCountdown({ onCountdownEnd }) {
   const [countdown, setCountdown] = useState(3);
@@ -14,12 +14,12 @@ function GameCountdown({ onCountdownEnd }) {
     const timer = setTimeout(() => {
       setCountdown(countdown - 1);
     }, 1000);
-  
+
     return () => clearTimeout(timer);
   }, [countdown, onCountdownEnd]);
 
   return (
-    <div className="w-full max-w-[430px] mx-auto h-screen relative bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden flex items-center justify-center">
+    <div className="w-full max-w-[430px] mx-auto h-[100vh] relative bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden flex items-center justify-center">
       <div className="text-[200px] font-black text-white animate-pulse">
         {countdown}
       </div>

@@ -4,7 +4,7 @@ import { BASE_PATH } from "../config/routes";
 
 import Header from "./Header/Header";
 import AdminHeader from "./Header/AdminHeader";
-import BoardDetailHeader from "./Header/BoardDetailHeader"; 
+import BoardDetailHeader from "./Header/BoardDetailHeader";
 import MapDetailHeader from "./Header/MapDetailHeader";
 import BottomNav from "./BottomNav/BottomNav";
 import Footer from "./Footer/Footer";
@@ -12,7 +12,7 @@ import Footer from "./Footer/Footer";
 const Layout = ({ children }) => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
-  
+
   //임시차단
   const isComingSoonPage = !location.pathname.startsWith(BASE_PATH);
   if (isComingSoonPage) {
@@ -91,7 +91,9 @@ const Layout = ({ children }) => {
 
         {/* 페이지의 실제 내용 */}
         <main
-          className={`flex-grow pt-[52px] pb-[62px] ${
+          className={`flex-grow ${
+            shouldHideNavigation ? "" : "pt-[52px] pb-[62px]"
+          } ${
             isAdminScrollHidden
               ? "overflow-y-scroll hide-scrollbar"
               : currentPath === "/map"

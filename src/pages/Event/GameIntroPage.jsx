@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import topLeftLogo from '../../assets/images/icons/game-icons/top-left-logo.png';
-import GameLoadingSvg from '../../assets/images/icons/game-icons/GameLoading.svg';
+import React, { useEffect } from "react";
+import GameLoadingSvg from "../../assets/images/icons/game-icons/GameLoading.png";
 
 function GameIntroPage({ onStartGame }) {
   useEffect(() => {
@@ -11,12 +10,13 @@ function GameIntroPage({ onStartGame }) {
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, [onStartGame]);
   return (
-    <div className="w-full max-w-[430px] mx-auto h-screen relative bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden">
-      {/* 배경 이미지 */}
-      <img className="w-[461px] h-[476px] absolute left-1/2 transform -translate-x-1/2 -translate-y-1/4 top-0" src={topLeftLogo} />
-      
+    <div className="w-full mx-auto h-[calc(100vh-116px)] flex items-center justify-center relative bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden">
       {/* GameLoading.svg로 교체 */}
-      <img className="w-full h-full absolute left-0 top-0 object-cover" src={GameLoadingSvg} alt="게임 로딩" />
+      <img
+        className="w-[257px] h-[325px] object-cover"
+        src={GameLoadingSvg}
+        alt="게임 로딩"
+      />
 
       {/* 상단 모바일 상태바
       <div data-status="Home" className="w-full h-14 p-4 absolute top-0 left-0 bg-neutral-000 shadow-[0px_1px_5px_0px_rgba(0,0,0,0.05)] inline-flex flex-col justify-start items-start gap-2.5">
@@ -32,9 +32,9 @@ function GameIntroPage({ onStartGame }) {
           <div className="w-3.5 h-3 bg-black"></div>
         </div>
       </div> */}
-      
+
       {/* 게임 시작 버튼 (클릭 가능한 영역) */}
-      <div 
+      <div
         className="w-8 h-8 left-[172.50px] top-[409px] absolute overflow-hidden cursor-pointer"
         onClick={() => {
           console.log("도전하기 버튼 클릭됨!");
