@@ -394,7 +394,7 @@ export default function BoardDetail() {
               {/* 가변 본문 */}
               <div className="flex-1">
                 {/* 태그 */}
-                <div className="flex w-[335px] py-[30px] flex-col items-start gap-[24px] mt-[15px]">
+                <div className="flex w-[335px] py-[30px] flex-col items-start gap-[24px] mt-[15px] whitespace-nowrap">
                   <TagPill category={post.category} />
                 </div>
 
