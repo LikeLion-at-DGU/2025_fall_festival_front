@@ -30,6 +30,10 @@ export const mapConfigs = {
   8: { // 경영.사과관
     img: DetailMapSocSci,
     schedules: {
+      "2025-09-24:day": [
+        { label: "식품산업관리학과", x: 70, y: 30 },
+
+      ],
       "2025-09-24:night": [
         { label: "식품산업관리학과", x: 70, y: 30 },
         { label: "광고홍보학과", x: 60, y: 50 },
@@ -50,9 +54,10 @@ export const mapConfigs = {
     img: DetailMapPaljeongdo,
     schedules: {
       "2025-09-24:day": [
-        { label: "그래픽커뮤니케이션 사이언스", x: 34, y: 25 },
-        { label: "키운셀러", x: 75, y: 25 },
-        { label: "108리더스 상록수커피클럽", x: 20, y: 60 },
+        { label: "그래픽커뮤니케이션\n사이언스", x: 31, y: 25 },
+        { label: "키운셀러", x: 72, y: 25 },
+        { label: "일공팔상회", x: 20, y: 47 },
+        { label: "상록수커피클럽", x: 20, y: 60 },
         { label: "사다리\n 극락정토", x: 85, y: 47 },
         { label: "축기단 굿즈부스", x: 85, y: 60 },
       ],
@@ -60,9 +65,10 @@ export const mapConfigs = {
         { label: "에코코", x: 34, y: 25 },
       ],
       "2025-09-25:day": [
-        { label: "그래픽커뮤니케이션 사이언스", x: 34, y: 25 },
-        { label: "키운셀러", x: 75, y: 25 },
-        { label: "동국이네 슈퍼마켓 자연순환보증금관리센터 x 코카콜라", x: 20, y: 55 },
+        { label: "그래픽커뮤니케이션\n사이언스", x: 31, y: 25 },
+        { label: "키운셀러", x: 72, y: 25 },
+        { label: "식-생활", x: 20, y: 60 },
+
         { label: "디그램", x: 50, y: 60 },
         { label: "축기단 굿즈부스", x: 85, y: 55 },
       ],
@@ -70,11 +76,12 @@ export const mapConfigs = {
         { label: "에코코", x: 34, y: 25 },
       ],
       "2025-09-26:day": [
-        { label: "그래픽커뮤니케이션 사이언스", x: 34, y: 25 },
-        { label: "키운셀러", x: 75, y: 25 },
-        { label: "108리더스 상록수커피클럽", x: 20, y: 60 },
-        { label: "사다리 극락정토", x: 85, y: 47 },
-        { label: "축기단 굿즈부스", x: 85, y: 60 },
+      { label: "그래픽커뮤니케이션\n사이언스", x: 31, y: 25 },
+        { label: "키운셀러", x: 72, y: 25 },
+        { label: "동국이네 슈퍼마켓\n자연순환보증금관리센터 x 코카콜라", x: 20, y: 55 },
+        { label: "디그램 \n글로벌 부스", x: 50, y: 60 },
+
+        { label: "축기단\n굿즈부스", x: 85, y: 60 },
       ],
       "2025-09-26:night": [
         { label: "에코코", x: 34, y: 25 },
@@ -86,9 +93,9 @@ export const mapConfigs = {
     img: DetailMapMyungjin,
     schedules: {
       "2025-09-24:night": [
-        { label: "문과대학", x: 20, y: 60 },
-        { label: "국어국문문예창작학부", x: 55, y: 60 },
-        { label: "철학과", x: 80, y: 60 },
+        { label: "꽃보다 문과", x: 20, y: 60 },
+        { label: "대동제로 보는\n그리스 로마 신화", x: 55, y: 60 },
+        { label: "철수네 슈퍼", x: 80, y: 60 },
       ],
       "2025-09-25:night": [
         { label: "참사랑 봉사단", x: 55, y: 60 },
@@ -107,7 +114,7 @@ export const mapConfigs = {
         { label: "플리마켓", x: 50, y: 75 },
       ],
       "2025-09-24:night": [
-        { label: "사범대학", x: 50, y: 75 },
+        { label: "DEMU", x: 50, y: 75 },
       ],
       "2025-09-25:day": [
         { label: "플리마켓", x: 50, y: 75 },
@@ -150,27 +157,26 @@ export const mapConfigs = {
     img: DetailMapLaw,
     schedules: {
       "2025-09-24:day": [
-        { label: "테스트부스1", x: 50, y: 70 },
-        { label: "야구부 프런트 다독다독", x: 50, y: 30 },
+        { label: "야구부 프런트\n다독다독", x: 50, y: 30 },
       ],
       "2025-09-24:night": [
-        { label: "테스트부스1", x: 50, y: 70 },
-        { label: "야구부 프런트 다독다독", x: 50, y: 30 },
+        { label: "FOMU'LAW'1:법대의질주", x: 50, y: 70 },
+        { label: "해탈해요\n 중생의숲", x: 50, y: 30 },
       ],
       "2025-09-25:day": [
         { label: "더플레이", x: 50, y: 70 },
         { label: "야구부 프런트 다독다독", x: 50, y: 30 },
         { label: "인액터스", x: 50, y: 30 },
       ],
-      "2025-09-25:night": [
-        { label: "불교 대학", x: 50, y: 70 },
-        { label: "법과 대학", x: 50, y: 30 },
+     "2025-09-25:night": [
+        { label: "FOMU'LAW'1:법대의질주", x: 50, y: 70 },
+        { label: "해탈해요\n 중생의숲", x: 50, y: 30 },
       ],
       "2025-09-26:day": [
         { label: "메이투", x: 50, y: 70 },
       ],
       "2025-09-26:night": [
-        { label: "첨단융합대학", x: 50, y: 70 },
+        { label: "첨융주막", x: 50, y: 70 },
       ],
     },
   },
