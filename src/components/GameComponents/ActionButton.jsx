@@ -23,16 +23,16 @@ const ActionButton = ({
   const getButtonText = () => {
     switch (gameStatus) {
       case "ready":
-        return t("game.start");
+        return "게임 시작";
       case "playing":
         return "다른 글자를 찾아보세요";
       case "correct":
-        return currentStage >= 4 ? t("game.complete") : t("game.nextStep");
+        return currentStage >= 4 ? "게임 완료" : "다음 단계로";
       case "timeout":
       case "wrong":
-        return t("game.retry");
+        return "다시 도전하기";
       default:
-        return t("game.default");
+        return "다른 글자를 찾아보세요";
     }
   };
 
