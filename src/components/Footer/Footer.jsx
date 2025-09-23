@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import PrefixedLink from "../../components/PrefixedLink";
 import { useTranslation } from "react-i18next";
 
 import dirvana from "../../assets/images/icons/logo/dirvanawhite.png";
@@ -45,7 +45,7 @@ const Footer = () => {
         {/* 로고 + 텍스트 */}
         <div className="flex justify-center items-center gap-6 mt-2">
           {/* likelion */}
-          <Link to="/admin/login">
+          <PrefixedLink to="/admin/login">
             <div className="flex justify-center items-center gap-1">
               <img src={likelion} alt="LIKELION" className="w-[26px] h-[16px]" />
               <span
@@ -54,7 +54,7 @@ const Footer = () => {
                 Administrator
               </span>
             </div>
-          </Link>
+          </PrefixedLink>
 
           {/* instagram */}
           <a

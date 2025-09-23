@@ -1,10 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 
 import backBtn from "../../assets/images/icons/header-icons/left.png";
 
 const MapDetailHeader = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const handleBackClick = () => {
     navigate(-1);

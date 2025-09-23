@@ -1,10 +1,11 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import { useEffect, useState } from "react";
 import { getBoothEventDetail } from "../../apis/admin/booth";
 
 function EventDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const [event, setEvent] = useState(null);
 
   useEffect(() => {

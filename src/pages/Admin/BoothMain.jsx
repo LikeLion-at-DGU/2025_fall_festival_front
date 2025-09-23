@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import AdminTitle from "../../components/AdminComponents/AdminTitle";
 import NoticeBox from "../../components/AdminComponents/Booth/NoticeBox";
@@ -9,7 +9,7 @@ function BoothMain() {
 
   const [events, setEvents] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const bigWrapperClass = "flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6";
   const wrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-4";

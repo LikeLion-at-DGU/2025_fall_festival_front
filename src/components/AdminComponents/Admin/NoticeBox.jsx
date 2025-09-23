@@ -1,8 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../../hooks/usePrefixedNavigate";
 
 function NoticeBox({ id, category, title, writer }) {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const handleClick = () => {
     navigate(`notice/${id}`);  // ✅ 상세페이지로 이동

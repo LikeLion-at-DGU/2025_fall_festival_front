@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import stage from "../../assets/images/icons/main-icons/stage.svg";
 import ftisland from "../../assets/images/banners/ftisland.png";
 import illit from "../../assets/images/banners/illit.png";
@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 
 
 const Stage = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const { getTranslation } = useTranslations();
   const [currentArtistIndex, setCurrentArtistIndex] = useState(0);
   const [isShowTime, setIsShowTime] = useState(false);

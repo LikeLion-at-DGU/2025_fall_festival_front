@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
@@ -52,7 +52,7 @@ function PullList({
   const sheetRef = useRef(null);
   const textClass = "text-[14px] font-normal leading-[150%]";
 
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   // ----------------------------
   // 드래그 핸들러

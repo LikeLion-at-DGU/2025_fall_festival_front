@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
@@ -18,7 +18,7 @@ import {
 } from "../../apis/admin/festa";
 
 function AdminMain() {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   // 게시글 목록 (공지 + 분실물)
   const [notices, setNotices] = useState([]);
