@@ -10,8 +10,10 @@ const AdminHeader = () => {
 
   const handleBack = () => {
     // 특정 경로일 때 → 메인 페이지로 이동
-    if (location.pathname.endsWith === "/admin/booth" || 
-        location.pathname.endsWith === "/admin/festa") {
+    if (location.pathname.endsWith === ("/admin/booth") ||
+        location.pathname.endsWith === ("/admin/login") ||
+        location.pathname.endsWith === ("/admin/festa")
+    ) {
       navigate(""); // Home 컴포넌트 경로
     } else {
       navigate(-1); // 일반적인 직전 페이지로 이동
