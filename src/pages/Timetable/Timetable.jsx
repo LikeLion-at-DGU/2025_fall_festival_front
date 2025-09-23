@@ -184,10 +184,11 @@ export default function Timetable() {
               setIsCelebrityMode(false);
               setSelectedHour(null);
             }}
-            className={`px-[16px] pt-[4px] pb-[8px] text-xl font-medium ${selectedDay === d.value
-              ? "text-red-500 border-b-2 border-red-500"
-              : "text-black"
-              }`}
+            className={`px-[16px] pt-[4px] pb-[8px] text-xl font-medium ${
+              selectedDay === d.value
+                ? "text-red-500 border-b-2 border-red-500"
+                : "text-black"
+            }`}
           >
             {d.label}
           </button>
@@ -205,10 +206,11 @@ export default function Timetable() {
         {hours.map((time) => (
           <div key={time} className="flex flex-col items-center">
             <span
-              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${selectedHour === time && !isCelebrityMode
-                ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
-                : "text-[#71717A]"
-                }`}
+              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${
+                selectedHour === time && !isCelebrityMode
+                  ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
+                  : "text-[#71717A]"
+              }`}
             >
               {time}
             </span>
@@ -240,10 +242,11 @@ export default function Timetable() {
         {/* 연예인 버튼 */}
         <div className="flex flex-col items-center">
           <span
-            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${isCelebrityMode
-              ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
-              : "text-[#71717A]"
-              }`}
+            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${
+              isCelebrityMode
+                ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
+                : "text-[#71717A]"
+            }`}
           >
             {t("timetable.celebrity")}
           </span>
@@ -274,7 +277,7 @@ export default function Timetable() {
         {loading ? (
           <p className="text-center text-gray-400">{t("timetable.loading")}</p>
         ) : selectedDay === "2025-09-24" ? (
-          // Day1은 무조건 "오늘은 공연이 없어요"
+          // Day1도 Day2/Day3와 동일하게 공용 문구 사용
           <div className="flex flex-col items-center gap-6 pt-20">
             <img
               src={dirvana}
@@ -282,7 +285,7 @@ export default function Timetable() {
               className="mt-4 w-[185px] h-[35px]"
             />
             <p className="text-center text-[#A1A1AA] text-[16px] font-[400]">
-              {t("timetable.noEventToday")}
+              {t("timetable.noStage")}
             </p>
           </div>
         ) : isCelebrityMode ? (
@@ -432,7 +435,6 @@ export default function Timetable() {
           </div>
         )}
       </div>
-
     </div>
   );
 }
