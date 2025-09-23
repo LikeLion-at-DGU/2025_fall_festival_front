@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useBoothTranslation } from "../../../hooks/useTranslation";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../../hooks/usePrefixedNavigate";
 import defaultImg from "../../../assets/images/banners/default-img.png";
 import { BASE_PATH } from "../../../config/routes";
 
@@ -12,7 +12,7 @@ export default function NearbyBoothSection({ boothId }) {
   const [booths, setBooths] = useState([]);
   const { getTranslatedBooths } = useBoothTranslation(booths);
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   useEffect(() => {
     const fetchBooths = async () => {
@@ -66,7 +66,7 @@ export default function NearbyBoothSection({ boothId }) {
         {translatedBooths.map((b) => (
           <div
             key={b.booth_id || b.id}
-            onClick={() => navigate(`${BASE_PATH}/booth/${b.booth_id || b.id}`)}
+            onClick={() => navigate(`/booth/${b.booth_id || b.id}`)}
             className="relative bg-white shadow-md rounded-2xl p-3 flex-shrink-0 w-32 flex flex-col items-start mb-2"
           >
             {/* 이미지 */}

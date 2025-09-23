@@ -13,7 +13,7 @@ export async function postSuccessGame(data) {
 }
 
 export async function postSuccessCountGame(data) {
-  const res = await instance.post(`${VITE_API_BASE_URL}/game/games/successcount`, data);
+  const res = await instance.post(`${VITE_API_BASE_URL}/game/games/successcount/`, data);
   return res.data;
 }
 
