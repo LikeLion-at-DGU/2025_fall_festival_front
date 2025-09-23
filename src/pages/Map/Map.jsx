@@ -65,7 +65,7 @@ function Map() {
     );
     return [...new Set(dates)]; // 중복 제거
   }, [booths]);
-  console.log("가능한 날짜아아아", availableDates);
+  // console.log("가능한 날짜아아아", availableDates);
 
   return (
     <div className="relative flex flex-col h-screen overflow-hidden">
