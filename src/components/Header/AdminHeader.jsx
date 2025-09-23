@@ -1,17 +1,18 @@
 import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 
 import backBtn from "../../assets/images/icons/header-icons/left.png";
 
 const AdminHeader = () => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const location = useLocation();
 
   const handleBack = () => {
     // 특정 경로일 때 → 메인 페이지로 이동
-    if (location.pathname === "/admin/booth" || 
-        location.pathname === "/admin/festa") {
-      navigate("/"); // Home 컴포넌트 경로
+    if (location.pathname.endsWith === "/admin/booth" || 
+        location.pathname.endsWith === "/admin/festa") {
+      navigate(""); // Home 컴포넌트 경로
     } else {
       navigate(-1); // 일반적인 직전 페이지로 이동
     }

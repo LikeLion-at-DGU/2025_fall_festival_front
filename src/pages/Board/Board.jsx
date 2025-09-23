@@ -1,7 +1,8 @@
 // src/pages/Board/Board.jsx
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import { useTranslation } from "react-i18next";
 import { useBoardTranslation } from "../../hooks/useTranslation";
 import { useTranslations } from "../../context/TranslationContext";
@@ -143,7 +144,7 @@ function Toast({ message }) {
 
 const BoardItem = ({ item, currentCategory }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const { category, title } = item;
   const [toast, setToast] = useState("");
   const { getTranslation } = useTranslations();

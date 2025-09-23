@@ -1,4 +1,5 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import { useEffect, useState } from "react";
 import { getBoardDetail, deleteBoard } from "../../apis/admin/festa";
 import SubmitBtn from "../../components/AdminComponents/SubmitBtn"; // ✅ 공용 버튼 가져오기
@@ -6,7 +7,7 @@ import Popup from "../../components/AdminComponents/Popup";
 
 function PostDetail() {
   const { boardId } = useParams();
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const [board, setBoard] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -23,7 +24,7 @@ function PostDetail() {
     fetchData();
   }, [boardId]);
 
-  if (!board) return <div className="grid place-items-center mt-[400px]">loading..⌛</div>;
+  if (!board) return <div className="grid place-items-center mt-[250px]">loading..</div>;
 
   return (
     <div className="max-w-md mx-auto bg-gray-50 px-6 py-6 min-h-screen">

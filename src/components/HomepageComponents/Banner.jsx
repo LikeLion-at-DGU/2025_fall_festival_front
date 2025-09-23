@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import festivalBanner from "../../assets/images/banners/festival-banner.png";
 import festivalBanner2 from "../../assets/images/banners/festival-banner2.png";
 import festivalBanner3 from "../../assets/images/banners/festival-banner3.png";
@@ -11,7 +11,7 @@ const Banner = () => {
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const { t } = useTranslation();
 
   const banners = [

@@ -1,9 +1,9 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import notification from "../../assets/images/icons/main-icons/notification.svg";
 
 const Notification = ({ notice, loading, error }) => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const handleNotificationClick = () => {
     navigate("/board", { state: { category: "Notice" } });

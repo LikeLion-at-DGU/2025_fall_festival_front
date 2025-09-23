@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import imageCompression from "browser-image-compression";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import PostInput from "../../components/AdminComponents/PostInput";
@@ -8,8 +9,22 @@ import PhotoUpload from "../../components/AdminComponents/Admin/PhotoUpload";
 import ToastMessage from "../../components/AdminComponents/ToastMessage";
 import { createLostPost, updateLostPost } from "../../apis/admin/festa";
 
+/* ------- 분실물을 게시합니다/(POST) -------- */
+/*
+ ### 접근권한
+ * 접근 : 축제관리자 [축기단, 총학 UID]
+ * 작성 허용 : role = Staff && Stuco
+ * 접근 거부 트리거 : "POST 시도 시" 인증 만료 여부 판단 및 로그인 리다이렉트
+ * 
+ * 
+ ### POST 조건
+ * btn 활성화 : 전 필드 input, 시간 유효성 검사 통과
+ * 
+ * 
+ */
+
 function LostPost() {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const location = useLocation();
   const editingData = location.state; // ✅ 수정 모드일 경우 전달받은 데이터
 

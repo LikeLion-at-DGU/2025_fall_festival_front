@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import BoothCard from "../MapComponents/BoothCard";
 import Skeleton from "../Skeleton/Skeleton";
 import { getBoothRanking } from "../../apis/mainpage";
@@ -7,7 +7,7 @@ import { useBoothTranslation } from "../../hooks/useTranslation";
 import { useTranslation } from "react-i18next";
 
 const BoothRank = ({ onDataChange }) => {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const [rankData, setRankData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

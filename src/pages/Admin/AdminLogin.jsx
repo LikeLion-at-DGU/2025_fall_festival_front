@@ -7,13 +7,29 @@ import dirvana from "../../assets/images/icons/logo/dirvanablack.svg";
 import likelion from "../../assets/images/icons/logo/likelionblack.svg";
 import collab from "../../assets/images/icons/logo/collab.svg";
 
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import { adminLogin } from "../../apis/admin/admin";
 
-/*----관리자 로그인 구현 플로우----*/
+/* ------- 관리자 로그인 구현 플로우 -------- */
+
 // CodeInput에 입력하는 값을 state로 연결합니다. (value, onChange)
 // SubmitBtn 클릭 시 handleSubmit을 실행합니다.
 // adminLogin API 호출 후 uid/role/name을 저장하고, 이후 게시글목록 페이지로 이동합니다.
+
+/*
+ ### 접근권한
+ * 접근 : 부스관리자 [동아리, 학과 UID]
+ * 작성 허용 : role = Club && Major
+ * 접근 거부 트리거 : "POST 시도 시" 인증 만료 여부 판단 및 로그인 리다이렉트
+ * 로그인 방식 : 
+ * 인증 만료 판단 기준 : uid_value === false
+ *  
+ ### POST 조건
+ * 전 필드 input
+ * 시간 유효성 검사 통과
+ * submitBtn 활성화
+ * 
+ */
 
 /*----관리자 임의 생성 코드----*/
 // 총학: stuco
@@ -25,7 +41,7 @@ function AdminLogin() {
   
   const [code, setCode] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const showToast = (setter, message) => {
     setter(message);

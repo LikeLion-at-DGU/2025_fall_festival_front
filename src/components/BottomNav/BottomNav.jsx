@@ -1,5 +1,7 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom"; 
+import PrefixedLink from "../PrefixedLink";   // ✅ 우리가 만든 PrefixedLink
+import { BASE_PATH } from "../../config/routes";     // ✅ prefix 상수
 
 import map from "../../assets/images/icons/nav-icons/map.svg";
 import timetable from "../../assets/images/icons/nav-icons/calendar.svg";
@@ -17,15 +19,18 @@ import { useTranslation } from "react-i18next";
 
 const BottomNav = () => {
   const { t } = useTranslation();
-  const location = useLocation(); // 현재 URL 확인
+  const location = useLocation();
+
+  // ✅ prefix(/comingsoon) 제거 후 경로 비교
+  const currentPath = location.pathname.replace(BASE_PATH, "") || "/";
 
   // name → i18n key 로 교체
   const navItems = [
-    { key: "nav.map", path: "/map/?secret=1031", icon: map, activeIcon: mapActive },
-    { key: "nav.timetable", path: "/timetable/?secret=1031", icon: timetable, activeIcon: timetableActive },
-    { key: "nav.home", path: "/?secret=1031", icon: home, activeIcon: homeActive },
-    { key: "nav.board", path: "/board/?secret=1031", icon: document, activeIcon: documentActive },
-    { key: "nav.game", path: "/event/?secret=1031", icon: game, activeIcon: gameActive }
+    { key: "nav.map", path: "/map", icon: map, activeIcon: mapActive },
+    { key: "nav.timetable", path: "/timetable", icon: timetable, activeIcon: timetableActive },
+    { key: "nav.home", path: "/", icon: home, activeIcon: homeActive },
+    { key: "nav.board", path: "/board", icon: document, activeIcon: documentActive },
+    { key: "nav.game", path: "/event", icon: game, activeIcon: gameActive }
   ];
 
   const linkClassName = (active) => `
@@ -35,8 +40,7 @@ const BottomNav = () => {
     gap-[2px]
     ${active
       ? "text-[12px] text-orange font-semibold border-t-[1.5px] border-orange"
-      : "text-black font-normal text-[10px]"
-    }
+      : "text-black font-normal text-[10px]"}
   `;
 
   return (
@@ -47,17 +51,17 @@ const BottomNav = () => {
           if (item.path === "/map") {
             // 지도 상세페이지들도 활성화 유지
             isActive =
-              location.pathname.startsWith("/map") ||
-              location.pathname.startsWith("/booth") ||
-              location.pathname.startsWith("/drink") ||
-              location.pathname.startsWith("/foodtruck") ||
-              location.pathname.startsWith("/toilet");
+              currentPath.startsWith("/map") ||
+              currentPath.startsWith("/booth") ||
+              currentPath.startsWith("/drink") ||
+              currentPath.startsWith("/foodtruck") ||
+              currentPath.startsWith("/toilet");
           } else {
-            isActive = location.pathname === item.path;
+            isActive = currentPath === item.path;
           }
 
           return (
-            <Link
+            <PrefixedLink
               to={item.path}
               key={item.key}
               className={linkClassName(isActive)}
@@ -68,7 +72,7 @@ const BottomNav = () => {
                 className="h-[24px] w-[24px] mt-[5px]"
               />
               <span>{t(item.key)}</span> {/* ✅ 번역 적용 */}
-            </Link>
+            </PrefixedLink>
           );
         })}
       </div>

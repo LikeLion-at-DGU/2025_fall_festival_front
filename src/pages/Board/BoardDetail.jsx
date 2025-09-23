@@ -1,6 +1,7 @@
 // src/pages/Board/BoardDetail.jsx
 import React, { useEffect, useMemo, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import { useTranslation } from "react-i18next";
 import BoardDetailHeader from "../../components/Header/BoardDetailHeader";
 import BoothCard from "../../components/MapComponents/BoothCard";
@@ -67,7 +68,7 @@ function fmtDateTime(iso) {
 export default function BoardDetail() {
   const { t } = useTranslation();
   const { boardId } = useParams();
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const { getTranslation, requestSingleTranslation } = useTranslations();
 
   const [loading, setLoading] = useState(true);

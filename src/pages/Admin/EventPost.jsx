@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import Submitbtn from "../../components/AdminComponents/SubmitBtn";
 import Popup from "../../components/AdminComponents/Popup";
 import PostInput from "../../components/AdminComponents/PostInput";
@@ -8,18 +8,18 @@ import ToastMessage from "../../components/AdminComponents/ToastMessage";
 import { createEvent } from "../../apis/admin/booth";
 import Tooltip from "../../components/AdminComponents/Tooltip";
 
+/* ------- 이벤트를 개최합니다/(POST) -------- */
 /*
----------------------------------------
- # 이벤트를 개최합니다.(POST)
-----------------------------------------
  ### 접근권한
- * 작성 허용 : role = Club || Major
- * 접근 거부 트리거 : POST 시도 시 인증 만료 여부 판단 및 리다이렉트
+ * 접근 : 부스관리자 [동아리, 학과 UID]
+ * 작성 허용 : role = Club && Major
+ * 접근 거부 트리거 : "POST 시도 시" 인증 만료 여부 판단 및 로그인 리다이렉트
  * 
  *  
  ### POST 조건
- * btn 활성화 : 전 필드 input, 시간 유효성 검사 통과
- * 
+ * 전 필드 input
+ * 시간 유효성 검사 통과
+ * submitBtn 활성화
  * 
  */
 
@@ -33,7 +33,7 @@ function EventPost() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
   const [timeError, setTimeError] = useState("");
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
 
   const timeWrapper = "flex flex-row items-center w-1/2 gap-2";
 

@@ -1,12 +1,13 @@
 // 폐기 예정
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import { getBoardDetail, updateNotice, deleteNotice } from "../../apis/board";
 import SubmitBtn from "../../components/AdminComponents/SubmitBtn";
 
 function NoticeDetail() {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const [notice, setNotice] = useState(null);
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import PrefixedLink from "../../components/PrefixedLink";
 
 import likelion from "../../assets/images/icons/logo/likelionblack.svg";
 import dirvana from "../../assets/images/icons/logo/dirvanablacksmall.png";
@@ -14,16 +14,16 @@ const Header = () => {
     h-[54px] px-[5px]"
     >
       {/* 왼쪽 로고 */}
-      <Link to="/">
+      <PrefixedLink to="/">
         <img src={dirvana} alt="DIRVANA" className="h-full w-[85px] m-[10px]" />
-      </Link>
+      </PrefixedLink>
       <div className=" flex items-center gap-[10px]">
         {/* 번역버튼 */}
         <TranslateBtn />
         {/* 오른쪽 로고 */}
-        <Link to="/developers">
+        <PrefixedLink to="/developers">
           <img src={likelion} alt="ADMIN" className="h-full w-auto m-[10px]" />
-        </Link>
+        </PrefixedLink>
       </div>
     </header>
   );
