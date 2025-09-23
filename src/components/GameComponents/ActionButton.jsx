@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 /**
  * Author @곽도윤
@@ -9,17 +8,19 @@ import { useTranslation } from "react-i18next";
  * @param {Function} onNextStep - 다음 단계로 이동
  * @param {Function} onRetry - 다시 도전하기
  * @param {Function} onStartGame - 게임 시작
+ * @param {Function} onGoHome - 홈으로 가기
  * @param {number} currentStage - 현재 단계 (1-4)
+ * @param {number} playCount - 플레이 횟수
  */
 const ActionButton = ({
   gameStatus,
   onNextStep,
   onRetry,
   onStartGame,
+  onGoHome,
   currentStage,
+  playCount,
 }) => {
-  const { t } = useTranslation();
-
   const getButtonText = () => {
     switch (gameStatus) {
       case "ready":
@@ -30,7 +31,7 @@ const ActionButton = ({
         return currentStage >= 4 ? "게임 완료" : "다음 단계로";
       case "timeout":
       case "wrong":
-        return "다시 도전하기";
+        return playCount >= 3 ? "홈으로 가기" : "다시 도전하기";
       default:
         return "다른 글자를 찾아보세요";
     }
@@ -57,7 +58,11 @@ const ActionButton = ({
     } else if (gameStatus === "correct") {
       onNextStep && onNextStep();
     } else if (gameStatus === "timeout" || gameStatus === "wrong") {
-      onRetry && onRetry();
+      if (playCount >= 3) {
+        onGoHome && onGoHome();
+      } else {
+        onRetry && onRetry();
+      }
     }
   };
 

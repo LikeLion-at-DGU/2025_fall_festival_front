@@ -365,6 +365,7 @@ export default function BoardDetail() {
       isOperating: true, // 상세 페이지에서는 운영중 여부 표시를 단순화
       likesCount: likes,
       badges,
+      image: boothRaw.image_url || null,
     };
   }, [boothRaw, getTranslation]);
 
@@ -538,6 +539,7 @@ export default function BoardDetail() {
                           isOperating={boothCardProps.isOperating}
                           likesCount={boothCardProps.likesCount}
                           badges={boothCardProps.badges}
+                          image={boothCardProps.image}
                         />
                       </div>
                     )}
