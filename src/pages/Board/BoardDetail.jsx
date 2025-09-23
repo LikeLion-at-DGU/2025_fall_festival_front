@@ -7,6 +7,7 @@ import BoardDetailHeader from "../../components/Header/BoardDetailHeader";
 import BoothCard from "../../components/MapComponents/BoothCard";
 import { formatTimeWithDay } from "../../utils/dateUtils";
 import { useTranslations } from "../../context/TranslationContext";
+import PrefixedLink from "../../components/PrefixedLink";
 
 // .env 설정
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
@@ -558,7 +559,7 @@ export default function BoardDetail() {
                 
                   return (
                     <li key={item.id} className="rounded-[12px] bg-white">
-                      <Link
+                      <PrefixedLink
                         to={`/board/${item.id}`}
                         className="flex py-[13px] px-[10px] items-center justify-between w-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
                       >
@@ -602,7 +603,7 @@ export default function BoardDetail() {
                             </span>
                           )}
                         </div>
-                      </Link>
+                      </PrefixedLink>
                     </li>
                   );
                 })}
