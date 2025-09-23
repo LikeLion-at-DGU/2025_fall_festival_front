@@ -93,7 +93,7 @@ export const clubPerformances = {
       name: "백상 응원단",
       startTime: "18:30",
       endTime: "19:50",
-      image: "/src/assets/images/performers/theater-club.png",
+      image: "/src/assets/images/performers/baeksang.png",
     },
   ],
 };
