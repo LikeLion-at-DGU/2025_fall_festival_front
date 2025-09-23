@@ -34,6 +34,7 @@ console.log("해당 스케줄:", config.schedules?.[`${selectedDate}:${isNightTo
           key={idx}
           className="text-[var(--Neutral-500,#52525B)] font-[SUITE] text-[7px] font-normal leading-[150%]
             w-[60px] h-[30px]
+
             absolute whitespace-pre-line whitespace-nowrap bg-[linear-gradient(270deg,#EBC4C4_0%,#CCBCBC_58.17%)] shadow-[0_1px_4px_0_rgba(0,0,0,0.15)]"
           style={{
             left: `${btn.x}%`,
