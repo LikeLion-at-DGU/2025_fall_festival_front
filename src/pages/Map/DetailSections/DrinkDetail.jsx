@@ -170,7 +170,9 @@ export default function DrinkDetail() {
       </div>
 
       {/* 메뉴 */}
-      <MenuSection menus={drink.menus} boothId={drink.id || id} />
+      <div className="px-4">
+        <MenuSection menus={drink.menus} boothId={drink.id || id} />
+      </div>
 
       {/* 근처 부스 */}
       <NearbyBoothSection boothId={drink.id} />
