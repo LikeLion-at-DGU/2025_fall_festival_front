@@ -19,17 +19,25 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
   // const isWinner = gameResult?.isWon || couponResult?.isWon || false;
   const isWinner = true;
   const availableBooths = gameResult?.couponBooths ||
-    couponResult?.couponBooths || ["프론티어", "공과대학", "문과대학", "푸름누리"];
+    couponResult?.couponBooths || [
+      "프론티어",
+      "공과대학",
+      "문과대학",
+      "푸름누리",
+    ];
 
-  // 부스/학과 리스트 
+  // 부스/학과 리스트
   const boothList =
     availableBooths.length > 0
       ? availableBooths
       : [
+          "---------------24일(수)---------------",
+          "문과대학",
+          "---------------25일(목)---------------",
           "프론티어",
           "공과대학",
-          "문과대학",
-          "푸름누리"
+          "푸름누리",
+          "---------------26일(금)---------------",
         ];
 
   const percentage = 12; // 상위 퍼센트 단계별로 하드코딩 하는 게 나아보임... stage 관리가 불가능
@@ -75,16 +83,18 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
   const handleGetCoupon = async () => {
     try {
       const result = await couponMutation.mutateAsync({
-        booth_name: selectedBooth
+        booth_name: selectedBooth,
       });
-      
+
       console.log("쿠폰 발급 성공:", result);
       setCouponData(result.data);
       setCurrentStep(4); // 쿠폰 발급 완료 단계로 이동
     } catch (error) {
       console.error("쿠폰 발급 실패:", error);
       // 에러 처리 - 쿠폰이 없는 경우 등
-      alert("쿠폰 발급에 실패했습니다. 해당 부스의 쿠폰이 소진되었을 수 있습니다.");
+      alert(
+        "쿠폰 발급에 실패했습니다. 해당 부스의 쿠폰이 소진되었을 수 있습니다."
+      );
     }
   };
 
@@ -244,7 +254,8 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
                     </div>
                   </div>
                   <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-suite leading-none">
-                    쿠폰에 당첨되었어요! 사용할 주점을 골라주세요<br/>
+                    쿠폰에 당첨되었어요! 사용할 주점을 골라주세요
+                    <br />
                   </div>
                 </div>
                 <div
