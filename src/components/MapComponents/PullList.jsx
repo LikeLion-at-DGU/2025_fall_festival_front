@@ -6,7 +6,7 @@ import React, {
   useMemo,
 } from "react";
 import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
-
+import { useLocation } from "react-router-dom";
 import BoothCard from "./BoothCard";
 import NotBoothCard from "./NotBoothCard";
 import { useBoothTranslation } from "../../hooks/useTranslation";
@@ -53,7 +53,7 @@ function PullList({
   const textClass = "text-[14px] font-normal leading-[150%]";
 
   const navigate = usePrefixedNavigate();
-// 글씨 단순화
+  // 글씨 단순화
   const normalizeLabel = (str = "") => str.replace(/\s+/g, " ").trim();
 
   // ----------------------------
@@ -164,26 +164,27 @@ function PullList({
   // ----------------------------
   // 검색 및 필터링 (번역된 데이터 사용)
   // ----------------------------
- const searchFilteredBooths = useMemo(() => {
-  const translatedBooths = getTranslatedBooths();
+  const searchFilteredBooths = useMemo(() => {
+    const translatedBooths = getTranslatedBooths();
 
-  return translatedBooths.filter((booth) => {
-    const boothName = booth.translatedName || booth.name;
-    const locationName =
-      booth.translatedLocation || (booth.location?.name ?? "");
+    return translatedBooths.filter((booth) => {
+      const boothName = booth.translatedName || booth.name;
+      const locationName =
+        booth.translatedLocation || (booth.location?.name ?? "");
 
-    const matchesSearch =
-      searchTerm === "" ||
-      boothName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      locationName.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesSearch =
+        searchTerm === "" ||
+        boothName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        locationName.toLowerCase().includes(searchTerm.toLowerCase());
 
-    //  숫자 변환해서 비교
-    const matchesPin =
-      selectedPin === null || Number(booth.location?.id) === Number(selectedPin);
+      //  숫자 변환해서 비교
+      const matchesPin =
+        selectedPin === null ||
+        Number(booth.location?.id) === Number(selectedPin);
 
-    return matchesSearch && matchesPin;
-  });
-}, [booths, searchTerm, selectedPin, getTranslatedBooths]);
+      return matchesSearch && matchesPin;
+    });
+  }, [booths, searchTerm, selectedPin, getTranslatedBooths]);
 
   const sortedBooths = useMemo(() => {
     return [...searchFilteredBooths].sort((a, b) => {
@@ -261,10 +262,11 @@ function PullList({
                     image={booth.image_url || undefined}
                     location={locationName}
                     isSelected={selectedPin === booth.location?.id}
-                     isHighlighted={
-  selectedBooth &&
- normalizeLabel(selectedBooth) === normalizeLabel(boothName)
- }
+                    isHighlighted={
+                      selectedBooth &&
+                      normalizeLabel(selectedBooth) ===
+                        normalizeLabel(boothName)
+                    }
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days}
@@ -274,18 +276,37 @@ function PullList({
                       isEventActive: booth.is_event || false,
                       isDOrderPartner: booth.is_dorder || false,
                     }}
-                     category={booth.category}
+                    category={booth.category}
                     distance_m={booth.distance_m}
                     className="w-full"
-                    onClick={() =>
-                      navigate(
-                        booth.category === "FoodTruck"
-                          ? `/foodtruck/${booth.booth_id}`
-                          : booth.category === "Drink"
-                          ? `/drink/${booth.booth_id}`
-                          : `/booth/${booth.booth_id}`
-                      )
-                    }
+                  onClick={() => {
+  const path =
+    booth.category === "FoodTruck"
+      ? `/foodtruck/${booth.booth_id}`
+      : booth.category === "Drink"
+      ? `/drink/${booth.booth_id}`
+      : `/booth/${booth.booth_id}`;
+
+  const pinId = booth.location?.id;  // ✅ location.id 확보
+
+  const state =
+    booth.category === "FoodTruck" || booth.category === "Drink" || booth.category === "Toilet"
+      ? { filter: selectedFilter }
+      : {
+          pin: pinId,
+          filter: selectedFilter,
+        };
+
+  if (selectedFilter) sessionStorage.setItem("lastFilter", selectedFilter);
+  if (booth.category === "Booth" && pinId) {
+    sessionStorage.setItem("lastPin", pinId);
+  }
+
+  console.log("➡️ navigate state:", state); // ✅ 로그로 확인
+  navigate(path, { state });
+}}
+
+
                   />
                 ) : (
                   <NotBoothCard
@@ -296,10 +317,21 @@ function PullList({
                     category={booth.category}
                     location={locationName}
                     boothId={booth.booth_id}
-                    isSelected={Number(selectedPin) === Number(booth.location?.id)}
+                    isSelected={
+                      Number(selectedPin) === Number(booth.location?.id)
+                    }
                     onClick={() => {
-                      if (booth.category === "Toilet")
-                        navigate(`/toilet/${booth.booth_id}`);
+                      if (booth.category === "Toilet") {
+                        // ✅ sessionStorage에 현재 필터 저장
+                        if (selectedFilter) {
+                          sessionStorage.setItem("lastFilter", selectedFilter);
+                        }
+
+                        // ✅ 필터 state도 같이 넘김
+                        navigate(`/toilet/${booth.booth_id}`, {
+                          state: { filter: selectedFilter },
+                        });
+                      }
                     }}
                   />
                 );
