@@ -196,7 +196,7 @@ export const developersData = [
   },
   {
     id: 22,
-    name: "PARK SU YEON",
+    name: "PARK SOO YEON",
     roles: ["Corporate Affairs"],
     roleDisplay: "대외협력",
     major: "정보통신공학전공",
