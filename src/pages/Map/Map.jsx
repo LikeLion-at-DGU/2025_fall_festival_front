@@ -89,6 +89,8 @@ function Map() {
               onSelectBooth={setSelectedBooth}
               selectedPin={selectedPin}
               handlePinClick={handlePinClick}
+              selectedDate={selectedDate}
+              isNightToggle={isNightToggle}
             />
 
             {/* 맵 위 스위치 */}
@@ -96,42 +98,41 @@ function Map() {
               <div className="absolute top-[11px] right-[11px] z-10 ">
                 {/* ✅ 날짜 드롭다운 추가 */}
                 <div className="flex flex-row gap-2">
-                <select
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className="h-[24px] px-3 rounded-full border border-[#F58F84] text-sm bg-white shadow-sm focus:outline-none cursor-pointer"
-                >
-                  <option value="">전체 날짜</option>
-                  <option value="2025-09-24">24일 수요일</option>
-                  <option value="2025-09-25">25일 목요일</option>
-                  <option value="2025-09-26">26일 금요일</option>
-                </select>
+                  <select
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="h-[24px] px-3 rounded-full border border-[#F58F84] text-sm bg-white shadow-sm focus:outline-none cursor-pointer"
+                  >
+                    <option value="2025-09-24">24일 수요일</option>
+                    <option value="2025-09-25">25일 목요일</option>
+                    <option value="2025-09-26">26일 금요일</option>
+                  </select>
 
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="sr-only peer"
-                    checked={isNightToggle === true}
-                    onChange={(e) => setIsNightToggle(e.target.checked)}
-                  />
-                  {/* 스위치 바탕 */}
-                  <div className=" w-[44px] p-[2px] h-6 bg-[#F58F84] rounded-full transition-colors peer-checked:bg-[#8894FF] flex items-center justify-around px-[4px]">
-                    {/* 🌙 아이콘 (왼쪽) */}
-                    <img src={sun} alt="moon" className="w-[13px] h-[13px]" />
-                    {/* 🌞 아이콘 (오른쪽) */}
-                    <img src={moon} alt="sun" className="w-[9px] h-[9px]" />
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      className="sr-only peer"
+                      checked={isNightToggle === true}
+                      onChange={(e) => setIsNightToggle(e.target.checked)}
+                    />
+                    {/* 스위치 바탕 */}
+                    <div className=" w-[44px] p-[2px] h-6 bg-[#F58F84] rounded-full transition-colors peer-checked:bg-[#8894FF] flex items-center justify-around px-[4px]">
+                      {/* 🌙 아이콘 (왼쪽) */}
+                      <img src={sun} alt="moon" className="w-[13px] h-[13px]" />
+                      {/* 🌞 아이콘 (오른쪽) */}
+                      <img src={moon} alt="sun" className="w-[9px] h-[9px]" />
 
-                    {/* 동그라미 */}
-                    <span
-                      className={
-                        "absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform duration-300 " +
-                        (!isNightToggle
-                          ? "translate-x-[20px]"
-                          : "translate-x-0")
-                      }
-                    ></span>
-                  </div>
-                </label>
+                      {/* 동그라미 */}
+                      <span
+                        className={
+                          "absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform duration-300 " +
+                          (!isNightToggle
+                            ? "translate-x-[20px]"
+                            : "translate-x-0")
+                        }
+                      ></span>
+                    </div>
+                  </label>
                 </div>
               </div>
             )}
