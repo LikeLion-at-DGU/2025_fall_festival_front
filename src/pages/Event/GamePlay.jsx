@@ -115,7 +115,7 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   // 다음 단계로 이동
   const handleNextStep = async () => {
     // 4단계까지 완료해야 성공 모달 표시
-    if (currentStage < 4) {
+    if (currentStage < 2) {
       setCurrentStage(currentStage + 1);
     } else {
       // 게임 완료 (4단계 완료 시) - 백엔드에 성공 정보 전송 및 쿠폰 확인
