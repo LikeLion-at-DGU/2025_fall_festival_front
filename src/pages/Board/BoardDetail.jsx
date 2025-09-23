@@ -152,7 +152,7 @@ export default function BoardDetail() {
 
   const paragraphs = useMemo(() => {
     if (!contentText) return [];
-    return String(contentText).split(/\n+/);
+    return String(contentText).split(/\r?\n/);
   }, [contentText]);
 
   useEffect(() => {
@@ -365,6 +365,7 @@ export default function BoardDetail() {
       isOperating: true, // 상세 페이지에서는 운영중 여부 표시를 단순화
       likesCount: likes,
       badges,
+      image: boothRaw.image_url || null,
     };
   }, [boothRaw, getTranslation]);
 
@@ -480,21 +481,23 @@ export default function BoardDetail() {
                   )}
                 </div>
 
-                {/* 본문 텍스트 (줄 단위 번역) */}
+                {/* 본문 텍스트 (줄 단위 번역 + 줄바꿈 보존) */}
                 {contentText && (
-                  <section className="text-[#2A2A2E] text-[14px] not-italic font-normal leading-[150%] mt-[24px]">
+                  <section className="text-[#2A2A2E] text-[14px] not-italic font-normal leading-[150%] mt-[24px] whitespace-pre-line">
                     {paragraphs.map((line, idx) => (
-                      <p key={idx} className="whitespace-pre-line">
+                      <React.Fragment key={idx}>
                         {getTranslation(
                           "board",
                           post.id.toString(),
-                          `BoardContent_${idx}`,
+                          `BoardContent_${idx}`, // 줄 단위 번역 키
                           line
                         )}
-                      </p>
+                        {"\n"} {/* 줄바꿈 강제 */}
+                      </React.Fragment>
                     ))}
                   </section>
                 )}
+
 
                 {/* 본문 이미지 (옵션) */}
                 {post?.image && (
@@ -538,6 +541,7 @@ export default function BoardDetail() {
                           isOperating={boothCardProps.isOperating}
                           likesCount={boothCardProps.likesCount}
                           badges={boothCardProps.badges}
+                          image={boothCardProps.image}
                         />
                       </div>
                     )}

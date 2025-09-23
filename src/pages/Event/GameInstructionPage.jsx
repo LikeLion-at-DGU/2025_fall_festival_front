@@ -48,7 +48,25 @@ function GameInstructionPage({ onStartChallenge }) {
   const [attemptCount, setAttemptCount] = useState(0); // 게임 시도 횟수
   const startGameMutation = usePostStartGame();
 
-  const { successcnt } = usePostSuccessCount();
+  // 성공 횟수 상태 (API에서 동적으로 가져옴)
+  const [successCnt, setSuccessCnt] = useState(0);
+  const { mutate: getSuccessCount, isLoading: isLoadingSuccess } =
+    usePostSuccessCount();
+
+  // 컴포넌트 마운트 시 성공 횟수 조회
+  useEffect(() => {
+      getSuccessCount(undefined, {
+        onSuccess: (data) => {
+          // API 응답 예시: { message: '...', data: { total_success_count: 66 } }
+          const apiCount = data?.data?.total_success_count ?? data?.total_success_count ?? data?.success_count ?? data?.successcnt;
+          setSuccessCnt(apiCount ?? 0);
+        },
+        onError: (error) => {
+          console.error("성공 횟수 조회 실패:", error);
+          setSuccessCnt(0);
+        },
+      });
+  }, [getSuccessCount]);
   // 컴포넌트 마운트 시 백엔드에서 받은 시도 횟수 확인
   useEffect(() => {
     const storedTryTimes = localStorage.getItem("game_try_times");
@@ -88,7 +106,7 @@ function GameInstructionPage({ onStartChallenge }) {
           text-primary-400 text-[10px] font-normal font-suite"
             >
               <span>지금까지 단 </span>
-              <span className="font-semibold ">{successcnt}</span>
+              <span className="font-semibold ">{isLoadingSuccess ? "..." : successCnt}</span>
               <span>명 만이 성공했습니다</span>
             </div>
           </div>

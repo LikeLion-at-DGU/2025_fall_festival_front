@@ -106,7 +106,6 @@ export async function getUnionNotices() {
 
 export async function getUnionLosts() {
   const res = await instance.get("/board/losts");
-  console.log("📡 getUnionLosts 응답:", res.data);
   const name = sessionStorage.getItem("name");
   return (res.data.results || res.data).filter((item) => item.writer === name);
 } // 두 경우 커버로 일단 설정해둠 (필요하면 getUnionNotices도 수정)
@@ -114,9 +113,7 @@ export async function getUnionLosts() {
 
 //-------- 공지글 상세페이지 get --------//
 export async function getBoardDetail(boardId) {
-  console.log("📡 getBoardDetail 호출됨:", boardId);
   const res = await instance.get(`/board/${boardId}`);
-  console.log("📡 서버 응답:", res.data);
   return res.data;
 }
 

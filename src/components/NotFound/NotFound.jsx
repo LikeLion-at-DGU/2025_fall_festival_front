@@ -1,10 +1,10 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import { useTranslation } from "react-i18next";
 import dirvana from "../../assets/images/icons/logo/dirvanablacksmall.png";
 
 export default function NotFound({ message = null }) {
-  const navigate = useNavigate();
+  const navigate = usePrefixedNavigate();
   const { t } = useTranslation();
 
   return (

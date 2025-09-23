@@ -2,24 +2,36 @@
 import React from "react";
 import MapWithPins from "./MapWithPins";
 import DetailMap from "./DetailMap";
-import { mapConfigs } from "../../config/mapConfigs";
-import defaultMap from "../../assets/images/banners/default-img.png"
+import Skeleton from "../Skeleton/Skeleton"
+
 const MapContainer = ({
   apiData,
   selectedFilter,
   onSelectBooth,
   selectedPin,
   handlePinClick,
-  selectedDate,        // ✅ 추가
-  isNightToggle        // ✅ 추가
-}) => {  return (
+  selectedDate,
+  isNightToggle,
+  loading, // ✅ 부모(Map.jsx)에서 내려줄 수 있으면 제일 좋음
+}) => {
+  // 1) 로딩 중일 때 스켈레톤
+  if (loading || !apiData || apiData.length === 0) {
+    return (
+      <div className="w-full mx-auto relative">
+        <Skeleton width="100%" height="232px" rounded="rounded-[16px]" />
+      </div>
+    );
+  }
+
+  // 2) DetailMap or MapWithPins 분기
+  return (
     <div className="w-full mx-auto relative">
       {selectedFilter === "Booth" && selectedPin ? (
         <DetailMap
-           buildingId={selectedPin} 
-          onClose={() => handlePinClick(null)}   // 뒤로가기 → 핀 해제
+          buildingId={selectedPin}
+          onClose={() => handlePinClick(null)} // 뒤로가기 → 핀 해제
           onSelectBooth={onSelectBooth}
-            selectedDate={selectedDate}      
+          selectedDate={selectedDate}
           isNightToggle={isNightToggle}
         />
       ) : (
@@ -27,7 +39,7 @@ const MapContainer = ({
           apiData={apiData}
           selectedFilter={selectedFilter}
           selectedPin={selectedPin}
-          handlePinClick={handlePinClick}       // 부모에서 내려준 함수 그대로 사용
+          handlePinClick={handlePinClick}
         />
       )}
     </div>

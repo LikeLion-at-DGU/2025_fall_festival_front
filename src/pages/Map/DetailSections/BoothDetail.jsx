@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import i18n from "i18next";
@@ -330,10 +330,9 @@ export default function BoothDetail() {
 
       {/* 디오더 상태 */}
       {booth.is_dorder &&
-        (booth.booth_can_usage === "True" ||
-          booth.booth_can_usage === "False") && (
+        (booth.booth_can_usage === true || booth.booth_can_usage === false) && (
           <div className="w-full bg-white shadow rounded-[13px] p-3 text-sm text-gray-700 !mt-4 !mb-2">
-            {booth.booth_can_usage === "True" ? (
+            {booth.booth_can_usage === true ? (
               <div className="flex items-center gap-2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -34,11 +34,11 @@ function LostPost() {
   const [previewImage, setPreviewImage] = useState(editingData?.image || null); // 기존 이미지 or 새로 업로드한 이미지 미리보기
   const [toastMsg, setToastMsg] = useState("");
 
-  /* ---- 세션 체크 ---- */
+  /* ---- 접근 시 바로 세션 체크 ---- */
   useEffect(() => {
     const uid = sessionStorage.getItem("uid");
     if (!uid) {
-      setToastMsg("세션이 만료되었습니다. 다시 로그인해주세요.");
+      setToastMsg("로그인이 필요합니다.");
       setTimeout(() => navigate("/admin/login"), 2000);
     }
   }, [navigate]);
@@ -48,17 +48,10 @@ function LostPost() {
     try {
       const uid = sessionStorage.getItem("uid");
       if (!uid) {
-        setToastMsg("세션이 만료되었습니다. 다시 로그인해주세요");
+        setToastMsg("세션이 만료되었습니다. \n 다시 로그인해주세요");
         setTimeout(() => navigate("/admin/login"), 2000);
         return;
       }
-
-      console.log("=== LostPost 요청 직전 ===");
-      console.log("uid:", uid);
-      console.log("title:", title);
-      console.log("content:", content);
-      console.log("location:", locationText);
-      console.log("image:", image);
 
       // FormData 구성
       const formData = new FormData();
@@ -75,7 +68,6 @@ function LostPost() {
       if (editingData) {
         const res = await updateLostPost(editingData.id, formData);
         setToastMsg(res.message || "분실물이 수정되었습니다");
-        console.log("수정할 데이터:", { title, content, locationText, image });
       } else {
         const res = await createLostPost(formData);
         setToastMsg(res.message || "분실물이 등록되었습니다");
@@ -85,10 +77,10 @@ function LostPost() {
       setTimeout(() => navigate("/admin/festa"), 1000);
     } catch (err) {
       console.error("에러 전체:", err);
-      
+      console.error("uid_valid:", err.uid_valid);      
 
       // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
-      if (err.response?.data?.uid_valid === false) {
+      if (err.uid_valid === false) {
         setToastMsg("세션이 만료되었습니다. \n 다시 로그인해주세요");
         setTimeout(() => {
           navigate("/admin/login");
@@ -96,32 +88,47 @@ function LostPost() {
         return;
       }// ⚠️ 여기서 빠져나오는 로직! 
 
-      // 그 외 에러 처리 (⛔ 점검 후 삭제 예정)
-      let msg = "세션이 만료되었습니다";
+      let msg = null;
+      const data = err
+      const errorMessageMap = {
+        title: "제목은 200자 이내여야 합니다.",
+        location: "위치는 200자 이내여야 합니다.",
+        content: "내용을 입력해주세요.",
+        image: "1MB 이하의 이미지만 첨부 가능합니다."
+      };
 
-      // 서버에서 내려주는 에러 메시지 처리
-      if (err.response) {
-        if (typeof err.response.data === "string") {
-          msg = err.response.data;
-        } else if (err.response.data?.message) {
-          msg = err.response.data.message;
-        } else if (err.response.data?.error) {
-          msg = err.response.data.error;
+      if (data) {
+        // 1) 필드별 제약 조건 체크
+        for (const field of Object.keys(errorMessageMap)) {
+          if (data[field]) {
+            msg = errorMessageMap[field]; // 커스텀 메시지
+            break; // 첫 번째 발견된 필드 에러만 처리
+          }
+        }
+        // 2) 공통 메시지 처리
+        if (!msg) {
+          msg = data.message || data.error || data.detail;
         }
       }
 
-      setToastMsg(msg);
+        // 3) fallback 메시지
+        if (!msg) {
+          msg = "알 수 없는 오류가 발생했습니다. \n 잠시 후 다시 시도해주세요.";
+        }
 
-      // 세션 관련 에러일 경우 → 로그인 페이지로 이동
-      if (
-        msg.includes("세션") ||
-        msg.includes("UID") ||
-        msg.includes("로그인") ||
-        err.response?.status === 401
-      ) {
-         setTimeout(() => navigate("/admin/login"), 2000);
+        setToastMsg(msg);
+
+        // 4) 세션 관련 키워드일 경우 → 로그인 페이지 이동
+        if (
+          msg.includes("세션") ||
+          msg.includes("UID") ||
+          msg.includes("로그인") ||
+          err.response?.status === 401
+        ) {
+          setTimeout(() => navigate("/admin/login"), 2000);
       }
     }
+
   };
 
   /* ---- 이미지 업로드 시 미리보기 갱신 ---- */
@@ -135,6 +142,10 @@ function LostPost() {
 
     // 압축 실행
     const compressedFile = await imageCompression(file, options);
+    if (compressedFile.size > 1024 * 1024) {
+      setToastMsg("이미지는 1MB 이하로 압축된 파일만 업로드 가능합니다.");
+      return;
+    }
 
     // 원본 확장자 유지
     const ext = file.name.split(".").pop(); // jpg, png 등
@@ -145,9 +156,7 @@ function LostPost() {
     // ⛔ 삭제 예정
     console.log("압축 전:", (file.size / 1024 / 1024).toFixed(2), "MB");
     console.log("압축 후:", (compressedFile.size / 1024 / 1024).toFixed(2), "MB");
-    console.log("압축 전+확장자:", file.name, file.size);
-    console.log("압축 후+확장자:", newFile.name, newFile.size);
-
+    
     // 상태 반영 (압축된 파일 저장)
     setImage(newFile); // ✅ 서버로 보낼 파일은 확장자 포함된 newFile
     setPreviewImage(URL.createObjectURL(newFile));

@@ -24,11 +24,13 @@ const DetailMap = ({ buildingId, onClose, onSelectBooth, selectedDate, isNightTo
   }, [buildingId, selectedDate, isNightToggle]);
 
   return (
+
 <div className="relative w-full min-h-[269px] rounded-[16px] border border-[#E4E4E7] overflow-hidden">
   {/* 로딩 스켈레톤 */}
   {isLoading && (
     <Skeleton className="absolute inset-0"/>
   )}
+
 
   {/* 상세지도 이미지 */}
   <img

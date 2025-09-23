@@ -32,11 +32,13 @@ const usePostSuccessGame = () => {
       const { message, data } = response;
 
       // 쿠폰 당첨 여부 확인
-      const isWon = message === "쿠폰 당첨";
+      // API may return a boolean flag data.is_coupon or use the message text; support both
+      const isWon = (data && typeof data.is_coupon === 'boolean') ? Boolean(data.is_coupon) : (message === "쿠폰 당첨");
+      const couponBooths = data?.coupon_booth ?? data?.coupon_booths ?? data?.couponBooths ?? null;
       const result = {
         isWon,
         message,
-        couponBooths: isWon ? data?.coupon_booth : null
+        couponBooths: isWon ? couponBooths : null
       };
 
       setSuccessData(result);
