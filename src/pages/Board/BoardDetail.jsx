@@ -480,18 +480,9 @@ export default function BoardDetail() {
                 </div>
 
                 {/* 본문 텍스트 */}
-                {paragraphs.length > 0 && (
-                  <section className="text-[#2A2A2E] text-[14px] not-italic font-normal leading-[150%] mt-[24px]">
-                    {paragraphs.map((line, i) => (
-                      <p key={i}>
-                        {getTranslation(
-                          "board",
-                          post.id,
-                          `BoardContent_${i}`,
-                          line
-                        )}
-                      </p>
-                    ))}
+                {contentText && (
+                  <section className="text-[#2A2A2E] text-[14px] not-italic font-normal leading-[150%] mt-[24px] whitespace-pre-line">
+                    {getTranslation("board", post.id, "BoardContent", contentText)}
                   </section>
                 )}
 

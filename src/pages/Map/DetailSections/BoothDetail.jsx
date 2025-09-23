@@ -294,7 +294,7 @@ export default function BoothDetail() {
           }`}
       >
         <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">{t("booth.introduction")}</h2>
-        <p className="text-sm text-gray-700">
+        <p className="text-sm text-gray-700 whitespace-pre-line">
           {booth.booth_description
             ? getTranslation(
               "booth",

@@ -49,7 +49,7 @@ function PostDetail() {
       )}
 
       {/* 본문 */}
-      <p className="mt-6 leading-relaxed text-gray-800">{board.content}</p>
+      <p className="mt-6 leading-relaxed text-gray-800 whitespace-pre-line">{board.content}</p>
 
       {/* 이미지 */}
       {board.image && (
