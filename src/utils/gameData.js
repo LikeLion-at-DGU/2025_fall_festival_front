@@ -7,12 +7,9 @@ export const wordSets = [
     { target: '디르바나', distractor: '디르비나' },
     { target: '동국대', distractor: '동곡대' },
     { target: '문과대학', distractor: '문괴대학' },
-    { target: '철학과', distractor: '철헉과' },
-    { target: '문예창', distractor: '문에창' },
     { target: '푸름누리', distractor: '푸롬누리' },
     { target: '프론티어', distractor: '프른티어' },
-    { target: '철학과', distractor: '칠학과' }
-];
+    { target: '공과대학', distractor: '긍과대학' },];
 
 /**
  * 게임 단계 설정 (피그마 순서대로)

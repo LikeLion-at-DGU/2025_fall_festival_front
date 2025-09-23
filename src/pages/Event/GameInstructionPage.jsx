@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { usePostStartGame } from "../../hooks/GameHooks/usePostStartGame";
+import { usePostSuccessCount } from "../../hooks/GameHooks/usePostSuccessCount";
 
 // 다음 날 00:00:00까지 남은 시간을 동적으로 보여주는 컴포넌트
 function DynamicRemainTime() {
@@ -47,9 +48,7 @@ function GameInstructionPage({ onStartChallenge }) {
   const [attemptCount, setAttemptCount] = useState(0); // 게임 시도 횟수
   const startGameMutation = usePostStartGame();
 
-  // 더미데이터
-  const data = { successcnt: 0 };
-
+  const { successcnt } = usePostSuccessCount();
   // 컴포넌트 마운트 시 백엔드에서 받은 시도 횟수 확인
   useEffect(() => {
     const storedTryTimes = localStorage.getItem("game_try_times");
@@ -89,7 +88,7 @@ function GameInstructionPage({ onStartChallenge }) {
           text-primary-400 text-[10px] font-normal font-suite"
             >
               <span>지금까지 단 </span>
-              <span className="font-semibold ">{data.successcnt}</span>
+              <span className="font-semibold ">{successcnt}</span>
               <span>명 만이 성공했습니다</span>
             </div>
           </div>
