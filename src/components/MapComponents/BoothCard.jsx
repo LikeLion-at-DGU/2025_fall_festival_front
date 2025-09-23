@@ -37,22 +37,33 @@ function BoothCard({
     initialIsLiked || false
   );
   // console.log("위치",{location})
-
-  const getLocalizedWeekday = () => {
-    const today = new Date();
-
+  // 날짜 맵핑
+  const getWeekdayFromDate = (dateString) => {
+    const date = new Date(dateString);
     const languageMap = {
       ko: "ko-KR",
       en: "en-US",
       ja: "ja-JP",
       "zh-CN": "zh-CN",
     };
-
     const locale = languageMap[i18n.language] || "ko-KR";
-    return today.toLocaleDateString(locale, { weekday: "short" });
+    return date.toLocaleDateString(locale, { weekday: "short" });
   };
+  // const getLocalizedWeekday = () => {
+  //   const today = new Date();
+
+  //   const languageMap = {
+  //     ko: "ko-KR",
+  //     en: "en-US",
+  //     ja: "ja-JP",
+  //     "zh-CN": "zh-CN",
+  //   };
+
+  //   const locale = languageMap[i18n.language] || "ko-KR";
+  //   return today.toLocaleDateString(locale, { weekday: "short" });
+  // };
   // console.log({ isSelected });
-  const translatedTodayLabel = getLocalizedWeekday();
+  // const translatedTodayLabel = getLocalizedWeekday();
   return (
     <div
       className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
@@ -125,13 +136,31 @@ function BoothCard({
             </div>
           )}
 
-          {/* 영업시간 */}
           {category != "Drink" && (
             <p className="text-[10px] text-[#52525B] mb-0.5 font-suite leading-[150%] font-normal">
-              {time ||
-                (startTime && endTime
-                  ? `${translatedTodayLabel} ${startTime}~${endTime}`
-                  : t("booth.preparingHours"))}
+              {businessDays && businessDays.length > 0
+                ? // ✅ 요일/시간 묶어서 출력
+                  (() => {
+                    const grouped = {};
+
+                    businessDays.forEach((day) => {
+                      const weekday = getWeekdayFromDate(day.day); // 요일 변환
+                      const timeRange = `${day.start_time}~${day.end_time}`;
+                      if (!grouped[timeRange]) grouped[timeRange] = [];
+                      grouped[timeRange].push(weekday);
+                    });
+
+                    return Object.entries(grouped).map(
+                      ([timeRange, weekdays], idx) => (
+                        <span key={idx} className="block">
+                          {weekdays.join(", ")} {timeRange}
+                        </span>
+                      )
+                    );
+                  })()
+                : startTime && endTime
+                ? `${startTime}~${endTime}`
+                : t("booth.preparingHours")}
             </p>
           )}
 

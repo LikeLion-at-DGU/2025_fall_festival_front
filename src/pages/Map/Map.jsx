@@ -6,7 +6,7 @@ import PullList from "../../components/MapComponents/PullList";
 import MapWithPins from "../../components/MapComponents/MapWithPins";
 import sun from "../../assets/images/icons/toggle-icons/morningIcon.svg";
 import moon from "../../assets/images/icons/toggle-icons/nightIcon.svg";
-
+import { useMemo } from "react";
 import useBooths from "../../hooks/MapHooks/useBooths";
 // import useFilteredBooths from "../../hooks/MapHooks/useFilteredBooths";
 import useUserLocation from "../../hooks/MapHooks/useUserLocation";
@@ -19,11 +19,13 @@ function Map() {
 
   // 낮/밤 토글 상태 (null이면 자동, true=밤, false=낮)
   const [isNightToggle, setIsNightToggle] = useState(null);
-
+  // 날짜 상태 추가
+  const [selectedDate, setSelectedDate] = useState("");
   const { booths, loading, error } = useBooths(
     selectedFilter,
     userLocation,
-    isNightToggle
+    isNightToggle,
+    selectedDate
   );
 
   // const filteredBooths = useFilteredBooths(booths, selectedFilter);
@@ -55,6 +57,15 @@ function Map() {
     };
   }, []);
 
+  //  booths 안의 business_days에서 날짜 목록 추출
+  const availableDates = useMemo(() => {
+    const dates = booths.flatMap(
+      (b) => b.business_days?.map((d) => d.day) || []
+    );
+    return [...new Set(dates)]; // 중복 제거
+  }, [booths]);
+  console.log("가능한 날짜아아아", availableDates);
+
   return (
     <div className="relative flex flex-col h-screen overflow-hidden">
       {/* 메인 콘텐츠 */}
@@ -68,6 +79,7 @@ function Map() {
               onFilterClick={handlePinClick} // 여기서 selectedPin을 null로 만듦
             />
           </div>
+
           <div className="relative flex-1">
             {/* 맵 */}
             <MapContainer
@@ -82,6 +94,19 @@ function Map() {
             {/* 맵 위 스위치 */}
             {selectedFilter === "Booth" && (
               <div className="absolute top-[11px] right-[11px] z-10 ">
+                {/* ✅ 날짜 드롭다운 추가 */}
+                <div className="flex flex-row gap-2">
+                <select
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="h-[24px] px-3 rounded-full border border-[#F58F84] text-sm bg-white shadow-sm focus:outline-none cursor-pointer"
+                >
+                  <option value="">전체 날짜</option>
+                  <option value="2025-09-24">24일 수요일</option>
+                  <option value="2025-09-25">25일 목요일</option>
+                  <option value="2025-09-26">26일 금요일</option>
+                </select>
+
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"
@@ -100,11 +125,14 @@ function Map() {
                     <span
                       className={
                         "absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform duration-300 " +
-                        (!isNightToggle ? "translate-x-[20px]" : "translate-x-0")
+                        (!isNightToggle
+                          ? "translate-x-[20px]"
+                          : "translate-x-0")
                       }
                     ></span>
                   </div>
                 </label>
+                </div>
               </div>
             )}
           </div>

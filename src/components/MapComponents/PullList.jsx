@@ -261,7 +261,7 @@ function PullList({
                     isSelected={selectedPin === booth.location?.id}
                     startTime={booth.start_time}
                     endTime={booth.end_time}
-                    businessDays={booth.business_days[0]?.weekday}
+                    businessDays={booth.business_days}
                     likesCount={booth.like_cnt || 0}
                     isLiked={booth.is_liked || false}
                     badges={{
