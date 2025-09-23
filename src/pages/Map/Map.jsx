@@ -122,8 +122,8 @@ function Map() {
     <div className="relative flex flex-col h-screen overflow-hidden">
       {/* 메인 콘텐츠 */}
       <div className="flex-1 px-[19px] py-[24px] overflow-hidden">
-        <div className="flex flex-col gap-[26px] h-full">
-          <div className="flex flex-col gap-[20px]">
+        <div className="flex flex-col gap-[18px] h-full">
+          <div className="flex flex-col gap-[16px]">
             <SearchBar searchTerm={searchText} setSearchTerm={setSearchText} />
             <FilterBar
               selectedFilter={selectedFilter}
