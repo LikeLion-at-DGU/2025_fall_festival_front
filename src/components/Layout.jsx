@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
   const [searchParams] = useSearchParams();
   
   //임시차단
-  const isComingSoonPage = location.pathname === "/";
+  const isComingSoonPage = !location.pathname.startsWith(BASE_PATH);
   if (isComingSoonPage) {
     // ✅ ComingSoon 페이지는 레이아웃 제외
     return <>{children}</>;
