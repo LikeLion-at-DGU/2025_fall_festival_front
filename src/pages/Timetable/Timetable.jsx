@@ -277,7 +277,6 @@ export default function Timetable() {
         {loading ? (
           <p className="text-center text-gray-400">{t("timetable.loading")}</p>
         ) : selectedDay === "2025-09-24" ? (
-          // Day1도 Day2/Day3와 동일하게 공용 문구 사용
           <div className="flex flex-col items-center gap-6 pt-20">
             <img
               src={dirvana}
