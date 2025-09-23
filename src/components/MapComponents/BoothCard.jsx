@@ -65,19 +65,20 @@ function BoothCard({
   // console.log({ isSelected });
   // const translatedTodayLabel = getLocalizedWeekday();
   return (
-    <div
-      className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
+<div
+  className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
   ${
-    isSelected
-      ? "bg-red-50 border-red-500 shadow-md " // 선택됨
-      : "bg-white border-neutral-200" // 기본
+    isSelected && category !== "Booth"
+      ? "bg-red-50 border-red-500 shadow-md" // ✅ Booth가 아닐 때만 강조
+      : "bg-white border-neutral-200"        // 기본
   }
 `}
-      style={{
-        borderRadius: "16px",
-      }}
-      onClick={onClick}
-    >
+  style={{
+    borderRadius: "16px",
+  }}
+  onClick={onClick}
+>
+
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}
         <div className="relative w-[68px] h-[68px] flex-shrink-0">
