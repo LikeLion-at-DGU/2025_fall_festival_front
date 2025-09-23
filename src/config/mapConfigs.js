@@ -27,7 +27,7 @@ export const mapConfigs = {
     },
   },
 
-  8: { // 사회과학관
+  8: { // 경영.사과관
     img: DetailMapSocSci,
     schedules: {
       "2025-09-24:night": [
