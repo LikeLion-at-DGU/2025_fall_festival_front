@@ -22,17 +22,17 @@ const CATEGORY_MAP = {
 // 카테고리별 pill 스타일
 const pillClsByCategory = (category) =>
   category === "Notice"
-    ? "bg-white text-[#A1A1AA] w-[42px]"
+    ? "bg-white text-[#A1A1AA]"
     : category === "Event" || category === "LostItem"
-    ? "bg-white text-[#A1A1AA] w-[42px]" 
-    : "bg-white text-[#A1A1AA] w-[42px]";
+    ? "bg-white text-[#A1A1AA]" 
+    : "bg-white text-[#A1A1AA]";
 
 // TagPill Component
 function TagPill({ category }) {
   const { t } = useTranslation();
   return (
     <span
-      className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[16px] font-suite font-normal leading-none ${pillClsByCategory(
+      className={`inline-flex h-[23px] shrink-0 items-center justify-center rounded-[8px] text-[16px] font-suite font-normal leading-none ${pillClsByCategory(
         category
       )}`}
     >
@@ -564,7 +564,7 @@ export default function BoardDetail() {
                       >
                         <div className="flex items-center min-w-0">
                           <span
-                            className={`inline-flex h-[23px] w-[42px] shrink-0 items-center justify-center rounded-[8px] text-[11px] font-suite font-normal leading-none ${basePillCls} ${pillTextColor}`}
+                            className={`inline-flex h-[23px] shrink-0 items-center justify-center rounded-[8px] text-[11px] font-suite font-normal leading-none ${basePillCls} ${pillTextColor}`}
                           >
                             #{t(CATEGORY_MAP[item.category] ?? item.category)}
                           </span>
