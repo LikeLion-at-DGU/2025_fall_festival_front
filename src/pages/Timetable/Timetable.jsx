@@ -274,9 +274,12 @@ export default function Timetable() {
 
       {/* 공연 리스트 */}
       <div className="flex flex-col gap-4">
-        {loading ? (
-          <p className="text-center text-gray-400">{t("timetable.loading")}</p>
-        ) : selectedDay === "2025-09-24" ? (
+    {loading ? (
+  <div className="flex justify-center items-center py-10">
+    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-[#A1A1AA]"></div>
+  </div>
+) : selectedDay === "2025-09-24" ? (
+
           <div className="flex flex-col items-center gap-6 pt-20">
             <img
               src={dirvana}
