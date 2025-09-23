@@ -309,7 +309,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
                 <div className="flex flex-col items-center justify-center gap-6">
                   <div className="flex flex-col items-center justify-center">
                     <div className="text-center text-neutral-600 text-xl font-normal font-suite leading-relaxed">
-                      다음 기회에 다시!
+                      다음 기회에 다시 ㅠ.ㅠ
                     </div>
                   </div>
                   <div className="text-center text-black text-xs font-normal font-suite leading-relaxed">

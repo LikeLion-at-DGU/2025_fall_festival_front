@@ -5,6 +5,7 @@ import i18n from "i18next";
 import { useBoothTranslation } from "../../../hooks/useTranslation";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import defaultImg from "../../../assets/images/banners/default-img.png";
 
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -85,15 +86,22 @@ export default function NearbyBoothSection({ boothId }) {
             className="relative bg-white shadow-md rounded-2xl p-3 flex-shrink-0 w-32 flex flex-col items-start mb-2"
           >
             {/* 이미지 */}
-            <div className="relative w-[107px] h-[107px] flex items-center justify-center bg-gray-200 rounded-[16px]">
+            <div className="relative w-[107px] h-[107px] flex items-center justify-center bg-gray-200 rounded-[16px] overflow-hidden">
               {b.image_url ? (
                 <img
                   src={b.image_url}
                   alt={b.name}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.currentTarget.src = defaultImg;
+                  }}
                 />
               ) : (
-                <span className="text-xs text-gray-500">이미지 없음</span>
+                <img
+                  src={defaultImg}
+                  alt={b.name}
+                  className="w-full h-full object-cover"
+                />
               )}
             </div>
 
