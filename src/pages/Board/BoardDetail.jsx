@@ -372,7 +372,7 @@ export default function BoardDetail() {
     navigate(`/booth/${boothCardProps.boothId}`);
   };
 
-  const separatorCls = "w-[1px] h-[12px] bg-[#D1D5DB] ml-[5px] mr-[12px]"; 
+  const separatorCls = "w-[1px] h-[12px] bg-[#D1D5DB] ml-[12px] mr-[12px]"; 
 
   return (
     <div className="mx-auto w-full max-w-[430px] bg-white">
