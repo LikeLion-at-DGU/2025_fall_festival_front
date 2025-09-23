@@ -290,7 +290,7 @@ export default function BoothDetail() {
 
       {/* 소개 */}
       <div
-        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${booth.is_night ? "!mt-4" : "!mt-10"
+        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${booth.is_night ? "!mt-4" : "!mt-4"
           }`}
       >
         <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">{t("booth.introduction")}</h2>

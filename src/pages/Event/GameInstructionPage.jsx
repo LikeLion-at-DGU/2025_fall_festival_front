@@ -64,7 +64,7 @@ function GameInstructionPage({ onStartChallenge }) {
   return (
     <div
       className="flex flex-col justify-between
-    w-full max-w-[430px] mx-auto h-[calc(100vh-116px)]
+    w-full max-w-[430px] mx-auto h-[calc(100vh-114px)]
     bg-[linear-gradient(352deg,var(--Primary-400,#EF7063)_26.61%,var(--Primary-300,#F8B0A9)_83.71%)] overflow-hidden"
     >
       {/* 상단 헤더

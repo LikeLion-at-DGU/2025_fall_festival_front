@@ -35,11 +35,11 @@ const BottomNav = () => {
 
   const linkClassName = (active) => `
     flex flex-col items-center justify-center
-    w-[55px] h-[55px] px-[5px]
+    w-[55px] h-[55p] px-[5px]
     whitespace-nowrap
-    gap-[2px]
+    gap-[3px]
     ${active
-      ? "text-[12px] text-orange font-semibold border-t-[1.5px] border-orange"
+      ? "text-[12px] text-orange font-semibold border-t-[1.8px] border-orange"
       : "text-black font-normal text-[10px]"}
   `;
 
@@ -69,7 +69,7 @@ const BottomNav = () => {
               <img
                 src={isActive ? item.activeIcon : item.icon}
                 alt={t(item.key)} // ✅ 번역 적용
-                className="h-[24px] w-[24px] mt-[5px]"
+                className="h-[24px] w-[24px] mt-[8px]"
               />
               <span>{t(item.key)}</span> {/* ✅ 번역 적용 */}
             </PrefixedLink>
