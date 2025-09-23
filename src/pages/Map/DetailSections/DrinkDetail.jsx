@@ -117,48 +117,52 @@ export default function DrinkDetail() {
         />
       </div>
 
-      {/* 카드 */}
-      <div className="bg-white shadow-md rounded-[16px] px-4 py-3 mx-4 mt-3 relative z-10">
+
+      <div className="relative mx-4 mt-3">
         {/* triangle tail */}
         <img
           src={TailIcon}
-          className="absolute -top-6 left-10 -translate-x-1/2"
+          className="absolute -top-6 left-10 -translate-x-1/2 drop-shadow-[0_3px_5px_rgba(0,0,0,0.10)]"
           alt={t("booth.tailAlt")}
         />
+        {/* 카드 */}
+        <div className="bg-white shadow-md rounded-[16px] px-4 py-3 relative z-10">
 
-        <h1 className="text-lg font-bold">
-          {getTranslation(
-            "booth",
-            drink.id?.toString() || id,
-            "BoothName",
-            drink.name
-          )}
-        </h1>
 
-        {/* 운영 시간 (요일 묶음) */}
-        {groupSchedules(drink.schedules).map((g, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-2 mt-1 text-sm text-gray-600"
-          >
-            <img src={TimeCircleIcon} alt="time" className="w-4 h-4" />
-            <span>
-              {g.days.join(", ")} {g.time}
-            </span>
-          </div>
-        ))}
-
-        {/* 위치 */}
-        <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
-          <img src={LocationIcon} alt="location" className="w-4 h-4" />
-          <span>
+          <h1 className="text-lg font-bold">
             {getTranslation(
               "booth",
               drink.id?.toString() || id,
-              "BoothLocation",
-              drink.location_description
+              "BoothName",
+              drink.name
             )}
-          </span>
+          </h1>
+
+          {/* 운영 시간 (요일 묶음) */}
+          {groupSchedules(drink.schedules).map((g, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 mt-1 text-sm text-gray-600"
+            >
+              <img src={TimeCircleIcon} alt="time" className="w-4 h-4" />
+              <span>
+                {g.days.join(", ")} {g.time}
+              </span>
+            </div>
+          ))}
+
+          {/* 위치 */}
+          <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
+            <img src={LocationIcon} alt="location" className="w-4 h-4" />
+            <span>
+              {getTranslation(
+                "booth",
+                drink.id?.toString() || id,
+                "BoothLocation",
+                drink.location_description
+              )}
+            </span>
+          </div>
         </div>
       </div>
 

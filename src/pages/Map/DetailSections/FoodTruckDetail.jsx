@@ -106,64 +106,70 @@ export default function FoodTruckDetail() {
   return (
     <div className="pt-6 pb-8">
       {/* 상단 이미지 */}
-   <div className="w-[343px] h-[232px] mx-auto bg-gray-200 flex items-center justify-center text-gray-500 rounded-[16px] overflow-hidden">
-           <img
-             src={truck.image_url || defaultImg} // ✅ image_url 없으면 defaultImg
-             alt={truck.name}
-             className="w-[343px] h-[232px] object-cover"
-             onError={(e) => {
-               e.currentTarget.src = defaultImg; // ✅ 에러나면 defaultImg로 대체
-             }}
-           />
-         </div>
+      <div className="w-[343px] h-[232px] mx-auto bg-gray-200 flex items-center justify-center text-gray-500 rounded-[16px] overflow-hidden">
+        <img
+          src={truck.image_url || defaultImg} // ✅ image_url 없으면 defaultImg
+          alt={truck.name}
+          className="w-[343px] h-[232px] object-cover"
+          onError={(e) => {
+            e.currentTarget.src = defaultImg; // ✅ 에러나면 defaultImg로 대체
+          }}
+        />
+      </div>
 
-      {/* 카드 */}
-      <div className=" bg-white shadow-md rounded-[16px] px-4 py-3 mx-4 mt-3 mb-10 relative z-10">
+
+      <div className="relative mx-4 mt-3">
         {/* triangle tail */}
         <img
           src={TailIcon}
-          className="absolute -top-6 left-10 -translate-x-1/2"
+          className="absolute -top-6 left-10 -translate-x-1/2 drop-shadow-[0_3px_5px_rgba(0,0,0,0.10)]"
           alt="tail"
         />
 
-        <h1 className="text-lg font-bold">
-          {getTranslation(
-            "booth",
-            truck.id?.toString() || id,
-            "BoothName",
-            truck.name
-          )}
-        </h1>
-
-        {/* 운영 시간 */}
-        {groupSchedules(truck.schedules).map((g, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-2 mt-1 text-sm text-gray-600"
-          >
-            <img src={TimeCircleIcon} alt="time" className="w-4 h-4" />
-            <span>
-              {g.days.join(", ")} {g.time}
-            </span>
-          </div>
-        ))}
-
-        {/* 위치 */}
-        <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
-          <img src={LocationIcon} alt="location" className="w-4 h-4" />
-          <span>
+        {/* 카드 */}
+        <div className=" bg-white shadow-md rounded-[16px] px-4 py-3 mb-10 relative z-10">
+          <h1 className="text-lg font-bold">
             {getTranslation(
               "booth",
               truck.id?.toString() || id,
-              "BoothLocation",
-              truck.location_name
+              "BoothName",
+              truck.name
             )}
-          </span>
+          </h1>
+
+          {/* 운영 시간 */}
+          {groupSchedules(truck.schedules).map((g, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2 mt-1 text-sm text-gray-600"
+            >
+              <img src={TimeCircleIcon} alt="time" className="w-4 h-4" />
+              <span>
+                {g.days.join(", ")} {g.time}
+              </span>
+            </div>
+          ))}
+
+          {/* 위치 */}
+          <div className="flex items-center gap-2 mt-1 text-sm text-gray-600">
+            <img src={LocationIcon} alt="location" className="w-4 h-4" />
+            <span>
+              {getTranslation(
+                "booth",
+                truck.id?.toString() || id,
+                "BoothLocation",
+                truck.location_name
+              )}
+            </span>
+          </div>
         </div>
       </div>
 
       {/* 메뉴 */}
-      <MenuSection menus={truck.menus} boothId={truck.id || id} />
+      <div className="px-4">
+        <MenuSection menus={truck.menus} boothId={truck.id || id} />
+      </div>
+
 
       {/* 근처 부스 */}
       <NearbyBoothSection boothId={truck.id} />
