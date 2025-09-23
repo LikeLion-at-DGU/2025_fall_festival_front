@@ -12,6 +12,13 @@ import Footer from "./Footer/Footer";
 const Layout = ({ children }) => {
   const location = useLocation();
   const [searchParams] = useSearchParams();
+  
+  //임시차단
+  const isComingSoonPage = location.pathname === "/";
+  if (isComingSoonPage) {
+    // ✅ ComingSoon 페이지는 레이아웃 제외
+    return <>{children}</>;
+  }
 
   // ✅ BASE_PATH(/comingsoon) 제거 후 비교
   const currentPath = location.pathname.replace(BASE_PATH, "") || "/";
