@@ -154,10 +154,14 @@
     "rankPending": "ブースランキングを集計中です。",
     "event": "イベントブース",
     "eventError": "イベントブースを読み込めませんでした。",
-    "noEvent": "イベントを待っています..."
+    "noEvent": "イベントを待っています...",
+    "notFound": "存在しないブースです。"
   },
   "common": {
-    "more": "もっと見る"
+    "more": "もっと見る",
+    "notFound": "ページが見つかりません",
+    "notFoundDescription": "お探しのページは存在しないか、削除されました。",
+    "goBack": "戻る"
   },
   "stage": {
     "now": "ステージ ナウ",
