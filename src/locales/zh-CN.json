@@ -155,10 +155,14 @@
     "rankPending": "展位排名统计中。",
     "event": "活动展位",
     "eventError": "无法加载活动展位。",
-    "noEvent": "正在等待活动中..."
+    "noEvent": "正在等待活动中...",
+    "notFound": "该展位不存在。"
   },
   "common": {
-    "more": "查看更多"
+    "more": "查看更多",
+    "notFound": "页面未找到",
+    "notFoundDescription": "您请求的页面不存在或已被删除。",
+    "goBack": "返回"
   },
   "stage": {
     "now": "舞台进行中",

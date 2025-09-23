@@ -6,7 +6,7 @@
     "board": "게시판",
     "game": "게임"
   },
-  
+
   "banner": {
     "joinEvent": "이벤트 참여",
     "playGame": "게임하기",
@@ -66,7 +66,6 @@
     "noBooths": "부스가 없어요",
     "noSearchResults": "검색 결과가 없어요"
   },
-
 
   "board": {
     "title": "게시판",
@@ -154,10 +153,14 @@
     "rankPending": "부스 랭킹 집계 중입니다.",
     "event": "이벤트 부스",
     "eventError": "이벤트 진행 부스를 불러올 수 없습니다.",
-    "noEvent": "이벤트를 기다리는 중이에요"
+    "noEvent": "이벤트를 기다리는 중이에요.",
+    "notFound": "존재하지 않는 부스입니다."
   },
   "common": {
-    "more": "더보기"
+    "more": "더보기",
+    "notFound": "페이지를 찾을 수 없습니다",
+    "notFoundDescription": "요청하신 페이지가 존재하지 않거나 삭제되었습니다.",
+    "goBack": "이전으로"
   },
   "stage": {
     "now": "STAGE NOW",
@@ -176,5 +179,4 @@
     "admin": "Administrator",
     "instagram": "Instagram"
   }
-
 }

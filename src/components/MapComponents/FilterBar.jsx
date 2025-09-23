@@ -41,7 +41,7 @@ const handleFilterClick = (filter) => {
 };
 
 return (
-  <div className="flex mx-auto w-full flex-wrap gap-[12px]">
+  <div className="flex mx-auto w-full flex-wrap gap-[10px]">
     {filters.map((filter) => (
       <FilterButton
         key={filter}

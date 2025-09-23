@@ -8,6 +8,7 @@ import MenuSection from "./MenuSection";
 import NearbyBoothSection from "./NearbyBoothSection";
 import useBoothLikes from "../../../hooks/useBoothLikes";
 import { useTranslations } from "../../../context/TranslationContext";
+import NotFound from "../../../components/NotFound/NotFound";
 
 import CheckIcon from "../../../assets/images/icons/map-icons/Check.svg";
 import HeartIcon from "../../../assets/images/icons/map-icons/Heart.png";
@@ -67,19 +68,25 @@ export default function BoothDetail() {
   const { t } = useTranslation();
   const { getTranslation, requestSingleTranslation } = useTranslations();
   const [booth, setBooth] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [initialLikesCount, setInitialLikesCount] = useState(0);
   const [initialIsLiked, setInitialIsLiked] = useState(false);
 
   // 좋아요 훅
-  const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
-    id,
-    initialLikesCount || 0,
-    initialIsLiked
-  );
+  const {
+    isLiked,
+    likesCount,
+    toggleLike,
+    loading: likeLoading,
+  } = useBoothLikes(id, initialLikesCount || 0, initialIsLiked);
 
   useEffect(() => {
     const fetchBoothDetail = async () => {
       try {
+        setLoading(true);
+        setError(false);
+
         // 1. 부스 상세 정보 조회
         const detailRes = await axios.get(`${BASE_URL}/booths/detail/${id}/`);
         setBooth(detailRes.data);
@@ -108,7 +115,10 @@ export default function BoothDetail() {
         }
       } catch (err) {
         console.error("BoothDetail API 실패", err);
+        setError(true);
         setBooth(null);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -168,7 +178,15 @@ export default function BoothDetail() {
     }
   }, [booth, id, requestSingleTranslation]);
 
-  if (!booth) return <div className="p-6">{t("booth.loading")}</div>;
+  // 로딩 중
+  if (loading) {
+    return <div className="p-6">{t("booth.loading")}</div>;
+  }
+
+  // 에러 발생 (부스를 찾을 수 없음)
+  if (error || !booth) {
+    return <NotFound message={t("booth.notFound")} />;
+  }
 
   return (
     <div className="flex flex-col w-[343px] mx-auto items-center pt-6 pb-8 space-y-3">
@@ -204,10 +222,9 @@ export default function BoothDetail() {
                   {booth.is_night ? t("booth.nightBooth") : t("booth.dayBooth")}
                 </span>
                 <h1
-                  className={`font-bold ${booth.name.length > 16
-                    ? "text-[14.5px]"
-                    : "text-lg"    // 기본 크기
-                    }`}
+                  className={`font-bold ${
+                    booth.name.length > 16 ? "text-[14.5px]" : "text-lg" // 기본 크기
+                  }`}
                 >
                   {getTranslation(
                     "booth",
@@ -216,7 +233,6 @@ export default function BoothDetail() {
                     booth.name
                   )}
                 </h1>
-
               </div>
 
               {/* 야간 부스 & 디오더 가능 표시 */}
@@ -272,7 +288,7 @@ export default function BoothDetail() {
             <div className="flex flex-col items-center ml-4">
               <button
                 onClick={toggleLike}
-                disabled={loading}
+                disabled={likeLoading}
                 className="w-[25px] h-[24px] flex items-center justify-center hover:scale-110 transition-transform duration-200 disabled:opacity-50"
                 aria-pressed={isLiked}
                 aria-label={isLiked ? t("booth.unlike") : t("booth.like")}
@@ -293,54 +309,58 @@ export default function BoothDetail() {
 
       {/* 소개 */}
       <div
-        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${booth.is_night ? "!mt-4" : "!mt-4"
-          }`}
+        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${
+          booth.is_night ? "!mt-4" : "!mt-4"
+        }`}
       >
-        <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">{t("booth.introduction")}</h2>
+        <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">
+          {t("booth.introduction")}
+        </h2>
         <p className="text-sm text-gray-700 whitespace-pre-line">
           {booth.booth_description
             ? getTranslation(
-              "booth",
-              booth.booth_id?.toString() || id,
-              "BoothDescription",
-              booth.booth_description
-            )
+                "booth",
+                booth.booth_id?.toString() || id,
+                "BoothDescription",
+                booth.booth_description
+              )
             : t("booth.noDescription")}
         </p>
       </div>
 
       {/* 디오더 상태 */}
-      {booth.is_dorder && (
-        <div className="w-full bg-white shadow rounded-[13px] p-3 text-sm text-gray-700 !mt-4 !mb-2">
-          {booth.booth_can_usage === "True" ? (
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                fill="none"
-              >
-                <circle cx="5" cy="5" r="5" fill="#E65B4D" />
-              </svg>
-              <span>{t("booth.dorderAvailableNow")}</span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="10"
-                height="10"
-                viewBox="0 0 10 10"
-                fill="none"
-              >
-                <circle cx="5" cy="5" r="5" fill="#A1A1AA" />
-              </svg>
-              <span>{t("booth.dorderFull")}</span>
-            </div>
-          )}
-        </div>
-      )}
+      {booth.is_dorder &&
+        (booth.booth_can_usage === true || booth.booth_can_usage === false) && (
+          <div className="w-full bg-white shadow rounded-[13px] p-3 text-sm text-gray-700 !mt-4 !mb-2">
+            {booth.booth_can_usage === true ? (
+              <div className="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                >
+                  <circle cx="5" cy="5" r="5" fill="#E65B4D" />
+                </svg>
+                <span>{t("booth.dorderAvailableNow")}</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="10"
+                  height="10"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                >
+                  <circle cx="5" cy="5" r="5" fill="#A1A1AA" />
+                </svg>
+                <span>{t("booth.dorderFull")}</span>
+              </div>
+            )}
+          </div>
+        )}
 
       {/* 운영 코너 */}
       {!booth.is_night && (

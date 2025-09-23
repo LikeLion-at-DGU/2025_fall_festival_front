@@ -8,6 +8,7 @@ import GameSuccessModal from "../../components/GameComponents/GameSuccessModal";
 import { getRandomWordSet, getGameStage } from "../../utils/gameData";
 import usePostSuccessGame from "../../hooks/GameHooks/usePostSuccessGame";
 import usePostStartGame from "../../hooks/GameHooks/usePostStartGame";
+import { usePostSuccessCount } from "../../hooks/GameHooks/usePostSuccessCount";
 
 function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   const [currentStage, setCurrentStage] = useState(1); // 현재 단계 (1-4)
@@ -19,6 +20,8 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   const [correctAnswer, setCorrectAnswer] = useState(""); // distractor가 정답
   const [showCompleteModal, setShowCompleteModal] = useState(false);
   const [couponResult, setCouponResult] = useState(null); // 쿠폰 결과 저장
+  const [playCount, setPlayCount] = useState(0); // 플레이 횟수
+  const [successCount, setSuccessCount] = useState(0); // 실제 성공 횟수
 
   // 게임 성공 API 훅
   const { postGameSuccess, isLoading: isSubmittingSuccess } =
@@ -27,6 +30,28 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   // 게임 시작 API 훅
   const { mutate: startGameAPI, isLoading: isStartingGame } =
     usePostStartGame();
+
+  // 성공 횟수 조회 API 훅
+  const { mutate: getSuccessCount } = usePostSuccessCount();
+
+  // 컴포넌트 마운트 시 플레이 횟수와 성공 횟수 불러오기
+  useEffect(() => {
+    const savedPlayCount = localStorage.getItem('game_try_times');
+    if (savedPlayCount) {
+      setPlayCount(parseInt(savedPlayCount, 10));
+    }
+
+    // 실제 성공 횟수 가져오기
+    getSuccessCount(undefined, {
+      onSuccess: (data) => {
+        setSuccessCount(data.success_count || 0);
+      },
+      onError: (error) => {
+        console.error("성공 횟수 조회 실패:", error);
+        setSuccessCount(0);
+      },
+    });
+  }, [getSuccessCount]);
 
   // 게임 초기화
   useEffect(() => {
@@ -79,11 +104,16 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
   // 게임 시작
   const startGame = () => {
+    // 플레이 횟수 증가
+    const newPlayCount = playCount + 1;
+    setPlayCount(newPlayCount);
+    localStorage.setItem('game_try_times', newPlayCount.toString());
+
     // 백엔드에 게임 시작 정보 전송
     startGameAPI(
       {},
       {
-        onSuccess: (response) => {
+        onSuccess: () => {
           // 게임 상태 업데이트
           setGameStatus("playing");
           setTimeLeft(5.0);
@@ -125,6 +155,9 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
         setCouponResult(result);
 
+        // 성공 시 성공 횟수 업데이트
+        setSuccessCount(prevCount => prevCount + 1);
+
         // 성공 모달 표시
         setShowCompleteModal(true);
       } catch (error) {
@@ -137,11 +170,16 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
   // 다시 도전하기 (카운트다운부터 재시작)
   const handleRetry = () => {
+    // 플레이 횟수 증가
+    const newPlayCount = playCount + 1;
+    setPlayCount(newPlayCount);
+    localStorage.setItem('game_try_times', newPlayCount.toString());
+
     // 게임 재시작 시 백엔드에 시작 정보 전송
     startGameAPI(
       {},
       {
-        onSuccess: (response) => {
+        onSuccess: () => {
           // 카운트다운부터 재시작하거나 현재 스테이지 재시작
           if (onRetryFromCountdown) {
             onRetryFromCountdown();
@@ -162,6 +200,13 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
         },
       }
     );
+  };
+
+  // 홈으로 가기
+  const handleGoHome = () => {
+    if (onGameEnd) {
+      onGameEnd();
+    }
   };
 
   // 모달 닫기
@@ -229,7 +274,10 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
               onNextStep={handleNextStep}
               onRetry={handleRetry}
               onStartGame={startGame}
+              onGoHome={handleGoHome}
               currentStage={currentStage}
+              playCount={playCount}
+              successCount={successCount}
               isLoading={isStartingGame || isSubmittingSuccess}
             />
           </div>
