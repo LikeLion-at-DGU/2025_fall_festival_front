@@ -21,17 +21,17 @@ function GameCompleteModal({ isOpen, onClose, onRestart }) {
         <div className="mb-4">
           <div className="text-2xl mb-2">🎉</div>
           <h2 className="text-lg font-bold text-neutral-800 mb-2">
-            {t("gameCompleteModal.congratsTitle")}
+            축하합니다!
           </h2>
           <p className="text-sm text-neutral-600 leading-relaxed whitespace-pre-line">
-            {t("gameCompleteModal.congratsMessage")}
+            모든 단계를 성공적으로 완료했어요!<br />정말 훌륭한 집중력이었습니다 :)
           </p>
         </div>
         <button
           onClick={onRestart}
           className="w-full bg-primary-500 text-white py-3 rounded-xl font-medium hover:bg-primary-600 transition-colors"
         >
-          {t("gameCompleteModal.retry")}
+          다시 도전하기
         </button>
       </div>
     </div>
