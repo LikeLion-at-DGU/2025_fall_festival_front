@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 import SearchBar from "../../components/MapComponents/SearchBar";
 import FilterBar from "../../components/MapComponents/FilterBar";
 import PullList from "../../components/MapComponents/PullList";
@@ -15,8 +16,31 @@ import usePinSelection from "../../hooks/MapHooks/usePinSelection";
 import useSearch from "../../hooks/MapHooks/useSearch";
 import MapContainer from "../../components/MapComponents/MapContainer";
 function Map() {
+  const routerLocation = useLocation(); // ✅ 이름을 routerLocation으로 변경
   const [selectedFilter, setSelectedFilter] = useState("Booth");
-  
+
+ useEffect(() => {
+  if (routerLocation.state?.filter) {
+    setSelectedFilter(routerLocation.state.filter);
+    sessionStorage.setItem("lastFilter", routerLocation.state.filter);
+  } else {
+    const savedFilter = sessionStorage.getItem("lastFilter");
+    if (savedFilter) setSelectedFilter(savedFilter);
+  }
+
+  if (routerLocation.state?.pin) {
+    // ✅ setSelectedPin 대신 handlePinClick 사용
+    handlePinClick(routerLocation.state.pin);
+    sessionStorage.setItem("lastPin", routerLocation.state.pin);
+  } else {
+    const savedPin = sessionStorage.getItem("lastPin");
+    if (savedPin) {
+      handlePinClick(savedPin);
+    }
+  }
+}, [routerLocation.state?.filter, routerLocation.state?.pin]);
+
+
   const { location: userLocation, getCurrentLocation } = useUserLocation();
   // 축제 시작일
   const festivalStart = new Date("2025-09-24T00:00:00");

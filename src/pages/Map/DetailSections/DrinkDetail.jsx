@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import i18n from "i18next";
 
@@ -59,6 +59,9 @@ function groupSchedules(schedules) {
 }
 
 export default function DrinkDetail() {
+   const { state } = useLocation();
+  const { filter } = state || {};
+
   const { t } = useTranslation();
   const { id } = useParams();
   const { getTranslation, requestSingleTranslation } = useTranslations();
