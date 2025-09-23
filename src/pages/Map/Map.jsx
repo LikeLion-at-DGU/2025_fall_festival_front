@@ -17,7 +17,7 @@ import MapContainer from "../../components/MapComponents/MapContainer";
 function Map() {
   const [selectedFilter, setSelectedFilter] = useState("Booth");
   const { location: userLocation, getCurrentLocation } = useUserLocation();
- // 축제 시작일
+  // 축제 시작일
   const festivalStart = new Date("2025-09-24T00:00:00");
 
   // 오늘 날짜
@@ -25,19 +25,29 @@ function Map() {
   const todayStr = now.toISOString().split("T")[0]; // YYYY-MM-DD
 
   // 디폴트 날짜
-  const defaultDate =
-    now < festivalStart ? "2025-09-24" : todayStr;
+  const defaultDate = now < festivalStart ? "2025-09-24" : todayStr;
 
   // 디폴트 낮/밤
   const defaultIsNight =
     now < festivalStart
       ? false // 축제 전이면 낮 고정
-      : now.getHours() >= 18 || now.getHours() < 6;
+      : now.getHours() >= 17 || now.getHours() < 5;
+  // ✅ localStorage에서 불러오기
+  const [selectedDate, setSelectedDate] = useState(
+    () => localStorage.getItem("selectedDate") || defaultDate
+  );
+  const [isNightToggle, setIsNightToggle] = useState(() => {
+    const saved = localStorage.getItem("isNightToggle");
+    return saved !== null ? saved === "true" : defaultIsNight;
+  });
+  // ✅ 값이 바뀔 때 localStorage에 저장
+  useEffect(() => {
+    localStorage.setItem("selectedDate", selectedDate);
+  }, [selectedDate]);
 
-  // ✅ 상태 초기화
-  const [isNightToggle, setIsNightToggle] = useState(defaultIsNight);
-  const [selectedDate, setSelectedDate] = useState(defaultDate);
-
+  useEffect(() => {
+    localStorage.setItem("isNightToggle", isNightToggle);
+  }, [isNightToggle]);
   const { booths, loading, error } = useBooths(
     selectedFilter,
     userLocation,
@@ -111,11 +121,14 @@ function Map() {
             />
 
             {/* 맵 위 스위치 */}
-            {selectedFilter === "Booth" && !selectedPin&& (
+            {selectedFilter === "Booth" && !selectedPin && (
               <div className="absolute top-[11px] right-[11px] z-10 ">
                 {/* ✅ 날짜 드롭다운 추가 */}
                 <div className="flex flex-row gap-2">
-                <DateDropdown selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+                  <DateDropdown
+                    selectedDate={selectedDate}
+                    setSelectedDate={setSelectedDate}
+                  />
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
@@ -133,7 +146,7 @@ function Map() {
                       {/* 동그라미 */}
                       <span
                         className={
-                          "absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform duration-300 shadow-[0_3px_7.1px_0_rgba(0,0,0,0.25)] " +
+                          "absolute top-[2.5px] left-[2px] w-5 h-5 bg-white rounded-full transition-transform duration-300 shadow-[0_3px_7.1px_0_rgba(0,0,0,0.25)] " +
                           (!isNightToggle
                             ? "translate-x-[20px]"
                             : "translate-x-0")
