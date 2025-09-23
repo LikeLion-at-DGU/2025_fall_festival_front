@@ -100,7 +100,7 @@ const Stage = () => {
       >
         <img src={stage} alt="stage" className="w-6 h-6" />
         <p className="text-xl font-semibold font-suite text-[#52525B]">
-          STAGE NOW
+        LINE-UP
         </p>
       </div>
       <div className="relative cursor-pointer" onClick={handleStageClick}>
