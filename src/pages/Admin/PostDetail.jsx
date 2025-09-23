@@ -15,7 +15,6 @@ function PostDetail() {
     async function fetchData() {
       try {
         const data = await getBoardDetail(boardId);
-        console.log("board 응답:", data); // 전체 구조 출력
         setBoard(data);
       } catch (err) {
         console.error("상세 조회 실패:", err);
@@ -49,7 +48,7 @@ function PostDetail() {
       )}
 
       {/* 본문 */}
-      <p className="mt-6 leading-relaxed text-gray-800 whitespace-pre-line">{board.content}</p>
+      <p className="mt-6 leading-relaxed text-gray-800 text-sm whitespace-pre-line">{board.content}</p>
 
       {/* 이미지 */}
       {board.image && (
@@ -61,7 +60,7 @@ function PostDetail() {
       )}
 
       {/* 수정/삭제 버튼 */}
-      <div className="mt-[100%] flex flex-col gap-3">
+      <div className="mt-[20%] flex flex-col gap-3">
         <SubmitBtn
           text="수정"
           onClick={() =>

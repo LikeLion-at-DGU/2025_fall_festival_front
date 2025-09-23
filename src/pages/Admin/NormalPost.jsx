@@ -35,12 +35,9 @@ function NormalPost() {
         // ✅ 수정 API 호출
         const res = await updateNormalPost(editingData.id, payload);
         setToastMsg("공지가 수정되었습니다");
-        console.log("수정할 데이터:", payload);
       } else {
         // 신규 작성
         const res = await createNormalPost(payload);
-        console.log("✅ 작성 응답:", res);
-        console.log("✅ uid_valid:", res.uid_valid);
         setToastMsg(res.message || "공지가 등록되었습니다");
       }
     } catch (err) {
@@ -48,7 +45,6 @@ function NormalPost() {
 
         // uid 만료 판별 → 자동 로그아웃 안내(toastMsg) + 로그인 페이지로 이동
         if (err.response?.data?.uid_valid === false) {
-          console.log("❌ uid_valid:", err.response.data.uid_valid);
           setToastMsg("세션이 만료되었습니다. \n 다시 로그인해주세요");
           setTimeout(() => {
             navigate("/admin/login");
