@@ -1,21 +1,25 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import usePostSuccessGame from "../../hooks/GameHooks/usePostSuccessGame";
+import { usePostGameCoupon } from "../../hooks/GameHooks/usePostGameCoupon";
 import downIcon from "../../assets/images/icons/game-icons/Down.png";
 
 function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
   const [currentStep, setCurrentStep] = useState(1); // 1: 축하, 2: 상자열기, 3: 부스선택, 4: 쿠폰발급
   const [showBoothList, setShowBoothList] = useState(false);
-  const [selectedBooth, setSelectedBooth] = useState("광고홍보학과");
+  const [selectedBooth, setSelectedBooth] = useState("프론티어");
   const [gameResult, setGameResult] = useState(null);
+  const [couponData, setCouponData] = useState(null);
 
   const navigate = useNavigate();
   const { postGameSuccess, isLoading: isSubmitting } = usePostSuccessGame();
+  const couponMutation = usePostGameCoupon();
 
   // 쿠폰 당첨 여부 확인
-  const isWinner = gameResult?.isWon || couponResult?.isWon || false;
+  // const isWinner = gameResult?.isWon || couponResult?.isWon || false;
+  const isWinner = true;
   const availableBooths = gameResult?.couponBooths ||
-    couponResult?.couponBooths || ["광고홍보학과", "경영학과", "컴퓨터공학과"];
+    couponResult?.couponBooths || ["프론티어", "공과대학", "문과대학", "푸름누리"];
 
   // 부스/학과 리스트 
   const boothList =
@@ -40,8 +44,10 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
         console.log("게임 성공 API 응답:", data);
         setGameResult(data);
 
-        if (data.isWon) {
-          setCurrentStep(2); // 당첨된 경우 기존 플로우
+        const iswon = true;
+
+        if (iswon) {
+          setCurrentStep(3); // 당첨된 경우 기존 플로우
         } else {
           setCurrentStep(5); // 당첨되지 않은 경우 새로운 케이스
         }
@@ -62,7 +68,24 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
 
   const handleClose = () => {
     setCurrentStep(1); // 리셋
+    setCouponData(null); // 쿠폰 데이터 리셋
     onClose();
+  };
+
+  const handleGetCoupon = async () => {
+    try {
+      const result = await couponMutation.mutateAsync({
+        booth_name: selectedBooth
+      });
+      
+      console.log("쿠폰 발급 성공:", result);
+      setCouponData(result.data);
+      setCurrentStep(4); // 쿠폰 발급 완료 단계로 이동
+    } catch (error) {
+      console.error("쿠폰 발급 실패:", error);
+      // 에러 처리 - 쿠폰이 없는 경우 등
+      alert("쿠폰 발급에 실패했습니다. 해당 부스의 쿠폰이 소진되었을 수 있습니다.");
+    }
   };
 
   const renderModalContent = () => {
@@ -108,111 +131,111 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
           </div>
         );
 
-      case 2:
-        // 쿠폰 당첨 결과에 따른 모달
-        if (isWinner) {
-          return (
-            <div className="w-[300px] pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden">
-              <div
-                className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
-                onClick={handleClose}
-              >
-                X
-              </div>
-              <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-6">
-                <div className="flex flex-col justify-start items-center gap-1.5">
-                  <div className="flex flex-col justify-start items-start gap-4">
-                    <div className="w-60 flex flex-col justify-start items-center">
-                      <div className="self-stretch text-center justify-start text-neutral-600 text-xl font-normal font-suite leading-relaxed">
-                        대박... 당첨!
-                      </div>
-                    </div>
-                    <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-suite leading-none">
-                      쿠폰에 당첨되었어요! 사용할 주점을 골라주세요
-                    </div>
-                  </div>
-                  <div
-                    className="w-64 bg-neutral-100 rounded-xl flex flex-col justify-start items-start overflow-hidden cursor-pointer"
-                    onClick={() => setShowBoothList(true)}
-                  >
-                    <div className="self-stretch h-7 p-4 flex flex-col justify-center items-center">
-                      <div className="self-stretch inline-flex justify-start items-center gap-2">
-                        <div className="flex-1 justify-start text-neutral-500 text-[10px] font-semibold font-suite leading-none">
-                          {selectedBooth}
-                        </div>
-                        <img
-                          src={downIcon}
-                          alt="dropdown"
-                          className="w-4 h-4 cursor-pointer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setShowBoothList(true);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  data-status="Header"
-                  className="flex h-[38px] px-6 py-4 flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
-                  onClick={handleNextStep}
-                >
-                  <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
-                    쿠폰 발급받기
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        } else {
-          // 쿠폰 미당첨
-          return (
-            <div className="w-[300px] pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden">
-              <div
-                className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
-                onClick={handleClose}
-              >
-                X
-              </div>
-              <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-6">
-                <div className="flex flex-col justify-start items-center gap-1.5">
-                  <div className="flex flex-col justify-start items-start gap-4">
-                    <div className="w-60 flex flex-col justify-start items-center">
-                      <div className="self-stretch text-center justify-start text-neutral-600 text-xl font-normal font-suite leading-relaxed">
-                        😅 아쉽게도...
-                      </div>
-                    </div>
-                    <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-suite leading-none">
-                      이번엔 쿠폰에 당첨되지 않았어요. 다음 기회에!
-                    </div>
-                  </div>
-                </div>
-                <div
-                  data-status="Header"
-                  className="flex h-[38px] px-6 py-4 flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
-                  onClick={handleClose}
-                >
-                  <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
-                    확인
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        }
+      // case 2:
+      //   // 쿠폰 당첨 결과에 따른 모달
+      //   if (isWinner) {
+      //     return (
+      //       <div className="w-72 pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center">
+      //         <div
+      //           className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
+      //           onClick={handleClose}
+      //         >
+      //           X
+      //         </div>
+      //         <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-6">
+      //           <div className="flex flex-col justify-start items-center gap-1.5">
+      //             <div className="flex flex-col justify-start items-start gap-4">
+      //               <div className="w-60 flex flex-col justify-start items-center">
+      //                 <div className="self-stretch text-center justify-start text-neutral-600 text-xl font-normal font-suite leading-relaxed">
+      //                   대박... 당첨!
+      //                 </div>
+      //               </div>
+      //               <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-suite leading-none">
+      //                 쿠폰에 당첨되었어요! 사용할 주점을 골라주세요
+      //               </div>
+      //             </div>
+      //             <div
+      //               className="w-64 bg-neutral-100 rounded-xl flex flex-col justify-start items-start overflow-hidden cursor-pointer"
+      //               onClick={() => setShowBoothList(true)}
+      //             >
+      //               <div className="self-stretch h-7 p-4 flex flex-col justify-center items-center">
+      //                 <div className="self-stretch inline-flex justify-start items-center gap-2">
+      //                   <div className="flex-1 justify-start text-neutral-500 text-[10px] font-semibold font-suite leading-none">
+      //                     {selectedBooth}
+      //                   </div>
+      //                   <img
+      //                     src={downIcon}
+      //                     alt="dropdown"
+      //                     className="w-4 h-4 cursor-pointer"
+      //                     onClick={(e) => {
+      //                       e.stopPropagation();
+      //                       setShowBoothList(true);
+      //                     }}
+      //                   />
+      //                 </div>
+      //               </div>
+      //             </div>
+      //           </div>
+      //           <div
+      //             data-status="Header"
+      //             className="flex h-[38px] px-6 py-4 flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
+      //             onClick={handleNextStep}
+      //           >
+      //             <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
+      //               쿠폰 발급받기
+      //             </div>
+      //           </div>
+      //         </div>
+      //       </div>
+      //     );
+      //   } else {
+      //     // 쿠폰 미당첨
+      //     return (
+      //       <div className="w-[300px] pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden">
+      //         <div
+      //           className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
+      //           onClick={handleClose}
+      //         >
+      //           X
+      //         </div>
+      //         <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-6">
+      //           <div className="flex flex-col justify-start items-center gap-1.5">
+      //             <div className="flex flex-col justify-start items-start gap-4">
+      //               <div className="w-60 flex flex-col justify-start items-center">
+      //                 <div className="self-stretch text-center justify-start text-neutral-600 text-xl font-normal font-suite leading-relaxed">
+      //                   😅 아쉽게도...
+      //                 </div>
+      //               </div>
+      //               <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-suite leading-none">
+      //                 이번엔 쿠폰에 당첨되지 않았어요. 다음 기회에!
+      //               </div>
+      //             </div>
+      //           </div>
+      //           <div
+      //             data-status="Header"
+      //             className="flex h-[38px] px-6 py-4 flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
+      //             onClick={handleClose}
+      //           >
+      //             <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
+      //               확인
+      //             </div>
+      //           </div>
+      //         </div>
+      //       </div>
+      //     );
+      //   }
 
       case 3:
         // 쿠폰 발급받기 (동일한 내용) 모달
         return (
-          <div className="w-[300px] pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden">
+          <div className="w-72 pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center">
             <div
               className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
               onClick={handleClose}
             >
               X
             </div>
-            <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-6">
+            <div className="w-72 pt-[40px] pb-[25px] relativeoverflow-hidden flex flex-col items-center justify-center">
               <div className="flex flex-col justify-start items-center gap-1.5">
                 <div className="flex flex-col justify-start items-start gap-4">
                   <div className="w-60 flex flex-col justify-start items-center">
@@ -221,7 +244,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
                     </div>
                   </div>
                   <div className="w-60 text-center justify-start text-neutral-600 text-xs font-normal font-suite leading-none">
-                    쿠폰에 당첨되었어요! 사용할 주점을 골라주세요
+                    쿠폰에 당첨되었어요! 사용할 주점을 골라주세요<br/>
                   </div>
                 </div>
                 <div
@@ -240,11 +263,11 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
               </div>
               <div
                 data-status="Header"
-                className="flex h-[38px] px-6 py-4 flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
+                className="flex h-[38px] flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
                 onClick={handleNextStep}
               >
                 <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
-                  쿠폰 발급받기
+                  {couponMutation.isPending ? "발급 중..." : "쿠폰 발급받기"}
                 </div>
               </div>
             </div>
@@ -254,18 +277,18 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
       case 4:
         // 쿠폰 코드 표시 모달
         return (
-          <div className="w-[300px] pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden">
+          <div className="w-72 pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center">
             <div
               className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
               onClick={handleClose}
             >
               X
             </div>
-            <div className="w-64 left-[23px] top-[46px] absolute inline-flex flex-col justify-start items-center gap-8">
+            <div className="w-72 pt-[40px] pb-[25px] relative overflow-hidden flex flex-col items-center justify-center">
               <div className="flex flex-col justify-start items-start gap-1.5">
                 <div className="w-60 flex flex-col justify-start items-center">
                   <div className="self-stretch text-center justify-start text-primary-500 text-xl font-semibold font-suite leading-relaxed">
-                    "AT81UC"
+                    "{couponData?.coupon_code || "AT81UC"}"
                   </div>
                   <div className="self-stretch text-center justify-start text-neutral-300 text-xs font-normal font-suite leading-none">
                     5% 할인 쿠폰
