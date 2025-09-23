@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import i18n from "i18next";
-
+import { useLocation, useNavigate } from "react-router-dom";
 import MenuSection from "./MenuSection";
 import NearbyBoothSection from "./NearbyBoothSection";
 import useBoothLikes from "../../../hooks/useBoothLikes";
@@ -63,6 +63,8 @@ function groupSchedules(schedules) {
 }
 
 export default function BoothDetail() {
+     const { state } = useLocation();
+  const { filter } = state || {};
   const { id } = useParams();
   const { t } = useTranslation();
   const { getTranslation, requestSingleTranslation } = useTranslations();

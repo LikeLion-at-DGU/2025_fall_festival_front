@@ -37,7 +37,6 @@ function BoothCard({
     initialLikesCount || 0,
     initialIsLiked || false
   );
-  // console.log("위치",{location})
   // 날짜 맵핑
   const getWeekdayFromDate = (dateString) => {
     const date = new Date(dateString);

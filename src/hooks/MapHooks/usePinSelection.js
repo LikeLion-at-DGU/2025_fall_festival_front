@@ -22,10 +22,12 @@ const usePinSelection = (selectedFilter) => {
   };
 
   // 필터 변경 시 초기화
-  useEffect(() => {
+useEffect(() => {
+  if (selectedFilter !== "Booth") {
     setSelectedPin(null);
     setSelectedBooth(null);
-  }, [selectedFilter]);
+  }
+}, [selectedFilter]);
 
   return {
     selectedPin,         // 선택된 건물 id

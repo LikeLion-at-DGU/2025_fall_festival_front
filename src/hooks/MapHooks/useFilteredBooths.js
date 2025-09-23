@@ -23,7 +23,6 @@ function useFilteredBooths(booths, selectedFilter) {
       return true;
     });
 
-    console.log("필터 결과:", filter, filtered.map(f => f.name));
     setFilteredBooths(filtered);
   }, [booths, selectedFilter]);
 
