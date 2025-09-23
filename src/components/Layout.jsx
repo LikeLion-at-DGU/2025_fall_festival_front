@@ -69,6 +69,9 @@ const Layout = ({ children }) => {
   const shouldHideNavigation =
     isEventPage && phase !== "intro" && phase !== "instruction";
 
+  // 🎯 Event 페이지일 때만 번역 버튼 제거
+  const hideTranslate = isEventPage;
+
   // 3) 헤더 선택 로직
   const HeaderComponent = isAdminPage
     ? AdminHeader
@@ -87,7 +90,9 @@ const Layout = ({ children }) => {
           bg-gray"
       >
         {/* 조건부 Header */}
-        {!shouldHideNavigation && <HeaderComponent />}
+        {!shouldHideNavigation && (
+          <HeaderComponent hideTranslate={hideTranslate} />
+        )}
 
         {/* 페이지의 실제 내용 */}
         <main
