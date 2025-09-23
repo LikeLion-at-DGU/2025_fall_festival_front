@@ -54,13 +54,6 @@ function AdminLogin() {
       sessionStorage.setItem("uid", data.uid);
       sessionStorage.setItem("role", data.role);
       sessionStorage.setItem("name", data.name);
-
-      // ✅ 저장된 값도 다시 로그로 확인
-      console.log("✅ 세션스토리지 저장 완료:", {
-        uid: sessionStorage.getItem("uid"),
-        role: sessionStorage.getItem("role"),
-        name: sessionStorage.getItem("name"),
-      });
       
       alert("로그인 성공");
 

@@ -44,7 +44,7 @@ function EventDetail() {
       </div>
 
       {/* 본문 */}
-      <div className="mt-8 leading-relaxed text-gray-800 whitespace-pre-line">
+      <div className="mt-8 leading-relaxed text-gray-800 text-sm whitespace-pre-line">
         {event.detail}
       </div>
 

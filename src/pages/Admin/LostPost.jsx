@@ -53,13 +53,6 @@ function LostPost() {
         return;
       }
 
-      console.log("=== LostPost 요청 직전 ===");
-      console.log("uid:", uid);
-      console.log("title:", title);
-      console.log("content:", content);
-      console.log("location:", locationText);
-      console.log("image:", image);
-
       // FormData 구성
       const formData = new FormData();
       formData.append("uid", uid);
@@ -75,7 +68,6 @@ function LostPost() {
       if (editingData) {
         const res = await updateLostPost(editingData.id, formData);
         setToastMsg(res.message || "분실물이 수정되었습니다");
-        console.log("수정할 데이터:", { title, content, locationText, image });
       } else {
         const res = await createLostPost(formData);
         setToastMsg(res.message || "분실물이 등록되었습니다");
@@ -164,9 +156,7 @@ function LostPost() {
     // ⛔ 삭제 예정
     console.log("압축 전:", (file.size / 1024 / 1024).toFixed(2), "MB");
     console.log("압축 후:", (compressedFile.size / 1024 / 1024).toFixed(2), "MB");
-    console.log("압축 전+확장자:", file.name, file.size);
-    console.log("압축 후+확장자:", newFile.name, newFile.size);
-
+    
     // 상태 반영 (압축된 파일 저장)
     setImage(newFile); // ✅ 서버로 보낼 파일은 확장자 포함된 newFile
     setPreviewImage(URL.createObjectURL(newFile));
