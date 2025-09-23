@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const DateDropdown = ({ selectedDate, setSelectedDate }) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const options = [
-    { value: "2025-09-24", label: "24일 수요일" },
-    { value: "2025-09-25", label: "25일 목요일" },
-    { value: "2025-09-26", label: "26일 금요일" },
+    { value: "2025-09-24", label: t("date.2025-09-24") },
+    { value: "2025-09-25", label: t("date.2025-09-25") },
+    { value: "2025-09-26", label: t("date.2025-09-26") },
   ];
 
   // 바깥 클릭 시 닫기
