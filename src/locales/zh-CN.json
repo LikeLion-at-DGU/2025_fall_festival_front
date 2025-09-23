@@ -106,6 +106,7 @@
     "loading": "加载中...",
     "noCelebrity": "没有明星演出",
     "noStage": "当前没有进行中的演出",
+    "noEventToday": "今天没有演出",
     "nextStage": "也请查看下一场演出"
   },
 

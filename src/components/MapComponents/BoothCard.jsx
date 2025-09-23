@@ -29,6 +29,7 @@ function BoothCard({
   isSelected,
   distance_m,
   category,
+  isHighlighted,
 }) {
   const { t } = useTranslation();
   const { isLiked, likesCount, toggleLike, loading } = useBoothLikes(
@@ -67,17 +68,15 @@ function BoothCard({
   return (
 <div
   className={`cursor-pointer w-full h-[92px] rounded-2xl border p-3 transition shadow-sm
-  ${
-    isSelected && category !== "Booth"
-      ? "bg-red-50 border-red-500 shadow-md" // ✅ Booth가 아닐 때만 강조
-      : "bg-white border-neutral-200"        // 기본
-  }
-`}
-  style={{
-    borderRadius: "16px",
-  }}
+    ${
+      (isSelected && category !== "Booth") || isHighlighted
+        ? "bg-red-50 border-red-500 shadow-md"
+        : "bg-white border-neutral-200"
+    }`}
+  style={{ borderRadius: "16px" }}
   onClick={onClick}
 >
+
 
       <div className="flex gap-4 items-center h-full">
         {/* 이미지 */}

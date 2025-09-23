@@ -49,6 +49,7 @@ export default function MenuSection({ menus, boothId }) {
                   onError={(e) => {
                     e.currentTarget.src = defaultImg;
                   }}
+
                 />
                 {/* 품절 배지 */}
                 {m.is_soldout && (

@@ -40,20 +40,21 @@ const handleFilterClick = (filter) => {
   });
 };
 
+return (
+  <div className="flex mx-auto w-full flex-wrap gap-[12px]">
+    {filters.map((filter) => (
+      <FilterButton
+        key={filter}
+        isActive={filterMap[filter] === selectedFilter}
+        onClick={() => handleFilterClick(filter)}
+        className="py-[4px] px-[8px] rounded-[12px] text-[15px]"
+      >
+        {t(`map.filters.${filter}`)}
+      </FilterButton>
+    ))}
+  </div>
+);
 
-  return (
-    <div className="flex mx-auto w-full flex-wrap gap-[10px]">
-      {filters.map((filter) => (
-        <FilterButton
-          key={filter}
-       isActive={filterMap[filter] === selectedFilter}
-          onClick={() => handleFilterClick(filter)}
-        >
-          {t(`map.filters.${filter}`)}
-        </FilterButton>
-      ))}
-    </div>
-  );
 }
 
 export default FilterBar;
