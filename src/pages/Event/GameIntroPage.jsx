@@ -37,7 +37,6 @@ function GameIntroPage({ onStartGame }) {
       <div
         className="w-8 h-8 left-[172.50px] top-[409px] absolute overflow-hidden cursor-pointer"
         onClick={() => {
-          console.log("도전하기 버튼 클릭됨!");
           onStartGame();
         }}
       >

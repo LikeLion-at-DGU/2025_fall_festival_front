@@ -56,7 +56,6 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
   // 단계 준비
   const prepareStage = (stage) => {
-    console.log(`${stage}단계 준비 중...`);
     const wordSet = getRandomWordSet();
     setCurrentWordSet(wordSet);
     setCorrectAnswer(wordSet.distractor);
@@ -85,8 +84,6 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
       {},
       {
         onSuccess: (response) => {
-          console.log("게임 시작 성공:", response);
-
           // 게임 상태 업데이트
           setGameStatus("playing");
           setTimeLeft(5.0);
@@ -119,7 +116,6 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
   const handleNextStep = async () => {
     // 4단계까지 완료해야 성공 모달 표시
     if (currentStage < 4) {
-      console.log(`${currentStage}단계에서 ${currentStage + 1}단계로 이동`);
       setCurrentStage(currentStage + 1);
     } else {
       // 게임 완료 (4단계 완료 시) - 백엔드에 성공 정보 전송 및 쿠폰 확인
@@ -127,7 +123,6 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
         // user_id는 훅 내부에서 localStorage에서 자동으로 가져옴
         const result = await postGameSuccess();
 
-        console.log("게임 성공 결과:", result);
         setCouponResult(result);
 
         // 성공 모달 표시
@@ -147,8 +142,6 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
       {},
       {
         onSuccess: (response) => {
-          console.log("게임 재시작 성공:", response);
-
           // 카운트다운부터 재시작하거나 현재 스테이지 재시작
           if (onRetryFromCountdown) {
             onRetryFromCountdown();
@@ -181,14 +174,14 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
 
   if (!currentWordSet)
     return (
-      <div className="w-full max-w-[430px] mx-auto h-screen flex items-center justify-center">
+      <div className="w-full h-full flex items-center justify-center">
         Loading...
       </div>
     );
 
   return (
-    <div className="w-full min-h-screen relative bg-neutral-100 overflow-hidden flex justify-center">
-      <div className="w-full max-w-[430px] min-h-screen flex flex-col items-center px-4 py-safe">
+    <div className="w-full h-full relative bg-neutral-100 overflow-hidden flex justify-center">
+      <div className="w-full max-w-[430px] h-full flex flex-col items-center px-4 py-safe">
         {/* 게임 헤더 */}
         <div className="w-full flex-shrink-0 mt-safe flex justify-center">
           <div className="w-full max-w-sm">

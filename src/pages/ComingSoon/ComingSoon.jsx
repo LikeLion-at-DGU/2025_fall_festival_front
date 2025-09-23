@@ -32,7 +32,6 @@ export default function ComingSoon() {
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
-    console.log("[Timer] left =>", `${hours}h ${minutes}m ${seconds}s`);
     return { days, hours, minutes, seconds };
   }
 

@@ -15,27 +15,22 @@ function Event() {
   }, [gamePhase, setSearchParams]);
 
   const handleShowInstruction = () => {
-    console.log("handleShowInstruction 호출됨 - instruction으로 변경");
     setGamePhase("instruction");
   };
 
   const handleStartCountdown = () => {
-    console.log("handleStartCountdown 호출됨 - countdown으로 변경");
     setGamePhase("countdown");
   };
 
   const handleStartGame = () => {
-    console.log("handleStartGame 호출됨 - playing으로 변경");
     setGamePhase("playing");
   };
 
   const handleGameEnd = () => {
-    console.log("handleGameEnd 호출됨 - intro로 변경");
     setGamePhase("intro");
   };
 
   const handleRetryFromCountdown = () => {
-    console.log("handleRetryFromCountdown 호출됨 - countdown으로 변경");
     setGamePhase("countdown");
   };
 
