@@ -28,7 +28,7 @@ function PullList({
 
   // ✅ maxHeight를 상태로 관리
   const [maxHeight, setMaxHeight] = useState(
-    Math.min(412, window.innerHeight - 100 - 82)
+    Math.min(410, window.innerHeight - 100 - 82)
   );
 
   useEffect(() => {
