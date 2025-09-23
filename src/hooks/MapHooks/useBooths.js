@@ -17,6 +17,7 @@ function useBooths(selectedFilter, userLocation = null, isNightToggle = null, se
 
         // 토글값이 있으면 우선 반영
         const isNight = isNightToggle !== null ? isNightToggle : autoIsNight;
+        console.log("밤일까요?",autoIsNight);
         const baseURL =
           import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
