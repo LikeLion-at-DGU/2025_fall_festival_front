@@ -7,7 +7,7 @@ function GameInstructionPage({ onStartChallenge }) {
   const startGameMutation = usePostStartGame();
 
   // 더미데이터
-  const data = { successcnt: 26 };
+  const data = { successcnt: 0 };
 
   // 컴포넌트 마운트 시 백엔드에서 받은 시도 횟수 확인
   useEffect(() => {

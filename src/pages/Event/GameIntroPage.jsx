@@ -41,8 +41,8 @@ function GameIntroPage({ onStartGame }) {
           onStartGame();
         }}
       >
-        <div className="w-6 h-6 left-[3.54px] top-[3px] absolute outline outline-[5px] outline-offset-[-2.50px] outline-red-300"></div>
-        <div className="w-6 h-6 left-[3px] top-[3px] absolute outline outline-[5px] outline-offset-[-2.50px] outline-red-300"></div>
+        {/* <div className="w-6 h-6 left-[3.54px] top-[3px] absolute outline outline-[5px] outline-offset-[-2.50px] outline-red-300"></div>
+        <div className="w-6 h-6 left-[3px] top-[3px] absolute outline outline-[5px] outline-offset-[-2.50px] outline-red-300"></div> */}
       </div>
     </div>
   );
