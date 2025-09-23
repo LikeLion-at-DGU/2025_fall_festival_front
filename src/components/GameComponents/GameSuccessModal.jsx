@@ -17,22 +17,18 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
   const availableBooths = gameResult?.couponBooths ||
     couponResult?.couponBooths || ["광고홍보학과", "경영학과", "컴퓨터공학과"];
 
-  // 부스/학과 리스트 - API 응답에서 받은 데이터 사용
+  // 부스/학과 리스트 
   const boothList =
     availableBooths.length > 0
       ? availableBooths
       : [
-          "광고홍보학과",
-          "경영학과",
-          "컴퓨터공학과",
-          "국어국문학과",
-          "영어영문학과",
-          "법학과",
-          "경제학과",
-          "심리학과",
+          "프론티어",
+          "공과대학",
+          "문과대학",
+          "푸름누리"
         ];
 
-  const percentage = 12; // 상위 퍼센트 (예: 12%) 백엔드 로직 제작 중...!
+  const percentage = 12; // 상위 퍼센트 단계별로 하드코딩 하는 게 나아보임... stage 관리가 불가능
 
   if (!isOpen) return null;
 
