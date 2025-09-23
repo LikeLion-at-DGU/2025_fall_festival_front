@@ -104,7 +104,7 @@ function Event() {
   if (!currentStageData || !currentWordSet) return null;
 
   return (
-    <div className="relative bg-neutral-100 overflow-hidden">
+    <div className="relative bg-neutral-100 overflow-hidden h-full">
       {/* 게임 헤더 */}
       <GameHeader round={currentStage} currentStep={currentStage} />
       
