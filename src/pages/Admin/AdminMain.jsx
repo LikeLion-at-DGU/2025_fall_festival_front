@@ -11,13 +11,18 @@ import ToastMessage from "../../components/AdminComponents/ToastMessage";
 import {
   patchEmergencyNotice,
   getEmergencyNotice,
-  getEmergencyNoticeById,
-  getEmergencyNotices, // ✅ 최신 긴급공지 가져오기 추가
   getUnionNotices,
   getUnionLosts,
 } from "../../apis/admin/festa";
 
+/* -------------- 접근권한 --------------- */
+/*
+ * 허용 : Staff || Stuco
+ * 허용된 role만 navigate된 상태 (세션스토리지에 유저 정보 저장된 상태)
+ */
+
 function AdminMain() {
+
   const navigate = usePrefixedNavigate();
 
   // 게시글 목록 (공지 + 분실물)
@@ -31,16 +36,17 @@ function AdminMain() {
   // 토스트 메시지 상태
   const [toast, setToast] = useState(null);
 
-  const bigWrapperClass =
-    "flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6";
+
+  const bigWrapperClass = "flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6";
   const wrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-4";
   const noticeWrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-0";
   const postWrapperClass = "flex flex-col items-center w-full h-[30vh] mx-auto gap-2 overflow-y-scroll [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden";
   const bottomWrapperClass = "flex flex-col w-full";
   
-
-  // ✅ 게시글 및 긴급공지 불러오기
   useEffect(() => {
+
+    // ------------------ 긴급 공지 필드 ------------------ //
+
     const fetchEmergency = async () => {
       try {
         const emergency = await getEmergencyNotice();
@@ -55,6 +61,8 @@ function AdminMain() {
       }
     };
 
+    // ------------------ 게시글 목록 ------------------ //
+
     const fetchPosts = async () => {
       try {
         const [noticeList, lostList] = await Promise.all([
@@ -62,10 +70,8 @@ function AdminMain() {
           getUnionLosts(),
         ]);
 
-        // 두 배열 합치고
+        // 카테고리 구분 없이 최신순 정렬
         const combined = [...noticeList, ...lostList];
-
-        // 최신순 정렬 (created_at 기준)
         combined.sort((a, b) => b.id - a.id);
 
         setNotices(combined);
@@ -76,11 +82,49 @@ function AdminMain() {
 
     fetchEmergency();
     fetchPosts();
-  }, []);
+  }, []);  
 
-  
+  // -------------- 긴급 공지 수정 + 수정 필드에 최신 수정 사항 반영 -------------- //
 
-  // 검색 기능
+  const handlePatchEvent = async () => {
+    
+    const uid = sessionStorage.getItem("uid");
+    const role = sessionStorage.getItem("role");
+
+    // uid 존재 여부 확인
+     if (!uid) {
+        alert("로그인이 필요합니다.");
+        navigate("/admin/login");
+        return;
+      }
+    // 허용된 role 확인 (예: Staff, Stuco만 가능)
+    if (role !== "Staff" && role !== "Stuco") {
+      alert("긴급 공지 수정 권한이 없습니다.");
+      navigate("/admin/login");
+      return;
+    }
+
+    // ✅ 권한이 통과된 경우에만 PATCH 실행
+    try {
+      const result = await patchEmergencyNotice({
+        title: notice,
+        content: notice,
+      });
+
+      setToast(result.message);
+
+      // PATCH 후 최신 긴급공지 다시 불러오기
+      const updated = await getEmergencyNotice();
+      if (updated) setNotice(updated.title);
+
+      setIsEdited(false);
+    } catch (err) {
+      setToast(err.error || "수정 실패");
+    }
+  };
+
+  // ------------------ 검색 기능 ------------------ //
+
   const handleSearch = (keyword) => {
     setSearchTerm(keyword);
   };
@@ -88,61 +132,59 @@ function AdminMain() {
     n.title.includes(searchTerm)
   );
 
-  // 제출 로직: 긴급 공지 수정 field의 수정 사항 반영
-const handlePatchEvent = async () => {
-  try {
-    const result = await patchEmergencyNotice({
-      title: notice,
-      content: notice,
-    });
+  // -------------------- [1] 분실물 공지 추가하기 ------------------- //
+  // 추가 버튼 누르면 유저 정보 확인 후, 분실물 공지 페이지로 연결
+  // 조건 1 : uid 존재 + 유효
+  // 조건 2 : role 충족
 
-    setToast(result.message);
-
-    // PATCH 후 최신 긴급공지 다시 불러오기
-    const updated = await getEmergencyNotice();
-    if (updated) setNotice(updated.title);
-
-    setIsEdited(false);
-  } catch (err) {
-    setToast(err.error || "수정 실패");
-  }
-};
-
-  // 제출 로직: 유저 정보 확인 후, 분실물 페이지로 연결
   const handleAddLostItem = () => {
     const uid = sessionStorage.getItem("uid");
     const role = sessionStorage.getItem("role");
 
+    // uid 존재 여부로 판별 ⛔
     if (!uid) {
       alert("로그인이 필요합니다.");
       navigate("/admin/login");
       return;
     }
+    // 허용된 role 여부로 판별
     if (role !== "Staff" && role !== "Stuco") {
       alert("분실물 추가 권한이 없습니다.");
+      navigate("/admin/login");
       return;
     }
-    navigate("notice/lost");
+    navigate("notice/lost"); // 게시글 작성 페이지 이동
   };
 
-  // 제출 로직: 유저 정보 확인 후, 공지 페이지로 연결
+  // ------------------- [2] 일반 공지 추가하기 --------------------- //
+  // 추가 버튼 누르면 : 유저 정보 확인 후, 일반 공지 페이지로 연결
+  // 조건 1 : uid 존재 + 유효
+  // 조건 2 : role 충족
+
   const handleAddNotice = () => {
     const uid = sessionStorage.getItem("uid");
     const role = sessionStorage.getItem("role");
 
+    // uid 존재 여부로 판별 ⛔
     if (!uid) {
       alert("로그인이 필요합니다.");
       navigate("/admin/login");
       return;
     }
+    // 허용된 role 여부로 판별
     if (role !== "Staff" && role !== "Stuco") {
       alert("공지 추가 권한이 없습니다.");
+      navigate("/admin/login");
       return;
     }
     navigate("notice/normal");
   };
 
+
+  //============================== UI ==================================//
+
   return (
+
     <div className={bigWrapperClass}>
       {/* 긴급공지 */}
       <div className={wrapperClass}>

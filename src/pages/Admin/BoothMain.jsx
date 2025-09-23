@@ -5,6 +5,12 @@ import AdminTitle from "../../components/AdminComponents/AdminTitle";
 import NoticeBox from "../../components/AdminComponents/Booth/NoticeBox";
 import { getBoothEvents } from "../../apis/admin/booth";
 
+/* -------------- 접근권한 --------------- */
+/*
+ * 허용 : Club || Major
+ * 허용된 role만 navigate된 상태 (세션스토리지에 유저 정보 저장된 상태)
+ */
+
 function BoothMain() {
 
   const [events, setEvents] = useState([]);
@@ -14,7 +20,8 @@ function BoothMain() {
   const bigWrapperClass = "flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6";
   const wrapperClass = "flex flex-col items-center w-full h-full mx-auto gap-4";
 
-  // 게시글 가져오기
+  // ------------------ 게시글 목록 ------------------ //
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -27,7 +34,11 @@ function BoothMain() {
     fetchData();
   }, []);
 
-  // 제출 로직: 유저 정보 확인 후, post 페이지로 이동합니다.
+  // -------------------- 이벤트 추가하기 ---------------------- //
+  // 추가 버튼 누르면 유저 정보 확인 후, 이벤트 개최 페이지로 연결
+  // 조건 1 : uid 존재 + 유효 
+  // 조건 2 : role 충족
+
   const handleAddEvent = () => {
     
     const uid = sessionStorage.getItem("uid");
@@ -41,12 +52,16 @@ function BoothMain() {
     }
     // 2. 권한 체크(role 기반)
     if (role !== "Club" && role !== "Major") {
-      alert("이벤트 추가 권한이 없습니다."); // ⛔ toastMsg로 수정, 로그인페이지로 리다이렉트 필요
+      alert("이벤트 추가 권한이 없습니다.");
+      navigate("/admin/login");
       return;
     }
     // 3. 권한 문제 없으면 이벤트 작성 페이지로 이동
     navigate("event");
   };
+
+  
+  //============================== UI ==================================//
 
   return (
     <div className="flex flex-col justify-between w-full px-4 py-8 mx-auto gap-6">
