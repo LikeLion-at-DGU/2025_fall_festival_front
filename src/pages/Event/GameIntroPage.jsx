@@ -10,7 +10,7 @@ function GameIntroPage({ onStartGame }) {
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 정리
   }, [onStartGame]);
   return (
-    <div className="w-full mx-auto h-[calc(100vh-116px)] flex items-center justify-center relative bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden">
+    <div className="w-full mx-auto h-[calc(100vh-114px)] flex items-center justify-center relative bg-gradient-to-l from-primary-400 to-primary-300 overflow-hidden">
       {/* GameLoading.svg로 교체 */}
       <img
         className="w-[257px] h-[325px] object-cover"
