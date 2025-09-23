@@ -51,10 +51,11 @@ export async function createLostPost(formData) {
 }
 
 //-------- 긴급공지 patch --------//
-export async function patchEmergencyNotice(id, data) {
+export async function patchEmergencyNotice(data) {
   try {
-    const res = await instance.patch(`/board/${id}`, data);
-    return res.data; // ✅ 반드시 res.data 반환
+    // id 빼고 그냥 /board/emergency 로 PATCH
+    const res = await instance.patch(`/board/emergency`, data);
+    return res.data; 
   } catch (err) {
     throw err.response?.data || { error: "알 수 없는 오류" };
   }
