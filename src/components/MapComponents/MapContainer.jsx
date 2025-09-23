@@ -4,14 +4,23 @@ import MapWithPins from "./MapWithPins";
 import DetailMap from "./DetailMap";
 import { mapConfigs } from "../../config/mapConfigs";
 import defaultMap from "../../assets/images/banners/default-img.png"
-const MapContainer = ({ apiData, selectedFilter, onSelectBooth, selectedPin, handlePinClick }) => {
-  return (
+const MapContainer = ({
+  apiData,
+  selectedFilter,
+  onSelectBooth,
+  selectedPin,
+  handlePinClick,
+  selectedDate,        // ✅ 추가
+  isNightToggle        // ✅ 추가
+}) => {  return (
     <div className="w-full mx-auto relative">
       {selectedFilter === "Booth" && selectedPin ? (
         <DetailMap
            buildingId={selectedPin} 
           onClose={() => handlePinClick(null)}   // 뒤로가기 → 핀 해제
           onSelectBooth={onSelectBooth}
+            selectedDate={selectedDate}      
+          isNightToggle={isNightToggle}
         />
       ) : (
         <MapWithPins
