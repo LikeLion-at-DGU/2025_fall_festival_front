@@ -1,5 +1,5 @@
-import React from 'react';
-import WordCard from './WordCard';
+import React from "react";
+import WordCard from "./WordCard";
 
 /**
  * 글자 격자 컴포넌트
@@ -12,13 +12,13 @@ import WordCard from './WordCard';
 const WordGrid = ({ words, size, correctAnswer, onWordClick, gameStatus }) => {
   const getGridLayout = () => {
     switch (size) {
-      case 'XL':
+      case "XL":
         return { rows: 2, cols: 2 };
-      case 'L':
+      case "L":
         return { rows: 3, cols: 3 };
-      case 'M':
+      case "M":
         return { rows: 4, cols: 4 };
-      case 'S':
+      case "S":
         return { rows: 5, cols: 5 };
       default:
         return { rows: 3, cols: 3 };
@@ -27,23 +27,23 @@ const WordGrid = ({ words, size, correctAnswer, onWordClick, gameStatus }) => {
 
   const getGapSize = () => {
     switch (size) {
-      case 'XL':
-        return 'gap-3'; // 1단계: 12px 간격 (90% of 16px ≈ 14px)
-      case 'L':
-        return 'gap-3'; // 2단계: 12px 간격 (90% of 16px ≈ 14px)
-      case 'M':
-        return 'gap-2.5'; // 3단계: 10px 간격 (90% of 12px ≈ 11px)
-      case 'S':
-        return 'gap-2.5'; // 4단계: 10px 간격 (90% of 12px ≈ 11px)
+      case "XL":
+        return "gap-[16px]";
+      case "L":
+        return "gap-[16px]";
+      case "M":
+        return "gap-[12px]";
+      case "S":
+        return "gap-[12px]";
       default:
-        return 'gap-3';
+        return "gap-3";
     }
   };
 
   const renderGrid = () => {
     const { rows, cols } = getGridLayout();
     const grid = [];
-    
+
     for (let row = 0; row < rows; row++) {
       const rowCards = [];
       for (let col = 0; col < cols; col++) {
@@ -55,26 +55,43 @@ const WordGrid = ({ words, size, correctAnswer, onWordClick, gameStatus }) => {
               key={index}
               text={word}
               size={size}
-              status={word === correctAnswer && (gameStatus === 'correct' || gameStatus === 'timeout' || gameStatus === 'wrong') ? 'Answer' : 'Normal'}
+              status={
+                word === correctAnswer &&
+                (gameStatus === "correct" ||
+                  gameStatus === "timeout" ||
+                  gameStatus === "wrong")
+                  ? "Answer"
+                  : "Normal"
+              }
               onClick={() => onWordClick(word)}
-              isCorrectAnswer={word === correctAnswer && (gameStatus === 'correct' || gameStatus === 'timeout' || gameStatus === 'wrong')}
+              isCorrectAnswer={
+                word === correctAnswer &&
+                (gameStatus === "correct" ||
+                  gameStatus === "timeout" ||
+                  gameStatus === "wrong")
+              }
             />
           );
         }
       }
-      
+
       grid.push(
-        <div key={row} className={`flex justify-center items-center ${getGapSize()}`}>
+        <div
+          key={row}
+          className={`flex justify-center items-center ${getGapSize()}`}
+        >
           {rowCards}
         </div>
       );
     }
-    
+
     return grid;
   };
 
   return (
-    <div className={`flex flex-col justify-center items-center ${getGapSize()} scale-90 transform`}>
+    <div
+      className={`flex flex-col justify-center items-center ${getGapSize()} scale-90 transform`}
+    >
       {renderGrid()}
     </div>
   );

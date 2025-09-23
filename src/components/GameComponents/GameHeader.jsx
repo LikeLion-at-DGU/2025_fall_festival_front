@@ -12,14 +12,14 @@ const GameHeader = () => {
   };
 
   return (
-    <div className="fixed top-0 right-0 z-50 p-4">
+    <div className="z-50 py-[15px] flex justify-end">
       <div 
-        className="w-10 h-10 cursor-pointer hover:bg-white hover:bg-opacity-20 rounded-full flex items-center justify-center transition-all duration-200 bg-black bg-opacity-10 backdrop-blur-sm"
+        className="cursor-pointer flex items-center justify-center transition-all duration-20"
         onClick={handleCloseClick}
         title="게임 종료하고 메인으로 이동"
       >
         {/* X 아이콘 */}
-        <div className="text-black text-xl font-bold">×</div>
+        <div className="text-black hover:text-primary-500 text-3xl font-extralight">×</div>
       </div>
     </div>
   );
