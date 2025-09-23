@@ -538,6 +538,9 @@ export default function BoardDetail() {
                           title={boothCardProps.title}
                           location={boothCardProps.location}
                           time={boothCardProps.time}
+                          businessDays={boothRaw?.business_days}
+                          startTime={boothRaw?.start_time}
+                          endTime={boothRaw?.end_time}
                           isOperating={boothCardProps.isOperating}
                           likesCount={boothCardProps.likesCount}
                           badges={boothCardProps.badges}
