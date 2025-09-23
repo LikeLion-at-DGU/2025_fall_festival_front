@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { mapConfigs } from "../../config/mapConfigs";
 import backbtn from "../../assets/images/icons/header-icons/left.png";
 import { useTranslation } from "react-i18next";
+import Skeleton from "../Skeleton/Skeleton";
 
 const DetailMap = ({ buildingId, onClose, onSelectBooth, selectedDate, isNightToggle }) => {
   const { t } = useTranslation();
@@ -26,9 +27,9 @@ const DetailMap = ({ buildingId, onClose, onSelectBooth, selectedDate, isNightTo
     <div className="relative w-full h-full rounded-[16px] border border-[#E4E4E7] overflow-hidden">
       {/* 로딩 스켈레톤 */}
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
-          <div className="w-[220px] h-[160px] rounded-lg bg-gray-200 animate-pulse"></div>
-        </div>
+           <div className="absolute inset-0 flex items-center justify-center bg-white z-10">
+    <Skeleton className="w-full h-full rounded-[16px]" />
+  </div>
       )}
 
       {/* 상세지도 이미지 */}
