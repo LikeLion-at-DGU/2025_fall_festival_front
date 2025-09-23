@@ -53,6 +53,8 @@ function PullList({
   const textClass = "text-[14px] font-normal leading-[150%]";
 
   const navigate = usePrefixedNavigate();
+// 글씨 단순화
+  const normalizeLabel = (str = "") => str.replace(/\s+/g, " ").trim();
 
   // ----------------------------
   // 드래그 핸들러
@@ -259,6 +261,10 @@ function PullList({
                     image={booth.image_url || undefined}
                     location={locationName}
                     isSelected={selectedPin === booth.location?.id}
+                     isHighlighted={
+  selectedBooth &&
+ normalizeLabel(selectedBooth) === normalizeLabel(boothName)
+ }
                     startTime={booth.start_time}
                     endTime={booth.end_time}
                     businessDays={booth.business_days}

@@ -39,15 +39,15 @@ const ActionButton = ({
   const getButtonClasses = () => {
     switch (gameStatus) {
       case "ready":
-        return "w-[343px] h-[56px] px-6 py-4 rounded-[12px] bg-neutral-600 text-white cursor-pointer opacity-100 hover:bg-neutral-700";
+        return "w-[343px] h-[56px] px-6 py-4 rounded-[12px] bg-[#2A2A2E] text-white cursor-pointer opacity-100 hover:bg-neutral-700";
       case "playing":
-        return "w-[343px] h-[56px] px-6 py-4 rounded-[12px] bg-neutral-600 text-white cursor-not-allowed opacity-50";
+        return "w-[343px] h-[56px] px-6 py-4 rounded-[12px] bg-[#E4E4E7] !text-[#A1A1AA] cursor-not-allowed opacity-50";
       case "correct":
       case "timeout":
       case "wrong":
-        return "w-[343px] h-[56px] px-6 py-4 rounded-[12px] bg-neutral-600 text-white cursor-pointer opacity-100 hover:bg-neutral-700";
+        return "w-[343px] h-[56px] px-6 py-4 rounded-[12px] bg-[#2A2A2E] text-white cursor-pointer opacity-100 hover:bg-neutral-700";
       default:
-        return "w-[343px] h-[56px] px-6 py-4 rounded-[12px] bg-neutral-600 text-white cursor-not-allowed opacity-50";
+        return "w-[343px] h-[56px] px-6 py-4 rounded-[12px] bg-[#2A2A2E] text-white cursor-not-allowed opacity-50";
     }
   };
 

@@ -184,113 +184,116 @@ export default function BoothDetail() {
         />
       </div>
 
-      {/* 카드 */}
-      <div className="relative w-full bg-white shadow-md rounded-[16px] px-4 py-3 z-1000">
+      {/* 카드 + Tail 전체 래퍼 */}
+      <div className="relative w-full">
         {/* tail 이미지 */}
         <img
           src={tail}
-          className="absolute -top-6 left-10 -translate-x-1/2 filter z-0"
+          className="absolute -top-6 left-10 -translate-x-1/2 drop-shadow-[0_3px_5px_rgba(0,0,0,0.10)] filter z-0"
           alt={t("booth.tailAlt")}
         />
 
-        <div className="flex justify-between items-start relative">
-          {/* 왼쪽 영역 */}
-          <div className="flex-1">
-            {/* 부스 타입 + 이름 */}
-            <div className="flex items-center gap-2 !mb-4">
-              <span className="bg-[#EF7063] text-white px-2 py-1 rounded-full text-xs whitespace-nowrap">
-                {booth.is_night ? t("booth.nightBooth") : t("booth.dayBooth")}
-              </span>
-              <h1
-                className={`font-bold ${booth.name.length > 16
-                    ? "text-[14.5px]"   
-                    : "text-lg"    // 기본 크기
-                  }`}
-              >
-                {getTranslation(
-                  "booth",
-                  booth.booth_id?.toString() || id,
-                  "BoothName",
-                  booth.name
-                )}
-              </h1>
-
-            </div>
-
-            {/* 야간 부스 & 디오더 가능 표시 */}
-            {booth.is_night && booth.is_dorder && (
-              <div className="flex items-center gap-2 mt-2">
-                <img
-                  src={CheckIcon}
-                  alt="check"
-                  className="w-[21.5px] h-[21.5px]"
-                />
-                <span className="text-red-500 text-sm font-medium">
-                  {t("booth.dorderAvailable")}
+        {/* 카드 */}
+        <div className="relative w-full bg-white shadow-md rounded-[16px] px-4 py-3 z-1000">
+          <div className="flex justify-between items-start relative">
+            {/* 왼쪽 영역 */}
+            <div className="flex-1">
+              {/* 부스 타입 + 이름 */}
+              <div className="flex items-center gap-2 !mb-4">
+                <span className="bg-[#EF7063] text-white px-2 py-1 rounded-full text-xs whitespace-nowrap">
+                  {booth.is_night ? t("booth.nightBooth") : t("booth.dayBooth")}
                 </span>
-              </div>
-            )}
+                <h1
+                  className={`font-bold ${booth.name.length > 16
+                    ? "text-[14.5px]"
+                    : "text-lg"    // 기본 크기
+                    }`}
+                >
+                  {getTranslation(
+                    "booth",
+                    booth.booth_id?.toString() || id,
+                    "BoothName",
+                    booth.name
+                  )}
+                </h1>
 
-            {/* 운영 시간 */}
-            {groupSchedules(booth.schedules).map((g, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-2 mt-1 text-[14px] text-gray-600"
-              >
+              </div>
+
+              {/* 야간 부스 & 디오더 가능 표시 */}
+              {booth.is_night && booth.is_dorder && (
+                <div className="flex items-center gap-2 mt-2">
+                  <img
+                    src={CheckIcon}
+                    alt="check"
+                    className="w-[21.5px] h-[21.5px]"
+                  />
+                  <span className="text-red-500 text-sm font-medium">
+                    {t("booth.dorderAvailable")}
+                  </span>
+                </div>
+              )}
+
+              {/* 운영 시간 */}
+              {groupSchedules(booth.schedules).map((g, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 mt-1 text-[14px] text-gray-600"
+                >
+                  <img
+                    src={TimeCircleIcon}
+                    alt="time"
+                    className="w-[21.5px] h-[21.5px]"
+                  />
+                  <span>
+                    {g.days.join(", ")} {g.time}
+                  </span>
+                </div>
+              ))}
+
+              {/* 위치 */}
+              <div className="flex items-center gap-2 mt-1 text-[14px] text-gray-600">
                 <img
-                  src={TimeCircleIcon}
-                  alt="time"
-                  className="w-[21.5px] h-[21.5px]"
+                  src={LocationIcon}
+                  alt={t("booth.locationAlt")}
+                  className="w-[21.5px] h-[24px]"
                 />
                 <span>
-                  {g.days.join(", ")} {g.time}
+                  {getTranslation(
+                    "booth",
+                    booth.booth_id?.toString() || id,
+                    "BoothLocation",
+                    booth.location_name
+                  )}
                 </span>
               </div>
-            ))}
+            </div>
 
-            {/* 위치 */}
-            <div className="flex items-center gap-2 mt-1 text-[14px] text-gray-600">
-              <img
-                src={LocationIcon}
-                alt={t("booth.locationAlt")}
-                className="w-[21.5px] h-[24px]"
-              />
-              <span>
-                {getTranslation(
-                  "booth",
-                  booth.booth_id?.toString() || id,
-                  "BoothLocation",
-                  booth.location_name
-                )}
+            {/* 오른쪽 좋아요 */}
+            <div className="flex flex-col items-center ml-4">
+              <button
+                onClick={toggleLike}
+                disabled={loading}
+                className="w-[25px] h-[24px] flex items-center justify-center hover:scale-110 transition-transform duration-200 disabled:opacity-50"
+                aria-pressed={isLiked}
+                aria-label={isLiked ? t("booth.unlike") : t("booth.like")}
+              >
+                <img
+                  src={isLiked ? HeartIcon : UnheartIcon}
+                  alt="좋아요"
+                  className="w-5 h-5 transition-all duration-200"
+                />
+              </button>
+              <span className="text-[#A1A1AA] text-sm font-semibold">
+                {likesCount}
               </span>
             </div>
-          </div>
-
-          {/* 오른쪽 좋아요 */}
-          <div className="flex flex-col items-center ml-4">
-            <button
-              onClick={toggleLike}
-              disabled={loading}
-              className="w-[25px] h-[24px] flex items-center justify-center hover:scale-110 transition-transform duration-200 disabled:opacity-50"
-              aria-pressed={isLiked}
-              aria-label={isLiked ? t("booth.unlike") : t("booth.like")}
-            >
-              <img
-                src={isLiked ? HeartIcon : UnheartIcon}
-                alt="좋아요"
-                className="w-5 h-5 transition-all duration-200"
-              />
-            </button>
-            <span className="text-[#A1A1AA] text-sm font-semibold">
-              {likesCount}
-            </span>
           </div>
         </div>
       </div>
 
       {/* 소개 */}
       <div
-        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${booth.is_night ? "!mt-4" : "!mt-10"
+        className={`w-full bg-white shadow rounded-[16px] px-[15px] py-[10px] ${booth.is_night ? "!mt-4" : "!mt-4"
           }`}
       >
         <h2 className="font-semibold mb-2 text-[#EF7063] text-sm">{t("booth.introduction")}</h2>

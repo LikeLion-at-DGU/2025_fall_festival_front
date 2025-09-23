@@ -217,9 +217,9 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
         </div>
 
         {/* 게임 영역 - WordGrid와 ActionButton을 포함 */}
-        <div className="flex-1 flex flex-col justify-start items-center w-full pt-20 pb-8 min-h-0 overflow-hidden">
+        <div className="flex-1 flex flex-col justify-start items-center w-full pt-[66px] overflow-hidden">
           {/* 단어 격자 - 10px 아래로 이동 */}
-          <div className="flex justify-center items-center mb-6 flex-shrink-0 mt-2.5">
+          <div className="flex justify-center items-center mb-[32px] flex-shrink-0">
             <WordGrid
               words={words}
               size={getGameStage(currentStage).size}
@@ -230,7 +230,7 @@ function GamePlay({ onGameEnd, onRetryFromCountdown }) {
           </div>
 
           {/* 액션 버튼 - 30px 위로 이동 */}
-          <div className="w-full flex-shrink-0 -mt-5 flex justify-center">
+          <div className="w-full flex-shrink-0  flex justify-center">
             <ActionButton
               gameStatus={gameStatus}
               onNextStep={handleNextStep}

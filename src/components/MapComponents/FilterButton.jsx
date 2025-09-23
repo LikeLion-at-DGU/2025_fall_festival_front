@@ -13,7 +13,7 @@ const FilterButton = ({
         flex items-center justify-center gap-2.5
         px-2 py-1
         rounded-[12px]
-        text-xs font-normal leading-[150%]
+        text-[13px] font-normal leading-[150%]
         font-suite
         cursor-pointer
         transition-all duration-200

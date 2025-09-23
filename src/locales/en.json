@@ -106,6 +106,7 @@
     "loading": "Loading...",
     "noCelebrity": "No celebrity performances",
     "noStage": "No ongoing performances",
+    "noEventToday": "No performances today",
     "nextStage": "Check out the next performance too"
   },
 

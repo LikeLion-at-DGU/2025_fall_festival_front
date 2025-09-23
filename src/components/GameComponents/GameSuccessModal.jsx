@@ -17,22 +17,18 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
   const availableBooths = gameResult?.couponBooths ||
     couponResult?.couponBooths || ["광고홍보학과", "경영학과", "컴퓨터공학과"];
 
-  // 부스/학과 리스트 - API 응답에서 받은 데이터 사용
+  // 부스/학과 리스트 
   const boothList =
     availableBooths.length > 0
       ? availableBooths
       : [
-          "광고홍보학과",
-          "경영학과",
-          "컴퓨터공학과",
-          "국어국문학과",
-          "영어영문학과",
-          "법학과",
-          "경제학과",
-          "심리학과",
+          "프론티어",
+          "공과대학",
+          "문과대학",
+          "푸름누리"
         ];
 
-  const percentage = 12; // 상위 퍼센트 (예: 12%) 백엔드 로직 제작 중...!
+  const percentage = 12; // 상위 퍼센트 단계별로 하드코딩 하는 게 나아보임... stage 관리가 불가능
 
   if (!isOpen) return null;
 
@@ -74,9 +70,9 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
       case 1:
         // 축하드립니다 모달 - 피그마 디자인 정확히 적용
         return (
-          <div className="w-72 h-56 relative bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center">
+          <div className="w-72 pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center">
             {/* X 버튼 (우상단 고정) */}
-            <div className="absolute right-[9px] top-[9px] text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer">
+            <div className="absolute right-[18px] top-[10px] text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer">
               X
             </div>
 
@@ -101,7 +97,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
               {/* 버튼 */}
               <div
                 data-status="Header"
-                className="flex h-[38px] px-6 py-4 flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
+                className="flex h-[38px] flex-col justify-center items-center w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
                 onClick={handleNextStep}
               >
                 <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
@@ -116,9 +112,9 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
         // 쿠폰 당첨 결과에 따른 모달
         if (isWinner) {
           return (
-            <div className="w-[300px] h-[227px] relative bg-white rounded-2xl overflow-hidden">
+            <div className="w-[300px] pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden">
               <div
-                className="right-[15px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
+                className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
                 onClick={handleClose}
               >
                 X
@@ -172,9 +168,9 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
         } else {
           // 쿠폰 미당첨
           return (
-            <div className="w-[300px] h-[227px] relative bg-white rounded-2xl overflow-hidden">
+            <div className="w-[300px] pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden">
               <div
-                className="right-[15px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
+                className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
                 onClick={handleClose}
               >
                 X
@@ -209,9 +205,9 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
       case 3:
         // 쿠폰 발급받기 (동일한 내용) 모달
         return (
-          <div className="w-[300px] h-[227px] relative bg-white rounded-2xl overflow-hidden">
+          <div className="w-[300px] pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden">
             <div
-              className="right-[15px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
+              className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
               onClick={handleClose}
             >
               X
@@ -258,9 +254,9 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
       case 4:
         // 쿠폰 코드 표시 모달
         return (
-          <div className="w-[300px] h-[227px] relative bg-white rounded-2xl overflow-hidden">
+          <div className="w-[300px] pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden">
             <div
-              className="right-[15px] top-[9px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
+              className="right-[18px] top-[10px] absolute text-center justify-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
               onClick={handleClose}
             >
               X
@@ -298,9 +294,9 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
         // 쿠폰 미당첨 - 피그마 디자인 정확히 적용
         return (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="w-72 h-56 relative bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center">
+            <div className="w-72 pt-[40px] pb-[25px] relative bg-white rounded-2xl overflow-hidden flex flex-col items-center justify-center">
               <div
-                className="absolute right-[15px] top-[9px] text-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
+                className="absolute right-[18px] top-[10px] text-center text-neutral-600 text-base font-semibold font-suite leading-normal cursor-pointer"
                 onClick={handleClose}
               >
                 X
@@ -309,7 +305,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, isLoading }) {
                 <div className="flex flex-col items-center justify-center gap-6">
                   <div className="flex flex-col items-center justify-center">
                     <div className="text-center text-neutral-600 text-xl font-normal font-suite leading-relaxed">
-                      다음 기회에 다시!
+                      다음 기회에 다시 ㅠ.ㅠ
                     </div>
                   </div>
                   <div className="text-center text-black text-xs font-normal font-suite leading-relaxed">
