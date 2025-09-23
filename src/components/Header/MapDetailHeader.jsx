@@ -16,7 +16,7 @@ const MapDetailHeader = () => {
     fixed top-0 
     w-full max-w-[430px]
     bg-white 
-    h-[54px] px-[5px]"
+    h-[54px] px-[5px] z-50"
       style={{
         boxShadow: "0 1px 5px 0 rgba(0, 0, 0, 0.05)",
       }}
