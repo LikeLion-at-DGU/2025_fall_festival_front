@@ -3,16 +3,22 @@ import { mapConfigs } from "../../config/mapConfigs";
 import backbtn from "../../assets/images/icons/header-icons/left.png";
 import { useTranslation } from "react-i18next";
 
-const DetailMap = ({ buildingId, onClose, onSelectBooth }) => {
+const DetailMap = ({ buildingId, onClose, onSelectBooth, selectedDate, isNightToggle }) => {
   const { t } = useTranslation();
 
   const config = mapConfigs[buildingId]; // buildingId 기반 조회
-
   if (!config) {
     return null;
   }
 
- const { buttons = [] } = config;
+const key = `${selectedDate}:${isNightToggle ? "night" : "day"}`;
+const buttons = config.schedules?.[key] || [];
+console.log("buildingId:", buildingId);
+console.log("selectedDate:", selectedDate);
+console.log("isNightToggle:", isNightToggle);
+console.log("찾는 key:", `${selectedDate}:${isNightToggle ? "night" : "day"}`);
+console.log("해당 스케줄:", config.schedules?.[`${selectedDate}:${isNightToggle ? "night" : "day"}`]);
+
   return (
     <div className="relative w-full h-full rounded-[16px] border border-[#E4E4E7]">
       {/* 상세지도 이미지 */}
