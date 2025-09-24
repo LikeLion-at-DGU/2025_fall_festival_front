@@ -191,7 +191,7 @@ function EventPost() {
       {/* 이벤트 내용 */}
       <PostInput
         className="h-[370px]"
-        placeholder="공지 내용을 입력하세요"
+        placeholder="당일 진행 이벤트만 작성이 가능합니다. 시작시간은 글 작성 시간 이후부터로 설정 가능합니다."
         value={detail}
         onChange={(e) => setDetail(e.target.value)}
       />

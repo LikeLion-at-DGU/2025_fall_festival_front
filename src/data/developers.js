@@ -215,7 +215,7 @@ export const developersData = [
     name: "YOON HEE WON",
     roles: ["Back-End"],
     roleDisplay: "백엔드",
-    major: "정보통신공학전공",
+    major: "산업시스템공학과",
     image: yoonheewon,
   },
 ];
