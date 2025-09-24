@@ -99,18 +99,16 @@ function GameInstructionPage({ onStartChallenge }) {
         </div>
       </div> */}
       <div className="w-full h-[102px] flex justify-center items-center">
-        {!isLimitExceeded && (
-          <div className="px-2 py-1 bg-red-50/80 rounded-full inline-flex justify-center items-center gap-2.5">
-            <div
-              className="justify-center items-center
+        <div className="px-2 py-1 bg-red-50/80 rounded-full inline-flex justify-center items-center gap-2.5">
+          <div
+            className="justify-center items-center
           text-primary-400 text-[10px] font-normal font-suite"
-            >
-              <span>지금까지 단 </span>
-              <span className="font-semibold ">{isLoadingSuccess ? "..." : successCnt}</span>
-              <span>명 만이 성공했습니다</span>
-            </div>
+          >
+            <span>지금까지 단 </span>
+            <span className="font-semibold ">{isLoadingSuccess ? "..." : successCnt}</span>
+            <span>명 만이 성공했습니다</span>
           </div>
-        )}
+        </div>
       </div>
 
       <div className="w-full h-[256px] flex flex-col justify-center items-center text-center">
