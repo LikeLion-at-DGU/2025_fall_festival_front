@@ -19,8 +19,7 @@ function useBooths(selectedFilter, userLocation = null, isNightToggle = null, se
         const isNight = isNightToggle !== null ? isNightToggle : autoIsNight;
         console.log("밤일까요?",autoIsNight);
         const baseURL =
-          import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
-
+          "/api"
         const response = await axios.post(
           `${baseURL}/booths/list/`,
           {
