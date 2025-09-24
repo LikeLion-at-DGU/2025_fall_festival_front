@@ -99,18 +99,16 @@ function GameInstructionPage({ onStartChallenge }) {
         </div>
       </div> */}
       <div className="w-full h-[102px] flex justify-center items-center">
-        {!isLimitExceeded && (
-          <div className="px-2 py-1 bg-red-50/80 rounded-full inline-flex justify-center items-center gap-2.5">
-            <div
-              className="justify-center items-center
+        <div className="px-2 py-1 bg-red-50/80 rounded-full inline-flex justify-center items-center gap-2.5">
+          <div
+            className="justify-center items-center
           text-primary-400 text-[10px] font-normal font-suite"
-            >
-              <span>지금까지 단 </span>
-              <span className="font-semibold ">{isLoadingSuccess ? "..." : successCnt}</span>
-              <span>명 만이 성공했습니다</span>
-            </div>
+          >
+            <span>지금까지 단 </span>
+            <span className="font-semibold ">{isLoadingSuccess ? "..." : successCnt}</span>
+            <span>명 만이 성공했습니다</span>
           </div>
-        )}
+        </div>
       </div>
 
       <div className="w-full h-[256px] flex flex-col justify-center items-center text-center">
@@ -317,6 +315,11 @@ function GameInstructionPage({ onStartChallenge }) {
                 <span className="font-semibold">최초 1회만 제공</span>되며, 캡쳐
                 후 해당 주점에 보여주어야 사용이 가능합니다. 캡쳐 미실시로 인한
                 불이익은 저희 측에서 책임질 수 없습니다.
+              </div>
+
+              <div className="text-left">
+                · 상황에 따라 쿠폰 지급은
+                <span className="font-semibold">조기 소진</span>될 수 있습니다.
               </div>
             </div>
           </div>

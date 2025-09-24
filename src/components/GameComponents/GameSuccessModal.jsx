@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import boxOpenWebm from "../../assets/videos/gamepage/output.webm";
+import OpenFlower from "../../assets/videos/gamepage/movingFlower.mp4"
 import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import usePostSuccessGame from "../../hooks/GameHooks/usePostSuccessGame";
 import { usePostGameCoupon } from "../../hooks/GameHooks/usePostGameCoupon";
@@ -111,7 +112,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, completedStages: comp
 
   // 먼저 모달 스크린샷을 시도하고, 실패하면 쿠폰 코드를 클립보드에 복사
   const handleCaptureConfirm = async () => {
-    const code = couponData?.coupon_code || "AT81UC";
+    const code = couponData?.coupon_code || "!관리자에게 문의하세요!";
     try {
       await navigator.clipboard.writeText(code);
       alert("쿠폰 코드가 클립보드에 복사되었습니다: " + code);
@@ -193,7 +194,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, completedStages: comp
                   <video
                     ref={videoRef}
                     className="w-[250px] mt-3 rounded-lg"
-                    src={boxOpenWebm}
+                    src={OpenFlower}
                     onEnded={() => {
                       setIsPlayingVideo(false);
                       // 비디오가 끝나면 기존의 다음 단계 로직을 수행
