@@ -14,8 +14,7 @@ import dirvana from "../../assets/images/icons/Timetable-icons/DIRVANA.svg";
 /* =========================
    환경변수 기반 API 베이스
    ========================= */
-const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
-
+const API_BASE = "/api";
 /* =========================
    카테고리 매핑
    ========================= */
