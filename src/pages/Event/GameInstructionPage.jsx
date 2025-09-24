@@ -316,6 +316,11 @@ function GameInstructionPage({ onStartChallenge }) {
                 후 해당 주점에 보여주어야 사용이 가능합니다. 캡쳐 미실시로 인한
                 불이익은 저희 측에서 책임질 수 없습니다.
               </div>
+
+              <div className="text-left">
+                · 상황에 따라 쿠폰 지급은
+                <span className="font-semibold">조기 소진</span>될 수 있습니다.
+              </div>
             </div>
           </div>
         </div>
