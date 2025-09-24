@@ -4,7 +4,7 @@ import api from "./axiosInstance";
 // 단일 텍스트 번역 (resolve) - 상세 페이지용
 export async function translateSingle(item, targetLang) {
   try {
-    const res = await api.post("/resolve/?refresh=true", {
+    const res = await api.post("/resolve", {
       entity_type: item.entity_type,
       entity_id: item.entity_id,
       field: item.field,
@@ -51,7 +51,7 @@ export async function translateBatch(items, targetLang) {
       items: items,
     };
 
-    const res = await api.post("/resolve-batch/?refresh=true", requestData);
+    const res = await api.post("/resolve-batch", requestData);
 
     if (res.status === 200) {
       return res.data.results;

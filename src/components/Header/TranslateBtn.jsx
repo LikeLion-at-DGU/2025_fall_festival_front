@@ -50,7 +50,7 @@ const TranslateBtn = () => {
     "text-[#2A2A2E] text-[11px] font-suite font-semibold leading-[15px]";
 
   return (
-    <div className="relative inline-block whitespace-nowrap" ref={dropdownRef}>
+    <div className="relative inline-block whitespace-nowrap hidden" ref={dropdownRef}>
       {/* 버튼 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
