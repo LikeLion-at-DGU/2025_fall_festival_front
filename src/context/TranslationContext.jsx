@@ -65,7 +65,9 @@ export const TranslationProvider = ({ children }) => {
 
       setTranslations((prev) => ({ ...prev, ...newTranslations }));
     } catch (error) {
+      if (process.env.NODE_ENV === "development") {
       console.error("배치 번역 실패:", error);
+    }
     }
   };
 
