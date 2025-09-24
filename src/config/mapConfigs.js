@@ -114,9 +114,7 @@ export const mapConfigs = {
   3: { // 다향관
     img: DetailMapDahyang,
     schedules: {
-      "2025-09-24:day": [
-        { label: "플리마켓", x: 50, y: 75 },
-      ],
+     
       "2025-09-24:night": [
         { label: "DEMU", x: 50, y: 75 },
       ],
