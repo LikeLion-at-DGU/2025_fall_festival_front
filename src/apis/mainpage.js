@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // 긴급공지 조회 API
 export const getEmergencyNotice = async () => {

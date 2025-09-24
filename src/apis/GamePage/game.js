@@ -1,6 +1,6 @@
 import instance from "../instance";
 
-const BASE_URL = "/api";
+const VITE_API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export async function postStartGame(data) {
   const res = await instance.post(`${VITE_API_BASE_URL}/game/games/start/`, data);

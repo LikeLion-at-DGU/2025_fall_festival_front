@@ -10,7 +10,7 @@ import { useTranslations } from "../../context/TranslationContext";
 import PrefixedLink from "../../components/PrefixedLink";
 
 // .env 설정
-const API_BASE = "/api";
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
 
 // 카테고리 맵
 const CATEGORY_MAP = {
