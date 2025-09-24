@@ -8,8 +8,7 @@ import TailIcon from "../../../assets/images/icons/map-icons/triangle.svg";
 import { useTranslations } from "../../../context/TranslationContext";
 import { useTranslation } from "react-i18next";
 
-const BASE_URL = "/api";
-
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const fmtTime = (t) => (typeof t === "string" ? t.slice(0, 5) : t);
 
 export default function ToiletDetail() {
