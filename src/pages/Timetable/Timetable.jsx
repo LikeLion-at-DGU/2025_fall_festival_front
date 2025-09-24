@@ -9,7 +9,7 @@ import base from "../../assets/images/icons/Timetable-icons/base.svg";
 import { useTranslations } from "../../context/TranslationContext";
 import { useTranslation } from "react-i18next";
 
-const BASE_URL = "/api";
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Timetable() {
   const { t } = useTranslation();
