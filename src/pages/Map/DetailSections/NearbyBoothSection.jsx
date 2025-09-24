@@ -6,7 +6,8 @@ import { usePrefixedNavigate } from "../../../hooks/usePrefixedNavigate";
 import defaultImg from "../../../assets/images/banners/default-img.png";
 import { BASE_PATH } from "../../../config/routes";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = "/api";
+
 
 export default function NearbyBoothSection({ boothId }) {
   const [booths, setBooths] = useState([]);

@@ -18,7 +18,8 @@ import LocationIcon from "../../../assets/images/icons/map-icons/Location.svg";
 import tail from "../../../assets/images/icons/map-icons/triangle.svg";
 import defaultImg from "../../../assets/images/banners/default-img.png";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = "/api";
+
 const fmtTime = (t) => (typeof t === "string" ? t.slice(0, 5) : t);
 
 // 요일 매핑
