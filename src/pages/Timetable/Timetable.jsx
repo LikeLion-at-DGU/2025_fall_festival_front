@@ -57,7 +57,6 @@ export default function Timetable() {
   useEffect(() => {
     const now = new Date();
 
-
     // yyyy-mm-dd
     const todayStr = now.toLocaleDateString("en-CA"); 
     // 현재 시
