@@ -16,7 +16,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const reorderCelebrityEvents = (events, day) => {
   if (day === "2025-09-25") {
-    const order = ["SOLE", "FTISLAND", "ILLIT"];
+    const order = ["SOLE", "ILLIT", "로꼬"];
     return order
       .map(name => events.find(e => e.name?.toUpperCase().includes(name.toUpperCase())))
       .filter(Boolean);
