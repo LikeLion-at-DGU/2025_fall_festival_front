@@ -105,7 +105,7 @@ function GameInstructionPage({ onStartChallenge }) {
           text-primary-400 text-[10px] font-normal font-suite"
           >
             <span>지금까지 단 </span>
-            <span className="font-semibold ">{isLoadingSuccess ? "..." : successCnt-11500}</span>
+            <span className="font-semibold ">{isLoadingSuccess ? "..." : successCnt-10500}</span>
             <span>명 만이 성공했습니다</span>
           </div>
         </div>
