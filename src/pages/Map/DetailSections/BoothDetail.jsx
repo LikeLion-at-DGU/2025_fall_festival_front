@@ -9,6 +9,7 @@ import NearbyBoothSection from "./NearbyBoothSection";
 import useBoothLikes from "../../../hooks/useBoothLikes";
 import { useTranslations } from "../../../context/TranslationContext";
 import NotFound from "../../../components/NotFound/NotFound";
+import { createBoothTranslationItems } from "../../../utils/translationApi";
 
 import CheckIcon from "../../../assets/images/icons/map-icons/Check.svg";
 import HeartIcon from "../../../assets/images/icons/map-icons/Heart.png";
@@ -20,6 +21,7 @@ import defaultImg from "../../../assets/images/banners/default-img.png";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const fmtTime = (t) => (typeof t === "string" ? t.slice(0, 5) : t);
+
 
 // 요일 매핑
 const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
@@ -66,7 +68,7 @@ function groupSchedules(schedules) {
 export default function BoothDetail() {
   const { id } = useParams();
   const { t } = useTranslation();
-  const { getTranslation, requestSingleTranslation } = useTranslations();
+  const { getTranslation, requestBatchTranslations } = useTranslations()
   const [booth, setBooth] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -127,56 +129,10 @@ export default function BoothDetail() {
 
   // 부스 데이터 번역 요청
   useEffect(() => {
-    if (!booth) return;
-
-    // 부스 이름 번역 요청
-    if (booth.name) {
-      requestSingleTranslation({
-        entity_type: "booth",
-        entity_id: booth.booth_id?.toString() || id,
-        field: "BoothName",
-        source_lang: "ko",
-        source_text: booth.name,
-      });
-    }
-
-    // 부스 위치 번역 요청
-    if (booth.location_description) {
-      requestSingleTranslation({
-        entity_type: "booth",
-        entity_id: booth.booth_id?.toString() || id,
-        field: "BoothLocation",
-        source_lang: "ko",
-        source_text: booth.location_description,
-      });
-    }
-
-    // 부스 설명 번역 요청
-    if (booth.booth_description) {
-      requestSingleTranslation({
-        entity_type: "booth",
-        entity_id: booth.booth_id?.toString() || id,
-        field: "BoothDescription",
-        source_lang: "ko",
-        source_text: booth.booth_description,
-      });
-    }
-
-    // 코너 이름들 번역 요청
-    if (booth.corners && booth.corners.length > 0) {
-      booth.corners.forEach((corner, index) => {
-        if (corner.name) {
-          requestSingleTranslation({
-            entity_type: "booth",
-            entity_id: booth.booth_id?.toString() || id,
-            field: `CornerName_${index}`,
-            source_lang: "ko",
-            source_text: corner.name,
-          });
-        }
-      });
-    }
-  }, [booth, id, requestSingleTranslation]);
+  if (!booth) return;
+  const items = createBoothTranslationItems([booth]);
+  requestBatchTranslations(items);
+}, [booth, requestBatchTranslations]);
 
   // 로딩 중
   if (loading) {

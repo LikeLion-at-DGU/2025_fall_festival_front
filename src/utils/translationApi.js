@@ -4,7 +4,7 @@ import api from "./axiosInstance";
 // 단일 텍스트 번역 (resolve) - 상세 페이지용
 export async function translateSingle(item, targetLang) {
   try {
-    const res = await api.post("/resolve", {
+    const res = await api.post("/resolve/", {
       entity_type: item.entity_type,
       entity_id: item.entity_id,
       field: item.field,
@@ -51,7 +51,7 @@ export async function translateBatch(items, targetLang) {
       items: items,
     };
 
-    const res = await api.post("/resolve-batch", requestData);
+    const res = await api.post("/resolve-batch/", requestData);
 
     if (res.status === 200) {
       return res.data.results;
@@ -88,54 +88,58 @@ const categoryMapping = {
 
 // 부스 데이터 번역용 헬퍼 함수
 export function createBoothTranslationItems(booths) {
-  return booths.map((booth) => ({
+  return booths.map((booth, idx) => ({
     entity_type: "booth",
-    entity_id: booth.booth_id.toString(),
+    entity_id: booth.booth_id?.toString() || `temp-${idx}`,
     fields: [
-      {
-        field: "BoothName",
+      { field: "BoothName", source_lang: "ko", source_text: booth.name || "" },
+      ...(booth.category ? [{
+        field: "BoothCategory",
         source_lang: "ko",
-        source_text: booth.name || "",
-      },
-      ...(booth.category
-        ? [
-            {
-              field: "BoothCategory",
-              source_lang: "ko",
-              source_text: categoryMapping[booth.category] || booth.category,
-            },
-          ]
-        : []),
-      ...(booth.location?.name
-        ? [
-            {
-              field: "BoothLocation",
-              source_lang: "ko",
-              source_text: booth.location.name,
-            },
-          ]
-        : []),
+        source_text: categoryMapping[booth.category] || booth.category,
+      }] : []),
+      ...(booth.location?.name || booth.location_name ? [{
+        field: "BoothLocation",
+        source_lang: "ko",
+        source_text: booth.location?.name || booth.location_name,
+      }] : []),
+      ...(booth.booth_description ? [{
+        field: "BoothDescription",
+        source_lang: "ko",
+        source_text: booth.booth_description,
+      }] : []),
+      ...(booth.corners?.length ? booth.corners.map((c, i) => ({
+        field: `CornerName_${i}`,
+        source_lang: "ko",
+        source_text: c.name,
+      })) : []),
+      ...(booth.menus?.length ? booth.menus.map((m, i) => ({
+        field: `MenuName_${i}`,
+        source_lang: "ko",
+        source_text: m.name,
+      })) : []),
     ],
   }));
 }
 
+
 // 공연 데이터 번역용 헬퍼 함수
 export function createStageTranslationItems(stages) {
-  return stages.map((stage) => ({
+  return stages.map((stage, idx) => ({
     entity_type: "stage",
-    entity_id: stage.stage_id.toString(),
+    entity_id: stage?.id?.toString() || `temp-${idx}`,
     fields: [
       {
         field: "StageName",
         source_lang: "ko",
         source_text: stage.name || "",
       },
-      ...(stage.place
+      ...(stage.location_name
         ? [
             {
-              field: "StagePlace",
+              field: "StageLocation",
               source_lang: "ko",
-              source_text: stage.place,
+              source_text: stage.location_name,
             },
           ]
         : []),
@@ -143,29 +147,47 @@ export function createStageTranslationItems(stages) {
   }));
 }
 
+
 // 게시판 데이터 번역용 헬퍼 함수
 export function createBoardTranslationItems(boards) {
-  return boards.map((board, idx) => ({
-    entity_type: "board",
-    entity_id: board?.id?.toString() || `temp-${idx}`, // ⛔ 안전 처리
-    fields: [
-      {
+  return boards.map((board, idx) => {
+    // 항상 문자열 ID로 통일
+    const entityId = board?.id ? String(board.id) : `temp-${idx}`;
+
+    const fields = [];
+
+    if (board?.title) {
+      fields.push({
         field: "BoardTitle",
         source_lang: "ko",
-        source_text: board.title || "",
-      },
-      ...(board.content
-        ? [
-            {
-              field: "BoardContent",
-              source_lang: "ko",
-              source_text: board.content,
-            },
-          ]
-        : []),
-    ],
-  }));
+        source_text: board.title,
+      });
+    }
+
+    if (board?.content) {
+      fields.push({
+        field: "BoardContent",
+        source_lang: "ko",
+        source_text: board.content,
+      });
+    }
+
+    if (board?.writer) {
+      fields.push({
+        field: "WriterName",
+        source_lang: "ko",
+        source_text: board.writer,
+      });
+    }
+
+    return {
+      entity_type: "board",
+      entity_id: entityId,
+      fields,
+    };
+  });
 }
+
 
 // 긴급공지 데이터 번역용 헬퍼 함수
 export function createNoticeTranslationItems(notice) {
@@ -209,6 +231,21 @@ export function createDeveloperTranslationItems(developers) {
         field: "DeveloperMajor",
         source_lang: "ko",
         source_text: developer.major || "",
+      },
+    ],
+  }));
+}
+
+// 메뉴 번역용 헬퍼
+export function createBoothMenuTranslationItems(menus, boothId) {
+  return menus.map((menu, index) => ({
+    entity_type: "booth",
+    entity_id: boothId,
+    fields: [
+      {
+        field: `MenuName_${index}`,
+        source_lang: "ko",
+        source_text: menu.name || "",
       },
     ],
   }));

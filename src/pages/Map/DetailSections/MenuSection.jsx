@@ -1,30 +1,23 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useTranslations } from "../../../context/TranslationContext";
+import { createBoothMenuTranslationItems } from "../../../utils/translationApi"; // ✅ 메뉴 번역용 헬퍼 임포트
 import defaultImg from "../../../assets/images/banners/default-img.png";
 
 export default function MenuSection({ menus, boothId }) {
   const { t } = useTranslation();
-  const { getTranslation, requestSingleTranslation } = useTranslations();
+  const { getTranslation, requestBatchTranslations } = useTranslations(); // ✅ 단일 번역 제거
 
   if (!menus?.length) return null;
 
-  // 메뉴 번역 요청
+  // ✅ 메뉴 번역을 배치 요청으로 변경
   React.useEffect(() => {
     if (!menus || !boothId) return;
 
-    menus.forEach((menu, index) => {
-      if (menu.name) {
-        requestSingleTranslation({
-          entity_type: "booth",
-          entity_id: boothId.toString(),
-          field: `MenuName_${index}`,
-          source_lang: "ko",
-          source_text: menu.name,
-        });
-      }
-    });
-  }, [menus, boothId, requestSingleTranslation]);
+    // 헬퍼 함수로 메뉴 번역 아이템 생성
+    const items = createBoothMenuTranslationItems(menus, boothId.toString());
+    requestBatchTranslations(items);
+  }, [menus, boothId, requestBatchTranslations]);
 
   return (
     <div className="w-full pt-[16px]">
@@ -49,7 +42,6 @@ export default function MenuSection({ menus, boothId }) {
                   onError={(e) => {
                     e.currentTarget.src = defaultImg;
                   }}
-
                 />
                 {/* 품절 배지 */}
                 {m.is_soldout && (
