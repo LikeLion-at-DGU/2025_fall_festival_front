@@ -75,8 +75,8 @@ function GameInstructionPage({ onStartChallenge }) {
     }
   }, []);
 
-  // 시도 횟수가 3회를 초과했는지 확인
-  const isLimitExceeded = attemptCount >= 3;
+  // 시도 횟수가 5회를 초과했는지 확인
+  const isLimitExceeded = attemptCount >= 5;
 
   return (
     <div
@@ -105,7 +105,7 @@ function GameInstructionPage({ onStartChallenge }) {
           text-primary-400 text-[10px] font-normal font-suite"
           >
             <span>지금까지 단 </span>
-            <span className="font-semibold ">{isLoadingSuccess ? "..." : successCnt}</span>
+            <span className="font-semibold ">{isLoadingSuccess ? "..." : successCnt-11500}</span>
             <span>명 만이 성공했습니다</span>
           </div>
         </div>
@@ -286,7 +286,7 @@ function GameInstructionPage({ onStartChallenge }) {
               </div>
 
               <div className="text-left">
-                · 본 게임은 6초 이내 다른 글자를 찾아 클릭하면 되는
+                · 본 게임은 5초 이내 다른 글자를 찾아 클릭하면 되는
                 <span className="font-semibold">'다른 글자 찾기'</span>
                 게임입니다.
               </div>
@@ -297,7 +297,7 @@ function GameInstructionPage({ onStartChallenge }) {
               </div>
 
               <div className="text-left">
-                · 하루 <span className="font-semibold">최대 3회</span> 참여
+                · 하루 <span className="font-semibold">최대 5회</span> 참여
                 가능하며, 게임을 클리어할 때마다 선물 상자를 받을 수 있습니다.
               </div>
 
