@@ -671,7 +671,7 @@ async function fetchBoothById({
         // 실패해도 다음 후보 시도
       }
     }
-    onError?.("부스 상세 엔드포인트를 찾지 못했습니다.");
+    //onError?.("부스 상세 엔드포인트를 찾지 못했습니다.");
   } catch (e) {
     if (!isAbortError(e)) {
       console.error(e);
