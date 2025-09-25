@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { usePrefixedNavigate } from "../../hooks/usePrefixedNavigate";
 import stage from "../../assets/images/icons/main-icons/stage.svg";
-import ftisland from "../../assets/images/banners/ftisland.png";
 import illit from "../../assets/images/banners/illit.png";
 import sole from "../../assets/images/banners/sole.png";
 import fromis9 from "../../assets/images/banners/fromis9.png";
 import haha from "../../assets/images/banners/haha.png";
 import changmo from "../../assets/images/banners/changmo.png";
+import loco from "../../assets/images/banners/loco.png";
 import {
   getCurrentClubPerformance,
   formatPerformanceTime,
@@ -23,7 +23,7 @@ const Stage = () => {
 
   /* 9월 25일 연예인 */
   const artists25th = [
-    { name: "FTISLAND", image: ftisland },
+    { name: "로꼬", image: loco },
     { name: "ILLIT", image: illit },
     { name: "SOLE", image: sole },
   ];
