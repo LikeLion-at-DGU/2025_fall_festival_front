@@ -130,9 +130,8 @@ function GameSuccessModal({ isOpen, onClose, couponResult, completedStages: comp
       setCurrentStep(4); // 쿠폰 발급 완료 단계로 이동
     } catch (error) {
       console.error("쿠폰 발급 실패:", error);
-      alert(
-        "쿠폰 발급에 실패했습니다. 해당 부스의 쿠폰이 소진되었을 수 있습니다. 관리자에게 문의하세요."
-      );
+      const serverMsg = error?.response?.data?.message || error?.response?.data?.detail || error?.message || "서버와 통신할 수 없습니다.";
+      alert(`쿠폰 발급에 실패했습니다.\n사유: ${serverMsg}`);
     }
   };
 
@@ -342,15 +341,20 @@ function GameSuccessModal({ isOpen, onClose, couponResult, completedStages: comp
                   </div>
                 </div>
               </div>
-              <div
+              <button
+                type="button"
                 data-status="Header"
-                className="flex h-[38px] flex-col justify-center items-center mt-4 w-[250px] rounded-[12px] bg-primary-400 cursor-pointer hover:bg-primary-500 transition-colors"
                 onClick={handleGetCoupon}
+                disabled={couponMutation.isPending}
+                aria-busy={couponMutation.isPending}
+                className={`flex h-[38px] flex-col justify-center items-center mt-4 w-[250px] rounded-[12px] transition-colors ${
+                  couponMutation.isPending ? 'bg-primary-300 cursor-not-allowed' : 'bg-primary-400 hover:bg-primary-500 cursor-pointer'
+                }`}
               >
                 <div className="text-neutral-100 text-center font-suite text-[14px] font-semibold leading-[150%]">
                   {couponMutation.isPending ? "발급 중..." : "쿠폰 발급받기"}
                 </div>
-              </div>
+              </button>
             </div>
           </div>
         );
