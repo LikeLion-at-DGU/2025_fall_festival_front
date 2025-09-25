@@ -170,16 +170,31 @@ export function createBoothMenuTranslationItems(menus, boothId) {
 
 // 공연 데이터 번역용 헬퍼 함수
 export function createStageTranslationItems(stages) {
-  return stages.map((stage) => ({
+  return stages.map((stage, idx) => ({
     entity_type: "stage",
-    entity_id: stage.stage_id.toString(),
+    entity_id: (
+      (stage && (stage.stage_id || stage.id))
+        ? (stage.stage_id || stage.id).toString()
+        : `stage-temp-${idx}`
+    ),
     fields: [
       {
         field: "StageName",
         source_lang: "ko",
         source_text: stage.name || "",
       },
-      ...(stage.place
+      // UI uses 'StageLocation' (s.location_name) in Timetable — include it if available
+      ...((stage && (stage.location_name || stage.place))
+        ? [
+            {
+              field: "StageLocation",
+              source_lang: "ko",
+              source_text: stage.location_name || stage.place || "",
+            },
+          ]
+        : []),
+      // keep StagePlace for backward compatibility if present
+      ...(stage && stage.place
         ? [
             {
               field: "StagePlace",
