@@ -60,6 +60,7 @@ export default function Timetable() {
     // yyyy-mm-dd
     const todayStr = now.toLocaleDateString("en-CA"); 
     // 현재 시
+
     const hour = now.getHours();
 
     const availableDays = days.map((d) => d.value);
@@ -69,9 +70,17 @@ export default function Timetable() {
       setSelectedDay(todayStr);
       setSelectedHour(currentHourStr);
     } else {
-      // 기본값: Day1 15:00
-      setSelectedDay("2025-09-24");
-      setSelectedHour("15:00");
+
+      // 오늘 날짜가 days 안에 있으면 그 날짜 15:00
+      if (availableDays.includes(todayStr)) {
+        setSelectedDay(todayStr);
+        setSelectedHour("15:00");
+      } else {
+        // 오늘이 days에 없으면 첫 번째 Day로 고정
+        setSelectedDay(days[0].value);
+        setSelectedHour("15:00");
+      }
+
     }
   }, []);
 
@@ -219,11 +228,11 @@ export default function Timetable() {
 
       {/* 공연 리스트 */}
       <div className="flex flex-col gap-4">
-    {loading ? (
-  <div className="flex justify-center items-center py-10">
-    <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-[#A1A1AA]"></div>
-  </div>
-) : selectedDay === "2025-09-24" ? (
+        {loading ? (
+          <div className="flex justify-center items-center py-10">
+            <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-[#A1A1AA]"></div>
+          </div>
+        ) : selectedDay === "2025-09-24" ? (
 
           <div className="flex flex-col items-center gap-6 pt-20">
             <img src={dirvana} alt="no timetable" className="mt-4 w-[185px] h-[35px]" />
