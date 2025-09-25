@@ -14,6 +14,24 @@ import { createStageTranslationItems } from "../../utils/translationApi";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+const reorderCelebrityEvents = (events, day) => {
+  if (day === "2025-09-25") {
+    const order = ["SOLE", "FTISLAND", "ILLIT"];
+    return order
+      .map(name => events.find(e => e.name?.toUpperCase().includes(name.toUpperCase())))
+      .filter(Boolean);
+  }
+
+  if (day === "2025-09-26") {
+    const order = ["하하", "창모", "fromis_9"];
+    return order
+      .map(name => events.find(e => e.name?.toUpperCase().includes(name.toUpperCase())))
+      .filter(Boolean);
+  }
+
+  return events;
+};
+
 export default function Timetable() {
   const { t } = useTranslation();
   const { getTranslation, requestBatchTranslations } = useTranslations();
@@ -39,7 +57,11 @@ export default function Timetable() {
   useEffect(() => {
     const now = new Date();
 
-    const todayStr = now.toISOString().slice(0, 10);
+
+    // yyyy-mm-dd
+    const todayStr = now.toLocaleDateString("en-CA"); 
+    // 현재 시
+
     const hour = now.getHours();
 
     const availableDays = days.map((d) => d.value);
@@ -49,8 +71,17 @@ export default function Timetable() {
       setSelectedDay(todayStr);
       setSelectedHour(currentHourStr);
     } else {
-      setSelectedDay("2025-09-24");
-      setSelectedHour("15:00");
+
+      // 오늘 날짜가 days 안에 있으면 그 날짜 15:00
+      if (availableDays.includes(todayStr)) {
+        setSelectedDay(todayStr);
+        setSelectedHour("15:00");
+      } else {
+        // 오늘이 days에 없으면 첫 번째 Day로 고정
+        setSelectedDay(days[0].value);
+        setSelectedHour("15:00");
+      }
+
     }
   }, []);
 
@@ -70,7 +101,7 @@ export default function Timetable() {
         const data = res?.data ?? {};
         setCurrentClubEvents(data.club?.current_slot ?? []);
         setRemainingClubEvents(data.club?.remaining ?? []);
-        setCelebrityEvents(data.celebrity ?? []);
+        setCelebrityEvents(reorderCelebrityEvents(data.celebrity ?? [], selectedDay));
       })
       .catch((err) => {
         console.error("시간별 스케줄 불러오기 실패", err);
@@ -88,7 +119,7 @@ export default function Timetable() {
       .get(`${BASE_URL}/stage/days/${selectedDay}/schedules/15:00`)
       .then((res) => {
         const data = res?.data ?? {};
-        setCelebrityEvents(data.celebrity ?? []);
+        setCelebrityEvents(reorderCelebrityEvents(data.celebrity ?? [], selectedDay));
       })
       .catch((err) => {
         console.error("연예인 공연 불러오기 실패", err);
@@ -122,11 +153,10 @@ export default function Timetable() {
               setIsCelebrityMode(false);
               setSelectedHour(null);
             }}
-            className={`px-[16px] pt-[4px] pb-[8px] text-xl font-medium ${
-              selectedDay === d.value
+            className={`px-[16px] pt-[4px] pb-[8px] text-xl font-medium ${selectedDay === d.value
                 ? "text-red-500 border-b-2 border-red-500"
                 : "text-black"
-            }`}
+              }`}
           >
             {d.label}
           </button>
@@ -141,11 +171,10 @@ export default function Timetable() {
         {hours.map((time) => (
           <div key={time} className="flex flex-col items-center">
             <span
-              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${
-                selectedHour === time && !isCelebrityMode
+              className={`px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-medium ${selectedHour === time && !isCelebrityMode
                   ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
                   : "text-[#71717A]"
-              }`}
+                }`}
             >
               {time}
             </span>
@@ -171,11 +200,10 @@ export default function Timetable() {
         {/* 연예인 버튼 */}
         <div className="flex flex-col items-center">
           <span
-            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${
-              isCelebrityMode
+            className={`whitespace-nowrap px-2 pb-[1.5px] pt-[1.5px] rounded-full text-[16px] font-[400] ${isCelebrityMode
                 ? "bg-[#EF7063] text-white shadow-[0_1px_4px_rgba(0,0,0,0.15)]"
                 : "text-[#71717A]"
-            }`}
+              }`}
           >
             {t("timetable.celebrity")}
           </span>
@@ -206,6 +234,7 @@ export default function Timetable() {
             <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-[#A1A1AA]"></div>
           </div>
         ) : selectedDay === "2025-09-24" ? (
+
           <div className="flex flex-col items-center gap-6 pt-20">
             <img src={dirvana} alt="no timetable" className="mt-4 w-[185px] h-[35px]" />
             <p className="text-center text-[#A1A1AA] text-[16px] font-[400]">
