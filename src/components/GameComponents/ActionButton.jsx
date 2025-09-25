@@ -31,7 +31,7 @@ const ActionButton = ({
         return currentStage >= 4 ? "게임 완료" : "다음 단계로";
       case "timeout":
       case "wrong":
-        return playCount >= 3 ? "홈으로 가기" : "다시 도전하기";
+        return playCount >= 5 ? "홈으로 가기" : "다시 도전하기";
       default:
         return "다른 글자를 찾아보세요";
     }
@@ -58,7 +58,7 @@ const ActionButton = ({
     } else if (gameStatus === "correct") {
       onNextStep && onNextStep();
     } else if (gameStatus === "timeout" || gameStatus === "wrong") {
-      if (playCount >= 3) {
+      if (playCount >= 5) {
         onGoHome && onGoHome();
       } else {
         onRetry && onRetry();

@@ -23,7 +23,6 @@ function GameSuccessModal({ isOpen, onClose, couponResult, completedStages: comp
     couponResult?.couponBooths || [
       "프론티어",
       "공과대학",
-      "문과대학",
       "푸름누리",
     ];
 
@@ -32,8 +31,6 @@ function GameSuccessModal({ isOpen, onClose, couponResult, completedStages: comp
     availableBooths.length > 0
       ? availableBooths
       : [
-          "---------------24일(수)---------------",
-          "문과대학",
           "---------------25일(목)---------------",
           "프론티어",
           "공과대학",
@@ -53,10 +50,10 @@ function GameSuccessModal({ isOpen, onClose, couponResult, completedStages: comp
 
   // 하드코딩된 단계->퍼센트 매핑 (프론트에서 고정으로 보여줄 값)
   const stagePercentMap = {
-    1: 94,
-    2: 87,
-    3: 45,
-    4: 21,
+    1: 91,
+    2: 86,
+    3: 42,
+    4: 18,
   };
 
   let percent = stagePercentMap[completedStages];
@@ -134,7 +131,7 @@ function GameSuccessModal({ isOpen, onClose, couponResult, completedStages: comp
     } catch (error) {
       console.error("쿠폰 발급 실패:", error);
       alert(
-        "쿠폰 발급에 실패했습니다. 해당 부스의 쿠폰이 소진되었을 수 있습니다."
+        "쿠폰 발급에 실패했습니다. 해당 부스의 쿠폰이 소진되었을 수 있습니다. 관리자에게 문의하세요."
       );
     }
   };
