@@ -8,6 +8,8 @@ import BoothCard from "../../components/MapComponents/BoothCard";
 import { formatTimeWithDay } from "../../utils/dateUtils";
 import { useTranslations } from "../../context/TranslationContext";
 import PrefixedLink from "../../components/PrefixedLink";
+import { createBoardTranslationItems } from "../../utils/translationApi";
+
 
 // .env 설정
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/+$/, "");
@@ -69,7 +71,7 @@ export default function BoardDetail() {
   const { t } = useTranslation();
   const { boardId } = useParams();
   const navigate = usePrefixedNavigate();
-  const { getTranslation, requestSingleTranslation } = useTranslations();
+  const { getTranslation, requestSingleTranslation, requestBatchTranslations } = useTranslations();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -155,25 +157,28 @@ export default function BoardDetail() {
     return String(contentText).split(/\r?\n/);
   }, [contentText]);
 
+  
   useEffect(() => {
     if (!post) return;
 
-    requestSingleTranslation({
+    const items = [];
+
+    // 본문 제목
+    items.push({
       entity_type: "board",
       entity_id: post.id.toString(),
-      field: "BoardTitle",
-      source_lang: "ko",
-      source_text: post.title,
+      fields: [
+        { field: "BoardTitle", source_lang: "ko", source_text: post.title }
+      ]
     });
 
+    // 본문 줄 단위
     const rawBody = post.content ?? post.detail;
     if (rawBody) {
       const contentLines = String(rawBody).split(/\n+/);
       contentLines.forEach((line, index) => {
         if (line.trim()) {
-          requestSingleTranslation({
-            entity_type: "board",
-            entity_id: post.id.toString(),
+          items[0].fields.push({
             field: `BoardContent_${index}`,
             source_lang: "ko",
             source_text: line,
@@ -182,55 +187,44 @@ export default function BoardDetail() {
       });
     }
 
+    // 작성자
+    if (post.writer) {
+      items[0].fields.push({
+        field: "WriterName",
+        source_lang: "ko",
+        source_text: post.writer,
+      });
+    }
+
+    // 위치 (LostItem 전용)
     if (post.location && post.category === "LostItem") {
-      requestSingleTranslation({
-        entity_type: "board",
-        entity_id: post.id.toString(),
+      items[0].fields.push({
         field: "LostLocation",
         source_lang: "ko",
         source_text: post.location,
       });
     }
-  }, [post, requestSingleTranslation]);
+
+    // 이벤트 부스 위치
+    if (post.booth_location && post.category === "Event") {
+      items[0].fields.push({
+        field: "BoothLocation",
+        source_lang: "ko",
+        source_text: post.booth_location,
+      });
+    }
+
+    requestBatchTranslations(items);
+  }, [post, requestBatchTranslations]);
+
 
   // 관련 게시물 번역 요청
   useEffect(() => {
-    if (!related || related.length === 0) return;
+    if (!related?.length) return;
+    const items = createBoardTranslationItems(related);
+    requestBatchTranslations(items);
+  }, [related, requestBatchTranslations]);
 
-    related.forEach((item) => {
-      // 관련 게시물 제목 번역 요청
-      if (item.title) {
-        requestSingleTranslation({
-          entity_type: "board",
-          entity_id: item.id.toString(),
-          field: "BoardTitle",
-          source_lang: "ko",
-          source_text: item.title,
-        });
-      }
-
-      // 관련 게시물의 부스 정보 번역 요청
-      if (item.booth_name && item.booth_id) {
-        requestSingleTranslation({
-          entity_type: "booth",
-          entity_id: item.booth_id.toString(),
-          field: "BoothName",
-          source_lang: "ko",
-          source_text: item.booth_name,
-        });
-      }
-
-      if (item.writer) {
-        requestSingleTranslation({
-          entity_type: "writer",
-          entity_id: item.id.toString(),
-          field: "WriterName",
-          source_lang: "ko",
-          source_text: item.writer,
-        });
-      }
-    });
-  }, [related, requestSingleTranslation]);
 
   // 현재 게시물의 부스 정보 번역 요청
   useEffect(() => {
@@ -279,29 +273,10 @@ export default function BoardDetail() {
   // 부스 카드 정보 번역 요청
   useEffect(() => {
     if (!boothRaw) return;
+    const items = createBoothTranslationItems([boothRaw]);
+    requestBatchTranslations(items);
+  }, [boothRaw, requestBatchTranslations]);
 
-    // 부스명 번역 요청
-    if (boothRaw.name) {
-      requestSingleTranslation({
-        entity_type: "booth",
-        entity_id: boothRaw.booth_id?.toString() || boothRaw.id?.toString(),
-        field: "BoothName",
-        source_lang: "ko",
-        source_text: boothRaw.name,
-      });
-    }
-
-    // 부스 위치 번역 요청
-    if (boothRaw.location?.name) {
-      requestSingleTranslation({
-        entity_type: "booth",
-        entity_id: boothRaw.booth_id?.toString() || boothRaw.id?.toString(),
-        field: "BoothLocation",
-        source_lang: "ko",
-        source_text: boothRaw.location.name,
-      });
-    }
-  }, [boothRaw, requestSingleTranslation]);
 
   // 이벤트/공지/분실물 작성자 보정: writer 없으면 booth_name 사용
   const displayWriter = post?.writer || post?.booth_name || "";

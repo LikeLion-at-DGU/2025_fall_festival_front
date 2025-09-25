@@ -1,5 +1,5 @@
 // src/context/TranslationContext.jsx
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import i18n from "i18next";
 import { translateBatch, translateSingle } from "../utils/translationApi";
 
@@ -26,50 +26,36 @@ export const TranslationProvider = ({ children }) => {
   }, []);
 
   // 배치 번역 요청 함수 (리스트 페이지용)
-  const requestBatchTranslations = async (items) => {
+  const requestBatchTranslations = useCallback(async (items) => {
     if (!items || items.length === 0) return;
-
-    // 한국어일 때는 번역하지 않음
-    if (i18n.language === "ko") {
-      return;
-    }
+    if (i18n.language === "ko") return;
 
     try {
       const results = await translateBatch(items, i18n.language);
-
       const newTranslations = {};
-
       results.forEach((result) => {
         const key = `${result.entity_type}-${result.entity_id}-${result.field}`;
-
-        // 번역 실패 시 원문 사용
         const sourceText =
-          items
-            .find(
-              (item) =>
-                `${item.entity_type}-${item.entity_id}` ===
-                `${result.entity_type}-${result.entity_id}`
-            )
-            ?.fields.find((field) => field.field === result.field)
-            ?.source_text || "";
+          items.find(
+            (item) =>
+              `${item.entity_type}-${item.entity_id}` ===
+              `${result.entity_type}-${result.entity_id}`
+          )?.fields.find((field) => field.field === result.field)?.source_text || "";
 
         newTranslations[key] = {
-          text:
-            result.translated?.translated_text ||
-            result.translated?.text ||
-            sourceText,
+          text: result.translated?.translated_text || result.translated?.text || sourceText,
           status: result.translated?.status || "error",
           provider: result.translated?.provider || null,
         };
       });
-
       setTranslations((prev) => ({ ...prev, ...newTranslations }));
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
-      console.error("배치 번역 실패:", error);
+        console.error("배치 번역 실패:", error);
+      }
     }
-    }
-  };
+  }, [i18n.language]);  // ✅ 의존성에 언어만 두기
+
 
   const requestSingleTranslation = async (item) => {
     const key = `${item.entity_type}-${item.entity_id}-${item.field}`;

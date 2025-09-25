@@ -149,19 +149,11 @@ const BoardItem = ({ item, currentCategory }) => {
   const [toast, setToast] = useState("");
   const { getTranslation } = useTranslations();
 
-  const displayWriter = item.writer
-    ? (() => {
-        const translatedName = getTranslation(
-          "writer",
-          item?.id?.toString() || `temp-${Math.random()}`,
-          "WriterName",
-          item.writer
-        );
-        return translatedName.length > 20
-          ? translatedName.substring(0, 20) + "..."
-          : translatedName;
-      })()
-    : "";
+  const displayWriter = item.translatedWriter
+    ? (item.translatedWriter.length > 20
+        ? item.translatedWriter.substring(0, 20) + "..."
+        : item.translatedWriter)
+    : "";
 
   const translatedTitle = item.translatedTitle || title;
 
@@ -356,22 +348,7 @@ export default function Board() {
   const [allItems, setAllItems] = useState([]);
   const [totalFromServer, setTotalFromServer] = useState(0);
   const { getTranslatedBoards } = useBoardTranslation(allItems);
-  const { requestSingleTranslation } = useTranslations();
 
-  useEffect(() => {
-    if (!allItems || allItems.length === 0) return;
-    allItems.forEach((item) => {
-      if (item.writer) {
-        requestSingleTranslation({
-          entity_type: "writer",
-          entity_id: item?.id?.toString() || `temp-${Math.random()}`,
-          field: "WriterName",
-          source_lang: "ko",
-          source_text: item.writer,
-        });
-      }
-    });
-  }, [allItems, requestSingleTranslation]);
 
   const BOARD_ENDPOINT = `${API_BASE}/board/`;
 

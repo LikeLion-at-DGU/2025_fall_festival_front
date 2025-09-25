@@ -1,4 +1,5 @@
 // src/hooks/useTranslation.js
+import i18n from "i18next";
 import { useEffect } from "react";
 import { useTranslations } from "../context/TranslationContext";
 import {
@@ -20,26 +21,21 @@ const categoryMapping = {
 // 부스 데이터 번역 훅
 export const useBoothTranslation = (booths) => {
   const { requestBatchTranslations, getTranslation } = useTranslations();
+  const lang = i18n.language;
 
   useEffect(() => {
     if (booths && booths.length > 0) {
       const translationItems = createBoothTranslationItems(booths);
       requestBatchTranslations(translationItems);
     }
-  }, [booths, requestBatchTranslations]);
+  }, [booths, lang]); // ✅ requestBatchTranslations 제거
 
-  // 번역된 부스 데이터 반환
   const getTranslatedBooths = () => {
     if (!booths) return [];
 
     return booths.map((booth) => ({
       ...booth,
-      translatedName: getTranslation(
-        "booth",
-        booth.booth_id,
-        "BoothName",
-        booth.name
-      ),
+      translatedName: getTranslation("booth", booth.booth_id, "BoothName", booth.name),
       translatedCategory: booth.category
         ? getTranslation(
             "booth",
@@ -49,12 +45,7 @@ export const useBoothTranslation = (booths) => {
           )
         : booth.category,
       translatedLocation: booth.location?.name
-        ? getTranslation(
-            "booth",
-            booth.booth_id,
-            "BoothLocation",
-            booth.location.name
-          )
+        ? getTranslation("booth", booth.booth_id, "BoothLocation", booth.location.name)
         : booth.location?.name,
     }));
   };
@@ -65,26 +56,21 @@ export const useBoothTranslation = (booths) => {
 // 공연 데이터 번역 훅
 export const useStageTranslation = (stages) => {
   const { requestBatchTranslations, getTranslation } = useTranslations();
+  const lang = i18n.language;
 
   useEffect(() => {
     if (stages && stages.length > 0) {
       const translationItems = createStageTranslationItems(stages);
       requestBatchTranslations(translationItems);
     }
-  }, [stages, requestBatchTranslations]);
+  }, [stages, lang]); // ✅ 수정
 
-  // 번역된 공연 데이터 반환
   const getTranslatedStages = () => {
     if (!stages) return [];
 
     return stages.map((stage) => ({
       ...stage,
-      translatedName: getTranslation(
-        "stage",
-        stage.stage_id,
-        "StageName",
-        stage.name
-      ),
+      translatedName: getTranslation("stage", stage.stage_id, "StageName", stage.name),
       translatedPlace: stage.place
         ? getTranslation("stage", stage.stage_id, "StagePlace", stage.place)
         : stage.place,
@@ -97,39 +83,48 @@ export const useStageTranslation = (stages) => {
 // 게시판 데이터 번역 훅
 export const useBoardTranslation = (boards) => {
   const { requestBatchTranslations, getTranslation } = useTranslations();
+  const lang = i18n.language;
 
   useEffect(() => {
     if (boards && boards.length > 0) {
-      // 게시판 데이터 번역 요청
       const translationItems = createBoardTranslationItems(boards);
       requestBatchTranslations(translationItems);
     }
-  }, [boards, requestBatchTranslations]);
+  }, [boards, lang]);
 
-  // 번역된 게시판 데이터 반환
   const getTranslatedBoards = () => {
     if (!boards) return [];
 
-    return boards.map((board) => ({
-      ...board,
-      translatedTitle: getTranslation(
-        "board",
-        board.id,
-        "BoardTitle",
-        board.title
-      ),
-      translatedContent: board.content
-        ? getTranslation("board", board.id, "BoardContent", board.content)
-        : board.content,
-    }));
+    return boards.map((board, idx) => {
+      // 항상 String(board.id)로 강제 변환
+      const entityId = board?.id ? String(board.id) : `temp-${idx}`;
+
+      return {
+        ...board,
+        translatedTitle: getTranslation(
+          "board",
+          entityId,
+          "BoardTitle",
+          board.title || ""
+        ),
+        translatedContent: board?.content
+          ? getTranslation("board", entityId, "BoardContent", board.content)
+          : "",
+        translatedWriter: board?.writer
+          ? getTranslation("board", entityId, "WriterName", board.writer)
+          : "",
+      };
+    });
   };
 
   return { getTranslatedBoards };
 };
 
+
 // 긴급공지 번역 훅
 export const useNoticeTranslation = (notice) => {
   const { requestBatchTranslations, getTranslation } = useTranslations();
+  const lang = i18n.language;
 
   useEffect(() => {
     if (notice) {
@@ -138,9 +133,8 @@ export const useNoticeTranslation = (notice) => {
         requestBatchTranslations(translationItems);
       }
     }
-  }, [notice, requestBatchTranslations]);
+  }, [notice, lang]); // ✅ 수정
 
-  // 번역된 공지사항 데이터 반환
   const getTranslatedNotice = () => {
     if (!notice) return null;
 
@@ -148,12 +142,7 @@ export const useNoticeTranslation = (notice) => {
 
     return {
       ...notice,
-      translatedTitle: getTranslation(
-        "notice",
-        entityId,
-        "NoticeTitle",
-        notice.title
-      ),
+      translatedTitle: getTranslation("notice", entityId, "NoticeTitle", notice.title),
       translatedContent: notice.content
         ? getTranslation("notice", entityId, "NoticeContent", notice.content)
         : notice.content,
@@ -166,6 +155,7 @@ export const useNoticeTranslation = (notice) => {
 // 단일 아이템 번역 훅 (상세 페이지용)
 export const useSingleItemTranslation = (item) => {
   const { requestSingleTranslation, getTranslation } = useTranslations();
+  const lang = i18n.language;
 
   useEffect(() => {
     if (
@@ -177,17 +167,11 @@ export const useSingleItemTranslation = (item) => {
     ) {
       requestSingleTranslation(item);
     }
-  }, [item, requestSingleTranslation]);
+  }, [item, lang]); // ✅ 수정 (언어 바뀔 때도 다시 요청)
 
-  // 번역된 텍스트 반환
   const getTranslatedText = () => {
     if (!item) return "";
-    return getTranslation(
-      item.entity_type,
-      item.entity_id,
-      item.field,
-      item.source_text
-    );
+    return getTranslation(item.entity_type, item.entity_id, item.field, item.source_text);
   };
 
   return { getTranslatedText };
