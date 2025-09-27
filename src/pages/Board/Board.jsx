@@ -340,7 +340,7 @@ export default function Board() {
   const location = useLocation();
   const { getTranslation } = useTranslations();
   const [keyword, setKeyword] = useState("");
-  const [activeTag, setActiveTag] = useState("ALL");
+  const [activeTag, setActiveTag] = useState("LostItem");
   const [page, setPage] = useState(1);
   const pageSize = 10;
   const [loading, setLoading] = useState(false);
